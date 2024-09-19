@@ -1,0 +1,102 @@
+.layout-default {
+      &__header {
+            background-color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            &-left {
+                  a {
+                        font-size: 24px;
+                        font-weight: bold;
+                        color: #1890ff;
+                        text-decoration: none;
+                  }
+            }
+            &-center {
+                  .ant-menu {
+                        border-bottom: none;
+
+                        .ant-menu-item {
+                              font-size: 16px;
+                        }
+                  }
+            }
+            &-right {
+                  text-align: right;
+                  .ant-btn {
+                        margin-left: 10px;
+
+                        .anticon {
+                              margin-right: 5px;
+                        }
+                  }
+            }
+      }
+      &__footer {
+            background-color: #ffffff;
+            padding: 40px 20px;
+            color: #333;
+            font-family: "Arial", sans-serif;
+
+            .container {
+                  max-width: 1200px;
+                  margin: 0 auto;
+            }
+
+            h3 {
+                  color: #000;
+                  font-size: 18px;
+                  font-weight: 600;
+                  margin-bottom: 15px;
+            }
+
+            p {
+                  color: #333;
+                  font-weight: bold;
+                  font-size: 16px;
+                  margin: 0 0 10px 0;
+            }
+            &-links {
+                  list-style: none;
+                  padding: 0;
+
+                  li {
+                        margin-bottom: 10px;
+
+                        a {
+                              color: #007aff;
+                              text-decoration: none;
+                              font-size: 14px;
+
+                              &:hover {
+                                    text-decoration: underline;
+                              }
+                        }
+                  }
+            }
+            &-social-links {
+                  a {
+                        display: inline-block;
+                        margin-right: 20px;
+                        color: #007aff;
+                        font-size: 16px;
+
+                        &:hover {
+                              color: #005bb5;
+                              text-decoration: underline;
+                        }
+                  }
+            }
+            &-copyright {
+                  margin-top: 40px;
+                  padding-top: 20px;
+                  border-top: 1px solid #d9d9d9;
+                  text-align: center;
+
+                  p {
+                        font-size: 14px;
+                        color: #999;
+                        margin: 0;
+                  }
+            }
+      }
+}
