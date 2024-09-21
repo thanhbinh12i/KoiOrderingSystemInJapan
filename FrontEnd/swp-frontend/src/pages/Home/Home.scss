@@ -1,0 +1,23 @@
+.content {
+      padding: 50px;
+      background: #fff;
+  
+      .banner {
+        text-align: center;
+        margin-bottom: 50px;
+  
+        h1 {
+          font-size: 48px;
+          color: #1890ff;
+        }
+  
+        p {
+          font-size: 18px;
+          margin-bottom: 20px;
+        }
+  
+        .ant-btn {
+          font-size: 18px;
+        }
+      }
+}
