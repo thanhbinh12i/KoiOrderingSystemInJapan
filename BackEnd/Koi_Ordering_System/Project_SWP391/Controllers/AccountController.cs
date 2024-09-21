@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Dtos.Account;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
@@ -64,5 +65,51 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, e);
             }
         }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            string FormatNum = FormatPhoneNumber(loginDto.UserNameOrEmailOrPhoneNumber);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(x => x.UserName == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
+                                       || x.Email == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
+                                       || x.PhoneNumber == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
+                                       || x.PhoneNumber == FormatNum.ToLower());
+
+            if (user == null) return Unauthorized("Invalid username or email or phoneNumber");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+
+            if (!result.Succeeded) return Unauthorized("Username/Email/PhoneNumber and/or password is invalid");
+
+            return Ok(
+                new NewUserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Address = user.Address,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    DateOfBirth = user.DateOfBirth,
+                    Token = _tokenService.CreateToken(user)
+                }
+            );
+        }
+        private string FormatPhoneNumber(string phoneNumber)
+        {
+            if (phoneNumber.Length == 10)
+            {
+                return string.Format("{0}.{1}.{2}",
+                                      phoneNumber.Substring(0, 4), 
+                                      phoneNumber.Substring(4, 3), 
+                                      phoneNumber.Substring(7, 3) 
+                                     );
+            }
+            return phoneNumber;
+        }
+
+
     }
 }
