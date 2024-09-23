@@ -1,6 +1,6 @@
 const API_DOMAIN = "https://localhost:7087/api/";
 
-export const get = async (path) =>{
+export const get = async (path) => {
       const response = await fetch(API_DOMAIN + path);
       const result = await response.json();
       return result;
@@ -12,13 +12,13 @@ export const post = async (path, options) => {
                   Accept: "application/json",
                   "Content-Type": "application/json"
             },
-            
+
             body: JSON.stringify(options)
       })
       if (!response.ok) {
             console.log("Response Status:", response.status, "Response Text:", await response.text());
             throw new Error(`Error: ${response.statusText}`);
-        }
+      }
       const result = await response.json();
       return result;
 }
