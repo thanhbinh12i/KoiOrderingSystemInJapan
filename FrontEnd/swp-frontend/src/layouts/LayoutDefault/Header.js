@@ -1,9 +1,26 @@
 import { Link, NavLink } from "react-router-dom";
-import { Button, Layout, Menu, Row, Col } from 'antd';
-import { UserOutlined, HomeOutlined, SolutionOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import logo from "./logo.jpg";
+import { Button, Layout, Menu, Row, Col} from 'antd';
+import { HomeOutlined, SolutionOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
+import logo from "../../assets/logo.jpg";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { checkLogin } from "../../actions/login";
+import MenuUser from "../../components/MenuUser";
 
 function Header() {
+      const dispatch = useDispatch();
+      const isLoggedIn = useSelector((state) => state.loginReducer);
+
+      useEffect(() => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                  dispatch(checkLogin(true));
+            }
+      }, [dispatch]);
+
+     
+
+
       return (
             <>
                   <Layout>
@@ -39,13 +56,20 @@ function Header() {
                                     </Col>
 
                                     <Col xs={24} sm={6} className="layout-default__header-right" >
-                                          <Button size="large">
-                                                <UserOutlined />
-                                                <NavLink to="/login">Đăng nhập</NavLink>
-                                          </Button>
-                                          <Button type="primary" size="large">
-                                                <NavLink to="/register">Đăng ký</NavLink>
-                                          </Button>
+                                          {!isLoggedIn ? (
+                                                <>
+                                                      <Button size="large">
+                                                            <NavLink to="/login">
+                                                                  <UserOutlined /> Đăng nhập
+                                                            </NavLink>
+                                                      </Button>
+                                                      <Button type="primary" size="large">
+                                                            <NavLink to="/register">Đăng ký</NavLink>
+                                                      </Button>
+                                                </>
+                                          ) : (
+                                                <MenuUser />
+                                          )}
                                     </Col>
                               </Row>
                         </div>
