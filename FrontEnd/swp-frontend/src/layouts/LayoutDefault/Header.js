@@ -1,7 +1,7 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Button, Layout, Menu, Row, Col} from 'antd';
 import { HomeOutlined, SolutionOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
-import logo from "./logo.jpg";
+import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkLogin } from "../../actions/login";
@@ -16,7 +16,7 @@ function Header() {
             if (token) {
                   dispatch(checkLogin(true));
             }
-      }, []);
+      }, [dispatch]);
 
      
 

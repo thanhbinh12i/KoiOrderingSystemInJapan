@@ -12,8 +12,13 @@ export const post = async (path, options) => {
                   Accept: "application/json",
                   "Content-Type": "application/json"
             },
+            
             body: JSON.stringify(options)
       })
+      if (!response.ok) {
+            console.log("Response Status:", response.status, "Response Text:", await response.text());
+            throw new Error(`Error: ${response.statusText}`);
+        }
       const result = await response.json();
       return result;
 }

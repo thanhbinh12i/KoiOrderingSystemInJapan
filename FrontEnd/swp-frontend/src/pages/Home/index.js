@@ -1,6 +1,10 @@
 import { Row, Col, Card, Button, Carousel, List, Avatar, Rate, Divider } from 'antd';
 import { Link } from 'react-router-dom';
 import './Home.scss';
+import banner1 from "../../assets/home/banner1.jpg"
+import banner2 from "../../assets/home/banner2.jpg"
+import banner3 from "../../assets/home/banner3.jpg"
+
 function Home() {
       const testimonials = [
             {
@@ -47,7 +51,7 @@ function Home() {
                               <h1>Dịch vụ Đặt mua Koi từ Nhật Bản</h1>
                               <p>Khám phá các trang trại Koi nổi tiếng và dịch vụ hỗ trợ mua Koi chuyên nghiệp</p>
                               <Button type="primary" size="large">
-                                    <Link to="/tours">Tìm kiếm Tour</Link>
+                                    <Link to="/tours">Tìm kiếm chuyến đi</Link>
                               </Button>
                         </div>
 
@@ -55,12 +59,17 @@ function Home() {
                               <h2>Các Tour Koi Nổi Bật</h2>
                               <Carousel autoplay>
                                     <div>
-                                          <img src="https://via.placeholder.com/800x400" alt="Tour Koi" />
+                                          <img src={banner1} alt="Tour Koi" />
                                           <h3>Tour Tham Quan Trại Koi Niigata</h3>
                                           <p>Tham quan và mua Koi tại các trại nổi tiếng ở Niigata.</p>
                                     </div>
                                     <div>
-                                          <img src="https://via.placeholder.com/800x400" alt="Tour Koi" />
+                                          <img src={banner2} alt="Tour Koi" />
+                                          <h3>Tour Koi Premium Tại Hiroshima</h3>
+                                          <p>Tham gia tour cao cấp với dịch vụ 5 sao tại Hiroshima.</p>
+                                    </div>
+                                    <div>
+                                          <img src={banner3} alt="Tour Koi" />
                                           <h3>Tour Koi Premium Tại Hiroshima</h3>
                                           <p>Tham gia tour cao cấp với dịch vụ 5 sao tại Hiroshima.</p>
                                     </div>
