@@ -17,7 +17,7 @@ function Home() {
                   name: 'Nguyễn Việt',
                   review: 'Nhân viên hỗ trợ rất tận tình, tôi hoàn toàn hài lòng với trải nghiệm của mình.',
                   avatar: 'https://randomuser.me/api/portraits/women/2.jpg',
-                  rating: 4
+                  rating: 5
             },
             {
                   name: 'Hoàng Quốc An',
