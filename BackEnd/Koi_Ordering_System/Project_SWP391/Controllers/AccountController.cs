@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Dtos.Account;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
+using System;
+using System.Threading.Tasks;
 
 namespace Project_SWP391.Controllers
 {
@@ -70,18 +72,18 @@ namespace Project_SWP391.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            string FormatNum = FormatPhoneNumber(loginDto.UserNameOrEmailOrPhoneNumber);
+            string FormatNum = FormatPhoneNumber(loginDto.Account);
             var user = await _userManager.Users
-                .FirstOrDefaultAsync(x => x.UserName == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
-                                       || x.Email == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
-                                       || x.PhoneNumber == loginDto.UserNameOrEmailOrPhoneNumber.ToLower()
+                .FirstOrDefaultAsync(x => x.UserName == loginDto.Account.ToLower()
+                                       || x.Email == loginDto.Account.ToLower()
+                                       || x.PhoneNumber == loginDto.Account.ToLower()
                                        || x.PhoneNumber == FormatNum.ToLower());
 
             if (user == null) return Unauthorized("Invalid username or email or phoneNumber");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if (!result.Succeeded) return Unauthorized("Username/Email/PhoneNumber and/or password is invalid");
+            if (!result.Succeeded) return Unauthorized("Account and/or password is invalid");
 
             return Ok(
                 new NewUserDto

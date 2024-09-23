@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, message, Row } from "antd";
-import { GoogleOutlined } from '@ant-design/icons';
-import "./Login.scss"
+import { GoogleOutlined } from "@ant-design/icons";
+import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../services/userServices";
 import { useState } from "react";
