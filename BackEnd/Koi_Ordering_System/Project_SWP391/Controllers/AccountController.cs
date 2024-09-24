@@ -158,8 +158,8 @@ namespace Project_SWP391.Controllers
         //        Token = _tokenService.CreateToken(user)
         //    });
         //}
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
