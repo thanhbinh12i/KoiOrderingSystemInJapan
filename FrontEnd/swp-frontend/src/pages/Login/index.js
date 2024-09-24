@@ -6,6 +6,7 @@ import { login } from "../../services/userServices";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
+import { jwtDecode } from 'jwt-decode';
 function Login() {
       const navigate = useNavigate();
       const [messageApi, contextHolder] = message.useMessage();
@@ -16,8 +17,13 @@ function Login() {
             try {
                   const data = await login(values.email, values.password);
                   if (data) {
-                        messageApi.success('Login successful');   
-                        localStorage.setItem('token', data.token);
+                        messageApi.success('Login successful');
+                        const token = data.token;
+                        const decodedToken = jwtDecode(token);
+                        const userId = decodedToken.nameid;
+                        localStorage.setItem('token', token);
+                        localStorage.setItem('id', userId);
+                        
                         dispatch(checkLogin(true));
                         navigate("/");
                   }
