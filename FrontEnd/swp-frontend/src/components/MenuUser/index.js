@@ -4,15 +4,29 @@ import { Menu, Dropdown, Avatar } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Link,   useNavigate } from 'react-router-dom';
 import { checkLogin } from '../../actions/login';
+import { useEffect, useState } from 'react';
+import { get } from '../../utils/request';
 import "./MenuUser.scss"
 function MenuUser() {
       const dispatch = useDispatch();
       const navigate = useNavigate();
+      const userId = localStorage.getItem("id");
+      const [userName, setUserName] = useState('');
       const handleLogout = () => {
             localStorage.removeItem("token");
+            localStorage.removeItem("id");
             dispatch(checkLogin(false));
             navigate("/");
       };
+      useEffect(() => {
+            const fetchUserProfile = async () => {
+                  const response = await get(`account/${userId}`);
+                  if(response){
+                        setUserName(response.fullName);
+                  }
+            }
+            fetchUserProfile();
+      },[userId])
       const userMenu = (
             <Menu>
                   <Menu.Item key="profile" icon={<UserOutlined />} className="profile-item">
@@ -38,7 +52,7 @@ function MenuUser() {
                   <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight"  align={{ offset: [0, 4] }} >
                         <div className="user-menu-trigger">
                               <Avatar icon={<UserOutlined />} />
-                              <span className="user-name">Thanh Bình</span>
+                              <span className="user-name">{userName}</span>
                               <DownOutlined />
                         </div>
                   </Dropdown>
