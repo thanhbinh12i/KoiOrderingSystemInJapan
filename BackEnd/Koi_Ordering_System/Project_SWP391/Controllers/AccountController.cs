@@ -100,6 +100,64 @@ namespace Project_SWP391.Controllers
                 }
             );
         }
+        //[HttpPut("update")]
+        //public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        //    var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+        //    if (user == null) return NotFound("User not found");
+
+        //    var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
+        //    if (usernameExists) return Conflict("Username already in use by another user");
+
+        //    var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
+        //    if (emailExists) return Conflict("Email already in use by another user");
+
+        //    string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
+        //    if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
+
+        //    if (!string.IsNullOrEmpty(updateUser.Password))
+        //    {
+        //        var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+        //        if (!removePasswordResult.Succeeded)
+        //        {
+        //            return BadRequest(removePasswordResult.Errors);
+        //        }
+
+        //        var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
+        //        if (!addPasswordResult.Succeeded)
+        //        {
+        //            return BadRequest(addPasswordResult.Errors);
+        //        }
+        //    }
+
+        //    user.UserName = updateUser.UserName;
+        //    user.Email = updateUser.Email;
+        //    user.Gender = updateUser.Gender;
+        //    user.Address = updateUser.Address;
+        //    user.FullName = updateUser.FullName;
+        //    user.PhoneNumber = formattedPhoneNumber;
+        //    user.DateOfBirth = updateUser.DateOfBirth;
+
+        //    var result = await _userManager.UpdateAsync(user);
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest(result.Errors);
+        //    }
+
+        //    return Ok(new UpdatedUserDTO
+        //    {
+        //        UserName = user.UserName,
+        //        Email = user.Email,
+        //        FullName = user.FullName,
+        //        PhoneNumber = user.PhoneNumber,
+        //        Gender = user.Gender,
+        //        Address = user.Address,
+        //        DateOfBirth = user.DateOfBirth,
+        //        Token = _tokenService.CreateToken(user)
+        //    });
+        //}
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
         {
@@ -108,14 +166,26 @@ namespace Project_SWP391.Controllers
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) return NotFound("User not found");
 
-            var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
-            if (usernameExists) return Conflict("Username already in use by another user");
+            if(!string.IsNullOrEmpty(updateUser.UserName))
+            {
+                var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
+                if (usernameExists) return Conflict("Username already in use by another user");
+                user.UserName = updateUser.UserName;
+            }
 
-            var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
-            if (emailExists) return Conflict("Email already in use by another user");
+            if(!string.IsNullOrEmpty(updateUser.Email))
+            {
+                var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
+                if (emailExists) return Conflict("Email already in use by another user");
+                user.Email = updateUser.Email;
+            }
 
-            string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
-            if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
+            if(!string.IsNullOrEmpty(updateUser.PhoneNumber))
+            {
+                string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
+                if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
+                user.PhoneNumber = formattedPhoneNumber;
+            }
 
             if (!string.IsNullOrEmpty(updateUser.Password))
             {
@@ -132,13 +202,25 @@ namespace Project_SWP391.Controllers
                 }
             }
 
-            user.UserName = updateUser.UserName;
-            user.Email = updateUser.Email;
-            user.Gender = updateUser.Gender;
-            user.Address = updateUser.Address;
-            user.FullName = updateUser.FullName;
-            user.PhoneNumber = formattedPhoneNumber;
-            user.DateOfBirth = updateUser.DateOfBirth;
+            if (!string.IsNullOrEmpty(updateUser.Gender))
+            {
+                user.Gender = updateUser.Gender;
+            }
+
+            if (!string.IsNullOrEmpty(updateUser.Address))
+            {
+                user.Address = updateUser.Address;
+            }
+
+            if (!string.IsNullOrEmpty(updateUser.FullName))
+            {
+                user.FullName = updateUser.FullName;
+            }
+
+            if (updateUser.DateOfBirth != default)
+            {
+                user.DateOfBirth = updateUser.DateOfBirth;
+            }
 
             var result = await _userManager.UpdateAsync(user);
             if (!result.Succeeded)
@@ -158,8 +240,8 @@ namespace Project_SWP391.Controllers
                 Token = _tokenService.CreateToken(user)
             });
         }
-        [HttpGet("view")]
-        public async Task<IActionResult> View([FromHeader] string id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound("No user found");
