@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Tabs,
@@ -7,38 +7,70 @@ import {
   Select,
   DatePicker,
   Button,
+  message,
 } from "antd";
+import { get, patch } from "../../utils/request";
+import moment from "moment";
+
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
 function MainContent() {
-  const [isEdit, setIsEdit] = useState(false); // Manage edit mode
+  const [isEdit, setIsEdit] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({
-    fullName: "Nguyen Viet",
-    gender: "male",
+    fullName: "",
+    gender: "",
     birthdate: null,
-    province: "Đăk Lăk",
-    city: "Buôn Mê Thuột",
+    province: "",
+    city: "",
   });
   const [form] = Form.useForm();
 
-  // Handle edit button click
+  const fetchPersonalInfo = async () => {
+    try {
+      const response = await get("account/info");
+      const updatedInfo = {
+        ...response,
+        birthdate: response.birthdate ? moment(response.birthdate) : null,
+      };
+      setPersonalInfo(updatedInfo);
+      form.setFieldsValue(updatedInfo);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPersonalInfo();
+  });
+
   const handleEdit = () => {
-    setIsEdit(true); // Enable edit mode
+    setIsEdit(true);
   };
 
-  // Handle save button click
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      setPersonalInfo(values); // Update personal information
-      setIsEdit(false); // Exit edit mode after saving
-    });
+  const handleSave = async () => {
+    try {
+      const values = await form.validateFields();
+
+      const response = await patch("account/update", {
+        ...values,
+        birthdate: values.birthdate
+          ? values.birthdate.format("YYYY-MM-DD")
+          : null,
+      });
+
+      message.success("Cập nhật thành công!");
+      setPersonalInfo(response);
+      setIsEdit(false);
+    } catch (error) {
+      message.error("Có lỗi xảy ra khi cập nhật thông tin.");
+      console.error("Error:", error);
+    }
   };
 
-  // Handle cancel button click
   const handleCancel = () => {
-    setIsEdit(false); // Exit edit mode without saving
-    form.resetFields(); // Reset form to original values
+    setIsEdit(false);
+    form.resetFields();
   };
 
   return (
@@ -67,8 +99,13 @@ function MainContent() {
             <Form.Item label="Thành phố" name="city">
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
+            <Form.Item label="Email" name="email">
+              <Input disabled={!isEdit} />
+            </Form.Item>
+            <Form.Item label="Số điện thoại" name="phone">
+              <Input placeholder="Nhập số điện thoại" disabled={!isEdit} />
+            </Form.Item>
 
-            {/* Save and Cancel buttons */}
             {isEdit ? (
               <Form.Item>
                 <Button type="primary" onClick={handleSave}>
@@ -84,30 +121,6 @@ function MainContent() {
               </Button>
             )}
           </Form>
-
-          <div className="email-section">
-            <Title level={4}>Email</Title>
-            <p>Chỉ có thể sử dụng tối đa 3 email</p>
-            <div className="email-item">
-              <span>1. nptbinh17092004@gmail.com</span>
-              <span className="email-status">Nơi nhận thông báo</span>
-            </div>
-            <Button icon="+" type="primary">
-              Thêm email
-            </Button>
-          </div>
-
-          <div className="phone-section">
-            <Title level={4}>Phone</Title>
-            <p>Chỉ có thể sử dụng tối đa 2 số điện thoại</p>
-            <div className="phone-item">
-              <span>1. 0977452762</span>
-              <span className="phone-status">Nơi liên hệ</span>
-            </div>
-            <Button icon="+" type="primary">
-              Thêm số điện thoại
-            </Button>
-          </div>
         </TabPane>
 
         <TabPane tab="Mật khẩu & Bảo mật" key="2">
