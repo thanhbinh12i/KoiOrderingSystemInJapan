@@ -6,3 +6,6 @@ export const login = async (account, password) => {
 export const register = async (values) => {
       return await post("account/register", values);
 }
+export const loginGoogle = async (values) => {
+      return await post("account/google-login", {token: values});
+}
