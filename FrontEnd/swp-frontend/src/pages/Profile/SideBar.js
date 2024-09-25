@@ -25,12 +25,8 @@ function Sidebar() {
         </div>
       </div>
       <Button block icon={<GoogleOutlined />}>
-        Bạn là thành viên
+        Bạn là hội viên
       </Button>
-      {/* <div className="points">
-        <CreditCardOutlined />
-        <span>Dang doi thinh de lay tai lieu</span>
-      </div> */}
       <Menu mode="vertical" defaultSelectedKeys={["account"]}>
         <Menu.Item key="password" icon={<GoogleOutlined />}>
           Mật khẩu & Bảo mật
