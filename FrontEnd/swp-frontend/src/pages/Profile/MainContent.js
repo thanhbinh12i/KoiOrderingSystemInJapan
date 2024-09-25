@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Tabs,
@@ -7,38 +7,72 @@ import {
   Select,
   DatePicker,
   Button,
+  message,
 } from "antd";
+import { get, put } from "../../utils/request";
+import moment from "moment";
+
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
 function MainContent() {
-  const [isEdit, setIsEdit] = useState(false); // Manage edit mode
+  const [isEdit, setIsEdit] = useState(false);
   const [personalInfo, setPersonalInfo] = useState({
-    fullName: "Nguyen Viet",
-    gender: "male",
-    birthdate: null,
-    province: "Đăk Lăk",
-    city: "Buôn Mê Thuột",
+    fullName: "",
+    gender: "",
+    dateOfBirth: null,
+    province: "",
+    city: "",
   });
+  const userId = localStorage.getItem("id");
+
   const [form] = Form.useForm();
 
-  // Handle edit button click
+  const fetchPersonalInfo = async () => {
+    try {
+      const response = await get(`account/${userId}`);
+      const updatedInfo = {
+        ...response,
+        dateOfBirth: response.dateOfBirth ? moment(response.dateOfBirth) : null,
+      };
+      setPersonalInfo(updatedInfo);
+      form.setFieldsValue(updatedInfo);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  useEffect(() => {
+    fetchPersonalInfo();
+    // eslint-disable-next-line
+  }, []);
+
   const handleEdit = () => {
-    setIsEdit(true); // Enable edit mode
+    setIsEdit(true);
   };
 
-  // Handle save button click
-  const handleSave = () => {
-    form.validateFields().then((values) => {
-      setPersonalInfo(values); // Update personal information
-      setIsEdit(false); // Exit edit mode after saving
-    });
+  const handleSave = async () => {
+    try {
+      const values = await form.validateFields();
+
+      const response = await put(`account/update/${userId}`, {
+        ...values,
+        dateOfBirth: values.dateOfBirth
+          ? values.dateOfBirth.format("YYYY-MM-DD")
+          : null,
+      });
+
+      message.success("Cập nhật thành công!");
+      setPersonalInfo(response);
+      setIsEdit(false);
+    } catch (error) {
+      message.error("Có lỗi xảy ra khi cập nhật thông tin.");
+      console.error("Error:", error);
+    }
   };
 
-  // Handle cancel button click
   const handleCancel = () => {
-    setIsEdit(false); // Exit edit mode without saving
-    form.resetFields(); // Reset form to original values
+    setIsEdit(false);
+    form.resetFields();
   };
 
   return (
@@ -49,7 +83,7 @@ function MainContent() {
           <Form form={form} layout="vertical" initialValues={personalInfo}>
             <Title level={4}>Dữ liệu cá nhân</Title>
             <Form.Item label="Tên đầy đủ" name="fullName">
-              <Input placeholder="Nguyen Viet" disabled={!isEdit} />
+              <Input placeholder="Full Name" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Giới tính" name="gender">
               <Select placeholder="Chọn giới tính" disabled={!isEdit}>
@@ -58,17 +92,19 @@ function MainContent() {
                 <Select.Option value="other">Khác</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Ngày sinh" name="birthdate">
+            <Form.Item label="Ngày sinh" name="dateOfBirth">
               <DatePicker style={{ width: "100%" }} disabled={!isEdit} />
             </Form.Item>
-            <Form.Item label="Tỉnh thành" name="province">
-              <Input placeholder="Nhập tỉnh thành" disabled={!isEdit} />
-            </Form.Item>
-            <Form.Item label="Thành phố" name="city">
+            <Form.Item label="Địa chỉ" name="address">
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
+            <Form.Item label="Email" name="email">
+              <Input disabled={!isEdit} />
+            </Form.Item>
+            <Form.Item label="Số điện thoại" name="phoneNumber">
+              <Input placeholder="Nhập số điện thoại" disabled={!isEdit} />
+            </Form.Item>
 
-            {/* Save and Cancel buttons */}
             {isEdit ? (
               <Form.Item>
                 <Button type="primary" onClick={handleSave}>
@@ -84,30 +120,6 @@ function MainContent() {
               </Button>
             )}
           </Form>
-
-          <div className="email-section">
-            <Title level={4}>Email</Title>
-            <p>Chỉ có thể sử dụng tối đa 3 email</p>
-            <div className="email-item">
-              <span>1. nptbinh17092004@gmail.com</span>
-              <span className="email-status">Nơi nhận thông báo</span>
-            </div>
-            <Button icon="+" type="primary">
-              Thêm email
-            </Button>
-          </div>
-
-          <div className="phone-section">
-            <Title level={4}>Phone</Title>
-            <p>Chỉ có thể sử dụng tối đa 2 số điện thoại</p>
-            <div className="phone-item">
-              <span>1. 0977452762</span>
-              <span className="phone-status">Nơi liên hệ</span>
-            </div>
-            <Button icon="+" type="primary">
-              Thêm số điện thoại
-            </Button>
-          </div>
         </TabPane>
 
         <TabPane tab="Mật khẩu & Bảo mật" key="2">
