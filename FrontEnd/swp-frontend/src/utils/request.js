@@ -43,3 +43,15 @@ export const patch = async (path, options) => {
       const result = response.json();
       return result;
 }
+export const put = async (path, options) => {
+      const response = await fetch(API_DOMAIN + path, {
+            method: "PUT",
+            headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json"
+            },
+            body: JSON.stringify(options)
+      });
+      const result = await response.json();
+      return result;
+};

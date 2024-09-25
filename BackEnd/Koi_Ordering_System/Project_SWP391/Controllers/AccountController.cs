@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Project_SWP391.Dtos.Account;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
@@ -101,65 +102,164 @@ namespace Project_SWP391.Controllers
                 }
             );
         }
-        [HttpPost("google-login")]
-        public async Task<IActionResult> GoogleLogin(GoogleLoginDto googleLoginDto)
+        //[HttpPut("update")]
+        //public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        //    var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+        //    if (user == null) return NotFound("User not found");
+
+        //    var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
+        //    if (usernameExists) return Conflict("Username already in use by another user");
+
+        //    var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
+        //    if (emailExists) return Conflict("Email already in use by another user");
+
+        //    string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
+        //    if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
+
+        //    if (!string.IsNullOrEmpty(updateUser.Password))
+        //    {
+        //        var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+        //        if (!removePasswordResult.Succeeded)
+        //        {
+        //            return BadRequest(removePasswordResult.Errors);
+        //        }
+
+        //        var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
+        //        if (!addPasswordResult.Succeeded)
+        //        {
+        //            return BadRequest(addPasswordResult.Errors);
+        //        }
+        //    }
+
+        //    user.UserName = updateUser.UserName;
+        //    user.Email = updateUser.Email;
+        //    user.Gender = updateUser.Gender;
+        //    user.Address = updateUser.Address;
+        //    user.FullName = updateUser.FullName;
+        //    user.PhoneNumber = formattedPhoneNumber;
+        //    user.DateOfBirth = updateUser.DateOfBirth;
+
+        //    var result = await _userManager.UpdateAsync(user);
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest(result.Errors);
+        //    }
+
+        //    return Ok(new UpdatedUserDTO
+        //    {
+        //        UserName = user.UserName,
+        //        Email = user.Email,
+        //        FullName = user.FullName,
+        //        PhoneNumber = user.PhoneNumber,
+        //        Gender = user.Gender,
+        //        Address = user.Address,
+        //        DateOfBirth = user.DateOfBirth,
+        //        Token = _tokenService.CreateToken(user)
+        //    });
+        //}
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, string id)
         {
-            try
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return NotFound("User not found");
+
+            if(!string.IsNullOrEmpty(updateUser.UserName))
             {
-                var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.Token);
+                var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
+                if (usernameExists) return Conflict("Username already in use by another user");
+                user.UserName = updateUser.UserName;
+            }
 
-                // check exist email in system
-                var user = await _userManager.FindByEmailAsync(payload.Email);
+            if(!string.IsNullOrEmpty(updateUser.Email))
+            {
+                var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
+                if (emailExists) return Conflict("Email already in use by another user");
+                user.Email = updateUser.Email;
+            }
 
-                if (user == null)
+            if(!string.IsNullOrEmpty(updateUser.PhoneNumber))
+            {
+                string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
+                if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
+                user.PhoneNumber = formattedPhoneNumber;
+            }
+
+            if (!string.IsNullOrEmpty(updateUser.Password))
+            {
+                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+                if (!removePasswordResult.Succeeded)
                 {
-                    // Nếu email không tồn tại, tạo tài khoản mới cho người dùng
-                    user = new AppUser
-                    {
-                        UserName = Regex.Replace(payload.Name, @"[^a-zA-Z0-9]", ""),
-                        Email = payload.Email,
-                        FullName = (payload.FamilyName ?? "") + " " + (payload.GivenName ?? ""),
-                        Gender = "",
-                        Address = "",
-                        PhoneNumber = "",
-                        DateOfBirth = "",
-                        PasswordHash = _userManager.PasswordHasher.HashPassword(user, "DefaultPassword123!") 
-                    };
-
-                    var result = await _userManager.CreateAsync(user);
-                    if (!result.Succeeded)
-                    {
-                        return BadRequest("Failed to create new user");
-                    }
-
-                    var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
-                    if (!roleResult.Succeeded)
-                    {
-                        return BadRequest("Failed to add user to role");
-                    }
+                    return BadRequest(removePasswordResult.Errors);
                 }
 
-                // login user
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
+                if (!addPasswordResult.Succeeded)
+                {
+                    return BadRequest(addPasswordResult.Errors);
+                }
+            }
 
-                return Ok(
-                    new NewUserDto
+            if (!string.IsNullOrEmpty(updateUser.Gender))
+            {
+                user.Gender = updateUser.Gender;
+            }
+
+            if (!string.IsNullOrEmpty(updateUser.Address))
+            {
+                user.Address = updateUser.Address;
+            }
+
+            if (!string.IsNullOrEmpty(updateUser.FullName))
+            {
+                user.FullName = updateUser.FullName;
+            }
+
+            if (updateUser.DateOfBirth != default)
+            {
+                user.DateOfBirth = updateUser.DateOfBirth;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            return Ok(new UpdatedUserDTO
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Address = user.Address,
+                DateOfBirth = user.DateOfBirth,
+                Token = _tokenService.CreateToken(user)
+            });
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> View(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("No user found");
+            return Ok
+                (
+                    new ViewAccountDTO
                     {
                         UserName = user.UserName,
                         Email = user.Email,
                         Gender = user.Gender,
                         Address = user.Address,
-                        FullName = user.FullName,
+                        FullName= user.FullName,
                         PhoneNumber = user.PhoneNumber,
-                        DateOfBirth = user.DateOfBirth,
-                        Token = _tokenService.CreateToken(user)
+                        DateOfBirth = user.DateOfBirth
                     }
                 );
-            }
-            catch (InvalidJwtException)
-            {
-                return Unauthorized("Invalid Google token");
-            }
         }
         private string FormatPhoneNumber(string phoneNumber)
         {

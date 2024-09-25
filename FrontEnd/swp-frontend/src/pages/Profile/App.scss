@@ -1,0 +1,61 @@
+.app-layout {
+  min-height: 100vh;
+}
+
+.sidebar {
+  padding: 20px;
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .user-details {
+      margin-left: 10px;
+    }
+  }
+
+  .points {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+
+    span {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+}
+
+.main-content {
+  padding: 20px;
+  background-color: #f0f0f0;
+
+  .notification-settings {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #e6f7ff;
+    padding: 10px;
+    border-radius: 4px;
+
+    span {
+      margin: 0 10px;
+      flex-grow: 1;
+    }
+  }
+
+  .email-section {
+    margin-top: 20px;
+
+    .email-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+
+      .email-status {
+        color: #52c41a;
+      }
+    }
+  }
+}
