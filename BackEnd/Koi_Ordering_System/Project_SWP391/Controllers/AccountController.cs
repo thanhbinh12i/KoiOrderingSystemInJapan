@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
@@ -6,6 +7,7 @@ using Project_SWP391.Dtos.Account;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Project_SWP391.Controllers

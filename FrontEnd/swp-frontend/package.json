@@ -17,6 +17,7 @@
     "react-scripts": "5.0.1",
     "redux": "^5.0.1",
     "sass": "^1.78.0",
+    "source-map": "^0.7.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
