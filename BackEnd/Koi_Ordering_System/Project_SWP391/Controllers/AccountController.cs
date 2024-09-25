@@ -102,6 +102,60 @@ namespace Project_SWP391.Controllers
                 }
             );
         }
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin(GoogleLoginDto googleLoginDto)
+        {
+            try
+            {
+                var payload = await GoogleJsonWebSignature.ValidateAsync(googleLoginDto.Token);
+                // check exist email in system
+                var user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user == null)
+                {
+                    // Nếu email không tồn tại, tạo tài khoản mới cho người dùng
+                    user = new AppUser
+                    {
+                        UserName = Regex.Replace(payload.Name, @"[^a-zA-Z0-9]", ""),
+                        Email = payload.Email,
+                        FullName = (payload.FamilyName ?? "") + " " + (payload.GivenName ?? ""),
+                        Gender = "",
+                        Address = "",
+                        PhoneNumber = "",
+                        DateOfBirth = "",
+                        PasswordHash = _userManager.PasswordHasher.HashPassword(user, "DefaultPassword123!")
+                    };
+                    var result = await _userManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        return BadRequest("Failed to create new user");
+                    }
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
+                    if (!roleResult.Succeeded)
+                    {
+                        return BadRequest("Failed to add user to role");
+                    }
+                }
+                // login user
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok(
+                    new NewUserDto
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Gender = user.Gender,
+                        Address = user.Address,
+                        FullName = user.FullName,
+                        PhoneNumber = user.PhoneNumber,
+                        DateOfBirth = user.DateOfBirth,
+                        Token = _tokenService.CreateToken(user)
+                    }
+                );
+            }
+            catch (InvalidJwtException)
+            {
+                return Unauthorized("Invalid Google token");
+            }
+        }
         //[HttpPut("update")]
         //public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
         //{
