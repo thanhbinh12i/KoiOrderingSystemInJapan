@@ -9,7 +9,7 @@ import {
   Button,
   message,
 } from "antd";
-import { get, patch } from "../../utils/request";
+import { get, put } from "../../utils/request";
 import moment from "moment";
 
 const { Title } = Typography;
@@ -20,18 +20,20 @@ function MainContent() {
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "",
     gender: "",
-    birthdate: null,
+    dateOfBirth: null,
     province: "",
     city: "",
   });
+  const userId = localStorage.getItem("id");
+
   const [form] = Form.useForm();
 
   const fetchPersonalInfo = async () => {
     try {
-      const response = await get("account/info");
+      const response = await get(`account/${userId}`);
       const updatedInfo = {
         ...response,
-        birthdate: response.birthdate ? moment(response.birthdate) : null,
+        dateOfBirth: response.dateOfBirth ? moment(response.dateOfBirth) : null,
       };
       setPersonalInfo(updatedInfo);
       form.setFieldsValue(updatedInfo);
@@ -39,10 +41,10 @@ function MainContent() {
       console.error("Error:", error);
     }
   };
-
   useEffect(() => {
     fetchPersonalInfo();
-  });
+    // eslint-disable-next-line
+  }, []);
 
   const handleEdit = () => {
     setIsEdit(true);
@@ -52,10 +54,10 @@ function MainContent() {
     try {
       const values = await form.validateFields();
 
-      const response = await patch("account/update", {
+      const response = await put(`account/update/${userId}`, {
         ...values,
-        birthdate: values.birthdate
-          ? values.birthdate.format("YYYY-MM-DD")
+        dateOfBirth: values.dateOfBirth
+          ? values.dateOfBirth.format("YYYY-MM-DD")
           : null,
       });
 
@@ -81,7 +83,7 @@ function MainContent() {
           <Form form={form} layout="vertical" initialValues={personalInfo}>
             <Title level={4}>Dữ liệu cá nhân</Title>
             <Form.Item label="Tên đầy đủ" name="fullName">
-              <Input placeholder="Nguyen Viet" disabled={!isEdit} />
+              <Input placeholder="Full Name" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Giới tính" name="gender">
               <Select placeholder="Chọn giới tính" disabled={!isEdit}>
@@ -90,19 +92,16 @@ function MainContent() {
                 <Select.Option value="other">Khác</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item label="Ngày sinh" name="birthdate">
+            <Form.Item label="Ngày sinh" name="dateOfBirth">
               <DatePicker style={{ width: "100%" }} disabled={!isEdit} />
             </Form.Item>
-            <Form.Item label="Tỉnh thành" name="province">
-              <Input placeholder="Nhập tỉnh thành" disabled={!isEdit} />
-            </Form.Item>
-            <Form.Item label="Thành phố" name="city">
+            <Form.Item label="Địa chỉ" name="address">
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Email" name="email">
               <Input disabled={!isEdit} />
             </Form.Item>
-            <Form.Item label="Số điện thoại" name="phone">
+            <Form.Item label="Số điện thoại" name="phoneNumber">
               <Input placeholder="Nhập số điện thoại" disabled={!isEdit} />
             </Form.Item>
 

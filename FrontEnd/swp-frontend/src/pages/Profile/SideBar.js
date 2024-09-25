@@ -21,10 +21,12 @@ function Sidebar() {
         <Avatar size={40}>NV</Avatar>
         <div className="user-details">
           <Title level={5}>Nguyen Viet</Title>
-          <span>Google</span>
+          <span icon={<GoogleOutlined />}>Google</span>
         </div>
       </div>
-      <Button block>Bạn là thành viên</Button>
+      <Button block icon={<GoogleOutlined />}>
+        Bạn là thành viên
+      </Button>
       {/* <div className="points">
         <CreditCardOutlined />
         <span>Dang doi thinh de lay tai lieu</span>
