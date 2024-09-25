@@ -17,9 +17,12 @@ namespace Project_SWP391
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            DotNetEnv.Env.Load();
+            var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+            var googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
             // Add services to the container.
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -89,6 +92,11 @@ namespace Project_SWP391
                         System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"])
                     )
                 };
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
             });
             builder.Services.AddCors(options =>
             {
