@@ -31,16 +31,21 @@ export const routes = [
                         path: "logout",
                         element: <Logout />
                   },
+                  {
+                        element: <PrivateRoutes />,
+                        children: [
+                              {
+                                    path: "profile",
+                                    element: <Profile />
+                              },
+                        ]
+                  }
             ]
       },
       {
             element: <PrivateRoutes />,
             children: 
-            [
-                  {
-                        path: "profile",
-                        element: <Profile />
-                  },
+            [     
                   {
                         path: "admin",
                         element: <LayoutAdmin />

@@ -3,7 +3,7 @@ import { GoogleOutlined } from "@ant-design/icons";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
 import { login, loginGoogle } from "../../services/userServices";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
@@ -54,6 +54,13 @@ function Login() {
                   setLoading(false);
             }
       };
+      useEffect(() => {
+
+            const token = localStorage.getItem("token");
+            if (token) {
+                  navigate("/");
+            }
+      }, [])
       return (
             <>
                   {contextHolder}
