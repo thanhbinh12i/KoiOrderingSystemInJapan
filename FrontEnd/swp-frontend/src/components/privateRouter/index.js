@@ -1,10 +1,19 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { checkLogin } from "../../actions/login";
 function PrivateRoutes() {
-      const isLogin = useSelector((state) => state.loginReducer);
+      const dispatch = useDispatch();
+      const token = localStorage.getItem("token");
+
+      useEffect(() => {
+            if (token) {
+                  dispatch(checkLogin(true));
+            }
+      }, [dispatch]);
       return (
             <>
-            {isLogin ? (<Outlet />) : (
+            {token ? (<Outlet />) : (
                   <Navigate to="/login"/>
             )}
             </>
