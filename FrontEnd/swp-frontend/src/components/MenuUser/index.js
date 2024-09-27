@@ -2,7 +2,7 @@
 import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar } from 'antd';
 import { useDispatch } from 'react-redux';
-import { Link,   useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { checkLogin } from '../../actions/login';
 import { useEffect, useState } from 'react';
 import { get } from '../../utils/request';
@@ -20,13 +20,16 @@ function MenuUser() {
       };
       useEffect(() => {
             const fetchUserProfile = async () => {
-                  const response = await get(`account/${userId}`);
-                  if(response){
-                        setUserName(response.fullName);
+                  if (userId) {
+                        const response = await get(`account/${userId}`);
+                        if (response) {
+                              setUserName(response.fullName);
+                        }
                   }
+
             }
             fetchUserProfile();
-      },[userId])
+      }, [userId])
       const userMenu = (
             <Menu>
                   <Menu.Item key="profile" icon={<UserOutlined />} className="profile-item">
@@ -49,7 +52,7 @@ function MenuUser() {
       );
       return (
             <>
-                  <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight"  align={{ offset: [0, 4] }} >
+                  <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight" align={{ offset: [0, 4] }} >
                         <div className="user-menu-trigger">
                               <Avatar icon={<UserOutlined />} />
                               <span className="user-name">{userName}</span>

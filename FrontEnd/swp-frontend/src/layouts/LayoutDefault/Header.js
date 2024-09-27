@@ -10,9 +10,8 @@ import MenuUser from "../../components/MenuUser";
 function Header() {
       const dispatch = useDispatch();
       const isLoggedIn = useSelector((state) => state.loginReducer);
-
+      const token = localStorage.getItem("token");
       useEffect(() => {
-            const token = localStorage.getItem("token");
             if (token) {
                   dispatch(checkLogin(true));
             }
@@ -56,7 +55,7 @@ function Header() {
                                     </Col>
 
                                     <Col xs={24} sm={6} className="layout-default__header-right" >
-                                          {!isLoggedIn ? (
+                                          {!token ? (
                                                 <>
                                                       <Button size="large">
                                                             <NavLink to="/login">
