@@ -116,8 +116,8 @@ namespace Project_SWP391
             }
 
             app.UseHttpsRedirection();
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseCors("AllowOrigin");
             app.MapControllers();
             app.Run();
