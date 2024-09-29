@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Project_SWP391.Data;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
+using Project_SWP391.Repository;
 using Project_SWP391.Services;
 
 namespace Project_SWP391
@@ -98,6 +99,8 @@ namespace Project_SWP391
                                       .AllowAnyHeader());
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
