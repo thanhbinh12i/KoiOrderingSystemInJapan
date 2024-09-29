@@ -2,6 +2,11 @@
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
+import Dashboard from "../pages/Admin/Dashboard";
+import FarmManager from "../pages/Admin/FarmManager";
+import KoiManager from "../pages/Admin/KoiManager";
+import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import UserManager from "../pages/Admin/UserManager";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
@@ -31,19 +36,45 @@ export const routes = [
                         path: "logout",
                         element: <Logout />
                   },
+                  {
+                        element: <PrivateRoutes />,
+                        children: [
+                              {
+                                    path: "profile",
+                                    element: <Profile />
+                              },
+                        ]
+                  }
             ]
       },
       {
             element: <PrivateRoutes />,
             children: 
-            [
+            [     
                   {
-                        path: "profile",
-                        element: <Profile />
-                  },
-                  {
-                        path: "admin",
-                        element: <LayoutAdmin />
+                        element: <LayoutAdmin />,
+                        children: [
+                              {
+                                    path: "admin",
+                                    element: <Dashboard />
+                              },
+                              {
+                                    path: "user-manager",
+                                    element: <UserManager />
+                              },
+                              {
+                                    path: "farm-manager",
+                                    element: <FarmManager />
+                              },
+                              {
+                                    path: "koi-manager",
+                                    element: <KoiManager />
+                              },
+                              {
+                                    path: "koivariety-manager",
+                                    element: <KoiVarietyManager />
+                              }
+                        ]
                   }
             ]
       }
