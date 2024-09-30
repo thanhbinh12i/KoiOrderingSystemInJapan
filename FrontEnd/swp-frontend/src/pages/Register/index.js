@@ -1,6 +1,6 @@
 import { Button, Card, Col, DatePicker, Form, Input, message, Row, Select } from "antd";
-import { register } from "../../services/userServices";
 import { useNavigate } from "react-router-dom";
+import { post } from "../../utils/request";
 const { Option } = Select;
 
 function Register() {
@@ -16,7 +16,7 @@ function Register() {
             }
 
             try {
-                  const response = await register(values);
+                  const response = await post("account/register", values);
                   if (response) {
                         form.resetFields();
                         messageApi.success('Đăng ký thành công!');

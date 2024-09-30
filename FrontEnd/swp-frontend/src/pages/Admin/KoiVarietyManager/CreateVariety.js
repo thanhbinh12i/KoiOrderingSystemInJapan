@@ -1,15 +1,14 @@
 import { Modal, Form, Input, Button, message } from 'antd';
-import { createVaritety } from '../../../services/koiVarietyServices';
 import { useState } from 'react';
+import { post } from '../../../utils/request';
 function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
       const [form] = Form.useForm();
       const [loading, setLoading] = useState(false);
       const [messageApi, contextHolder] = message.useMessage();
       const handleSubmit = async (values) => {
-
             try {
                   setLoading(true); 
-                  const respone = await createVaritety(values);
+                  const respone = await post('koi-variable/create', values);
                   if (respone) {
                         form.resetFields();
                         handleOk();

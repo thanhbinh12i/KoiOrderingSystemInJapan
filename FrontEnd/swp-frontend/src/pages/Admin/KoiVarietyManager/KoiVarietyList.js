@@ -1,11 +1,11 @@
 import {Table} from "antd"
 import { useEffect, useState } from "react";
-import { viewAllVariety } from "../../../services/koiVarietyServices";
+import { get } from "../../../utils/request";
 
 function KoiVarietyList() {
       const [varieties, setVarieties] = useState([]);
       const fetchApi = async () => {
-            const response = await viewAllVariety();
+            const response = await get("koi-variable/view-all");
             console.log(response);
             if(response){
                   setVarieties(response);
