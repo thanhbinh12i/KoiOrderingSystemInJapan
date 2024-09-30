@@ -1,19 +1,23 @@
 import {Table} from "antd"
 import { useEffect, useState } from "react";
 import { get } from "../../../utils/request";
+import DeleteVariety from "./DeleteVariety";
 
 function KoiVarietyList() {
       const [varieties, setVarieties] = useState([]);
       const fetchApi = async () => {
             const response = await get("koi-variable/view-all");
-            console.log(response);
             if(response){
                   setVarieties(response);
             }
       }
+
       useEffect(() => {
             fetchApi();
       }, [])
+      const handleReload = () => {
+            fetchApi();
+      }
       const column = [
             {
                   title: "Tên giống cá",
@@ -24,7 +28,17 @@ function KoiVarietyList() {
                   title: "Màu sắc",
                   dataIndex: "color",
                   key: "color",
+            },
+            {
+                  title: "Hành động",
+                  key: "actions",
+                  render: (_, record) => (
+                        <>
+                              <DeleteVariety record={record} handleReload={handleReload}/>
+                        </>
+                  )
             }
+
             
       ]
       return (

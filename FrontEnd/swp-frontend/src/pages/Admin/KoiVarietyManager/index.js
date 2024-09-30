@@ -6,7 +6,6 @@ import { useState } from "react";
 
 function KoiVarietyManager() {
       const [isModalVisible, setIsModalVisible] = useState(false);
-
       const showModal = () => {
             setIsModalVisible(true);
       };
@@ -23,7 +22,7 @@ function KoiVarietyManager() {
                   <h1>Danh sách giống cá</h1>
                   <Button icon={<PlusOutlined />} onClick={showModal}>Thêm giống cá mới</Button>
                   <CreateVariety isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
-                  <KoiVarietyList />
+                  <KoiVarietyList/>
             </>
       )
 }

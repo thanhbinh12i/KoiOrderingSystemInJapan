@@ -8,8 +8,8 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
       const handleSubmit = async (values) => {
             try {
                   setLoading(true); 
-                  const respone = await post('koi-variable/create', values);
-                  if (respone) {
+                  const response = await post('koi-variable/create', values);
+                  if (response) {
                         form.resetFields();
                         handleOk();
                         messageApi.success('Thêm giống mới thành công');
