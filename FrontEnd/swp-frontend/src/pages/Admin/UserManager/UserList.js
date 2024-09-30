@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import { get } from "../../../utils/request"; // Đảm bảo import hàm get từ dịch vụ API của bạn
-
+import { get } from "../../../utils/request";
 const UserList = () => {
   const [personalInfo, setPersonalInfo] = useState([]);
 
