@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Model
 {
@@ -10,6 +11,7 @@ namespace Project_SWP391.Model
 
         // Foreign key
         public int FarmId { get; set; }
+        [ForeignKey(nameof(FarmId))]
         public KoiFarm KoiFarm { get; set; }
     }
 }

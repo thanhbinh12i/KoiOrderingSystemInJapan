@@ -17,9 +17,11 @@ namespace Project_SWP391.Model
 
         // Foreign keys
         public int FarmId { get; set; }
+        [ForeignKey(nameof(FarmId))]
         public KoiFarm KoiFarm { get; set; }
 
         public int VarietyId { get; set; }
+        [ForeignKey(nameof(VarietyId))]
         public KoiVariety KoiVariety { get; set; }
 
         // Navigation properties
