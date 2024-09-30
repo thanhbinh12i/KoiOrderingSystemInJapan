@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Model
 {
@@ -23,6 +24,7 @@ namespace Project_SWP391.Model
         public Tour Tour { get; set; }
 
         public int DeliveryId { get; set; }
+        [ForeignKey(nameof(DeliveryId))]
         public DeliveryStatus DeliveryStatus { get; set; }
 
         // Navigation properties

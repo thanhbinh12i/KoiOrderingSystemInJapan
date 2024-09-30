@@ -1,4 +1,3 @@
-
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
