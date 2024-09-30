@@ -59,8 +59,7 @@ const UserList = () => {
     {
       title: "Date of Birth",
       dataIndex: "dateOfBirth",
-      key: "dateOfBirth",
-      render: (date) => (date ? date.format("YYYY-MM-DD") : null),
+      key: "dateOfBirth"
     },
     {
       title: "Role",
@@ -75,6 +74,7 @@ const UserList = () => {
       columns={columns}
       rowKey="userId"
       pagination={false}
+      bordered
     />
   );
 };
