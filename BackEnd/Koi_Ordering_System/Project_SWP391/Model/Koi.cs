@@ -12,7 +12,7 @@ namespace Project_SWP391.Model
         public string Description { get; set; } =string.Empty;
         public float Length { get; set; }
         public int YOB { get; set; } // Year of Birth
-        public string Gender { get; set; } =string.Empty;
+        public string Gender { get; set; } = string.Empty;
         public DateOnly UpdateDate { get; set; }
 
         // Foreign keys
