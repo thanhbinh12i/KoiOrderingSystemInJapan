@@ -22,9 +22,19 @@ namespace Project_SWP391.Repository
             return koiFarmModel;
         }
 
-        public Task<KoiFarm?> DeleteAsync(int id)
+        public async Task<KoiFarm?> DeleteAsync(int farmId)
         {
-            throw new NotImplementedException();
+            var koiFarm = await _context.KoiFarms.FindAsync(farmId);
+
+            if (koiFarm == null)
+            {
+                return null;
+            }
+
+            _context.KoiFarms.Remove(koiFarm);
+            _context.SaveChanges();
+
+            return koiFarm;
         }
 
         public async Task<List<KoiFarm>> GetAllAsync()
@@ -32,14 +42,33 @@ namespace Project_SWP391.Repository
             return await _context.KoiFarms.ToListAsync();
         }
 
-        public Task<KoiFarm?> GetIdByAsync(int id)
+        public async Task<KoiFarm?> GetIdByAsync(int farmId)
         {
-            throw new NotImplementedException();
+            return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).FirstOrDefaultAsync(x => x.FarmId == farmId);
         }
 
-        public Task<KoiFarm?> UpdateAsync(int id, UpdateKoiFarmDto koiFarmDto)
+        public async Task<KoiFarm?> UpdateAsync(int farmId, UpdateKoiFarmDto koiFarmDto)
         {
-            throw new NotImplementedException();
+            var koiFarmModel = await _context.KoiFarms.FirstOrDefaultAsync(x => x.FarmId == farmId);
+
+            if (koiFarmModel == null)
+            {
+                return null;
+            }
+
+            koiFarmModel.FarmName = koiFarmDto.FarmName;
+            koiFarmModel.Introduction = koiFarmDto.Introduction;
+            koiFarmModel.Location = koiFarmDto.Location;
+            koiFarmModel.OpenHour = koiFarmDto.OpenHour;
+            koiFarmModel.CloseHour = koiFarmDto.CloseHour;
+            koiFarmModel.Email = koiFarmDto.Email;
+            koiFarmModel.Rating = koiFarmDto.Rating;
+            koiFarmModel.Hotline = koiFarmDto.Hotline;
+
+
+            await _context.SaveChangesAsync();
+
+            return koiFarmModel;
         }
     }
 }

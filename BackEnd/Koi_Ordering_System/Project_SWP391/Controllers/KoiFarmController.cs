@@ -23,6 +23,16 @@ namespace Project_SWP391.Controllers
             var koiFarmDto = koiFarm.Select(v => v.ToKoiFarmDTO());
             return Ok(koiFarmDto);
         }
+        [HttpGet("view/{farmId:int}")]
+        public async Task<IActionResult> ViewAllId([FromRoute] int farmId)
+        {
+            var koiFarm = await _koiFarmRepo.GetIdByAsync(farmId);
+            if (koiFarm == null)
+            {
+                return NotFound();
+            }
+            return Ok(koiFarm);
+        }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateKoiFarmDto koiFarm)
         {
@@ -36,7 +46,32 @@ namespace Project_SWP391.Controllers
                 return NotFound();
             }
             await _koiFarmRepo.CreateAsync(koiFarmModel);
-            return Ok();
+            return CreatedAtAction(nameof(ViewAllId), new { farmId = koiFarmModel.FarmId }, koiFarmModel);
+
+        }
+        [HttpPut("update/{farmId:int}")]
+        public async Task<IActionResult> Update([FromBody] UpdateKoiFarmDto koiFarm, int farmId)
+        {
+            var koiFarmModel = await _koiFarmRepo.UpdateAsync(farmId, koiFarm);
+
+            if (koiFarmModel == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(koiFarmModel);
+        }
+        [HttpDelete("delete")]
+        public async Task<IActionResult> Delete(int farmId)
+        {
+            var koiFarmModel = await _koiFarmRepo.DeleteAsync(farmId);
+
+            if (koiFarmModel == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

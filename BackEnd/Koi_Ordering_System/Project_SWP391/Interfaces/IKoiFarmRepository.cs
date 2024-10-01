@@ -6,9 +6,9 @@ namespace Project_SWP391.Interfaces
     public interface IKoiFarmRepository
     {
         Task<List<KoiFarm>> GetAllAsync();
-        Task<KoiFarm?> GetIdByAsync(int id);
+        Task<KoiFarm?> GetIdByAsync(int farmId);
         Task<KoiFarm> CreateAsync(KoiFarm koiFarmModel);
-        Task<KoiFarm?> UpdateAsync(int id, UpdateKoiFarmDto koiFarmDto);
-        Task<KoiFarm?> DeleteAsync(int id);
+        Task<KoiFarm?> UpdateAsync(int farmId, UpdateKoiFarmDto koiFarmDto);
+        Task<KoiFarm?> DeleteAsync(int farmId);
     }
 }
