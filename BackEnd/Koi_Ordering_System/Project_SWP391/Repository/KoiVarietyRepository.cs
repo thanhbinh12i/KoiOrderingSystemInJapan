@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiVariety;
+using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 using Project_SWP391.Model;

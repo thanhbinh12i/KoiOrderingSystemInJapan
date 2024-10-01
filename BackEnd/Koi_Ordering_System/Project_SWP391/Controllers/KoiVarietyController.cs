@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiVariety;
+using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 using Project_SWP391.Model;
@@ -30,7 +30,7 @@ namespace Project_SWP391.Controllers
             var variety = await _koiVarietyRepo.GetByIdAsync(id);
             if (variety == null)
             {
-                return NotFound();
+                return NotFound("No variety found!");
             }
             return Ok(variety);
         }
@@ -40,23 +40,23 @@ namespace Project_SWP391.Controllers
             var variety = await _koiVarietyRepo.GetByNameAsync(name);
             if (variety == null)
             {
-                return NotFound();
+                return NotFound("No variety found!");
             }
             return Ok(variety);
         }
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] CreateKoiVarietyDto koiVariety)
+        public async Task<IActionResult> Create([FromBody] CreateKoiVarietyDto createVariety)
         {
-            if (koiVariety == null)
+            if (createVariety == null)
             {
                 return BadRequest("Koi variety data is missing.");
             }
 
-            var varietyModel = koiVariety.ToKoiVarietyFromToCreateDto();
+            var varietyModel = createVariety.ToKoiVarietyFromToCreateDto();
 
             if(varietyModel == null)
             {
-                return NotFound();
+                return NotFound("No variety found!");
             }
 
             await _koiVarietyRepo.CreateAsync(varietyModel);
@@ -64,13 +64,13 @@ namespace Project_SWP391.Controllers
             return CreatedAtAction(nameof(GetById), new { id = varietyModel.VarietyId }, varietyModel);
         }
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto variety, int id)
+        public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto updateVariety, int id)
         {
-            var varietyModel = await _koiVarietyRepo.UpdateAsync(id, variety);
+            var varietyModel = await _koiVarietyRepo.UpdateAsync(id, updateVariety);
 
             if(varietyModel == null)
             {
-                return NotFound();
+                return NotFound("No variety found!");
             }
 
             return Ok(varietyModel);
@@ -82,7 +82,7 @@ namespace Project_SWP391.Controllers
 
             if(varietyModel == null)
             {
-                return NotFound();
+                return NotFound("No variety found!");
             }
 
             return NoContent();

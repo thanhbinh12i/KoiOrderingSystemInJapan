@@ -11,7 +11,7 @@ namespace Project_SWP391.Dtos.Kois
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
         public DateOnly UpdateDate { get; set; }
-        public int FarmId { get; set; }
-        public int VarietyId { get; set; }
+        //public int FarmId { get; set; }
+        //public int VarietyId { get; set; }
     }
 }

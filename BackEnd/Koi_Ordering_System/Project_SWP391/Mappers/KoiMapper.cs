@@ -19,7 +19,7 @@ namespace Project_SWP391.Mappers
                 UpdateDate = koi.UpdateDate,
             };
         }
-        public static Koi ToKoiFromCreateDto(this CreateKoiDto createKoi)
+        public static Koi ToKoiFromCreateDto(this CreateKoiDto createKoi, int farmId, int varietyId)
         {
             return new Koi
             {
@@ -30,8 +30,8 @@ namespace Project_SWP391.Mappers
                 YOB = createKoi.YOB,
                 Gender = createKoi.Gender,
                 UpdateDate = createKoi.UpdateDate,
-                FarmId = createKoi.FarmId,
-                VarietyId = createKoi.VarietyId,
+                FarmId = farmId,
+                VarietyId = varietyId
             };
         }
     }

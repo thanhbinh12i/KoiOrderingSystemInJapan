@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Model
@@ -18,10 +19,12 @@ namespace Project_SWP391.Model
         // Foreign keys
         public int FarmId { get; set; }
         [ForeignKey(nameof(FarmId))]
+        [JsonIgnore]
         public KoiFarm KoiFarm { get; set; }
 
         public int VarietyId { get; set; }
         [ForeignKey(nameof(VarietyId))]
+        [JsonIgnore]
         public KoiVariety KoiVariety { get; set; }
 
         // Navigation properties
