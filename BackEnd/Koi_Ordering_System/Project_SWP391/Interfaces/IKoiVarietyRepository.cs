@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.KoiVariable;
+﻿using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Interfaces
@@ -7,6 +7,7 @@ namespace Project_SWP391.Interfaces
     {
         Task<List<KoiVariety>> GetAllAsync();
         Task<KoiVariety?> GetByIdAsync(int id);
+        Task<KoiVariety?> GetByNameAsync(string name);
         Task<KoiVariety> CreateAsync(KoiVariety variety);
         Task<KoiVariety> UpdateAsync(int id, UpdateKoiVarietyDto variety);
         Task<KoiVariety> DeleteAsync(int id);

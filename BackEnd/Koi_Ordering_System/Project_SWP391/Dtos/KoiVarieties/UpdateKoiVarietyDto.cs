@@ -1,4 +1,4 @@
-﻿namespace Project_SWP391.Dtos.KoiVariable
+﻿namespace Project_SWP391.Dtos.KoiVarieties
 {
     public class UpdateKoiVarietyDto
     {
