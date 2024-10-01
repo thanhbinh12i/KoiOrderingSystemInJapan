@@ -57,22 +57,26 @@ namespace Project_SWP391.Repository
 
         public async Task<Koi> UpdateAsync(int id, UpdateKoiDto updateKoi)
         {
-            var koi = await _context.Kois.FirstOrDefaultAsync(k => k.KoiId == id);
+            var koiModel = await _context.Kois.FirstOrDefaultAsync(k => k.KoiId == id);
 
-            if (koi == null)
+            if (koiModel == null)
             {
                 return null;
             }
 
-            koi.KoiName = updateKoi.KoiName;
-            koi.Price = updateKoi.Price;
-            koi.Description = updateKoi.Description;
-            koi.Length = updateKoi.Length;
-            koi.YOB = updateKoi.YOB;
-            koi.Gender = updateKoi.Gender;
-            koi.UpdateDate = DateOnly.FromDateTime(DateTime.Now);
+            koiModel.KoiName = updateKoi.KoiName;
+            koiModel.Price = updateKoi.Price;
+            koiModel.Description = updateKoi.Description;
+            koiModel.Length = updateKoi.Length;
+            koiModel.YOB = updateKoi.YOB;
+            koiModel.Gender = updateKoi.Gender;
+            koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now);
+            koiModel.FarmId = updateKoi.FarmId;
+            koiModel.VarietyId = updateKoi.VarietyId;
 
-            return koi;
+            await _context.SaveChangesAsync();
+
+            return koiModel;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.KoiVariety;
+﻿using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Mappers

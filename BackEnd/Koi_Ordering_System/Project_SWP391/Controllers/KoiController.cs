@@ -5,6 +5,8 @@ using Project_SWP391.Mappers;
 
 namespace Project_SWP391.Controllers
 {
+    [Route("api/koi")]
+    [ApiController]
     public class KoiController : ControllerBase
     {
         private readonly IKoiRepository _koiRepo;
@@ -27,7 +29,7 @@ namespace Project_SWP391.Controllers
 
             if (koi == null)
             {
-                return NotFound();
+                return NotFound("No koi found!");
             }
 
             return Ok(koi);
@@ -39,24 +41,53 @@ namespace Project_SWP391.Controllers
 
             if (koi == null)
             {
-                return NotFound();
+                return NotFound("No koi found!");
             }
 
             return Ok(koi);
         }
-        [HttpPut("create")]
-        public async Task<IActionResult> Create([FromRoute] int koiFarmId, [FromRoute] int varietyId, [FromBody] CreateKoiDto createKoi)
+        [HttpPost("create/{farmId}-{varietyId}")]
+        public async Task<IActionResult> Create([FromRoute] int farmId, [FromRoute] int varietyId, [FromBody] CreateKoiDto createKoi)
         {
             if(createKoi == null)
             {
-                return BadRequest();
+                return BadRequest("Koi data is missing");
             }
 
-            var koiModel = createKoi.ToKoiFromCreateDto();
+            var koiModel = createKoi.ToKoiFromCreateDto(farmId, varietyId);
 
             await _koiRepo.CreateAsync(koiModel);
 
             return Ok(koiModel);
+        }
+        [HttpPut("update/{koiId}")]
+        public async Task<IActionResult> Update([FromRoute] int koiId, [FromBody] UpdateKoiDto updateKoi)
+        {
+            if(updateKoi == null)
+            {
+                return BadRequest("Koi data is missing");
+            }
+
+            var koiModel = await _koiRepo.UpdateAsync(koiId, updateKoi);
+
+            if(koiModel == null)
+            {
+                return NotFound("No koi found!");
+            }
+
+            return Ok(koiModel);
+        }
+        [HttpDelete("delete/{koiId}")]
+        public async Task<IActionResult> Delete([FromRoute] int koiId)
+        {
+            var koiModel = await _koiRepo.DeleteAsync(koiId);
+
+            if(koiModel == null)
+            {
+                return NotFound("No koi found!");
+            }
+
+            return NoContent();
         }
     }
 }
