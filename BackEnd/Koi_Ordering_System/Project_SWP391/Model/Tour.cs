@@ -8,8 +8,8 @@ namespace Project_SWP391.Model
         public int TourId { get; set; }
         public string TourName { get; set; } = string.Empty;
         public float Price { get; set; }
-        public DateTime  StartTime { get; set; } = DateTime.Now;
-        public DateTime FinishTime { get; set; }
+        public string  StartTime { get; set; }
+        public string FinishTime { get; set; }
 
         // Navigation properties
         public ICollection<Bill> Bills { get; set; }
