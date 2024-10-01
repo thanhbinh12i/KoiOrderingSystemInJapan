@@ -108,6 +108,7 @@ namespace Project_SWP391
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
+            builder.Services.AddScoped<IKoiRepository, KoiRepository>();
 
             var app = builder.Build();
 
