@@ -19,7 +19,7 @@ namespace Project_SWP391.Controllers
         public async Task<IActionResult> ViewAll()
         {
             var tour = await _tourRepo.GetAllAsync();
-            var tourDto = tour.Select(v=>v.ToTourDto());
+            var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tourDto);
         }
         [HttpGet("view/{tourId:int}")]
@@ -60,7 +60,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(tourModel);
         }
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{tourId:int}")]
         public async Task<IActionResult> Delete(int tourId)
         {
             var tourModel = await _tourRepo.DeleteAsync(tourId);

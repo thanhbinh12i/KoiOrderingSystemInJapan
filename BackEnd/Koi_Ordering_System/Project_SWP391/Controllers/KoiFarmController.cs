@@ -63,7 +63,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiFarmModel);
         }
-        [HttpDelete("delete/{farmId}")]
+        [HttpDelete("delete/{farmId:int}")]
         public async Task<IActionResult> Delete(int farmId)
         {
             var koiFarmModel = await _koiFarmRepo.DeleteAsync(farmId);
