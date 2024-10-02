@@ -109,6 +109,7 @@ namespace Project_SWP391
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
             builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
+            builder.Services.AddScoped<ITourRepository, TourRepository>();
 
             var app = builder.Build();
 
