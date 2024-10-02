@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiVariable;
+using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 using Project_SWP391.Model;
@@ -47,6 +47,13 @@ namespace Project_SWP391.Repository
         public async Task<KoiVariety?> GetByIdAsync(int id)
         {
             var variety = await _context.KoiVarieties.Include(k => k.Kois).FirstOrDefaultAsync(variety => variety.VarietyId == id);
+
+            return variety;
+        }
+
+        public async Task<KoiVariety?> GetByNameAsync(string name)
+        {
+            var variety = await _context.KoiVarieties.Include(k => k.Kois).FirstOrDefaultAsync(variety => variety.VarietyName == name);
 
             return variety;
         }

@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.KoiVariable;
+﻿using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Mappers
@@ -9,6 +9,7 @@ namespace Project_SWP391.Mappers
         {
             return new KoiVarietyDto
             {
+                VarietyId = variety.VarietyId,
                 VarietyName = variety.VarietyName,
                 Color = variety.Color,
                 Kois = variety.Kois,
