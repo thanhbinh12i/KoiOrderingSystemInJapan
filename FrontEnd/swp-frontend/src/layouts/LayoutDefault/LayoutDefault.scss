@@ -74,15 +74,25 @@
                   }
             }
             &-social-links {
+                  display: flex;
+                  gap: 20px; 
+                  padding: 20px 0;
                   a {
                         display: inline-block;
-                        margin-right: 20px;
-                        color: #007aff;
-                        font-size: 16px;
+                        transition:
+                              transform 0.3s ease,
+                              opacity 0.3s ease; 
 
                         &:hover {
-                              color: #005bb5;
-                              text-decoration: underline;
+                              transform: scale(1.1); 
+                              opacity: 0.8; 
+                        }
+
+                        img {
+                              width: 40px; 
+                              height: 40px;
+                              border-radius: 50%; 
+                              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
                         }
                   }
             }
