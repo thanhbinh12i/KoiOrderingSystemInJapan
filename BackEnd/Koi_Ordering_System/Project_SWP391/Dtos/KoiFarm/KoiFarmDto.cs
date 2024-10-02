@@ -1,4 +1,6 @@
-﻿using Project_SWP391.Model;
+﻿using Project_SWP391.Dtos.FarmImages;
+using Project_SWP391.Dtos.Kois;
+using Project_SWP391.Model;
 
 namespace Project_SWP391.Dtos.KoiFarm
 {
@@ -15,7 +17,7 @@ namespace Project_SWP391.Dtos.KoiFarm
         public string Hotline { get; set; } = string.Empty;
 
         // Navigation properties
-        public ICollection<Koi> Kois { get; set; }
-        public ICollection<FarmImage> FarmImages { get; set; }
+        public ICollection<KoiDto> Kois { get; set; }
+        public ICollection<FarmImageDto> FarmImages { get; set; }
     }
 }

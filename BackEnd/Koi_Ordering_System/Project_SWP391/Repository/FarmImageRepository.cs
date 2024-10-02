@@ -1,4 +1,5 @@
-﻿using Project_SWP391.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Project_SWP391.Data;
 using Project_SWP391.Dtos.FarmImages;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
@@ -19,55 +20,33 @@ namespace Project_SWP391.Repository
             await _context.SaveChangesAsync();
             return farmImageModel;
         }
-
-        public Task<FarmImage?> DeleteAsync(int imageId)
+        public async Task<FarmImage?> DeleteAsync(int imageId)
         {
-            throw new NotImplementedException();
+            var farmImageModel = await _context.FarmImages.FirstOrDefaultAsync(x => x.ImageId == imageId);
+            if (farmImageModel == null) return null;
+            _context.FarmImages.Remove(farmImageModel);
+            await _context.SaveChangesAsync();
+            return farmImageModel;
         }
 
-        public Task<List<FarmImage>> GetAllAsync()
+        public async Task<List<FarmImage>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.FarmImages.ToListAsync();
         }
 
-        public Task<FarmImage?> GetByIdAsync(int imageId)
+        public async Task<FarmImage?> GetByIdAsync(int imageId)
         {
-            throw new NotImplementedException();
+            return await _context.FarmImages.FindAsync(imageId);
         }
 
-        public Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto)
+        public async Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto)
         {
-            throw new NotImplementedException();
+            var farmImageExist = await _context.FarmImages.FirstOrDefaultAsync(x => x.ImageId == imageId);
+            if (farmImageExist == null) return null;
+            farmImageExist.Url = farmImageDto.Url;
+            await _context.SaveChangesAsync();
+            return farmImageExist;
         }
-
-        //    public async Task<FarmImage?> DeleteAsync(int imageId)
-        //    {
-        //        var farmImageModel = await _context.FarmImages.FirstOrDefaultAsync(x => x.fa == id);
-        //        if (commentModel == null) return null;
-        //        _context.Comments.Remove(commentModel);
-        //        await _context.SaveChangesAsync();
-        //        return commentModel;
-        //    }
-
-        //    public async Task<List<FarmImage>> GetAllAsync()
-        //    {
-        //        return await _context.Comments.ToListAsync();
-        //    }
-
-        //    public async Task<FarmImage?> GetByIdAsync(int imageId)
-        //    {
-        //        return await _context.Comments.FindAsync(id);
-        //    }
-
-        //    public async Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto)
-        //    {
-        //        var existComment = await _context.Comments.FirstOrDefaultAsync(x => x.Id == id);
-        //        if (existComment == null) return null;
-        //        existComment.Title = commentDto.Title;
-        //        existComment.Content = commentDto.Content;
-        //        await _context.SaveChangesAsync();
-        //        return existComment;
-        //    }
-        //}
     }
 }
+

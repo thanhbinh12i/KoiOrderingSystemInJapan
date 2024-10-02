@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Data;
 using Project_SWP391.Dtos.KoiFarm;
-using Project_SWP391.Dtos.KoiVariable;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 
@@ -19,9 +19,11 @@ namespace Project_SWP391.Controllers
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
             var koiFarm = await _koiFarmRepo.GetAllAsync();
+            if(koiFarm.IsNullOrEmpty()) return NotFound();  
             var koiFarmDto = koiFarm.Select(v => v.ToKoiFarmDTO());
-            return Ok(koiFarmDto);
+            return Ok(koiFarm);
         }
         [HttpGet("view/{farmId:int}")]
         public async Task<IActionResult> ViewAllId([FromRoute] int farmId)
@@ -61,7 +63,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiFarmModel);
         }
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{farmId}")]
         public async Task<IActionResult> Delete(int farmId)
         {
             var koiFarmModel = await _koiFarmRepo.DeleteAsync(farmId);

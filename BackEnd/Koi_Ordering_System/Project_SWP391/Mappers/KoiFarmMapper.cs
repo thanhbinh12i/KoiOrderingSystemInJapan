@@ -18,8 +18,8 @@ namespace Project_SWP391.Mappers
                 Email = koiFarmModel.Email,
                 Rating =koiFarmModel.Rating,
                 Hotline = koiFarmModel.Hotline,
-                Kois=koiFarmModel.Kois,
-                FarmImages =koiFarmModel.FarmImages,
+                Kois=koiFarmModel.Kois.Select(c => c.ToKoiDto()).ToList(),
+                FarmImages = koiFarmModel.FarmImages.Select(c => c.ToFarmImageDto()).ToList()
             };
         }
         public static KoiFarm ToKoiFarmFromCreateDTO(this CreateKoiFarmDto koiFarmDto)
