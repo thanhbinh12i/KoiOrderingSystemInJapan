@@ -19,12 +19,7 @@ export const post = async (path, options) => {
     body: JSON.stringify(options),
   });
   if (!response.ok) {
-    console.log(
-      "Response Status:",
-      response.status,
-      "Response Text:",
-      await response.text()
-    );
+    console.log("Response Status:", response.status, await response.text());
     throw new Error(`Error: ${response.statusText}`);
   }
   const result = await response.json();
@@ -35,8 +30,14 @@ export const del = async (path, id) => {
   const response = await fetch(`${API_DOMAIN}${path}/${id}`, {
     method: "DELETE",
   });
-  const result = await response.json();
-  return result;
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    const result = await response.json();
+    return result;
+  } else {
+    const text = await response.text();
+    return { success: response.ok, message: text };
+  }
 };
 
 export const patch = async (path, options) => {
