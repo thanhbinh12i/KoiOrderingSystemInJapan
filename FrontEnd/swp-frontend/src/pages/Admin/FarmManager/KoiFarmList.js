@@ -4,6 +4,7 @@ import { get } from "../../../utils/request";
 import { PlusOutlined } from "@ant-design/icons";
 import CreateKoiFarm from "./CreateKoiFarm";
 import DeleteKoiFarm from "./DeleteKoiFarm";
+import UpdateKoiFarm from "./UpdateKoiFarm";
 
 function KoiFarmList() {
   const [farms, setFarms] = useState([]);
@@ -98,6 +99,7 @@ function KoiFarmList() {
       render: (_, record) => (
         <>
           <DeleteKoiFarm record={record} handleReload={handleReload} />
+          <UpdateKoiFarm />
         </>
       ),
     },
