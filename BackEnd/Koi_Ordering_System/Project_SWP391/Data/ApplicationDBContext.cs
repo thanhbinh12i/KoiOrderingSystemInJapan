@@ -16,6 +16,7 @@ namespace Project_SWP391.Data
         public DbSet<KoiFarm> KoiFarms { get; set; }
         public DbSet<KoiVariety> KoiVarieties { get; set; }
         public DbSet<KoiImage> KoiImages { get; set; }
+        public DbSet<FarmImage> FarmImages { get; set; }
         public DbSet<Bill> Bills { get; set; }
         public DbSet<BillDetail> BillDetails { get; set; }
         public DbSet<Service> Services { get; set; }
