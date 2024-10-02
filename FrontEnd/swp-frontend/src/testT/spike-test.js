@@ -8,8 +8,8 @@ function generateRandomID() {
 
 export const options = {
     stages: [
-        { duration: '5s', target: 200 },
-        { duration: '1m', target: 200 },
+        { duration: '5s', target: 100 },
+        { duration: '1m', target: 300 },
         { duration: '5s', target: 0 }, 
     ],
 };
