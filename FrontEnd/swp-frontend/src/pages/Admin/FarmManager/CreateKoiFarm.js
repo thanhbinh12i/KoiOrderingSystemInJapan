@@ -1,5 +1,5 @@
+import React, { useState } from "react";
 import { Modal, Form, Input, Button, message, TimePicker } from "antd";
-import { useState } from "react";
 import { post } from "../../../utils/request";
 
 function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
@@ -10,7 +10,12 @@ function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const response = await post("koiFarm/create", values);
+      const formattedValues = {
+        ...values,
+        openHour: values.openHour ? values.openHour.format("HH:mm") : null,
+        closeHour: values.closeHour ? values.closeHour.format("HH:mm") : null,
+      };
+      const response = await post("koiFarm/create", formattedValues);
       if (response) {
         form.resetFields();
         handleOk();
@@ -34,7 +39,12 @@ function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
         onCancel={handleCancel}
         footer={null}
       >
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          initialValues={{ rating: 5 }}
+        >
           <Form.Item
             label="Tên trang trại"
             name="farmName"
@@ -61,14 +71,14 @@ function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
           <Form.Item
             label="Giờ mở cửa"
             name="openHour"
-            rules={[{ required: true, message: "Vui lòng nhập giờ mở cửa!" }]}
+            rules={[{ required: true, message: "Vui lòng chọn giờ mở cửa!" }]}
           >
             <TimePicker format="HH:mm" />
           </Form.Item>
           <Form.Item
             label="Giờ đóng cửa"
             name="closeHour"
-            rules={[{ required: true, message: "Vui lòng nhập giờ đóng cửa!" }]}
+            rules={[{ required: true, message: "Vui lòng chọn giờ đóng cửa!" }]}
           >
             <TimePicker format="HH:mm" />
           </Form.Item>
@@ -82,24 +92,19 @@ function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
           >
             <Input placeholder="Nhập email" />
           </Form.Item>
-          <Form
-            initialValues={{ rating: 5 }} // Thiết lập giá trị mặc định là 5
+          <Form.Item
+            label="Đánh giá"
+            name="rating"
+            rules={[{ required: true, message: "Vui lòng nhập đánh giá!" }]}
           >
-            <Form.Item
-              label="Đánh giá"
-              name="rating"
-              rules={[{ required: true, message: "Vui lòng nhập đánh giá!" }]}
-            >
-              <Input
-                type="number"
-                min={0}
-                max={5}
-                step={0.1}
-                placeholder="Nhập đánh giá"
-              />
-            </Form.Item>
-          </Form>
-          <br />
+            <Input
+              type="number"
+              min={0}
+              max={5}
+              step={0.1}
+              placeholder="Nhập đánh giá"
+            />
+          </Form.Item>
           <Form.Item
             label="Số điện thoại"
             name="hotline"

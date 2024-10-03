@@ -8,7 +8,7 @@ function DeleteKoiFarm(props) {
 
   const handleDelete = async () => {
     try {
-      const response = await del(`koiFarm/delete/`, record.farmId);
+      const response = await del("koiFarm/delete", record.farmId);
       if (response) {
         messageApi.success("Xóa trang trại cá Koi thành công");
         handleReload();
