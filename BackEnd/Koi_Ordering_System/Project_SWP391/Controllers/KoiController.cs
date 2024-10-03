@@ -58,7 +58,7 @@ namespace Project_SWP391.Controllers
 
             await _koiRepo.CreateAsync(koiModel);
 
-            return Ok(koiModel);
+            return CreatedAtAction(nameof(GetById), new { id = koiModel.KoiId }, koiModel);
         }
         [HttpPut("update/{koiId}")]
         public async Task<IActionResult> Update([FromRoute] int koiId, [FromBody] UpdateKoiDto updateKoi)
