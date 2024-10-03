@@ -1,17 +1,11 @@
-import { Link } from "react-router-dom";
-import FarmList from "./FarmList";
-import { PlusOutlined } from "@ant-design/icons"
-import { Button } from "antd";
+import KoiFarmList from "./KoiFarmList";
 
 function FarmManager() {
-      return (
-            <>
-                  <h1>Danh sách các trang trại</h1>
-                  <Link to="/create-farm">
-                        <Button icon={<PlusOutlined />}>Thêm trang trại mới</Button>
-                  </Link>
-                  <FarmList/>
-            </>
-      )
+  return (
+    <>
+      <h1>Danh sách các trang trại</h1>
+      <KoiFarmList />
+    </>
+  );
 }
 export default FarmManager;
