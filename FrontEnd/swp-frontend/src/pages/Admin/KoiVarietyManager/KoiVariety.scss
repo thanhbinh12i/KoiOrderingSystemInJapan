@@ -1,0 +1,37 @@
+$primary-color: #1890ff; 
+$background-color: #f9f9f9; 
+$border-color: #d9d9d9; 
+$modal-background: #ffffff; 
+
+.koi-variety {
+      &__search-create {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            .create-button {
+                  background-color: $primary-color; 
+                  color: white; 
+                  border: none; 
+                  border-radius: 8px; 
+                  padding: 20px 20px; 
+                  cursor: pointer; 
+                  transition: background-color 0.3s; 
+            
+                  &:hover {
+                    background-color: darken($primary-color, 10%); 
+                  }
+            }
+            .search-button {
+                  width: 500px; 
+                  border-radius: 4px; 
+                  padding: 12px; 
+                  transition: border-color 0.3s; 
+            
+                  &:focus {
+                    border-color: $primary-color; 
+                    outline: none; 
+                  }
+            }
+      }
+}

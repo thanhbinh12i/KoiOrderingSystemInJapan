@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Project_SWP391.Dtos.FarmImages;
+using Project_SWP391.Dtos.Kois;
+using Project_SWP391.Model;
 
-namespace Project_SWP391.Model
+namespace Project_SWP391.Dtos.KoiFarm
 {
-    public class KoiFarm
+    public class KoiFarmDto
     {
-        [Key]
         public int FarmId { get; set; }
         public string FarmName { get; set; } = string.Empty;
         public string Introduction { get; set; } = string.Empty;
@@ -16,7 +17,7 @@ namespace Project_SWP391.Model
         public string Hotline { get; set; } = string.Empty;
 
         // Navigation properties
-        public ICollection<Koi> Kois { get; set; }
-        public ICollection<FarmImage> FarmImages { get; set; }
+        public ICollection<KoiDto> Kois { get; set; }
+        public ICollection<FarmImageDto> FarmImages { get; set; }
     }
 }

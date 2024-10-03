@@ -1,17 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Project_SWP391.Model;
+using System.ComponentModel.DataAnnotations;
 
-namespace Project_SWP391.Model
+namespace Project_SWP391.Dtos.Tour
 {
-    public class Tour
+    public class TourDto
     {
-        [Key]
         public int TourId { get; set; }
         public string TourName { get; set; } = string.Empty;
         public float Price { get; set; }
-        public string  StartTime { get; set; }
+        public string StartTime { get; set; }
         public string FinishTime { get; set; }
 
-        // Navigation properties
         public ICollection<Bill> Bills { get; set; }
     }
 }
