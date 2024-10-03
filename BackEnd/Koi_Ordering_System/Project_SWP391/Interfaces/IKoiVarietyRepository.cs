@@ -9,7 +9,7 @@ namespace Project_SWP391.Interfaces
         Task<KoiVariety?> GetByIdAsync(int id);
         Task<KoiVariety?> GetByNameAsync(string name);
         Task<KoiVariety> CreateAsync(KoiVariety variety);
-        Task<KoiVariety> UpdateAsync(int id, UpdateKoiVarietyDto variety);
-        Task<KoiVariety> DeleteAsync(int id);
+        Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto variety);
+        Task<KoiVariety?> DeleteAsync(int id);
     }
 }
