@@ -1,5 +1,4 @@
 import KoiVarietyList from "./KoiVarietyList";
-
 function KoiVarietyManager() {
       return (
             <>

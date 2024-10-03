@@ -10,5 +10,6 @@ namespace Project_SWP391.Interfaces
         Task<KoiFarm> CreateAsync(KoiFarm koiFarmModel);
         Task<KoiFarm?> UpdateAsync(int farmId, UpdateKoiFarmDto koiFarmDto);
         Task<KoiFarm?> DeleteAsync(int farmId);
+        Task<bool> ExistKoiFarm(int farmId);
     }
 }

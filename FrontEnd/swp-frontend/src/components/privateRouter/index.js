@@ -10,7 +10,7 @@ function PrivateRoutes() {
             if (token) {
                   dispatch(checkLogin(true));
             }
-      }, [dispatch]);
+      }, []);
       return (
             <>
             {token ? (<Outlet />) : (
