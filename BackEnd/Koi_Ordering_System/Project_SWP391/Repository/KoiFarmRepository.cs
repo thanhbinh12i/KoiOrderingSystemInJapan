@@ -39,7 +39,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<KoiFarm>> GetAllAsync()
         {
-            return await _context.KoiFarms.ToListAsync();
+            return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).ToListAsync();
         }
 
         public async Task<KoiFarm?> GetIdByAsync(int farmId)
@@ -69,6 +69,10 @@ namespace Project_SWP391.Repository
             await _context.SaveChangesAsync();
 
             return koiFarmModel;
+        }
+        public Task<bool> ExistKoiFarm(int farmId)
+        {
+            return _context.KoiFarms.AnyAsync(s => s.FarmId == farmId);
         }
     }
 }
