@@ -5,9 +5,11 @@ import { PlusOutlined } from "@ant-design/icons";
 import CreateKoiFarm from "./CreateKoiFarm";
 import DeleteKoiFarm from "./DeleteKoiFarm";
 import UpdateKoiFarm from "./UpdateKoiFarm";
-
+import SearchByNameOrLocation from "./SearchByNameOrLocation";
+import "../FarmManager/KoiFarm.scss";
 function KoiFarmList() {
   const [farms, setFarms] = useState([]);
+  const [filteredFarms, setFilteredFarms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -15,15 +17,13 @@ function KoiFarmList() {
     setLoading(true);
     try {
       const response = await get("koiFarm/view-all");
-      if (Array.isArray(response)) {
-        setFarms(response);
-      } else {
-        throw new Error("API response is not an array");
-      }
+      setFarms(response);
+      setFilteredFarms(response);
     } catch (error) {
       console.error("Error fetching koi farms:", error);
       message.error("Failed to load koi farms. Please try again.");
       setFarms([]);
+      setFilteredFarms([]);
     } finally {
       setLoading(false);
     }
@@ -39,6 +39,15 @@ function KoiFarmList() {
     fetchApi();
   };
   const handleCancel = () => setIsModalVisible(false);
+
+  const handleSearch = (value) => {
+    const filtered = farms.filter(
+      (farm) =>
+        farm.farmName.toLowerCase().includes(value.toLowerCase()) ||
+        farm.location.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredFarms(filtered);
+  };
 
   const columns = [
     {
@@ -96,31 +105,41 @@ function KoiFarmList() {
       ),
     },
   ];
-
   return (
-    <div>
-      <Button
-        icon={<PlusOutlined />}
-        onClick={showModal}
-        style={{ marginBottom: 16 }}
-      >
-        Thêm trang trại cá Koi mới
-      </Button>
-      <CreateKoiFarm
-        isModalVisible={isModalVisible}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-      />
-      <Spin spinning={loading}>
-        <Table
-          columns={columns}
-          dataSource={farms}
-          rowKey="farmId"
-          bordered
-          scroll={{ x: "max-content" }}
-        />
-      </Spin>
-    </div>
+    <>
+      <div className="koiFarm">
+        <div className="koiFarm__search-create">
+          <Button
+            icon={<PlusOutlined />}
+            onClick={showModal}
+            className="create-button"
+            style={{ marginBottom: 16 }}
+          >
+            Thêm trang trại cá Koi mới
+          </Button>
+          <CreateKoiFarm
+            isModalVisible={isModalVisible}
+            handleOk={handleOk}
+            handleCancel={handleCancel}
+          />
+          <SearchByNameOrLocation
+            onSearch={handleSearch}
+            className="search-button"
+          />
+        </div>
+        <div className="koiFarm__table">
+          <Spin spinning={loading}>
+            <Table
+              columns={columns}
+              dataSource={filteredFarms}
+              rowKey="farmId"
+              bordered
+              scroll={{ x: "max-content" }}
+            />
+          </Spin>
+        </div>
+      </div>
+    </>
   );
 }
 
