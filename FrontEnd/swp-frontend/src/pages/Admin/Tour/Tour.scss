@@ -1,0 +1,54 @@
+$primary-color: #1890ff;
+$background-color: #f9f9f9;
+$border-color: #d9d9d9;
+$modal-background: #ffffff;
+
+.tour {
+  &__search-create {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .create-button {
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      height: 40px;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      width: 23%;
+
+      .search-input {
+        flex-grow: 1;
+        margin-right: 10px;
+        border-radius: 4px;
+        height: 40px;
+
+        &:focus {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+      }
+
+      .search-button {
+        height: 40px;
+        border-radius: 4px;
+        padding: 0 20px;
+      }
+    }
+  }
+}
