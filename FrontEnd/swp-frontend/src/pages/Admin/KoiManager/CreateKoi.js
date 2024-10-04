@@ -1,6 +1,6 @@
-import { Button, Col, Form, Input, Row, Select } from "antd";
+import { Button, Col, Form, Input, message, Row, Select } from "antd";
 import { useEffect, useState } from "react";
-import { get } from "../../../utils/request";
+import { get, post } from "../../../utils/request";
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -8,6 +8,8 @@ function CreateKoi() {
       const [form] = Form.useForm();
       const [varieties, setVarieties] = useState([]);
       const [farm, setFarm] = useState([]);
+      const [loading, setLoading] = useState(false);
+      const [messageApi, contextHolder] = message.useMessage();
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get("koi-variable/view-all");
@@ -34,11 +36,27 @@ function CreateKoi() {
             }
             fetchApi();
       }, [])
-      const handleFinish = () => {
-
+      const handleFinish = async (values) => {
+            try {
+                  setLoading(true);
+                  const farmId = values.farmId;
+                  const varietyId = values.varietyId;
+                  const response = await post(`koi/create/${farmId}-${varietyId}`, values);
+                  if (response) {
+                        form.resetFields();
+                        messageApi.success('Thêm cá koi mới thành công');
+                  } else {
+                        messageApi.error('Thêm cá mới không thành công');
+                  }
+            } catch (error) {
+                  messageApi.error('Lỗi');
+            } finally {
+                  setLoading(false);
+            }
       }
       return (
             <>
+                  {contextHolder}
                   <h1>Thêm cá koi mới</h1>
                   <Form onFinish={handleFinish} layout="vertical" form={form}>
                         <Row gutter={20}>
@@ -53,7 +71,7 @@ function CreateKoi() {
                                     </Form.Item>
                               </Col>
                               <Col span={8}>
-                                    <Form.Item label="Giá" name="salary" rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}>
+                                    <Form.Item label="Giá" name="price" rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}>
                                           <Input addonAfter="đ" />
                                     </Form.Item>
                               </Col>
@@ -65,8 +83,8 @@ function CreateKoi() {
                               <Col span={8}>
                                     <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}>
                                           <Select>
-                                                <Option value="male">Đực</Option>
-                                                <Option value="female">Cái</Option>
+                                                <Option value="Koi Đực">Đực</Option>
+                                                <Option value="Koi Cái">Cái</Option>
                                           </Select>
                                     </Form.Item>
                               </Col>
@@ -76,7 +94,7 @@ function CreateKoi() {
                                     </Form.Item>
                               </Col>
                               <Col span={8}>
-                                    <Form.Item label="Giống cá" name="varieties" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
+                                    <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
                                           <Select options={varieties} />
                                     </Form.Item>
                               </Col>
@@ -87,7 +105,7 @@ function CreateKoi() {
                               </Col>
                               <Col span={24}>
                                     <Form.Item>
-                                          <Button type="primary" htmlType="submit">
+                                          <Button type="primary" htmlType="submit" loading={loading}>
                                                 Tạo mới
                                           </Button>
                                     </Form.Item>

@@ -1,8 +1,10 @@
-import { Table } from "antd";
+import { Button, Table, Tooltip } from "antd";
 import EditKoi from "./EditKoi";
 import DeleteKoi from "./DeleteKoi";
 import { useEffect, useState } from "react";
 import { get } from "../../../utils/request";
+import { EyeOutlined } from "@ant-design/icons";
+import {Link} from "react-router-dom"
 
 function KoiList() {
       const [koi, setKoi] = useState([]);
@@ -14,7 +16,7 @@ function KoiList() {
       }
       useEffect(() => {
             fetchApi();
-      },[])
+      }, [])
       const handleReload = () => {
             fetchApi();
       }
@@ -45,17 +47,17 @@ function KoiList() {
                   key: "gender",
             },
             {
-                  title: "Mô tả",
-                  dataIndex: "description",
-                  key: "description",
-            },
-            {
                   title: "Hành động",
                   key: "actions",
                   render: (_, record) => (
                         <>
-                              <EditKoi record={record} handleReload={handleReload}/>
-                              <DeleteKoi record={record} handleReload={handleReload}/>
+                              <Link to={`/koi-detail/${record.koiId}`}>
+                                    <Tooltip title="Xem chi tiết">
+                                          <Button icon={<EyeOutlined />}></Button>
+                                    </Tooltip>
+                              </Link>
+                              <EditKoi record={record} handleReload={handleReload} />
+                              <DeleteKoi record={record} handleReload={handleReload} />
                         </>
                   )
             }

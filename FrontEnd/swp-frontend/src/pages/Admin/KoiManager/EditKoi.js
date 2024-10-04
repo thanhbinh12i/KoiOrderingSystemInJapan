@@ -1,5 +1,5 @@
-import { Button, Col, Form, Input, Modal, Row, Select, Tooltip } from "antd";
-import { get } from "../../../utils/request";
+import { Button, Col, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
+import { get, put } from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { EditOutlined } from "@ant-design/icons"
 const { TextArea } = Input;
@@ -11,6 +11,7 @@ function EditKoi(props) {
       const [varieties, setVarieties] = useState([]);
       const [farm, setFarm] = useState([]);
       const [isModalOpen, setIsModalOpen] = useState(false);
+      const [mess, contextHolder] = message.useMessage();
       const showModal = () => {
             setIsModalOpen(true);
       }
@@ -43,11 +44,27 @@ function EditKoi(props) {
             }
             fetchApi();
       }, [])
-      const handleFinish = () => {
-
+      const handleFinish = async (values) => {
+            const response = await put(`koi/update/${record.koiId}`, values);
+            if (response) {
+                  setIsModalOpen(false);
+                  handleReload();
+                  mess.open({
+                        type: "success",
+                        content: "Cập nhật thành công!",
+                        duration: 5
+                  })
+            } else {
+                  mess.open({
+                        type: "error",
+                        content: "Cập nhật không thành công!",
+                        duration: 3
+                  })
+            }
       }
       return (
             <>
+                  {contextHolder}
                   <Tooltip title="Chỉnh sửa">
                         <Button onClick={showModal} className="ml-5" icon={<EditOutlined />} type="primary"></Button>
                         <Modal open={isModalOpen} onCancel={closeModal} title="Chỉnh sửa cá koi" footer={null}>
@@ -64,7 +81,7 @@ function EditKoi(props) {
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
-                                                <Form.Item label="Giá" name="salary" rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}>
+                                                <Form.Item label="Giá" name="price" rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}>
                                                       <Input addonAfter="đ" />
                                                 </Form.Item>
                                           </Col>
@@ -76,8 +93,8 @@ function EditKoi(props) {
                                           <Col span={8}>
                                                 <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}>
                                                       <Select>
-                                                            <Option value="male">Đực</Option>
-                                                            <Option value="female">Cái</Option>
+                                                            <Option value="Koi Đực">Đực</Option>
+                                                            <Option value="Koi Cái">Cái</Option>
                                                       </Select>
                                                 </Form.Item>
                                           </Col>
@@ -87,7 +104,7 @@ function EditKoi(props) {
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
-                                                <Form.Item label="Giống cá" name="varieties" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
+                                                <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
                                                       <Select options={varieties} />
                                                 </Form.Item>
                                           </Col>
@@ -99,7 +116,7 @@ function EditKoi(props) {
                                           <Col span={24}>
                                                 <Form.Item>
                                                       <Button type="primary" htmlType="submit">
-                                                            Tạo mới
+                                                            Cập nhật
                                                       </Button>
                                                 </Form.Item>
                                           </Col>

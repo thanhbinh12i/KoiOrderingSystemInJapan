@@ -24,7 +24,7 @@ namespace Project_SWP391.Repository
             return variety;
         }
 
-        public async Task<KoiVariety> DeleteAsync(int id)
+        public async Task<KoiVariety?> DeleteAsync(int id)
         {
             var variety = await _context.KoiVarieties.FindAsync(id);
 
@@ -41,7 +41,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<KoiVariety>> GetAllAsync()
         {
-            return await _context.KoiVarieties.ToListAsync();
+            return await _context.KoiVarieties.Include(i => i.Kois).ToListAsync();
         }
 
         public async Task<KoiVariety?> GetByIdAsync(int id)
@@ -58,7 +58,7 @@ namespace Project_SWP391.Repository
             return variety;
         }
 
-        public async Task<KoiVariety> UpdateAsync(int id, UpdateKoiVarietyDto updateVariety)
+        public async Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto updateVariety)
         {
             var varietyModel = await _context.KoiVarieties.FirstOrDefaultAsync(v => v.VarietyId == id);
 

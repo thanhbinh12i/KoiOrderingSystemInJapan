@@ -20,11 +20,11 @@ namespace Project_SWP391.Controllers
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
-            var variables = await _koiVarietyRepo.GetAllAsync();
-            var varietyDto = variables.Select(v => v.ToKoiVarietyDto());
+            var variety = await _koiVarietyRepo.GetAllAsync();
+            var varietyDto = variety.Select(v => v.ToKoiVarietyDto());
             return Ok(varietyDto);
         }
-        [HttpGet("({id})")]
+        [HttpGet("view-by-id/{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var variety = await _koiVarietyRepo.GetByIdAsync(id);
@@ -34,7 +34,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(variety);
         }
-        [HttpGet("view/({name})")]
+        [HttpGet("view-by-name/{name}")]
         public async Task<IActionResult> GetByName([FromRoute] string name)
         {
             var variety = await _koiVarietyRepo.GetByNameAsync(name);
@@ -66,6 +66,11 @@ namespace Project_SWP391.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto updateVariety, int id)
         {
+            if (updateVariety == null)
+            {
+                return BadRequest("Koi variety data is missing.");
+            }
+
             var varietyModel = await _koiVarietyRepo.UpdateAsync(id, updateVariety);
 
             if(varietyModel == null)

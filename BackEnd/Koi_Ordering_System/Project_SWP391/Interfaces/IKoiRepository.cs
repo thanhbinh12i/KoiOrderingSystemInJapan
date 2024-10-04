@@ -9,7 +9,8 @@ namespace Project_SWP391.Interfaces
         Task<Koi?> GetByIdAsync(int id);
         Task<Koi?> GetByNameAsync(string name);
         Task<Koi> CreateAsync(Koi koi);
-        Task<Koi> UpdateAsync(int id, UpdateKoiDto variety);
-        Task<Koi> DeleteAsync(int id);
+        Task<Koi?> UpdateAsync(int id, UpdateKoiDto variety);
+        Task<Koi?> DeleteAsync(int id);
+        Task<bool> KoiExists(int id);
     }
 }
