@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get } from "../../../utils/request";
+import GoBack from "../../../components/GoBack";
 
 function KoiDetail() {
       const params = useParams();
@@ -17,6 +18,7 @@ function KoiDetail() {
       }, [])
       return (
             <>
+                  <GoBack />
                   {data && (
                         <>
                               <h1>{data.koiName}</h1>

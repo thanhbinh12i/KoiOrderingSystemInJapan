@@ -1,6 +1,7 @@
-import { Button, Col, Form, Input, message, Row, Select } from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Upload } from "antd";
 import { useEffect, useState } from "react";
 import { get, post } from "../../../utils/request";
+import { UploadOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -9,6 +10,7 @@ function CreateKoi() {
       const [varieties, setVarieties] = useState([]);
       const [farm, setFarm] = useState([]);
       const [loading, setLoading] = useState(false);
+      const [fileList, setFileList] = useState([]);
       const [messageApi, contextHolder] = message.useMessage();
       useEffect(() => {
             const fetchApi = async () => {
@@ -54,6 +56,8 @@ function CreateKoi() {
                   setLoading(false);
             }
       }
+      const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
       return (
             <>
                   {contextHolder}
@@ -96,6 +100,18 @@ function CreateKoi() {
                               <Col span={8}>
                                     <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
                                           <Select options={varieties} />
+                                    </Form.Item>
+                              </Col>
+                              <Col span={24}>
+                                    <Form.Item label="Hình ảnh" name="images">
+                                          <Upload
+                                                listType="picture-card"
+                                                fileList={fileList}
+                                                onChange={handleChange}
+                                                beforeUpload={() => false}
+                                          >
+                                                <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+                                          </Upload>
                                     </Form.Item>
                               </Col>
                               <Col span={24}>
