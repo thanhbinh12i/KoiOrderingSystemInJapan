@@ -67,7 +67,7 @@ namespace Project_SWP391.Controllers
         public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto updateVariety, int id)
         {
             if (updateVariety == null)
-            {
+        {
                 return BadRequest("Koi variety data is missing.");
             }
 
