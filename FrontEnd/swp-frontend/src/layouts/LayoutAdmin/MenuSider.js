@@ -19,9 +19,21 @@ function MenuSider() {
             //       key: "/staff-manager"
             // },
             {
-                  label: <Link to="/farm-manager">Quản lí trang trại</Link>,
+                  label: "Quản lí trang trại",
                   icon: <AppstoreOutlined />,
-                  key: "/farm-manager"
+                  key: "/farm-manager",
+                  children: [
+                        {
+                              label: <Link to="/farm-manager">Danh sách trang trại</Link>,
+                              icon: <OrderedListOutlined />,
+                              key: "/farm-list"
+                        },
+                        {
+                              label: <Link to="/create-farm">Thêm trang trại</Link>,
+                              icon: <PlusOutlined />,
+                              key: "/create-farm"
+                        }
+                  ]
             },
             {
                   label: <Link to="/koivariety-manager">Quản lí giống cá</Link>,
@@ -50,6 +62,23 @@ function MenuSider() {
                   icon: <AppstoreOutlined />,
                   key: "/service-manager"
             },
+            {
+                  label: "Quản lí tour",
+                  icon: <AppstoreOutlined />,
+                  key: "/tour-manager",
+                  children: [
+                        {
+                              label: <Link to="/tour-manager">Danh sách tour</Link>,
+                              icon: <OrderedListOutlined />,
+                              key: "/tour-list"
+                        },
+                        {
+                              label: <Link to="/create-tour">Thêm tour mới</Link>,
+                              icon: <PlusOutlined />,
+                              key: "/create-tour"
+                        }
+                  ]
+            }
       ]
       return (
             <>
