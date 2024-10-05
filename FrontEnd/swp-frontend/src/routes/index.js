@@ -15,8 +15,6 @@ import Logout from "../pages/Logout";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 
-
-
 export const routes = [
       {
             path: "/",

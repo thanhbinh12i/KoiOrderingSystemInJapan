@@ -49,7 +49,7 @@ function MenuSider() {
                   label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
                   icon: <AppstoreOutlined />,
                   key: "/service-manager"
-            },
+            }
       ]
       return (
             <>
