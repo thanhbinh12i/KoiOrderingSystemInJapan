@@ -7,7 +7,7 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
       const [messageApi, contextHolder] = message.useMessage();
       const handleSubmit = async (values) => {
             try {
-                  setLoading(true); 
+                  setLoading(true);
                   const response = await post('koi-variable/create', values);
                   if (response) {
                         form.resetFields();
@@ -19,12 +19,12 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
             } catch (error) {
                   messageApi.error('Lỗi');
             } finally {
-                  setLoading(false); 
+                  setLoading(false);
             }
       }
       return (
             <>
-            {contextHolder}
+                  {contextHolder}
                   <Modal
                         title="Thêm giống cá mới"
                         visible={isModalVisible}

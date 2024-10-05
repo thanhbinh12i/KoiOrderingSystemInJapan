@@ -1,23 +1,22 @@
 import { Link, NavLink } from "react-router-dom";
-import { Button, Layout, Menu, Row, Col} from 'antd';
+import { Button, Layout, Menu, Row, Col } from 'antd';
 import { HomeOutlined, SolutionOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
 import MenuUser from "../../components/MenuUser";
 
 function Header() {
       const dispatch = useDispatch();
-      const isLoggedIn = useSelector((state) => state.loginReducer);
       const token = localStorage.getItem("token");
       useEffect(() => {
             if (token) {
                   dispatch(checkLogin(true));
             }
-      }, [dispatch]);
+      }, [dispatch, token]);
 
-     
+
 
 
       return (
@@ -37,19 +36,19 @@ function Header() {
                                                       <Link to="/">Trang chủ</Link>
                                                 </Menu.Item>
                                                 <Menu.Item key="2" icon={<SolutionOutlined />}>
-                                                      Chuyến đi
+                                                      <Link to="/tours">Chuyến đi</Link>
                                                 </Menu.Item>
                                                 <Menu.Item key="3" icon={<SolutionOutlined />}>
-                                                      Giống cá
+                                                      <Link to="/kois">Cá koi</Link>
                                                 </Menu.Item>
                                                 <Menu.Item key="4" icon={<SolutionOutlined />}>
-                                                      Trang trại
+                                                      <Link to="/farms">Trang trại</Link>
                                                 </Menu.Item>
                                                 <Menu.Item key="5" icon={<SolutionOutlined />}>
-                                                      Dịch vụ
+                                                      <Link to="/services">Dịch vụ</Link>
                                                 </Menu.Item>
                                                 <Menu.Item key="6" icon={<InfoCircleOutlined />}>
-                                                      Về chúng tôi
+                                                      <Link to="/aboutus">Về chúng tôi</Link>
                                                 </Menu.Item>
                                           </Menu>
                                     </Col>
