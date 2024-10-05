@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import {AppstoreOutlined} from "@ant-design/icons";
+import { AppstoreOutlined, PlusOutlined, OrderedListOutlined  } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
       const items = [
@@ -27,6 +27,23 @@ function MenuSider() {
                   label: <Link to="/koivariety-manager">Quản lí giống cá</Link>,
                   icon: <AppstoreOutlined />,
                   key: "/koivariety-manager"
+            },
+            {
+                  label: "Quản lí cá koi",
+                  icon: <AppstoreOutlined />,
+                  key: "/koi-manager",
+                  children: [
+                        {
+                              label: <Link to="/koi-manager">Danh sách cá koi</Link>,
+                              icon: <OrderedListOutlined />,
+                              key: "/koi-list"
+                        },
+                        {
+                              label: <Link to="/create-koi">Thêm cá koi</Link>,
+                              icon: <PlusOutlined />,
+                              key: "/create-koi"
+                        }
+                  ]
             }
       ]
       return (

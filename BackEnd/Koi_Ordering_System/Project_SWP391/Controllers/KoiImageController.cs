@@ -2,6 +2,7 @@
 using Project_SWP391.Dtos.KoiImages;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using Project_SWP391.Model;
 
 namespace Project_SWP391.Controllers
 {
@@ -16,6 +17,7 @@ namespace Project_SWP391.Controllers
             _imageRepo = imageRepo;
             _koiRepo = koiRepo;
         }
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -25,7 +27,6 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiImageDto);
         }
-
         [HttpGet("view-by-id/{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -56,10 +57,11 @@ namespace Project_SWP391.Controllers
             return Ok(koiImageDto);
         }
 
+
         [HttpPost("create/{koiId}")]
         public async Task<IActionResult> Create([FromBody] CreateKoiImageDto createImage, [FromRoute] int koiId)
         {
-            if(!await _koiRepo.KoiExists(koiId))
+            if (!await _koiRepo.KoiExists(koiId))
             {
                 return BadRequest("Koi does not exist");
             }

@@ -4,6 +4,8 @@ import LayoutDefault from "../layouts/LayoutDefault";
 import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
 import KoiManager from "../pages/Admin/KoiManager";
+import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
+import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
 import UserManager from "../pages/Admin/UserManager";
 import Home from "../pages/Home";
@@ -68,6 +70,14 @@ export const routes = [
                               {
                                     path: "koi-manager",
                                     element: <KoiManager />
+                              },
+                              {
+                                    path: "koi-detail/:id",
+                                    element: <KoiDetail />
+                              },
+                              {
+                                    path: "create-koi",
+                                    element: <CreateKoi />
                               },
                               {
                                     path: "koivariety-manager",
