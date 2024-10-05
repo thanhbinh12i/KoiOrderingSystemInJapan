@@ -279,7 +279,7 @@ namespace Project_SWP391.Controllers
                 Gender = user.Gender,
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             });
         }
         [HttpPut("change-password/{id}")]
