@@ -13,5 +13,6 @@ namespace Project_SWP391.Model
 
         // Navigation properties
         public ICollection<Bill> Bills { get; set; }
+
     }
 }

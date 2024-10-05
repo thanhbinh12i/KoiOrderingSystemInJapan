@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Model
 {
@@ -14,7 +15,6 @@ namespace Project_SWP391.Model
         public string Email { get; set; } = string.Empty;
         public float Rating { get; set; }
         public string Hotline { get; set; } = string.Empty;
-
         // Navigation properties
         public ICollection<Koi> Kois { get; set; }
         public ICollection<FarmImage> FarmImages { get; set; }
