@@ -13,6 +13,6 @@ namespace Project_SWP391.Dtos.Kois
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
         public DateOnly UpdateDate { get; set; }
-        public ICollection<KoiImage> KoiImages { get; set; }
+        public ICollection<KoiImageDto> KoiImages { get; set; }
     }
 }

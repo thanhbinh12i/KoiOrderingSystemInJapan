@@ -45,8 +45,13 @@ function CreateKoi() {
                   const varietyId = values.varietyId;
                   const response = await post(`koi/create/${farmId}-${varietyId}`, values);
                   if (response) {
-                        form.resetFields();
-                        messageApi.success('Thêm cá koi mới thành công');
+                        if (fileList.length > 0) {
+                              await uploadImages(response.koiId, fileList);
+                              form.resetFields();
+                              setFileList([]);
+                              messageApi.success('Thêm cá koi mới thành công');
+                        }
+
                   } else {
                         messageApi.error('Thêm cá mới không thành công');
                   }
@@ -56,8 +61,32 @@ function CreateKoi() {
                   setLoading(false);
             }
       }
-      const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+      const uploadImages = async (koiId, files) => {
+            const formData = new FormData();
+            files.forEach((file) => {
+                  formData.append('files', file.originFileObj);
+            });
 
+            try {
+                  const response = await fetch(`https://localhost:7087/api/koi-image/upload/${koiId}`, {
+                        method: 'POST',
+                        body: formData
+                  });
+
+                  if (!response.ok) {
+                        throw new Error('Lỗi tải lên hình ảnh');
+                  }
+
+                  const data = await response.json();
+                  message.success('Tải lên hình ảnh thành công');
+                  return data.urls;
+            } catch (error) {
+                  console.error('Error uploading images:', error);
+                  message.error('Lỗi tải lên hình ảnh');
+                  throw error;
+            }
+      };
+      const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
       return (
             <>
                   {contextHolder}
