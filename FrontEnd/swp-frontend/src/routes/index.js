@@ -7,6 +7,7 @@ import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import ServiceManager from "../pages/Admin/ServiceManager";
 import UserManager from "../pages/Admin/UserManager";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -82,6 +83,10 @@ export const routes = [
                               {
                                     path: "koivariety-manager",
                                     element: <KoiVarietyManager />
+                              },
+                              {
+                                    path: "service-manager",
+                                    element: <ServiceManager />
                               }
                         ]
                   }

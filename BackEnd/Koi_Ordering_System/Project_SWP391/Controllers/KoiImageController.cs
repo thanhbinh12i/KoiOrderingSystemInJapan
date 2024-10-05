@@ -12,13 +12,71 @@ namespace Project_SWP391.Controllers
     {
         private readonly IKoiImageRepository _imageRepo;
         private readonly IKoiRepository _koiRepo;
-        public KoiImageController(IKoiImageRepository imageRepo, IKoiRepository koiRepo)
+        private readonly IWebHostEnvironment _environment;
+        public KoiImageController(IKoiImageRepository imageRepo, IKoiRepository koiRepo, IWebHostEnvironment environment)
         {
             _imageRepo = imageRepo;
             _koiRepo = koiRepo;
-        }
-        
+            _environment = environment;
 
+        }
+        [HttpPost("upload/{koiId}")]
+        public async Task<IActionResult> UploadImages(int koiId, [FromForm] List<IFormFile> files)
+        {
+            try
+            {
+                if (!await _koiRepo.KoiExists(koiId))
+                {
+                    return BadRequest("Koi does not exist");
+                }
+
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
+
+                var uploadedFiles = new List<string>();
+
+                
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koi");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koi/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        var koiImage = new KoiImage
+                        {
+                            Url = fileName,
+                            KoiId = koiId
+                        };
+                        await _imageRepo.CreateAsync(koiImage);
+                    }
+                }
+
+                return Ok(new { message = "Images uploaded successfully", urls = uploadedFiles });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
+            }
+        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

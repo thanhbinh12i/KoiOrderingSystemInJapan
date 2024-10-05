@@ -44,7 +44,12 @@ function MenuSider() {
                               key: "/create-koi"
                         }
                   ]
-            }
+            },
+            {
+                  label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
+                  icon: <AppstoreOutlined />,
+                  key: "/service-manager"
+            },
       ]
       return (
             <>

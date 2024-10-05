@@ -124,6 +124,7 @@ namespace Project_SWP391
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseCors("AllowOrigin");
