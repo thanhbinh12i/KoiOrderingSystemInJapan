@@ -1,4 +1,6 @@
-﻿namespace Project_SWP391.Dtos.Kois
+﻿using Project_SWP391.Model;
+
+namespace Project_SWP391.Dtos.Kois
 {
     public class KoiDto
     {
@@ -10,5 +12,6 @@
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
         public DateOnly UpdateDate { get; set; }
+        public ICollection<KoiImage> KoiImages { get; set; } = new List<KoiImage>();
     }
 }

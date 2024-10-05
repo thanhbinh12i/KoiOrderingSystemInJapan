@@ -21,7 +21,7 @@ namespace Project_SWP391.Repository
             return koi;
         }
 
-        public async Task<Koi> DeleteAsync(int id)
+        public async Task<Koi?> DeleteAsync(int id)
         {
             var koi = await _context.Kois.FindAsync(id);
 
@@ -38,7 +38,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Koi>> GetAllAsync()
         {
-            return await _context.Kois.ToListAsync();
+            return await _context.Kois.Include(k => k.KoiImages).ToListAsync();
         }
 
         public async Task<Koi?> GetByIdAsync(int id)
@@ -55,7 +55,12 @@ namespace Project_SWP391.Repository
             return koi;
         }
 
-        public async Task<Koi> UpdateAsync(int id, UpdateKoiDto updateKoi)
+        public Task<bool> KoiExists(int id)
+        {
+            return _context.Kois.AnyAsync(k => k.KoiId == id);
+        }
+
+        public async Task<Koi?> UpdateAsync(int id, UpdateKoiDto updateKoi)
         {
             var koiModel = await _context.Kois.FirstOrDefaultAsync(k => k.KoiId == id);
 
