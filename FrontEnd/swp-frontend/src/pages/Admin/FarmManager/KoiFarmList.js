@@ -20,7 +20,7 @@ function KoiFarmList() {
       setFarms(response);
       setFilteredFarms(response);
     } catch (error) {
-      console.error("Error fetching koi farms:", error);
+      // console.error("Error fetching koi farms:", error);
       message.error("Failed to load koi farms. Please try again.");
       setFarms([]);
       setFilteredFarms([]);

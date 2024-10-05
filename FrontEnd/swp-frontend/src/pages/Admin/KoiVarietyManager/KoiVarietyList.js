@@ -60,8 +60,6 @@ function KoiVarietyList() {
                         </>
                   )
             }
-
-
       ]
       return (
             <>
