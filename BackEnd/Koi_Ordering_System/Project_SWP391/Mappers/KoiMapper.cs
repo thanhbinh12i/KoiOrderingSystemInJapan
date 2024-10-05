@@ -17,7 +17,7 @@ namespace Project_SWP391.Mappers
                 YOB = koi.YOB,
                 Gender = koi.Gender,
                 UpdateDate = koi.UpdateDate,
-                KoiImages = koi.KoiImages.ToList(),
+                KoiImages = koi.KoiImages.ToList()
             };
         }
         public static Koi ToKoiFromCreateDto(this CreateKoiDto createKoi, int farmId, int varietyId)
