@@ -16,8 +16,8 @@ namespace Project_SWP391.Controllers
         {
             _imageRepo = imageRepo;
             _koiRepo = koiRepo;
+
         }
-        
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
