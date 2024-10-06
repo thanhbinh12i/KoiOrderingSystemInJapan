@@ -1,0 +1,142 @@
+.aboutus {
+      padding: 40px 20px;
+
+      &__header {
+            text-align: center;
+            margin-bottom: 40px;
+
+            h1 {
+                  font-size: 2.5rem;
+                  color: #333;
+                  margin-bottom: 10px;
+            }
+
+            .ant-typography {
+                  font-size: 1.2rem;
+                  color: #666;
+            }
+      }
+
+      &__section {
+            margin-bottom: 40px;
+
+            @media (max-width: 768px) {
+                  flex-direction: column;
+            }
+
+            .ant-card {
+                  flex: 1;
+                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+                  .ant-card-head-title {
+                        font-size: 1.8rem;
+                        color: #333;
+                  }
+
+                  .ant-typography {
+                        color: #555;
+                        line-height: 1.6;
+                        font-size: 1rem;
+                  }
+            }
+
+            .story-card {
+                  margin-bottom: 20px;
+                  .ant-card-body {
+                        height: 100%;
+                        overflow-y: auto;
+                  }
+            }
+
+            .mission-card {
+                  ul {
+                        padding-left: 20px;
+
+                        li {
+                              margin-bottom: 10px;
+                              font-size: 1rem;
+                        }
+                  }
+            }
+      }
+
+      &__statistics {
+            background-color: #f5f5f5;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+
+            .ant-statistic {
+                  text-align: center;
+
+                  .ant-statistic-title {
+                        font-size: 1.1rem;
+                        color: #333;
+                        margin-bottom: 10px;
+                  }
+
+                  .ant-statistic-content {
+                        font-size: 1.8rem;
+                        color: #1890ff;
+                  }
+            }
+      }
+
+      &__history {
+            margin-bottom: 40px;
+
+            h2 {
+                  text-align: center;
+                  margin-bottom: 30px;
+                  color: #333;
+            }
+
+            .ant-timeline {
+                  max-width: 800px;
+                  margin: 0 auto;
+
+                  .ant-timeline-item-content {
+                        font-size: 1rem;
+                        color: #555;
+                  }
+            }
+      }
+
+      &__vision {
+            h2 {
+                  text-align: center;
+                  margin-bottom: 30px;
+                  color: #333;
+            }
+
+            .ant-row {
+                  justify-content: center;
+            }
+
+            .ant-card {
+                  height: 100%;
+                  text-align: center;
+                  transition: transform 0.3s ease;
+
+                  &:hover {
+                        transform: translateY(-5px);
+                  }
+
+                  .icon {
+                        font-size: 3rem;
+                        color: #1890ff;
+                        padding: 20px 0;
+                  }
+
+                  .ant-card-meta-title {
+                        font-size: 1.2rem;
+                        color: #333;
+                        margin-bottom: 10px;
+                  }
+
+                  .ant-card-meta-description {
+                        color: #666;
+                  }
+            }
+      }
+}

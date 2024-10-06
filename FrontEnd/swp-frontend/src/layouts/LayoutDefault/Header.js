@@ -3,12 +3,13 @@ import { Button, Layout, Menu, Row, Col } from 'antd';
 import { HomeOutlined, SolutionOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { checkLogin } from "../../actions/login";
 import MenuUser from "../../components/MenuUser";
 
 function Header() {
       const dispatch = useDispatch();
+      const isLoggedIn = useSelector((state) => state.loginReducer);
       const token = localStorage.getItem("token");
       useEffect(() => {
             if (token) {
@@ -54,7 +55,7 @@ function Header() {
                                     </Col>
 
                                     <Col xs={24} sm={6} className="layout-default__header-right" >
-                                          {!token ? (
+                                          {!isLoggedIn ? (
                                                 <>
                                                       <Button size="large">
                                                             <NavLink to="/login">
