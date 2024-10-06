@@ -26,9 +26,19 @@ namespace Project_SWP391.Controllers
             return Ok(koiFarm);
         }
         [HttpGet("view/{farmId:int}")]
-        public async Task<IActionResult> ViewAllId([FromRoute] int farmId)
+        public async Task<IActionResult> ViewById([FromRoute] int farmId)
         {
-            var koiFarm = await _koiFarmRepo.GetIdByAsync(farmId);
+            var koiFarm = await _koiFarmRepo.GetByIdAsync(farmId);
+            if (koiFarm == null)
+            {
+                return NotFound();
+            }
+            return Ok(koiFarm);
+        }
+        [HttpGet("view/{farmName}")]
+        public async Task<IActionResult> ViewByName([FromRoute] string farmName)
+        {
+            var koiFarm = await _koiFarmRepo.GetByNameAsync(farmName);
             if (koiFarm == null)
             {
                 return NotFound();
@@ -48,7 +58,7 @@ namespace Project_SWP391.Controllers
                 return NotFound();
             }
             await _koiFarmRepo.CreateAsync(koiFarmModel);
-            return CreatedAtAction(nameof(ViewAllId), new { farmId = koiFarmModel.FarmId }, koiFarmModel);
+            return CreatedAtAction(nameof(ViewById), new { farmId = koiFarmModel.FarmId }, koiFarmModel);
 
         }
         [HttpPut("update/{farmId:int}")]
