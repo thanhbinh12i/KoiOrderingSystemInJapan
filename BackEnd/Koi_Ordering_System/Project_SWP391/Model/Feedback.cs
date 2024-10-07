@@ -12,7 +12,7 @@ namespace Project_SWP391.Model
         public string Content { get; set; } = string.Empty ;
 
         // Foreign key
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
     }

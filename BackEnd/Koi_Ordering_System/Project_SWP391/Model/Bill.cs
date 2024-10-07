@@ -14,7 +14,7 @@ namespace Project_SWP391.Model
         public int QuotationId { get; set; }
         [ForeignKey(nameof(QuotationId))]
         public Quotation Quotation { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
 

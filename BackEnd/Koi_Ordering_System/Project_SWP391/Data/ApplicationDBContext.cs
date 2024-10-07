@@ -9,8 +9,8 @@ namespace Project_SWP391.Data
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
-
         }
+
         // DbSet cho các entity
         public DbSet<Koi> Kois { get; set; }
         public DbSet<KoiBill> KoiBills { get; set; }
@@ -32,7 +32,7 @@ namespace Project_SWP391.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //config of table N-N TourDestion
+            // Config for table N-N TourDestination
             modelBuilder.Entity<TourDestination>()
                 .HasKey(td => new { td.FarmId, td.TourId });
 
@@ -45,10 +45,10 @@ namespace Project_SWP391.Data
                 .HasOne(td => td.Tour)
                 .WithMany(t => t.TourDestinations)
                 .HasForeignKey(td => td.TourId);
-            base.OnModelCreating(modelBuilder);
-            //config of table N-N Rating
+
+            // Config for table N-N Rating
             modelBuilder.Entity<Rating>()
-                .HasKey(td => new { td.FarmId, td.UserId });
+                .HasKey(r => new { r.FarmId, r.UserId });
 
             modelBuilder.Entity<Rating>()
                 .HasOne(r => r.KoiFarm)
@@ -59,8 +59,8 @@ namespace Project_SWP391.Data
                 .HasOne(r => r.User)
                 .WithMany(u => u.Ratings)
                 .HasForeignKey(r => r.UserId);
-            base.OnModelCreating(modelBuilder);
-            //config of table N-N VarietyOfKoi
+
+            // Config for table N-N VarietyOfKoi
             modelBuilder.Entity<VarietyOfKoi>()
                 .HasKey(vok => new { vok.KoiId, vok.VarietyId });
 
@@ -73,57 +73,43 @@ namespace Project_SWP391.Data
                 .HasOne(vof => vof.Koi)
                 .WithMany(k => k.VarietyOfKois)
                 .HasForeignKey(vof => vof.KoiId);
-            base.OnModelCreating(modelBuilder);
 
-            //config of table N-N Quotation
+            // Config for table Quotation
             modelBuilder.Entity<Quotation>()
                 .HasKey(q => q.QuotationId);
 
             modelBuilder.Entity<Quotation>()
                 .HasOne(q => q.User)
                 .WithMany(u => u.Quotations)
-                .HasForeignKey(q => q.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(q => q.UserId);
 
             modelBuilder.Entity<Quotation>()
                 .HasOne(q => q.Tour)
                 .WithMany(t => t.Quotations)
-                .HasForeignKey(q => q.TourId)
-                .OnDelete(DeleteBehavior.Cascade);
-            base.OnModelCreating(modelBuilder);
+                .HasForeignKey(q => q.TourId);
+            modelBuilder.Entity<Bill>()
+                .HasOne(b => b.Quotation)
+                .WithOne(q => q.Bill)
+                .HasForeignKey<Bill>(b => b.QuotationId)
+                .OnDelete(DeleteBehavior.Restrict); // Hạn chế xóa liên quan, tránh gây chu kỳ
 
-
-            //modelBuilder.Entity<Bill>()
-            //    .HasOne(b => b.User)
-            //    .WithMany(u => u.Bills)
-            //    .HasForeignKey(b => b.UserId)
-            //    .OnDelete(DeleteBehavior.Cascade); // Cascade delete if needed
-            //base.OnModelCreating(modelBuilder);
-            List<IdentityRole> roles = new List<IdentityRole>
+            modelBuilder.Entity<Bill>()
+                .HasOne(b => b.User)
+                .WithOne(u => u.Bill)
+                .HasForeignKey<Bill>(b => b.UserId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade xóa khi xóa User
+            // Seed roles
+            var roles = new List<IdentityRole>
             {
-                new IdentityRole
-                {
-                    Name="Customer",
-                    NormalizedName="CUSTOMER"
-                }, new IdentityRole
-                {
-                    Name= "Manager",
-                    NormalizedName="MANAGER"
-                },new IdentityRole
-                {
-                    Name= "SalesStaff",
-                    NormalizedName="SALESSTAFF"
-                },new IdentityRole
-                {
-                    Name= "ConsultingStaff",
-                    NormalizedName="CONSULTINGSTAFF"
-                },new IdentityRole
-                {
-                    Name= "DeliveringStaff",
-                    NormalizedName="DELIVERINGSTAFF"
-                }
+                new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" },
+                new IdentityRole { Name = "Manager", NormalizedName = "MANAGER" },
+                new IdentityRole { Name = "SalesStaff", NormalizedName = "SALESSTAFF" },
+                new IdentityRole { Name = "ConsultingStaff", NormalizedName = "CONSULTINGSTAFF" },
+                new IdentityRole { Name = "DeliveringStaff", NormalizedName = "DELIVERINGSTAFF" }
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+            base.OnModelCreating(modelBuilder); // Gọi base ở cuối
         }
     }
 }

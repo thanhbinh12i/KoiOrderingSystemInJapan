@@ -10,11 +10,13 @@ namespace Project_SWP391.Model
         public float PriceOffer { get; set; }
         public string Status { get; set; }
         public string ApprovedDate { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
         public int TourId { get; set; }
         [ForeignKey(nameof(TourId))]
         public Tour Tour { get; set; }
+        public Bill Bill { get; set; }
+
     }
 }
