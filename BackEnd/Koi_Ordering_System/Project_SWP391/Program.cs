@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using Project_SWP391.Data;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
-using Project_SWP391.Repository;
+//using Project_SWP391.Repository;
 using Project_SWP391.Services;
 
 namespace Project_SWP391
@@ -107,12 +107,12 @@ namespace Project_SWP391
                                       .AllowAnyHeader());
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
-            builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
-            builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
-            builder.Services.AddScoped<ITourRepository, TourRepository>();
-            builder.Services.AddScoped<IKoiRepository, KoiRepository>();
-            builder.Services.AddScoped<IKoiImageRepository, KoiImageRepository>();
-            builder.Services.AddScoped<IFarmImageRepository, FarmImageRepository>();
+            //builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
+            //builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
+            //builder.Services.AddScoped<ITourRepository, TourRepository>();
+            //builder.Services.AddScoped<IKoiRepository, KoiRepository>();
+            //builder.Services.AddScoped<IKoiImageRepository, KoiImageRepository>();
+            //builder.Services.AddScoped<IFarmImageRepository, FarmImageRepository>();
 
             var app = builder.Build();
 

@@ -20,63 +20,7 @@ namespace Project_SWP391.Controllers
             _environment = environment;
 
         }
-        [HttpPost("upload/{koiId}")]
-        public async Task<IActionResult> UploadImages(int koiId, [FromForm] List<IFormFile> files)
-        {
-            try
-            {
-                if (!await _koiRepo.KoiExists(koiId))
-                {
-                    return BadRequest("Koi does not exist");
-                }
 
-                if (files == null || !files.Any())
-                {
-                    return BadRequest("No files uploaded.");
-                }
-
-                var uploadedFiles = new List<string>();
-
-                
-                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-                var uploadPath = Path.Combine(webRootPath, "uploads", "koi");
-
-                if (!Directory.Exists(uploadPath))
-                {
-                    Directory.CreateDirectory(uploadPath);
-                }
-
-                foreach (var file in files)
-                {
-                    if (file.Length > 0)
-                    {
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                        var filePath = Path.Combine(uploadPath, fileName);
-
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await file.CopyToAsync(fileStream);
-                        }
-
-                        var relativePath = $"/uploads/koi/{fileName}";
-                        uploadedFiles.Add(relativePath);
-
-                        var koiImage = new KoiImage
-                        {
-                            Url = fileName,
-                            KoiId = koiId
-                        };
-                        await _imageRepo.CreateAsync(koiImage);
-                    }
-                }
-
-                return Ok(new { message = "Images uploaded successfully", urls = uploadedFiles });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
-            }
-        }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -116,26 +60,82 @@ namespace Project_SWP391.Controllers
         }
 
 
-        [HttpPost("create/{koiId}")]
-        public async Task<IActionResult> Create([FromBody] CreateKoiImageDto createImage, [FromRoute] int koiId)
+        //[HttpPost("create/{koiId}")]
+        //public async Task<IActionResult> Create([FromBody] CreateKoiImageDto createImage, [FromRoute] int koiId)
+        //{
+        //    if (!await _koiRepo.KoiExists(koiId))
+        //    {
+        //        return BadRequest("Koi does not exist");
+        //    }
+
+        //    if (createImage == null)
+        //    {
+        //        return BadRequest("Koi image data is missing.");
+        //    }
+
+        //    var imageModel = createImage.ToKoiImageFromCreateDto(koiId);
+
+        //    await _imageRepo.CreateAsync(imageModel);
+
+        //    return CreatedAtAction(nameof(GetById), new { id = imageModel.ImageId }, imageModel);
+        //}
+        [HttpPost("upload/{koiId}")]
+        public async Task<IActionResult> UploadImages(int koiId, [FromForm] List<IFormFile> files)
         {
-            if (!await _koiRepo.KoiExists(koiId))
+            try
             {
-                return BadRequest("Koi does not exist");
-            }
+                if (!await _koiRepo.KoiExists(koiId))
+                {
+                    return BadRequest("Koi does not exist");
+                }
 
-            if (createImage == null)
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
+
+                var uploadedFiles = new List<string>();
+
+
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koi");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koi/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        var koiImage = new KoiImage
+                        {
+                            Url = fileName,
+                            KoiId = koiId
+                        };
+                        await _imageRepo.CreateAsync(koiImage);
+                    }
+                }
+
+                return Ok(new { message = "Images uploaded successfully", urls = uploadedFiles });
+            }
+            catch (Exception ex)
             {
-                return BadRequest("Koi image data is missing.");
+                return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
             }
-
-            var imageModel = createImage.ToKoiImageFromCreateDto(koiId);
-
-            await _imageRepo.CreateAsync(imageModel);
-
-            return CreatedAtAction(nameof(GetById), new { id = imageModel.ImageId }, imageModel);
         }
-
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateKoiImageDto updateImage)
         {

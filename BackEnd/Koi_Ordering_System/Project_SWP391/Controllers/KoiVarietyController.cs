@@ -54,7 +54,7 @@ namespace Project_SWP391.Controllers
 
             var varietyModel = createVariety.ToKoiVarietyFromToCreateDto();
 
-            if(varietyModel == null)
+            if (varietyModel == null)
             {
                 return NotFound("No variety found!");
             }
@@ -73,7 +73,7 @@ namespace Project_SWP391.Controllers
 
             var varietyModel = await _koiVarietyRepo.UpdateAsync(id, updateVariety);
 
-            if(varietyModel == null)
+            if (varietyModel == null)
             {
                 return NotFound("No variety found!");
             }
@@ -85,7 +85,7 @@ namespace Project_SWP391.Controllers
         {
             var varietyModel = await _koiVarietyRepo.DeleteAsync(id);
 
-            if(varietyModel == null)
+            if (varietyModel == null)
             {
                 return NotFound("No variety found!");
             }

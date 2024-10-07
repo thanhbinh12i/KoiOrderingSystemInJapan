@@ -16,9 +16,9 @@ namespace Project_SWP391.Mappers
                 OpenHour = koiFarmModel.OpenHour,
                 CloseHour = koiFarmModel.CloseHour,
                 Email = koiFarmModel.Email,
-                Rating =koiFarmModel.Rating,
+                Rating = koiFarmModel.Rating,
                 Hotline = koiFarmModel.Hotline,
-                Kois=koiFarmModel.Kois.Select(c => c.ToKoiDto()).ToList(),
+                Kois = koiFarmModel.Kois.Select(c => c.ToKoiDto()).ToList(),
                 FarmImages = koiFarmModel.FarmImages.Select(c => c.ToFarmImageDto()).ToList()
             };
         }
