@@ -13,10 +13,13 @@ namespace Project_SWP391.Model
         public string OpenHour { get; set; }
         public string CloseHour { get; set; }
         public string Email { get; set; } = string.Empty;
-        public float Rating { get; set; }
         public string Hotline { get; set; } = string.Empty;
         // Navigation properties
         public ICollection<Koi> Kois { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
+
         public ICollection<FarmImage> FarmImages { get; set; }
+        public ICollection<TourDestination> TourDestinations { get; set; } = new List<TourDestination>();
+
     }
 }
