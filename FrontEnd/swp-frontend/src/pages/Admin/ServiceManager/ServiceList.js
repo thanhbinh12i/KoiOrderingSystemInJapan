@@ -5,6 +5,7 @@ import { EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import UpdateService from "./UpdateService";
 import DeleteService from "./DeleteService";
 import CreateService from "./CreateService";
+import ServiceDetail from "./ServiceDetail";
 
 function ServiceList() {
       const [services, setServices] = useState([]);
@@ -51,6 +52,7 @@ function ServiceList() {
                         <>
                               <Tooltip title="Xem chi tiết">
                                     <Button icon={<EyeOutlined />}></Button>
+                                    <ServiceDetail isModalVisible={isModalVisible} handleCancel={handleCancel} record={record}/>
                               </Tooltip>
                               <UpdateService record={record} handleReload={handleReload} />
                               <DeleteService record={record} handleReload={handleReload} />

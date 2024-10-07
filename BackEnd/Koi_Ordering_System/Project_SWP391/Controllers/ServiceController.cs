@@ -7,7 +7,7 @@ namespace Project_SWP391.Controllers
 {
     [Route("api/service")]
     [ApiController]
-    public class ServiceController :ControllerBase
+    public class ServiceController : ControllerBase
     {
         private readonly IServiceRepository _serviceRepo;
         public ServiceController(IServiceRepository serviceRepo)
