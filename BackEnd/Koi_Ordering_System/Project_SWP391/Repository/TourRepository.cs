@@ -17,7 +17,7 @@ namespace Project_SWP391.Repository
         public async Task<Tour> CreateAsync(Tour tourModel)
         {
             await _context.AddAsync(tourModel);
-           await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return tourModel;
         }
 
@@ -38,7 +38,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Tour>> GetAllAsync()
         {
-            return await _context.Tours.ToListAsync();    
+            return await _context.Tours.ToListAsync();
         }
 
         public async Task<Tour?> GetIdByAsync(int tourId)

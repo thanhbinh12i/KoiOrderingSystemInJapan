@@ -42,9 +42,13 @@ namespace Project_SWP391.Repository
             return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).ToListAsync();
         }
 
-        public async Task<KoiFarm?> GetIdByAsync(int farmId)
+        public async Task<KoiFarm?> GetByIdAsync(int farmId)
         {
             return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).FirstOrDefaultAsync(x => x.FarmId == farmId);
+        }
+        public async Task<KoiFarm?> GetByNameAsync(string farmName)
+        {
+            return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).FirstOrDefaultAsync(x => x.FarmName == farmName);
         }
 
         public async Task<KoiFarm?> UpdateAsync(int farmId, UpdateKoiFarmDto koiFarmDto)

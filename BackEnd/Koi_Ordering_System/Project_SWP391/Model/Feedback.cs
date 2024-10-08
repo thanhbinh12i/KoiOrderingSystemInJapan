@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Model
 {
@@ -6,12 +7,13 @@ namespace Project_SWP391.Model
     {
         [Key]
         public int FeedbackId { get; set; }
-        public int Rating { get; set; }
-        public string Image { get; set; } = string.Empty;
+        public float Rating { get; set; }
+        public string UrlImage { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty ;
 
         // Foreign key
-        public int BillId { get; set; }
-        public Bill Bill { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public AppUser User { get; set; }
     }
 }

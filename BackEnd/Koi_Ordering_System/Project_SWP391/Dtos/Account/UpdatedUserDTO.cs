@@ -2,7 +2,7 @@
 
 namespace Project_SWP391.Dtos.Account
 {
-    public class UpdatedUserDTO
+    public class UpdatedUserDto
     {
         [Required]
         public string? UserName { get; set; }

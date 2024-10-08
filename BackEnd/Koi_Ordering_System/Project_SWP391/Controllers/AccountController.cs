@@ -216,7 +216,7 @@ namespace Project_SWP391.Controllers
         //    });
         //}
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, string id)
+        public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -242,21 +242,6 @@ namespace Project_SWP391.Controllers
                 string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
                 if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
                 user.PhoneNumber = formattedPhoneNumber;
-            }
-
-            if (!string.IsNullOrEmpty(updateUser.Password))
-            {
-                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
-                if (!removePasswordResult.Succeeded)
-                {
-                    return BadRequest(removePasswordResult.Errors);
-                }
-
-                var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
-                if (!addPasswordResult.Succeeded)
-                {
-                    return BadRequest(addPasswordResult.Errors);
-                }
             }
 
             if (!string.IsNullOrEmpty(updateUser.Gender))
@@ -285,7 +270,42 @@ namespace Project_SWP391.Controllers
                 return BadRequest(result.Errors);
             }
 
-            return Ok(new UpdatedUserDTO
+            return Ok(new UpdatedUserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Address = user.Address,
+                DateOfBirth = user.DateOfBirth,
+                Token = await _tokenService.CreateToken(user)
+            });
+        }
+        [HttpPut("change-password/{id}")]
+        public async Task<IActionResult> ChangePassword([FromBody] UpdateUserDto updateUser, string id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return NotFound("User not found");
+
+            if (!string.IsNullOrEmpty(updateUser.Password))
+            {
+                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+                if (!removePasswordResult.Succeeded)
+                {
+                    return BadRequest(removePasswordResult.Errors);
+                }
+
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
+                if (!addPasswordResult.Succeeded)
+                {
+                    return BadRequest(addPasswordResult.Errors);
+                }
+            }
+
+            return Ok(new UpdatedUserDto
             {
                 UserName = user.UserName,
                 Email = user.Email,
@@ -304,7 +324,7 @@ namespace Project_SWP391.Controllers
             if (user == null) return NotFound("No user found");
             return Ok
                 (
-                    new ViewAccountDTO
+                    new ViewAccountDto
                     {
                         UserName = user.UserName,
                         Email = user.Email,
