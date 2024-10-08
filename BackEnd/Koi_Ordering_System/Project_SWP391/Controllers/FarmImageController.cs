@@ -91,7 +91,7 @@ namespace Project_SWP391.Controllers
 
                         var farmImage = new FarmImage
                         {
-                            Url = fileName,
+                            UrlImage = fileName,
                             FarmId = farmId
                         };
                         await _farmImageRepo.CreateAsync(farmImage);

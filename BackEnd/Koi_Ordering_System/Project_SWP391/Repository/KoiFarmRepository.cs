@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiFarm;
+using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 
@@ -66,7 +66,6 @@ namespace Project_SWP391.Repository
             koiFarmModel.OpenHour = koiFarmDto.OpenHour;
             koiFarmModel.CloseHour = koiFarmDto.CloseHour;
             koiFarmModel.Email = koiFarmDto.Email;
-            koiFarmModel.Rating = koiFarmDto.Rating;
             koiFarmModel.Hotline = koiFarmDto.Hotline;
 
 

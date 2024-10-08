@@ -43,7 +43,7 @@ namespace Project_SWP391.Repository
 
         public async Task<KoiImage?> GetByIdAsync(int id)
         {
-            var koiImage = await _context.KoiImages.FirstOrDefaultAsync(i => i.ImageId == id);
+            var koiImage = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
 
             return koiImage;
         }
@@ -57,14 +57,14 @@ namespace Project_SWP391.Repository
 
         public async Task<KoiImage?> UpdateAsync(int id, UpdateKoiImageDto updateImage)
         {
-            var imageModel = await _context.KoiImages.FirstOrDefaultAsync(i => i.ImageId == id);
+            var imageModel = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
 
             if (imageModel == null)
             {
                 return null;
             }
 
-            imageModel.Url = updateImage.Url;
+            imageModel.UrlImage = updateImage.Url;
             imageModel.KoiId = updateImage.KoiId;
 
             return imageModel;

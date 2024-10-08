@@ -11,8 +11,6 @@ namespace Project_SWP391.Mappers
             {
                 VarietyId = variety.VarietyId,
                 VarietyName = variety.VarietyName,
-                Color = variety.Color,
-                Kois = variety.Kois,
             };
         }
         public static KoiVariety ToKoiVarietyFromToCreateDto(this CreateKoiVarietyDto variety)
@@ -20,7 +18,6 @@ namespace Project_SWP391.Mappers
             return new KoiVariety
             {
                 VarietyName = variety.VarietyName,
-                Color = variety.Color,
             };
         }
     }

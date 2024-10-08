@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.KoiFarm;
+﻿using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Interfaces

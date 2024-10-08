@@ -1,5 +1,5 @@
 ﻿
-using Project_SWP391.Dtos.Tour;
+using Project_SWP391.Dtos.Tours;
 
 using Project_SWP391.Model;
 
@@ -16,7 +16,7 @@ namespace Project_SWP391.Mappers
                 Price = tourModel.Price,
                 StartTime = tourModel.StartTime,
                 FinishTime = tourModel.FinishTime,
-                Bills = tourModel.Bills,
+                NumberOfParticipate = tourModel.NumberOfParticipate,
             };
         }
         public static Tour ToTourFromToCreateDto(this CreateTourDto tourDto)
@@ -27,6 +27,7 @@ namespace Project_SWP391.Mappers
                 Price = tourDto.Price,
                 StartTime = tourDto.StartTime,
                 FinishTime = tourDto.FinishTime,
+                NumberOfParticipate = tourDto.NumberOfParticipate,
             };
         }
     }
