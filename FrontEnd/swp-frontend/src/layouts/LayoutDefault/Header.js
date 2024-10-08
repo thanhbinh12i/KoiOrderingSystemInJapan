@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { Button, Layout, Menu, Row, Col } from 'antd';
-import { HomeOutlined, CompassOutlined, AppstoreOutlined, GoldOutlined, BankOutlined, ToolOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, CompassOutlined, AppstoreOutlined, GoldOutlined, BankOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,10 +48,7 @@ function Header() {
                                                 <Menu.Item key="5" icon={<BankOutlined />}>
                                                       <Link to="/farms">Trang trại</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="6" icon={<ToolOutlined />}>
-                                                      <Link to="/services">Dịch vụ</Link>
-                                                </Menu.Item>
-                                                <Menu.Item key="7" icon={<InfoCircleOutlined />}>
+                                                <Menu.Item key="6" icon={<InfoCircleOutlined />}>
                                                       <Link to="/aboutus">Về chúng tôi</Link>
                                                 </Menu.Item>
                                           </Menu>

@@ -1,5 +1,5 @@
-﻿using Project_SWP391.Dtos.KoiFarm;
-using Project_SWP391.Dtos.Tour;
+﻿using Project_SWP391.Dtos.KoiFarms;
+using Project_SWP391.Dtos.Tours;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Interfaces
@@ -11,5 +11,7 @@ namespace Project_SWP391.Interfaces
         Task<Tour> CreateAsync(Tour tourModel);
         Task<Tour?> UpdateAsync(int tourId, UpdateTourDto tourDto);
         Task<Tour?> DeleteAsync(int tourId);
+        Task<bool> ExistTour(int tourId);
+
     }
 }

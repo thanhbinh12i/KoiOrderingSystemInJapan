@@ -41,7 +41,7 @@
 
 //        public async Task<List<KoiVariety>> GetAllAsync()
 //        {
-//            return await _context.KoiVarieties.Include(i => i.Kois).ToListAsync();
+//            //return await _context.KoiVarieties.Include(i => i.Kois).ToListAsync();
 //        }
 
 //        public async Task<KoiVariety?> GetByIdAsync(int id)
