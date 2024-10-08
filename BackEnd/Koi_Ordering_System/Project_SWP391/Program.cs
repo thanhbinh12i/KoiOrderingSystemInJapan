@@ -109,7 +109,7 @@ namespace Project_SWP391
                                       .AllowAnyHeader());
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
-            //builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
+            builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
             builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
             builder.Services.AddScoped<ITourRepository, TourRepository>();
             builder.Services.AddScoped<IKoiRepository, KoiRepository>();

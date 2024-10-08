@@ -3,6 +3,7 @@
     public class UpdateKoiVarietyDto
     {
         public string VarietyName { get; set; }
-        public string Color { get; set; }
+        public string Description { get; set; }
+        public string UrlImage { get; set; }
     }
 }

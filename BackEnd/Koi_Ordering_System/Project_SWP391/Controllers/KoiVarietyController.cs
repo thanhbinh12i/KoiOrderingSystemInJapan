@@ -78,7 +78,7 @@ namespace Project_SWP391.Controllers
                 return NotFound("No variety found!");
             }
 
-            return Ok(varietyModel);
+            return Ok(varietyModel.ToKoiVarietyDto());
         }
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)

@@ -71,13 +71,13 @@ namespace Project_SWP391.Repository
 
             koiModel.KoiName = updateKoi.KoiName;
             koiModel.Price = updateKoi.Price;
+            koiModel.Quantity = updateKoi.Quantity;
             koiModel.Description = updateKoi.Description;
             koiModel.Length = updateKoi.Length;
             koiModel.YOB = updateKoi.YOB;
             koiModel.Gender = updateKoi.Gender;
-            //koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now);
+            koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now).ToString();
             koiModel.FarmId = updateKoi.FarmId;
-            //koiModel.VarietyId = updateKoi.VarietyId;
 
             await _context.SaveChangesAsync();
 
