@@ -16,9 +16,9 @@ function CreateService(props) {
                         form.resetFields();
                         handleCancel();
                         handleReload();
-                        messageApi.success('Thêm giống mới thành công');
+                        messageApi.success('Thêm dịch vụ thành công');
                   } else {
-                        messageApi.error('Thêm giống mới không thành công');
+                        messageApi.error('Thêm dịch vụ không thành công');
                   }
             } catch (error) {
                   messageApi.error('Lỗi');
@@ -41,18 +41,18 @@ function CreateService(props) {
                                     name="serviceName"
                                     rules={[{ required: true, message: 'Vui lòng nhập tên dịch vụ!' }]}
                               >
-                                    <Input placeholder="Nhập tên giống cá" />
+                                    <Input placeholder="Nhập tên dịch vụ" />
                               </Form.Item>
                               <Form.Item
                                     label="Giá tiền"
                                     name="price"
                                     rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}
                               >
-                                    <Input placeholder="Nhập màu sắc" />
+                                    <Input placeholder="Nhập giá tiền" />
                               </Form.Item>
                               <Form.Item
                                     label="Mô tả"
-                                    name="description"
+                                    name="detail"
                                     rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
                               >
                                     <TextArea placeholder="Nhập mô tả" />
