@@ -24,6 +24,7 @@ import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import Services from "../pages/Services";
 import Tour from "../pages/Tours";
+import Variety from "../pages/Varitety";
 
 export const routes = [
       {
@@ -61,6 +62,10 @@ export const routes = [
                   {
                         path: "kois",
                         element: <Koi />
+                  },
+                  {
+                        path: "varieties",
+                        element: <Variety />
                   },
                   {
                         path: "aboutus",
