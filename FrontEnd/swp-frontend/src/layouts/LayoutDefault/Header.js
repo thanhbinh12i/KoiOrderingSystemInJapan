@@ -1,14 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
 import { Button, Layout, Menu, Row, Col } from 'antd';
-import { HomeOutlined, SolutionOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, CompassOutlined, AppstoreOutlined, GoldOutlined, BankOutlined, ToolOutlined, InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
 import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { checkLogin } from "../../actions/login";
 import MenuUser from "../../components/MenuUser";
 
 function Header() {
       const dispatch = useDispatch();
+      const isLoggedIn = useSelector((state) => state.loginReducer);
       const token = localStorage.getItem("token");
       useEffect(() => {
             if (token) {
@@ -35,26 +36,29 @@ function Header() {
                                                 <Menu.Item key="1" icon={<HomeOutlined />}>
                                                       <Link to="/">Trang chủ</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="2" icon={<SolutionOutlined />}>
+                                                <Menu.Item key="2" icon={<CompassOutlined />}>
                                                       <Link to="/tours">Chuyến đi</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="3" icon={<SolutionOutlined />}>
+                                                <Menu.Item key="3" icon={<AppstoreOutlined />}>
+                                                      <Link to="/varieties">Giống cá</Link>
+                                                </Menu.Item>
+                                                <Menu.Item key="4" icon={<GoldOutlined />}>
                                                       <Link to="/kois">Cá koi</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="4" icon={<SolutionOutlined />}>
+                                                <Menu.Item key="5" icon={<BankOutlined />}>
                                                       <Link to="/farms">Trang trại</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="5" icon={<SolutionOutlined />}>
+                                                <Menu.Item key="6" icon={<ToolOutlined />}>
                                                       <Link to="/services">Dịch vụ</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="6" icon={<InfoCircleOutlined />}>
+                                                <Menu.Item key="7" icon={<InfoCircleOutlined />}>
                                                       <Link to="/aboutus">Về chúng tôi</Link>
                                                 </Menu.Item>
                                           </Menu>
                                     </Col>
 
                                     <Col xs={24} sm={6} className="layout-default__header-right" >
-                                          {!token ? (
+                                          {!isLoggedIn ? (
                                                 <>
                                                       <Button size="large">
                                                             <NavLink to="/login">
