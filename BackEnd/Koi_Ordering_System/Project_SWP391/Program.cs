@@ -116,6 +116,8 @@ namespace Project_SWP391
             builder.Services.AddScoped<IKoiImageRepository, KoiImageRepository>();
             builder.Services.AddScoped<IFarmImageRepository, FarmImageRepository>();
             builder.Services.AddScoped<ITourDestinationRepository, TourDestinationRepostitory>();
+            builder.Services.AddScoped<IBillRepository, BillRepository>();
+            builder.Services.AddScoped<IKoiBillRepository, KoiBillRepository>();
 
             var app = builder.Build();
 

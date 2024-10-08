@@ -34,7 +34,7 @@ namespace Project_SWP391.Repository
             }
 
             _context.KoiVarieties.Remove(variety);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return variety;
         }
@@ -46,16 +46,12 @@ namespace Project_SWP391.Repository
 
         public async Task<KoiVariety?> GetByIdAsync(int id)
         {
-            var variety = await _context.KoiVarieties.FirstOrDefaultAsync(variety => variety.VarietyId == id);
-
-            return variety;
+            return await _context.KoiVarieties.FirstOrDefaultAsync(variety => variety.VarietyId == id);
         }
 
         public async Task<List<KoiVariety>> GetByNameAsync(string name)
         {
-            var variety = await _context.KoiVarieties.Where(v => v.VarietyName.Contains(name)).ToListAsync();
-
-            return variety;
+            return await _context.KoiVarieties.Where(v => v.VarietyName.Contains(name)).ToListAsync();
         }
 
         public async Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto updateVariety)

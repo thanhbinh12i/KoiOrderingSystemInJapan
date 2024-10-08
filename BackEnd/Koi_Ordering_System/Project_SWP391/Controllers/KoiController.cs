@@ -72,7 +72,7 @@ namespace Project_SWP391.Controllers
 
             if (koiModel == null)
             {
-                return NotFound("No koi found!");
+                return NotFound();
             }
 
             return Ok(koiModel);
@@ -84,7 +84,7 @@ namespace Project_SWP391.Controllers
 
             if (koiModel == null)
             {
-                return NotFound("No koi found!");
+                return NotFound();
             }
 
             return NoContent();

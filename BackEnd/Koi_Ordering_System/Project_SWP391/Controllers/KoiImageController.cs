@@ -141,14 +141,14 @@ namespace Project_SWP391.Controllers
         {
             if (updateImage == null)
             {
-                return BadRequest("Koi image data is missing.");
+                return BadRequest("Koi image data is missing");
             }
 
             var imageModel = await _imageRepo.UpdateAsync(id, updateImage);
 
             if (imageModel == null)
             {
-                return NotFound("No image found!");
+                return NotFound();
             }
 
             return Ok(imageModel);
@@ -161,7 +161,7 @@ namespace Project_SWP391.Controllers
 
             if (imageModel == null)
             {
-                return NotFound("No image found!");
+                return NotFound();
             }
 
             return NoContent();
