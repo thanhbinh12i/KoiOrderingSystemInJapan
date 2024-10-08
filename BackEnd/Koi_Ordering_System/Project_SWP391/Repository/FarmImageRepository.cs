@@ -39,13 +39,17 @@ namespace Project_SWP391.Repository
             return await _context.FarmImages.FindAsync(imageId);
         }
 
-        public async Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto)
+        public async Task<FarmImage> UpdateAsync(int imageId, string UrlImage)
         {
             var farmImageExist = await _context.FarmImages.FirstOrDefaultAsync(x => x.FarmImageId == imageId);
             if (farmImageExist == null) return null;
-            farmImageExist.UrlImage = farmImageDto.Url;
+            farmImageExist.UrlImage = UrlImage;
             await _context.SaveChangesAsync();
             return farmImageExist;
+        }
+        public Task<bool> ExistFarmImage(int farmImageId)
+        {
+            return _context.FarmImages.AnyAsync(s => s.FarmImageId == farmImageId);
         }
     }
 }
