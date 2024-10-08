@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiFarm;
+using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 

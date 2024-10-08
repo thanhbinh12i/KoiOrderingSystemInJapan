@@ -9,8 +9,8 @@ namespace Project_SWP391.Mappers
         {
             return new FarmImageDto
             {
-                ImageId = farmImageModel.ImageId,
-                Url = farmImageModel.Url,
+                ImageId = farmImageModel.FarmImageId,
+                Url = farmImageModel.UrlImage,
                 FarmId = farmImageModel.FarmId,
             };
         }
@@ -18,7 +18,7 @@ namespace Project_SWP391.Mappers
         {
             return new FarmImage
             {
-                Url = farmImageDto.Url,
+                UrlImage = farmImageDto.Url,
                 FarmId = farmId
             };
         }

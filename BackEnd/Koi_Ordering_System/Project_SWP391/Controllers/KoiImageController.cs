@@ -122,7 +122,7 @@ namespace Project_SWP391.Controllers
 
                         var koiImage = new KoiImage
                         {
-                            Url = fileName,
+                            UrlImage = fileName,
                             KoiId = koiId
                         };
                         await _imageRepo.CreateAsync(koiImage);

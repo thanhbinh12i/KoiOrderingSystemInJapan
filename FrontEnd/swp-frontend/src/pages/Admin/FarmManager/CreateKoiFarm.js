@@ -97,13 +97,7 @@ function CreateKoiFarm({ isModalVisible, handleOk, handleCancel }) {
             name="rating"
             rules={[{ required: true, message: "Vui lòng nhập đánh giá!" }]}
           >
-            <Input
-              type="number"
-              min={0}
-              max={5}
-              step={0.1}
-              placeholder="Nhập đánh giá"
-            />
+            <Input type="number" min={0} max={5} step={0.1} />
           </Form.Item>
           <Form.Item
             label="Số điện thoại"

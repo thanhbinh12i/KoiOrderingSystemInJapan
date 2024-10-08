@@ -83,12 +83,7 @@ function KoiFarmList() {
       dataIndex: "email",
       key: "email",
     },
-    {
-      title: "Đánh giá",
-      dataIndex: "rating",
-      key: "rating",
-      render: (text) => Number(text).toFixed(1),
-    },
+
     {
       title: "Số điện thoại",
       dataIndex: "hotline",
