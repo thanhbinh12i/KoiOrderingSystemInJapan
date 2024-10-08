@@ -12,8 +12,8 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241001194101_EditDB_DateTimeToString")]
-    partial class EditDB_DateTimeToString
+    [Migration("20241007192632_DBInit")]
+    partial class DBInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "611dcc94-a520-4444-91b1-98b696c02158",
+                            Id = "01057524-b088-492b-ba10-b1ea78522afd",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "cf5eee2e-6ab0-4f65-860c-69977a334152",
+                            Id = "0b3b82cb-f582-4871-bb60-22eb5a03f531",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "60e995f1-b50b-4eba-8e9a-e8c1c77b6375",
+                            Id = "2cbfd7b4-7229-444e-aee9-7db1bd821d49",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "8824b3cd-e3f5-40f3-a346-6e018dcaadff",
+                            Id = "08cab93f-28eb-414b-9843-d534d0088cea",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "4aa4bce8-bba5-43b4-b9de-4776d659b101",
+                            Id = "720a6550-6d71-4e4b-a17d-f44100827cd9",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -280,13 +280,6 @@ namespace Project_SWP391.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillId"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DeliveryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -298,10 +291,7 @@ namespace Project_SWP391.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("TourId")
+                    b.Property<int>("QuotationId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserFullName")
@@ -314,37 +304,53 @@ namespace Project_SWP391.Migrations
 
                     b.HasKey("BillId");
 
-                    b.HasIndex("DeliveryId");
+                    b.HasIndex("QuotationId")
+                        .IsUnique();
 
-                    b.HasIndex("TourId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.BillDetail", b =>
                 {
+                    b.Property<int>("BillDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillDetailId"));
+
+                    b.Property<string>("ArriveDate")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("BillId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
+                    b.Property<string>("BookBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("ServicePrice")
+                    b.Property<string>("DeliveryEstimateDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("TotalPrice")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("TimeServiceUsed")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("TourName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BillId", "ServiceId");
+                    b.HasKey("BillDetailId");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("BillId")
+                        .IsUnique();
 
                     b.ToTable("BillDetails");
                 });
 
-            modelBuilder.Entity("Project_SWP391.Model.DeliveryStatus", b =>
+            modelBuilder.Entity("Project_SWP391.Model.Delivery", b =>
                 {
                     b.Property<int>("DeliveryId")
                         .ValueGeneratedOnAdd()
@@ -352,12 +358,39 @@ namespace Project_SWP391.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryId"));
 
-                    b.Property<string>("DeliveryAddress")
+                    b.Property<string>("DeliveryDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("DeliveryFee")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("DeliveryType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DeliveryId");
+
+                    b.ToTable("Deliveries");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.DeliveryStatus", b =>
+                {
+                    b.Property<int>("DeliveryStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeliveryStatusId"));
+
+                    b.Property<int>("BillId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeliveryAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("DeliveryStatusText")
                         .IsRequired()
@@ -367,31 +400,36 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DeliveryId");
+                    b.HasKey("DeliveryStatusId");
+
+                    b.HasIndex("BillId")
+                        .IsUnique();
+
+                    b.HasIndex("DeliveryId");
 
                     b.ToTable("DeliveryStatuses");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.FarmImage", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("FarmImageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FarmImageId"));
 
                     b.Property<int>("FarmId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Url")
+                    b.Property<string>("UrlImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ImageId");
+                    b.HasKey("FarmImageId");
 
                     b.HasIndex("FarmId");
 
-                    b.ToTable("FarmImage");
+                    b.ToTable("FarmImages");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
@@ -402,23 +440,24 @@ namespace Project_SWP391.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FeedbackId"));
 
-                    b.Property<int>("BillId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("UrlImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("BillId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Feedbacks");
@@ -453,11 +492,12 @@ namespace Project_SWP391.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<DateOnly>("UpdateDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("VarietyId")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("UpdateDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YOB")
                         .HasColumnType("int");
@@ -465,8 +505,6 @@ namespace Project_SWP391.Migrations
                     b.HasKey("KoiId");
 
                     b.HasIndex("FarmId");
-
-                    b.HasIndex("VarietyId");
 
                     b.ToTable("Kois");
                 });
@@ -482,17 +520,17 @@ namespace Project_SWP391.Migrations
                     b.Property<int>("BillId")
                         .HasColumnType("int");
 
-                    b.Property<float>("DiscountPercent")
-                        .HasColumnType("real");
-
-                    b.Property<float>("FinalPrice")
+                    b.Property<float?>("FinalPrice")
                         .HasColumnType("real");
 
                     b.Property<int>("KoiId")
                         .HasColumnType("int");
 
-                    b.Property<float>("OriginalPrice")
+                    b.Property<float?>("OriginalPrice")
                         .HasColumnType("real");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
 
                     b.HasKey("KoiBillId");
 
@@ -500,7 +538,7 @@ namespace Project_SWP391.Migrations
 
                     b.HasIndex("KoiId");
 
-                    b.ToTable("KoiBill");
+                    b.ToTable("KoiBills");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.KoiFarm", b =>
@@ -539,9 +577,6 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
                     b.HasKey("FarmId");
 
                     b.ToTable("KoiFarms");
@@ -549,20 +584,20 @@ namespace Project_SWP391.Migrations
 
             modelBuilder.Entity("Project_SWP391.Model.KoiImage", b =>
                 {
-                    b.Property<int>("ImageId")
+                    b.Property<int>("KoiImageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImageId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KoiImageId"));
 
                     b.Property<int>("KoiId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Url")
+                    b.Property<string>("UrlImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ImageId");
+                    b.HasKey("KoiImageId");
 
                     b.HasIndex("KoiId");
 
@@ -577,7 +612,11 @@ namespace Project_SWP391.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VarietyId"));
 
-                    b.Property<string>("Color")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -604,11 +643,16 @@ namespace Project_SWP391.Migrations
                     b.Property<float>("Deposit")
                         .HasColumnType("real");
 
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("Remain")
                         .HasColumnType("real");
 
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PayId");
 
@@ -618,28 +662,61 @@ namespace Project_SWP391.Migrations
                     b.ToTable("PayStatuses");
                 });
 
-            modelBuilder.Entity("Project_SWP391.Model.Service", b =>
+            modelBuilder.Entity("Project_SWP391.Model.Quotation", b =>
                 {
-                    b.Property<int>("ServiceId")
+                    b.Property<int>("QuotationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuotationId"));
 
-                    b.Property<string>("Detail")
+                    b.Property<string>("ApprovedDate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
+                    b.Property<float>("PriceOffer")
                         .HasColumnType("real");
 
-                    b.Property<string>("ServiceName")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ServiceId");
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
 
-                    b.ToTable("Services");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("QuotationId");
+
+                    b.HasIndex("TourId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Quotations");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.Rating", b =>
+                {
+                    b.Property<int>("FarmId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.HasKey("FarmId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Tour", b =>
@@ -651,6 +728,10 @@ namespace Project_SWP391.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TourId"));
 
                     b.Property<string>("FinishTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumberOfParticipate")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -668,6 +749,40 @@ namespace Project_SWP391.Migrations
                     b.HasKey("TourId");
 
                     b.ToTable("Tours");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.TourDestination", b =>
+                {
+                    b.Property<int>("FarmId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TourId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("FarmId", "TourId");
+
+                    b.HasIndex("TourId");
+
+                    b.ToTable("TourDestinations");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.VarietyOfKoi", b =>
+                {
+                    b.Property<int>("KoiId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VarietyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("KoiId", "VarietyId");
+
+                    b.HasIndex("VarietyId");
+
+                    b.ToTable("VarietyOfKois");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -723,27 +838,19 @@ namespace Project_SWP391.Migrations
 
             modelBuilder.Entity("Project_SWP391.Model.Bill", b =>
                 {
-                    b.HasOne("Project_SWP391.Model.DeliveryStatus", "DeliveryStatus")
-                        .WithMany("Bills")
-                        .HasForeignKey("DeliveryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Project_SWP391.Model.Tour", "Tour")
-                        .WithMany("Bills")
-                        .HasForeignKey("TourId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("Project_SWP391.Model.Quotation", "Quotation")
+                        .WithOne("Bill")
+                        .HasForeignKey("Project_SWP391.Model.Bill", "QuotationId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithMany("Bills")
-                        .HasForeignKey("UserId")
+                        .WithOne("Bill")
+                        .HasForeignKey("Project_SWP391.Model.Bill", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DeliveryStatus");
-
-                    b.Navigation("Tour");
+                    b.Navigation("Quotation");
 
                     b.Navigation("User");
                 });
@@ -751,20 +858,31 @@ namespace Project_SWP391.Migrations
             modelBuilder.Entity("Project_SWP391.Model.BillDetail", b =>
                 {
                     b.HasOne("Project_SWP391.Model.Bill", "Bill")
-                        .WithMany("BillDetails")
-                        .HasForeignKey("BillId")
+                        .WithOne("BillDetails")
+                        .HasForeignKey("Project_SWP391.Model.BillDetail", "BillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project_SWP391.Model.Service", "Service")
-                        .WithMany("BillDetails")
-                        .HasForeignKey("ServiceId")
+                    b.Navigation("Bill");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.DeliveryStatus", b =>
+                {
+                    b.HasOne("Project_SWP391.Model.Bill", "Bill")
+                        .WithOne("DeliveryStatus")
+                        .HasForeignKey("Project_SWP391.Model.DeliveryStatus", "BillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_SWP391.Model.Delivery", "Delivery")
+                        .WithMany()
+                        .HasForeignKey("DeliveryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Bill");
 
-                    b.Navigation("Service");
+                    b.Navigation("Delivery");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.FarmImage", b =>
@@ -780,13 +898,13 @@ namespace Project_SWP391.Migrations
 
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
                 {
-                    b.HasOne("Project_SWP391.Model.Bill", "Bill")
+                    b.HasOne("Project_SWP391.Model.AppUser", "User")
                         .WithOne("Feedback")
-                        .HasForeignKey("Project_SWP391.Model.Feedback", "BillId")
+                        .HasForeignKey("Project_SWP391.Model.Feedback", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bill");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Koi", b =>
@@ -797,15 +915,7 @@ namespace Project_SWP391.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project_SWP391.Model.KoiVariety", "KoiVariety")
-                        .WithMany("Kois")
-                        .HasForeignKey("VarietyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("KoiFarm");
-
-                    b.Navigation("KoiVariety");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.KoiBill", b =>
@@ -817,7 +927,7 @@ namespace Project_SWP391.Migrations
                         .IsRequired();
 
                     b.HasOne("Project_SWP391.Model.Koi", "Koi")
-                        .WithMany()
+                        .WithMany("KoiBills")
                         .HasForeignKey("KoiId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -849,16 +959,101 @@ namespace Project_SWP391.Migrations
                     b.Navigation("Bill");
                 });
 
+            modelBuilder.Entity("Project_SWP391.Model.Quotation", b =>
+                {
+                    b.HasOne("Project_SWP391.Model.Tour", "Tour")
+                        .WithMany("Quotations")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_SWP391.Model.AppUser", "User")
+                        .WithMany("Quotations")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tour");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.Rating", b =>
+                {
+                    b.HasOne("Project_SWP391.Model.KoiFarm", "KoiFarm")
+                        .WithMany("Ratings")
+                        .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_SWP391.Model.AppUser", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KoiFarm");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.TourDestination", b =>
+                {
+                    b.HasOne("Project_SWP391.Model.KoiFarm", "KoiFarm")
+                        .WithMany("TourDestinations")
+                        .HasForeignKey("FarmId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_SWP391.Model.Tour", "Tour")
+                        .WithMany("TourDestinations")
+                        .HasForeignKey("TourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KoiFarm");
+
+                    b.Navigation("Tour");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.VarietyOfKoi", b =>
+                {
+                    b.HasOne("Project_SWP391.Model.Koi", "Koi")
+                        .WithMany("VarietyOfKois")
+                        .HasForeignKey("KoiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Project_SWP391.Model.KoiVariety", "KoiVariety")
+                        .WithMany("VarietyOfKois")
+                        .HasForeignKey("VarietyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Koi");
+
+                    b.Navigation("KoiVariety");
+                });
+
             modelBuilder.Entity("Project_SWP391.Model.AppUser", b =>
                 {
-                    b.Navigation("Bills");
+                    b.Navigation("Bill")
+                        .IsRequired();
+
+                    b.Navigation("Feedback")
+                        .IsRequired();
+
+                    b.Navigation("Quotations");
+
+                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Bill", b =>
                 {
-                    b.Navigation("BillDetails");
+                    b.Navigation("BillDetails")
+                        .IsRequired();
 
-                    b.Navigation("Feedback")
+                    b.Navigation("DeliveryStatus")
                         .IsRequired();
 
                     b.Navigation("KoiBills");
@@ -867,14 +1062,13 @@ namespace Project_SWP391.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project_SWP391.Model.DeliveryStatus", b =>
-                {
-                    b.Navigation("Bills");
-                });
-
             modelBuilder.Entity("Project_SWP391.Model.Koi", b =>
                 {
+                    b.Navigation("KoiBills");
+
                     b.Navigation("KoiImages");
+
+                    b.Navigation("VarietyOfKois");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.KoiFarm", b =>
@@ -882,21 +1076,28 @@ namespace Project_SWP391.Migrations
                     b.Navigation("FarmImages");
 
                     b.Navigation("Kois");
+
+                    b.Navigation("Ratings");
+
+                    b.Navigation("TourDestinations");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.KoiVariety", b =>
                 {
-                    b.Navigation("Kois");
+                    b.Navigation("VarietyOfKois");
                 });
 
-            modelBuilder.Entity("Project_SWP391.Model.Service", b =>
+            modelBuilder.Entity("Project_SWP391.Model.Quotation", b =>
                 {
-                    b.Navigation("BillDetails");
+                    b.Navigation("Bill")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Tour", b =>
                 {
-                    b.Navigation("Bills");
+                    b.Navigation("Quotations");
+
+                    b.Navigation("TourDestinations");
                 });
 #pragma warning restore 612, 618
         }

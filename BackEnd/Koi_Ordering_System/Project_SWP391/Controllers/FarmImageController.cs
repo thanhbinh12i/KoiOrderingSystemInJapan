@@ -2,6 +2,7 @@
 using Project_SWP391.Dtos.FarmImages;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using Project_SWP391.Model;
 
 namespace Project_SWP391.Controllers
 {
@@ -11,10 +12,13 @@ namespace Project_SWP391.Controllers
     {
         private readonly IFarmImageRepository _farmImageRepo;
         private readonly IKoiFarmRepository _koiFarmRepo;
-        public FarmImageController(IFarmImageRepository farmImageRepo, IKoiFarmRepository koiFarmRepo)
+        private readonly IWebHostEnvironment _environment;
+
+        public FarmImageController(IFarmImageRepository farmImageRepo, IKoiFarmRepository koiFarmRepo, IWebHostEnvironment environment)
         {
             _farmImageRepo = farmImageRepo;
             _koiFarmRepo = koiFarmRepo;
+            _environment = environment;
         }
         [HttpGet("view-all")]
         public async Task<IActionResult> GetAll()
@@ -35,14 +39,71 @@ namespace Project_SWP391.Controllers
             }
             return Ok(farmImage.ToFarmImageDto());
         }
-        [HttpPost("Create/{farmId:int}")]
-        public async Task<IActionResult> Create(int farmId, CreateFarmImageDto farmImageDto)
+        //[HttpPost("Create/{farmId:int}")]
+        //public async Task<IActionResult> Create(int farmId, CreateFarmImageDto farmImageDto)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        //    if (!await _koiFarmRepo.ExistKoiFarm(farmId)) return BadRequest("Farm does not exist!!!!");
+        //    var farmImageModel = farmImageDto.ToCreateFarmImageDto(farmId);
+        //    await _farmImageRepo.CreateAsync(farmImageModel);
+        //    return CreatedAtAction(nameof(GetById), new { farmId = farmImageModel.FarmId }, farmImageModel.ToFarmImageDto());
+        //}
+        [HttpPost("upload/{farmId:int}")]
+        public async Task<IActionResult> UploadImages(int farmId, [FromForm] List<IFormFile> files)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (!await _koiFarmRepo.ExistKoiFarm(farmId)) return BadRequest("Farm does not exist!!!!");
-            var farmImageModel = farmImageDto.ToCreateFarmImageDto(farmId);
-            await _farmImageRepo.CreateAsync(farmImageModel);
-            return CreatedAtAction(nameof(GetById), new { farmId = farmImageModel.FarmId }, farmImageModel.ToFarmImageDto());
+            try
+            {
+                if (!await _koiFarmRepo.ExistKoiFarm(farmId))
+                {
+                    return BadRequest("Koi farm does not exist");
+                }
+
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
+
+                var uploadedFiles = new List<string>();
+
+
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koiFarm");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koiFarm/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        var farmImage = new FarmImage
+                        {
+                            Url = fileName,
+                            FarmId = farmId
+                        };
+                        await _farmImageRepo.CreateAsync(farmImage);
+                    }
+                }
+
+                return Ok(new { message = "Images uploaded successfully", urls = uploadedFiles });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
+            }
         }
         [HttpDelete("delete/{imageId:int}")]
         public async Task<IActionResult> Delete(int farmId)

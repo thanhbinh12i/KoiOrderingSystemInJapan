@@ -2,7 +2,7 @@
 
 namespace Project_SWP391.Dtos.Account
 {
-    public class ViewAccountDTO
+    public class ViewAccountDto
     {
         [Required]
         public string? UserName { get; set; }

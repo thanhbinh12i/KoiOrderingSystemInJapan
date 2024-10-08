@@ -26,7 +26,7 @@ namespace Project_SWP391.Repository
         {
             var serviceModel = await _context.Services.FindAsync(id);
 
-            if(serviceModel == null)
+            if (serviceModel == null)
             {
                 return null;
             }
@@ -60,7 +60,7 @@ namespace Project_SWP391.Repository
         {
             var serviceModel = await _context.Services.FirstOrDefaultAsync(s => s.ServiceId == id);
 
-            if(serviceModel == null)
+            if (serviceModel == null)
             {
                 return null;
             }

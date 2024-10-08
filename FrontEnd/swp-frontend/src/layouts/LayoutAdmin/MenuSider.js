@@ -1,36 +1,43 @@
 import { Menu } from "antd";
-import { AppstoreOutlined, PlusOutlined, OrderedListOutlined  } from "@ant-design/icons";
+import { DashboardOutlined, UserOutlined, BankOutlined, ExperimentOutlined, GoldOutlined, ToolOutlined, CompassOutlined, OrderedListOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
       const items = [
             {
                   label: <Link to="/admin">Tổng quan</Link>,
-                  icon: <AppstoreOutlined />,
+                  icon: <DashboardOutlined />,
                   key: "/admin"
             },
             {
                   label: <Link to="/user-manager">Quản lí người dùng</Link>,
-                  icon: <AppstoreOutlined />,
+                  icon: <UserOutlined />,
                   key: "/user-manager"
             },
-            // {
-            //       label: <Link to="/staff-manager">Quản lí nhân sự</Link>,
-            //       icon: <AppstoreOutlined />,
-            //       key: "/staff-manager"
-            // },
             {
-                  label: <Link to="/farm-manager">Quản lí trang trại</Link>,
-                  icon: <AppstoreOutlined />,
-                  key: "/farm-manager"
+                  label: "Quản lí trang trại",
+                  icon: <BankOutlined />,
+                  key: "/farm-manager",
+                  children: [
+                        {
+                              label: <Link to="/farm-manager">Danh sách trang trại</Link>,
+                              icon: <OrderedListOutlined />,
+                              key: "/farm-list"
+                        },
+                        {
+                              label: <Link to="/create-farm">Thêm trang trại</Link>,
+                              icon: <PlusOutlined />,
+                              key: "/create-farm"
+                        }
+                  ]
             },
             {
                   label: <Link to="/koivariety-manager">Quản lí giống cá</Link>,
-                  icon: <AppstoreOutlined />,
+                  icon: <ExperimentOutlined />,
                   key: "/koivariety-manager"
             },
             {
                   label: "Quản lí cá koi",
-                  icon: <AppstoreOutlined />,
+                  icon: <GoldOutlined />,
                   key: "/koi-manager",
                   children: [
                         {
@@ -47,8 +54,25 @@ function MenuSider() {
             },
             {
                   label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
-                  icon: <AppstoreOutlined />,
+                  icon: <ToolOutlined />,
                   key: "/service-manager"
+            },
+            {
+                  label: "Quản lí tour",
+                  icon: <CompassOutlined />,
+                  key: "/tour-manager",
+                  children: [
+                        {
+                              label: <Link to="/tour-manager">Danh sách tour</Link>,
+                              icon: <OrderedListOutlined />,
+                              key: "/tour-list"
+                        },
+                        {
+                              label: <Link to="/create-tour">Thêm tour mới</Link>,
+                              icon: <PlusOutlined />,
+                              key: "/create-tour"
+                        }
+                  ]
             }
       ]
       return (
