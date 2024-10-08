@@ -29,7 +29,7 @@ namespace Project_SWP391.Controllers
         {
             var service = await _serviceRepo.GetByIdAsync(id);
 
-            if(service == null)
+            if (service == null)
             {
                 return NotFound("No service found");
             }
@@ -57,7 +57,7 @@ namespace Project_SWP391.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateServiceDto createService)
         {
-            if(createService == null)
+            if (createService == null)
             {
                 return BadRequest("Service data is missing");
             }
@@ -71,14 +71,14 @@ namespace Project_SWP391.Controllers
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateServiceDto updateService, int id)
         {
-            if(updateService == null)
+            if (updateService == null)
             {
                 return BadRequest("Service data is missing");
             }
 
             var serviceModel = await _serviceRepo.UpdateAsync(updateService, id);
 
-            if(serviceModel == null)
+            if (serviceModel == null)
             {
                 return NotFound();
             }
@@ -91,7 +91,7 @@ namespace Project_SWP391.Controllers
         {
             var serviceModel = _serviceRepo.DeleteAsync(id);
 
-            if(serviceModel == null)
+            if (serviceModel == null)
             {
                 return NotFound("No service found");
             }

@@ -7,9 +7,8 @@ namespace Project_SWP391.Model
         [Key]
         public int VarietyId { get; set; }
         public string VarietyName { get; set; }
-        public string Color { get; set; }
-
-        // Navigation properties
-        public ICollection<Koi> Kois { get; set; }
+        public string Description { get; set; }
+        public string UrlImage { get; set; }
+        public ICollection<VarietyOfKoi> VarietyOfKois { get; set; }
     }
 }

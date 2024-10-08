@@ -49,7 +49,7 @@ namespace Project_SWP391.Controllers
         [HttpPost("create/{farmId}-{varietyId}")]
         public async Task<IActionResult> Create([FromRoute] int farmId, [FromRoute] int varietyId, [FromBody] CreateKoiDto createKoi)
         {
-            if(createKoi == null)
+            if (createKoi == null)
             {
                 return BadRequest("Koi data is missing");
             }
@@ -63,14 +63,14 @@ namespace Project_SWP391.Controllers
         [HttpPut("update/{koiId}")]
         public async Task<IActionResult> Update([FromRoute] int koiId, [FromBody] UpdateKoiDto updateKoi)
         {
-            if(updateKoi == null)
+            if (updateKoi == null)
             {
                 return BadRequest("Koi data is missing");
             }
 
             var koiModel = await _koiRepo.UpdateAsync(koiId, updateKoi);
 
-            if(koiModel == null)
+            if (koiModel == null)
             {
                 return NotFound("No koi found!");
             }
@@ -82,7 +82,7 @@ namespace Project_SWP391.Controllers
         {
             var koiModel = await _koiRepo.DeleteAsync(koiId);
 
-            if(koiModel == null)
+            if (koiModel == null)
             {
                 return NotFound("No koi found!");
             }
