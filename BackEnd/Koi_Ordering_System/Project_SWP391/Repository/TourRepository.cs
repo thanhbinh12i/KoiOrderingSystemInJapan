@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiFarm;
-using Project_SWP391.Dtos.Tour;
+using Project_SWP391.Dtos.KoiFarms;
+using Project_SWP391.Dtos.Tours;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 
@@ -41,9 +41,9 @@ namespace Project_SWP391.Repository
             return await _context.Tours.ToListAsync();
         }
 
-        public async Task<Tour?> GetIdByAsync(int tourId)
+        public async Task<Tour> GetIdByAsync(int tourId)
         {
-            return await _context.Tours.Include(c => c.Bills).FirstOrDefaultAsync(x => x.TourId == tourId);
+            return await _context.Tours.FirstOrDefaultAsync(x => x.TourId == tourId);
         }
 
         public async Task<Tour?> UpdateAsync(int tourId, UpdateTourDto tourDto)
@@ -59,10 +59,16 @@ namespace Project_SWP391.Repository
             tourModel.Price = tourDto.Price;
             tourModel.StartTime = tourDto.StartTime;
             tourModel.FinishTime = tourDto.FinishTime;
+            tourModel.NumberOfParticipate = tourDto.NumberOfParticipate;
 
             await _context.SaveChangesAsync();
 
             return tourModel;
+        }
+
+        public Task<bool> ExistTour(int tourId)
+        {
+            return _context.Tours.AnyAsync(s => s.TourId == tourId);
         }
     }
 }

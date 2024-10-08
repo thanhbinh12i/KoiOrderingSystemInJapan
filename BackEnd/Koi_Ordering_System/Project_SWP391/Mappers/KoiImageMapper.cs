@@ -9,7 +9,7 @@ namespace Project_SWP391.Mappers
         {
             return new KoiImage
             {
-                Url = createImage.Url,
+                UrlImage = createImage.Url,
                 KoiId = koiId,
             };
         }
@@ -17,8 +17,8 @@ namespace Project_SWP391.Mappers
         {
             return new KoiImageDto
             {
-                ImageId = koiImage.ImageId,
-                Url = koiImage.Url,
+                ImageId = koiImage.KoiImageId,
+                Url = koiImage.UrlImage,
                 KoiId = koiImage.KoiId
             };
         }

@@ -22,7 +22,7 @@ namespace Project_SWP391.Repository
         }
         public async Task<FarmImage?> DeleteAsync(int imageId)
         {
-            var farmImageModel = await _context.FarmImages.FirstOrDefaultAsync(x => x.ImageId == imageId);
+            var farmImageModel = await _context.FarmImages.FirstOrDefaultAsync(x => x.FarmImageId == imageId);
             if (farmImageModel == null) return null;
             _context.FarmImages.Remove(farmImageModel);
             await _context.SaveChangesAsync();
@@ -41,9 +41,9 @@ namespace Project_SWP391.Repository
 
         public async Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto)
         {
-            var farmImageExist = await _context.FarmImages.FirstOrDefaultAsync(x => x.ImageId == imageId);
+            var farmImageExist = await _context.FarmImages.FirstOrDefaultAsync(x => x.FarmImageId == imageId);
             if (farmImageExist == null) return null;
-            farmImageExist.Url = farmImageDto.Url;
+            farmImageExist.UrlImage = farmImageDto.Url;
             await _context.SaveChangesAsync();
             return farmImageExist;
         }
