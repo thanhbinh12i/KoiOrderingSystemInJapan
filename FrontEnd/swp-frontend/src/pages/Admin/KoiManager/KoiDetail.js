@@ -57,7 +57,7 @@ function KoiDetail() {
                   {images.map((image, index) => (
                     <Image
                       key={image.id || index}
-                      src={`https://localhost:7087/uploads/koi/${image.farmId}`}
+                      src={`https://localhost:7087/uploads/koi/${image.url}`}
                       alt={`Koi fish ${index + 1}`}
                       width={200}
                       className="mr-10 mb-10"

@@ -31,7 +31,7 @@ namespace Project_SWP391.Repository
             }
 
             _context.KoiImages.Remove(koiImage);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return koiImage;
         }
@@ -43,16 +43,12 @@ namespace Project_SWP391.Repository
 
         public async Task<KoiImage?> GetByIdAsync(int id)
         {
-            var koiImage = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
-
-            return koiImage;
+            return await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
         }
 
         public async Task<KoiImage?> GetByKoiIdAsync(int id)
         {
-            var koiImage = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiId == id);
-
-            return koiImage;
+            return await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiId == id);
         }
 
         public async Task<KoiImage?> UpdateAsync(int id, UpdateKoiImageDto updateImage)

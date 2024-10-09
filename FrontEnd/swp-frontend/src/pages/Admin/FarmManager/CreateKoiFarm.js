@@ -48,7 +48,7 @@ function CreateKoiFarm() {
   const uploadImages = async (farmId, files) => {
     const formData = new FormData();
     files.forEach((file) => {
-      formData.append("files", file.originFileObj);
+      formData.append("files", file.originFileObj); // Ghi lại từng file vào FormData
     });
 
     try {
@@ -60,20 +60,23 @@ function CreateKoiFarm() {
         }
       );
 
-      if (!response) {
+      if (!response.ok) {
         throw new Error("Lỗi tải lên hình ảnh");
       }
 
       const data = await response.json();
       messageApi.success("Tải lên hình ảnh thành công");
-      return data.urls;
+      return data.urls; // Đảm bảo data.urls tồn tại trong phản hồi
     } catch (error) {
       console.error("Error uploading images:", error);
       messageApi.error("Lỗi tải lên hình ảnh");
       throw error;
     }
   };
-  const handleFileChange = ({ fileList }) => setFileList(fileList);
+
+  const handleFileChange = ({ fileList }) => {
+    setFileList(fileList); // Cập nhật danh sách file
+  };
 
   return (
     <>
@@ -163,10 +166,10 @@ function CreateKoiFarm() {
             <Form.Item label="Hình ảnh trang trại" name="farmImage">
               <Upload
                 listType="picture"
-                maxCount={1}
                 fileList={fileList}
                 onChange={handleFileChange}
                 beforeUpload={() => false}
+                multiple
               >
                 <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
               </Upload>

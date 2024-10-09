@@ -2,7 +2,8 @@
 {
     public class CreateKoiVarietyDto
     {
-        public string VarietyName { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
+        public string VarietyName { get; set; }
+        public string Description { get; set; }
+        public string UrlImage { get; set; }
     }
 }

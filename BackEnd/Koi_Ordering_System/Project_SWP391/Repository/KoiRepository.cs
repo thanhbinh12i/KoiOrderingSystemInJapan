@@ -31,7 +31,7 @@ namespace Project_SWP391.Repository
             }
 
             _context.Kois.Remove(koi);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return koi;
         }
@@ -43,16 +43,12 @@ namespace Project_SWP391.Repository
 
         public async Task<Koi?> GetByIdAsync(int id)
         {
-            var koi = await _context.Kois.Include(k => k.KoiImages).FirstOrDefaultAsync(koi => koi.KoiId == id);
-
-            return koi;
+            return await _context.Kois.Include(k => k.KoiImages).FirstOrDefaultAsync(koi => koi.KoiId == id);
         }
 
         public async Task<Koi?> GetByNameAsync(string name)
         {
-            var koi = await _context.Kois.Include(k => k.KoiImages).FirstOrDefaultAsync(koi => koi.KoiName == name);
-
-            return koi;
+            return await _context.Kois.Include(k => k.KoiImages).FirstOrDefaultAsync(koi => koi.KoiName == name);
         }
 
         public Task<bool> KoiExists(int id)
@@ -71,14 +67,12 @@ namespace Project_SWP391.Repository
 
             koiModel.KoiName = updateKoi.KoiName;
             koiModel.Price = updateKoi.Price;
+            koiModel.Quantity = updateKoi.Quantity;
             koiModel.Description = updateKoi.Description;
             koiModel.Length = updateKoi.Length;
             koiModel.YOB = updateKoi.YOB;
             koiModel.Gender = updateKoi.Gender;
-            //koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now);
-            koiModel.FarmId = updateKoi.FarmId;
-            //koiModel.VarietyId = updateKoi.VarietyId;
-
+            koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now).ToString();
             await _context.SaveChangesAsync();
 
             return koiModel;
