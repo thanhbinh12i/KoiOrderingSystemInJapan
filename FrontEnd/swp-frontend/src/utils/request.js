@@ -16,14 +16,28 @@ export const post = async (path, options) => {
       "Content-Type": "application/json",
     },
 
-    body: JSON.stringify(options),
+    body: options !== null ? JSON.stringify(options) : undefined,
   });
   if (!response.ok) {
     console.log("Response Status:", response.status, await response.text());
     throw new Error(`Error: ${response.statusText}`);
   }
-  const result = await response.json();
-  return result;
+
+  const responseText = await response.text();
+  if (!responseText) {
+    return null;
+  }
+
+  const contentType = response.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    try {
+      return JSON.parse(responseText);
+    } catch (jsonError) {
+      throw new Error("Invalid JSON response");
+    }
+  } else {
+    return responseText;
+  }
 };
 
 export const del = async (path, id) => {

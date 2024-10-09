@@ -1,0 +1,88 @@
+.farm{
+      
+      background-color: #2287ed;
+}
+
+.farm-list {
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 24px;
+}
+
+.farm-link {
+      text-decoration: none;
+      color: inherit;
+
+      &:hover,
+      &:focus {
+            text-decoration: none;
+      }
+}
+
+.farm-card {
+      width: 100%;
+      transition: all 0.3s ease;
+
+      &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .farm-card-content {
+            display: flex;
+            justify-content: space-between;
+      }
+
+      .farm-info {
+            flex: 1;
+            padding-right: 24px;
+
+            h2 {
+                  font-size: 24px;
+                  margin-bottom: 12px;
+                  color: rgba(0, 0, 0, 0.85);
+            }
+            .farm-details {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 8px;
+                  margin-bottom: 16px;
+
+                  p {
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        color: rgba(0, 0, 0, 0.65);
+                  }
+
+                  .anticon {
+                        font-size: 16px;
+                  }
+            }
+
+            .ant-rate {
+                  font-size: 16px;
+            }
+      }
+
+      .farm-image {
+            flex: 0 0 500px;
+            height: 220px;
+            overflow: hidden;
+
+            img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  transition: transform 0.3s ease;
+            }
+
+            &:hover img {
+                  transform: scale(1.05);
+            }
+      }
+}
