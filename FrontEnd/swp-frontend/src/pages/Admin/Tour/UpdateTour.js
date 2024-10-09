@@ -3,6 +3,7 @@ import { Modal, Form, Input, Button, message, DatePicker, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { put } from "../../../utils/request";
+import FormItem from "antd/es/form/FormItem";
 
 function UpdateTour({ reload, record }) {
   const [form] = Form.useForm();
@@ -104,6 +105,22 @@ function UpdateTour({ reload, record }) {
           >
             <DatePicker />
           </Form.Item>
+          <FormItem
+            label="Số người tham gia"
+            name="numberOfParticipate"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn số lượng người có thể tham gia!",
+              },
+            ]}
+          >
+            <Input
+              min={0}
+              style={{ width: "100%" }}
+              placeholder="Nhập giá tour"
+            />
+          </FormItem>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading}>
               Cập nhật
