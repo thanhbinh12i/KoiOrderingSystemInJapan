@@ -8,7 +8,6 @@ import {
   BellOutlined,
   GiftOutlined,
   SettingOutlined,
-  LogoutOutlined,
   GoogleOutlined,
 } from "@ant-design/icons";
 import { get } from "../../utils/request";
@@ -96,9 +95,6 @@ function Sidebar() {
         </Menu.Item>
         <Menu.Item key="account" icon={<SettingOutlined />}>
           Tài khoản
-        </Menu.Item>
-        <Menu.Item key="logout" icon={<LogoutOutlined />}>
-          Đăng xuất
         </Menu.Item>
       </Menu>
     </div>
