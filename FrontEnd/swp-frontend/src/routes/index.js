@@ -1,3 +1,4 @@
+import BookTour from "../components/BookTour";
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
@@ -78,6 +79,10 @@ export const routes = [
                                     path: "profile",
                                     element: <Profile />
                               },
+                              {
+                                    path: "book-tour",
+                                    element: <BookTour />
+                              }
                         ]
                   }
             ]
