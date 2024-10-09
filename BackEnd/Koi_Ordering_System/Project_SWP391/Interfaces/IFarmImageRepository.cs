@@ -9,6 +9,8 @@ namespace Project_SWP391.Interfaces
         Task<FarmImage?> GetByIdAsync(int imageId);
         Task<FarmImage?> DeleteAsync(int imageId);
         Task<FarmImage> CreateAsync(FarmImage farmImageModel);
-        Task<FarmImage> UpdateAsync(int imageId, UpdateFarmImageDto farmImageDto);
+        Task<FarmImage> UpdateAsync(int imageId, string urlImage);
+        Task<bool> ExistFarmImage(int farmImageId);
+
     }
 }

@@ -3,7 +3,7 @@
     public class FarmImageDto
     {
         public int ImageId { get; set; }
-        public string Url { get; set; }
+        public string UrlImage { get; set; }
         public int? FarmId { get; set; }
     }
 }
