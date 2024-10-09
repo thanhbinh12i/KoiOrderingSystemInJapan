@@ -6,7 +6,7 @@ import { Spin, message } from "antd";
 
 function TourDetail() {
   const { id } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchApi = async () => {
@@ -17,8 +17,7 @@ function TourDetail() {
     } catch (error) {
       console.error("Error fetching tours:", error);
       message.error("Failed to load tours. Please try again.");
-
-      setData([]);
+      setData(null);
     } finally {
       setLoading(false);
     }
@@ -52,6 +51,18 @@ function TourDetail() {
       </div>
       <div className="info-item">
         <strong>Số người tham gia:</strong> {data.numberOfParticipate}
+      </div>
+      <div className="info-item">
+        <strong>Trang trại trong chuyến đi:</strong>
+        <ul>
+          {data.tourDestinations.map((destination, index) => (
+            <li key={index}>
+              <strong>Tên trang trại:</strong> {destination.farmName}
+              <br />
+              <strong>Địa chỉ:</strong> {destination.address}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
