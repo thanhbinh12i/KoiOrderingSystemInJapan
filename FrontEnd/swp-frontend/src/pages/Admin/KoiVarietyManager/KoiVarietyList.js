@@ -89,11 +89,7 @@ function KoiVarietyList() {
       return (
             <div className="koi-variety">
                   <div className="koi-variety__search-create">
-                        <Button
-                              icon={<PlusOutlined />}
-                              onClick={() => showModal('create')}
-                              className="create-button"
-                        >
+                        <Button icon={<PlusOutlined />} onClick={() => showModal('create')} className="create-button">
                               Thêm giống cá mới
                         </Button>
                         <SearchVariety onSearch={handleSearch} className="search-button" />

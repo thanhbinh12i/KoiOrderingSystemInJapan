@@ -17,7 +17,7 @@ function CreateKoi() {
                   const response = await get("koi-variable/view-all");
                   if (response) {
                         const formattedVarieties = response.map(item => ({
-                              label: item.varietyName + " ( " + (item.color) + " ) ",
+                              label: item.varietyName,
                               value: item.varietyId
                         }));
                         setVarieties(formattedVarieties);
@@ -42,20 +42,36 @@ function CreateKoi() {
             try {
                   setLoading(true);
                   const farmId = values.farmId;
-                  const varietyId = values.varietyId;
-                  const response = await post(`koi/create/${farmId}-${varietyId}`, values);
-                  if (response) {
+                  const varietyIds = values.varietyId;
+                  const getTimeCurrent = () => {
+                        return new Date().toISOString();
+                  };
+
+                  const koiResponse = await post(`koi/create/${farmId}`, {
+                        ...values,
+                        varietyId: undefined,
+                        updateDate: getTimeCurrent()
+                  });
+                  if (koiResponse) {
+                        const koiId = koiResponse.koiId;
+                        const varietyPromises = varietyIds.map(varietyId =>
+                              post(`varietyOfKoi/create/${koiId}&${varietyId}`, null)
+                        );
+
+                        
                         if (fileList.length > 0) {
-                              await uploadImages(response.koiId, fileList);
+                              await uploadImages(koiId, fileList);
                               form.resetFields();
                               setFileList([]);
                               messageApi.success('Thêm cá koi mới thành công');
                         }
+                        await Promise.all(varietyPromises);
 
                   } else {
                         messageApi.error('Thêm cá mới không thành công');
                   }
             } catch (error) {
+                  console.log(error);
                   messageApi.error('Lỗi');
             } finally {
                   setLoading(false);
@@ -128,7 +144,7 @@ function CreateKoi() {
                               </Col>
                               <Col span={8}>
                                     <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
-                                          <Select options={varieties} />
+                                          <Select mode="multiple" options={varieties} />
                                     </Form.Item>
                               </Col>
                               <Col span={24}>

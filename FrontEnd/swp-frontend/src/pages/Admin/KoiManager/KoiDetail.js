@@ -10,27 +10,23 @@ function KoiDetail() {
       const [images, setImages] = useState([]);
       const [loading, setLoading] = useState(true);
       useEffect(() => {
-            const fetchApi = async () => {
-                  const response = await get(`koi/view-by-id/${params.id}`);
-                  if (response) {
-                        setData(response);
-                  }
-            }
-            const fetchKoiImages = async () => {
-                  const response = await get(`koi-image/view-by-koi-id/${params.id}`);
-                  if (response) {
-                        setImages(response);
-                  }
-            }
-            const fetchData = async () => {
-                  setLoading(true);
-                  await Promise.all([fetchApi(), fetchKoiImages()]);
-                  setLoading(false);
-            }
+            const id = params.id;
 
-            fetchData();
-      }, [params.id])
-      console.log(images);
+            const fetchApi = async () => {
+                  try {
+                        const response = await get(`koi/view-by-id/${id}`);
+                        if (response) {
+                              setData(response);
+                        } else {
+                              console.error('Không tìm thấy dữ liệu cho koi');
+                        }
+                  } catch (error) {
+                        console.error('Lỗi khi tải dữ liệu koi:', error);
+                  }
+            };
+            fetchApi();
+      }, [params.id]);
+
       return (
             <>
                   <GoBack />
@@ -50,14 +46,14 @@ function KoiDetail() {
                                     Giới tính: <strong>{data.gender}</strong>
                               </div>
                               <div className="mb-20">
-                                    {images.length > 0 && (
+                                    {(data.koiImages.length > 0) && (
                                           <div className="mb-20">
                                                 <h2>Hình ảnh</h2>
                                                 <Image.PreviewGroup>
-                                                      {images.map((image, index) => (
+                                                      {data.koiImages.map((image, index) => (
                                                             <Image
-                                                                  key={image.id || index}
-                                                                  src={`https://localhost:7087/uploads/koi/${image.url}`}
+                                                                  key={index}
+                                                                  src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
                                                                   alt={`Koi fish ${index + 1}`}
                                                                   width={200}
                                                                   className="mr-10 mb-10"
