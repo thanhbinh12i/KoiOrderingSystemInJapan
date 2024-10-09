@@ -38,8 +38,8 @@ function MenuUser() {
                   <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
                         <Link to="/admin">Trang quản lý</Link>
                   </Menu.Item>
-                  <Menu.Item key="bookings" icon={<HistoryOutlined />} className="bookings-item">
-                        <Link to="/bookings">Đặt chỗ của tôi</Link>
+                  <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
+                        <Link to="/my-bookings">Đặt chỗ của tôi</Link>
                   </Menu.Item>
                   <Menu.Item key="settings" icon={<SettingOutlined />} className="settings-item">
                         <Link to="/settings">Thay đổi mật khẩu</Link>

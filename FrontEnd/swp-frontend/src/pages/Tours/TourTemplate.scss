@@ -1,0 +1,23 @@
+.price {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #f00;
+}
+
+.participants {
+      margin: 5px 0;
+      color: #555;
+}
+
+.details-button {
+      background-color: #1890ff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+            background-color: #40a9ff;
+      }
+}

@@ -1,5 +1,6 @@
 
 import SearchTour from '../../components/SearchTour';
+import TourList from './TourList';
 
 function Tour() {
       return (
@@ -9,7 +10,7 @@ function Tour() {
 
 
                   <div>
-                        List Tour
+                        <TourList />
                   </div>
                   <div>
                         Form dat tour mong muon

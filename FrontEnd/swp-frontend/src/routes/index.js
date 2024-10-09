@@ -1,3 +1,4 @@
+import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
@@ -11,6 +12,7 @@ import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
 import TourManager from "../pages/Admin/Tour";
 import CreateTour from "../pages/Admin/Tour/CreateTour";
@@ -22,6 +24,7 @@ import Home from "../pages/Home";
 import Koi from "../pages/Koi";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
+import MyBooking from "../pages/MyBooking";
 import Profile from "../pages/Profile";
 import Register from "../pages/Register";
 import Tour from "../pages/Tours";
@@ -80,8 +83,16 @@ export const routes = [
                                     element: <Profile />
                               },
                               {
-                                    path: "book-tour",
+                                    path: "book-tour/:id",
                                     element: <BookTour />
+                              },
+                              {
+                                    path: "book-success",
+                                    element: <BookSuccess />
+                              },
+                              {
+                                    path: "my-bookings",
+                                    element: <MyBooking />
                               }
                         ]
                   }
@@ -145,6 +156,10 @@ export const routes = [
                               {
                                     path: "tour-detail/:id",
                                     element: <TourDetail />
+                              },
+                              {
+                                    path: "quotation-manager",
+                                    element: <QuotationManager />
                               }
                         ]
                   }
