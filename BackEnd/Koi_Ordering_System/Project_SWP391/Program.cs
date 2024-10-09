@@ -109,13 +109,15 @@ namespace Project_SWP391
                                       .AllowAnyHeader());
             });
             builder.Services.AddScoped<ITokenService, TokenService>();
-            //builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
+            builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
             builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
             builder.Services.AddScoped<ITourRepository, TourRepository>();
             builder.Services.AddScoped<IKoiRepository, KoiRepository>();
             builder.Services.AddScoped<IKoiImageRepository, KoiImageRepository>();
             builder.Services.AddScoped<IFarmImageRepository, FarmImageRepository>();
             builder.Services.AddScoped<ITourDestinationRepository, TourDestinationRepostitory>();
+            builder.Services.AddScoped<IBillRepository, BillRepository>();
+            builder.Services.AddScoped<IKoiBillRepository, KoiBillRepository>();
             builder.Services.AddScoped<IRatingRepository, RatingRepository>();
             builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             var app = builder.Build();

@@ -56,7 +56,7 @@ namespace Project_SWP391.Controllers
 
             if (varietyModel == null)
             {
-                return NotFound("No variety found!");
+                return NotFound();
             }
 
             await _koiVarietyRepo.CreateAsync(varietyModel);
@@ -75,10 +75,10 @@ namespace Project_SWP391.Controllers
 
             if (varietyModel == null)
             {
-                return NotFound("No variety found!");
+                return NotFound();
             }
 
-            return Ok(varietyModel);
+            return Ok(varietyModel.ToKoiVarietyDto());
         }
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
@@ -87,7 +87,7 @@ namespace Project_SWP391.Controllers
 
             if (varietyModel == null)
             {
-                return NotFound("No variety found!");
+                return NotFound();
             }
 
             return NoContent();
