@@ -15,7 +15,7 @@ namespace Project_SWP391.Model
         public float Length { get; set; }
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
-        public string UpdateDate { get; set; }
+        public string? UpdateDate { get; set; }
 
         // Foreign keys
         public int FarmId { get; set; }

@@ -113,15 +113,84 @@ namespace Project_SWP391.Controllers
             if (farmImageModel == null) return NotFound("Farm image not found!!!");
             return NoContent();
         }
-        [HttpPut("update/{imageId:int}")]
-        public async Task<IActionResult> Update(int imageId, [FromBody] UpdateFarmImageDto farmImageDto)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            var farmImageModel = await _farmImageRepo.UpdateAsync(imageId, farmImageDto);
-            if (farmImageModel == null) return NotFound("Farm image not found!!!");
+        //[HttpPut("update/{imageId:int}")]
+        //public async Task<IActionResult> Update(int imageId, [FromBody] UpdateFarmImageDto farmImageDto)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+        //    var farmImageModel = await _farmImageRepo.UpdateAsync(imageId, farmImageDto);
+        //    if (farmImageModel == null) return NotFound("Farm image not found!!!");
 
-            return Ok(farmImageModel.ToFarmImageDto());
+        //    return Ok(farmImageModel.ToFarmImageDto());
+        //}
+        [HttpPut("update/{farmImageId:int}")]
+        public async Task<IActionResult> UpdateImages(int farmImageId, [FromForm] List<IFormFile> files)
+        {
+            try
+            {
+                var farmImage = await _farmImageRepo.GetByIdAsync(farmImageId);
+                if (farmImage == null)
+                {
+                    return BadRequest("Farm image does not exist.");
+                }
+
+                // check if file can't upload
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
+
+                var uploadedFiles = new List<string>();
+
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koiFarm");
+
+                // create folder if not exist
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                // delete old image(if yes)
+                if (!string.IsNullOrEmpty(farmImage.UrlImage))
+                {
+                    var oldFilePath = Path.Combine(uploadPath, farmImage.UrlImage);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                // upload new image
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koiFarm/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        // update new url
+                        farmImage.UrlImage = fileName;
+
+                        await _farmImageRepo.UpdateAsync(farmImageId, farmImage.UrlImage);
+                    }
+                }
+
+                return Ok(new { message = "Images updated successfully", urls = uploadedFiles });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while updating images: {ex.Message}");
+            }
         }
+
 
     }
 }

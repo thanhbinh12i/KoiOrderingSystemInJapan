@@ -1,6 +1,8 @@
 import { Modal, Form, Input, Button, message } from 'antd';
 import { useState } from 'react';
 import { post } from '../../../utils/request';
+
+const { TextArea } = Input;
 function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
       const [form] = Form.useForm();
       const [loading, setLoading] = useState(false);
@@ -34,17 +36,24 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
                         <Form form={form} layout="vertical" onFinish={handleSubmit}>
                               <Form.Item
                                     label="Tên giống cá"
-                                    name="VarietyName"
+                                    name="varietyName"
                                     rules={[{ required: true, message: 'Vui lòng nhập tên giống cá!' }]}
                               >
                                     <Input placeholder="Nhập tên giống cá" />
                               </Form.Item>
                               <Form.Item
-                                    label="Màu sắc"
-                                    name="Color"
-                                    rules={[{ required: true, message: 'Vui lòng nhập màu sắc!' }]}
+                                    label="Mô tả"
+                                    name="description"
+                                    rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
                               >
-                                    <Input placeholder="Nhập màu sắc" />
+                                    <TextArea placeholder="Nhập mô tả" />
+                              </Form.Item>
+                              <Form.Item
+                                    label="Ảnh"
+                                    name="urlImage"
+                                    rules={[{ required: true, message: 'Vui lòng nhập ảnh!' }]}
+                              >
+                                    <Input placeholder="Nhập ảnh" />
                               </Form.Item>
                               <Form.Item>
                                     <Button type="primary" htmlType="submit" loading={loading}>

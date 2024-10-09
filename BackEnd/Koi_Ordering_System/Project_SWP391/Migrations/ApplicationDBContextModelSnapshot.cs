@@ -51,31 +51,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fbd6d7c8-8f35-4e70-93fd-d3105dcba1d7",
+                            Id = "5d6fa5db-32f1-46ca-ab1c-b7ee130f6bce",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "43e374c3-f121-4e9b-b1d7-424bb53b2e39",
+                            Id = "4f2f59d2-2bc6-4b4a-a986-ad96bed65ac0",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "9236398e-4bc4-4dea-be8e-1976f10463b2",
+                            Id = "6a8e991f-4656-4588-bce8-6ed052fec12d",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "d8e35ddc-1997-4908-a9de-3262fd1950cb",
+                            Id = "3fbfa96f-70bb-4069-917e-9ce5e828c0e8",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "397c1518-af48-40fd-a9df-cc66e3015ec7",
+                            Id = "4d2bd26f-e4f4-4ecd-99a7-efb0ef3294ca",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
