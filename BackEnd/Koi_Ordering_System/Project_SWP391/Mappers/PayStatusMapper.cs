@@ -18,7 +18,7 @@ namespace Project_SWP391.Mappers
                 BillId = payStatusModel.BillId,
             };
         }
-        public static PayStatus ToCreateFeedbackDto(this CreatePayStatusDto payStatusDto, int billId)
+        public static PayStatus ToCreatePayStatusDto(this CreatePayStatusDto payStatusDto, int billId)
         {
             return new PayStatus
             {

@@ -121,6 +121,7 @@ namespace Project_SWP391
             builder.Services.AddScoped<IRatingRepository, RatingRepository>();
             builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             builder.Services.AddScoped<IVarietyOfKoiRepository, VarietyOfKoiRepository>();
+            builder.Services.AddScoped<IPayStatusRepository, PayStatusRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

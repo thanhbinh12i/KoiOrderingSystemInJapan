@@ -40,7 +40,7 @@ namespace Project_SWP391.Controllers
             return Ok(feedback);
         }
         [HttpGet("view/{userId}")]
-        public async Task<IActionResult> ViewByName([FromRoute] string userId)
+        public async Task<IActionResult> ViewByUserId([FromRoute] string userId)
         {
             var feedback = await _feedbackRepo.GetByUserIdAsync(userId);
             if (feedback == null)
