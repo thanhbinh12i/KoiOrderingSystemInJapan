@@ -2,6 +2,6 @@
 {
     public class UpdateFarmImageDto
     {
-        public string Url { get; set; }
+        public string UrlImage { get; set; }
     }
 }
