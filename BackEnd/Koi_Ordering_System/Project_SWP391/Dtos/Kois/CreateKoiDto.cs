@@ -11,6 +11,6 @@ namespace Project_SWP391.Dtos.Kois
         public float Length { get; set; }
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
-        //public string? UpdateDate { get; set; }
+        public string? UpdateDate { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Project_SWP391.Dtos.KoiImages;
 using Project_SWP391.Model;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Project_SWP391.Dtos.Kois
 {
@@ -14,6 +15,9 @@ namespace Project_SWP391.Dtos.Kois
         public int YOB { get; set; } // Year of Birth
         public string Gender { get; set; } = string.Empty;
         public string UpdateDate { get; set; }
-        public ICollection<KoiImageDto> KoiImages { get; set; }
+        public int FarmId { get; set; }
+        public ICollection<KoiImage> KoiImages { get; set; }
+        public ICollection<KoiBill> KoiBills { get; set; }
+        public ICollection<VarietyOfKoi> VarietyOfKois { get; set; }
     }
 }
