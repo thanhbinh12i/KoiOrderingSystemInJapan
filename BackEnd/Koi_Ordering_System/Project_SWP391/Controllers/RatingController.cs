@@ -37,7 +37,7 @@ namespace Project_SWP391.Controllers
             var rating = await _ratingRepo.GetByIdAsync(farmId, userId);
             if (rating == null)
             {
-                return NotFound($"No TourDestination found for FarmId {farmId} and TourId {userId}");
+                return NotFound($"No Rating found for FarmId {farmId} and userId {userId}");
             }
             var ratingDto = rating.ToRatingDto();
             if (ratingDto == null)
