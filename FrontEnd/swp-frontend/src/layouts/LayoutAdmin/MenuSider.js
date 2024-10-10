@@ -8,6 +8,7 @@ import {
   CompassOutlined,
   OrderedListOutlined,
   PlusOutlined,
+  ToolOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
@@ -66,11 +67,11 @@ function MenuSider() {
         },
       ],
     },
-    // {
-    //       label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
-    //       icon: <ToolOutlined />,
-    //       key: "/service-manager"
-    // },
+    {
+      label: <Link to="/service-manager">Quản lí vận chuyển</Link>,
+      icon: <ToolOutlined />,
+      key: "/service-manager",
+    },
     {
       label: "Quản lí tour",
       icon: <CompassOutlined />,
