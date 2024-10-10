@@ -28,7 +28,10 @@ function TourList() {
                                           <Card.Meta title={tour.tourName} description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`} />
                                           <div className="price">{tour.price.toLocaleString()}đ</div>
                                           <div className="participants">Số người tham gia: {tour.numberOfParticipate}</div>
-                                          <button className="details-button">Xem chi tiết</button>
+                                          <Link to={`/tours/${tour.tourId}`}>
+                                                <button className="details-button">Xem chi tiết</button>
+                                          </Link>
+
                                           <Link to={`/book-tour/${tour.tourId}`}
                                                 state={{
                                                       tourName: tour.tourName,
