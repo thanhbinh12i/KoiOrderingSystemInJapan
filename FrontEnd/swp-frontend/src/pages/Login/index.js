@@ -26,9 +26,15 @@ function Login() {
                         const userId = decodedToken.nameid;
                         localStorage.setItem('token', token);
                         localStorage.setItem('id', userId);
-
+                        const role = decodedToken.role;
+                        localStorage.setItem('role',role);
                         dispatch(checkLogin(true));
-                        navigate("/");
+                        
+                        if(role === "Manager"){
+                              navigate("/admin");  
+                        }else{
+                              navigate("/");
+                        }
                   }
 
             } catch (error) {

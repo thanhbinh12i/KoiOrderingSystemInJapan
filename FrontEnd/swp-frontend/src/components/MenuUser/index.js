@@ -11,10 +11,12 @@ function MenuUser() {
       const dispatch = useDispatch();
       const navigate = useNavigate();
       const userId = localStorage.getItem("id");
+      const role = localStorage.getItem('role');
       const [userName, setUserName] = useState('');
       const handleLogout = () => {
             localStorage.removeItem("token");
             localStorage.removeItem("id");
+            localStorage.removeItem("role");
             dispatch(checkLogin(false));
             navigate("/");
       };
@@ -35,9 +37,14 @@ function MenuUser() {
                   <Menu.Item key="profile" icon={<UserOutlined />} className="profile-item">
                         <Link to="/profile/main-content">Tài khoản của tôi</Link>
                   </Menu.Item>
-                  <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
-                        <Link to="/admin">Trang quản lý</Link>
-                  </Menu.Item>
+                  {
+                        role === "Manager" && (
+                              <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
+                                    <Link to="/admin">Trang quản lý</Link>
+                              </Menu.Item>
+                        )
+                  }
+
                   <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
                         <Link to="/profile/my-bookings">Đặt chỗ của tôi</Link>
                   </Menu.Item>

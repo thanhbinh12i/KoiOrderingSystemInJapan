@@ -38,6 +38,7 @@ function SearchTour() {
       return (
             <>
                   <div className='search-form-container'>
+                        <h1>Tìm kiếm Tour</h1>
                         <Form className="search-form" layout="vertical">
                               <Row gutter={16}>
                                     <Col span={24}>
@@ -84,7 +85,7 @@ function SearchTour() {
                                     </Col>
                               </Row>
 
-                              <Form.Item style={{marginBottom: 0}}>
+                              <Form.Item style={{ marginBottom: 0 }}>
                                     <Button type="primary" htmlType="submit" className="search-button">
                                           Tìm kiếm
                                     </Button>

@@ -1,9 +1,18 @@
 .search-form-container {
+      background-color: #40a9ff;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       min-height: 50px;
+      padding: 40px;
+      h1 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(230, 234, 235, 0.5);
+      }
 
       .search-form {
             background-color: #ffffff;
@@ -11,7 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 900px; 
+            max-width: 900px;
 
             .farm-input {
                   margin-bottom: 1rem;
@@ -44,7 +53,7 @@
                   }
 
                   .date-picker {
-                        margin-right: 1rem; 
+                        margin-right: 1rem;
                   }
             }
 

@@ -43,7 +43,7 @@ function MyBooking() {
                   key: 'status',
             },
             {
-                  title: 'Action',
+                  title: 'Hành động',
                   key: 'action',
                   render: (_, record) => (
                         record.status === "confirmed" && (
@@ -60,7 +60,7 @@ function MyBooking() {
       return (
             <>
                   <div className="booking-list-container">
-                        <h2>Booking List</h2>
+                        <h2>Danh sách đặt chỗ</h2>
                         <Table columns={columns} dataSource={quotation} pagination={false} />
                   </div>
             </>

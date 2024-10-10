@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from 'antd';
-import './TourTemplate.scss';
 import { get } from "../../utils/request";
 
 import image from "../../assets/home/koi-farm-tour.jpg"
