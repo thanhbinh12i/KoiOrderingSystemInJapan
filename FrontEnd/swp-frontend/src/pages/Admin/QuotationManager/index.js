@@ -16,12 +16,11 @@ function QuotationManager() {
       }, [])
       const handleSuccess = async (quotationId, priceOffer) => {
             const getTimeCurrent = () => {
-                  const now = new Date();
-                  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+                  return new Date().toLocaleString();
             };
             const quotationData = {
                   "priceOffer": priceOffer,
-                  "status": "confirmed",
+                  "status": "Đã xác nhận",
                   "approvedDate": getTimeCurrent(),
             };
             const response = await put(`quotation/update/${quotationId}`, quotationData);

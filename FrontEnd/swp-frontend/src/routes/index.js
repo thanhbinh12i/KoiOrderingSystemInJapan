@@ -1,6 +1,7 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import PayBooking from "../components/PayBooking";
+import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
@@ -105,6 +106,10 @@ export const routes = [
                               {
                                     path: "pay-booking/:id",
                                     element: <PayBooking />
+                              },
+                              {
+                                    path: "pay-success/:id",
+                                    element: <PaymentSuccess />
                               }
                         ]
                   }

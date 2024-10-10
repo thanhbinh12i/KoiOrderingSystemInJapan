@@ -1,7 +1,7 @@
-import { Form, Input, Button, Card, Row, Col, Typography, message, Statistic } from 'antd';
+import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
 import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from 'react-router-dom';
-import { post } from '../../utils/request';
+import { post, put } from '../../utils/request';
 
 const { Title } = Typography;
 
@@ -10,17 +10,26 @@ function PayBooking() {
       const { price } = location.state || { price: 0 };;
       const params = useParams();
       const userId = localStorage.getItem("id");
-      const [messageApi, contextHolder] = message.useMessage();
       const onFinish = async (values) => {
+            const getTimeCurrent = () => {
+                  return new Date().toLocaleString();
+            };
             const updatedValues = { ...values, price };
             const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
             if (response) {
-                  messageApi.success("Thanh toán thành công");
+                  const quotationData = {
+                        "priceOffer": price,
+                        "status": "Đã thanh toán",
+                        "approvedDate": getTimeCurrent(),
+                  };
+                  const responseUpdate = await put(`quotation/update/${params.id}`, quotationData);
+                  if (responseUpdate) {
+                        window.location.href = `/pay-success/${response.billId}`;
+                  }
             }
       }
       return (
             <>
-                  {contextHolder}
                   <div className="payment-page">
                         <Row justify="center" align="middle">
                               <Col xs={24} sm={20} md={16} lg={12} xl={8}>
