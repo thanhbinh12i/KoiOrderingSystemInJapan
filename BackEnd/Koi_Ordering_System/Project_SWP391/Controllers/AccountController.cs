@@ -113,7 +113,6 @@ namespace Project_SWP391.Controllers
                 var user = await _userManager.FindByEmailAsync(payload.Email);
                 if (user == null)
                 {
-                    // Nếu email không tồn tại, tạo tài khoản mới cho người dùng
                     user = new AppUser
                     {
                         UserName = Regex.Replace(payload.Name, @"[^a-zA-Z0-9]", ""),

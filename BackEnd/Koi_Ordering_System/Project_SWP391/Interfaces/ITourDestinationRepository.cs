@@ -8,6 +8,7 @@ namespace Project_SWP391.Interfaces
         Task<List<TourDestination>> GetAllAsync();
 
         Task<TourDestination?> GetByIdAsync(int farmId, int tourId);
+        Task<List<TourDestination>> GetByTourIdAsync(int tourId);
 
         Task<TourDestination> CreateAsync(TourDestination tourDestinationModel);
 
