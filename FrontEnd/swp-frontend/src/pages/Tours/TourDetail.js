@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get } from "../../utils/request";
-import { Card, Descriptions, Rate, Typography, Space, Divider } from 'antd';
-import { ClockCircleOutlined, MailOutlined, PhoneOutlined, StarOutlined, GlobalOutlined } from '@ant-design/icons';
+import { Card, Descriptions, Rate, Typography, Space, Divider, List } from 'antd';
+import { ClockCircleOutlined, UserOutlined, DollarOutlined, StarOutlined, GlobalOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import GoBack from "../../components/GoBack";
 
 const { Title, Text } = Typography;
@@ -41,37 +41,54 @@ function TourDetail() {
                   <GoBack />
                   {tour && (
                         <>
-                              <Card
-                                    className="tour-info-card"
-                              >
+                              <Card className="tour-info-card">
                                     <Title level={2}>{tour.tourName}</Title>
                                     <Divider />
-                                    <Space direction="vertical" size="middle" style={{ width: '100%' }}>
+                                    <Space direction="vertical" size="large" style={{ width: '100%' }}>
                                           <Descriptions column={1} labelStyle={{ fontWeight: 'bold' }}>
                                                 <Descriptions.Item label={<Space><ClockCircleOutlined /> Thời gian</Space>}>
-                                                      <strong>{tour.startTime} đến {tour.finishTime}</strong>
+                                                      {tour.startTime} đến {tour.finishTime}
                                                 </Descriptions.Item>
-                                                <Descriptions.Item label={<Space><MailOutlined /> Số lượng người tham gia</Space>}>
-                                                      <strong>{tour.numberOfParticipate}</strong>
+                                                <Descriptions.Item label={<Space><UserOutlined /> Số lượng người tham gia</Space>}>
+                                                      {tour.numberOfParticipate}
                                                 </Descriptions.Item>
-                                                <Descriptions.Item label={<Space><PhoneOutlined /> Giá</Space>}>
-                                                      <strong>{tour.price}</strong>
-                                                </Descriptions.Item>
-                                                <Descriptions.Item label={<Space><GlobalOutlined /> Các trang trại tham quan</Space>}>
-                                                      {farm.map((item) => (
-                                                            <div>
-                                                                  <strong> - {item.farmName} - </strong>
-                                                            </div>
-                                                      ))}
+                                                <Descriptions.Item label={<Space><DollarOutlined /> Giá</Space>}>
+                                                      {tour.price}
                                                 </Descriptions.Item>
                                           </Descriptions>
+
+                                          <div className="farm-section">
+                                                <h4><GlobalOutlined /> Các trang trại tham quan trong chuyến đi:</h4>
+                                                <List
+                                                      dataSource={farm}
+                                                      itemLayout="vertical"
+                                                      renderItem={(item) => (
+                                                            <List.Item key={item.farmName} className="farm-list-item">
+                                                                  <div className="farm-container">
+                                                                        <img
+                                                                              src={`https://localhost:7087/uploads/koiFarm/${item.farmImages[0].urlImage}`}
+                                                                              alt={item.farmName}
+                                                                              className="farm-image"
+                                                                        />
+                                                                        <div className="farm-info">
+                                                                              <Title level={4} className="farm-name">{item.farmName}</Title>
+                                                                              <Text className="farm-location">
+                                                                                    <EnvironmentOutlined className="location-icon" /> {item.location}
+                                                                              </Text>
+                                                                        </div>
+                                                                  </div>
+                                                            </List.Item>
+                                                      )}
+                                                />
+                                          </div>
+
                                           <Divider />
-                                          <Space align="center">
+                                          <div className="tour-rating">
                                                 <StarOutlined />
                                                 <Text strong>Đánh giá:</Text>
                                                 <Rate disabled value={5} />
-                                                <Text type="secondary">({5})</Text>
-                                          </Space>
+                                                <Text type="secondary">(5)</Text>
+                                          </div>
                                     </Space>
                               </Card>
                         </>
