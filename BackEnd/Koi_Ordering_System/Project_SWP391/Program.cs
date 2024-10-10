@@ -1,4 +1,4 @@
-
+﻿
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,6 @@ using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using Project_SWP391.Repository;
 
-//using Project_SWP391.Repository;
 using Project_SWP391.Services;
 
 namespace Project_SWP391
@@ -131,6 +130,8 @@ namespace Project_SWP391
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

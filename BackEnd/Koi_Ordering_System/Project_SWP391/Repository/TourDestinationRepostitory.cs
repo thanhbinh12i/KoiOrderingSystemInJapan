@@ -25,7 +25,7 @@ namespace Project_SWP391.Repository
 
         public async Task<TourDestination> DeleteAsync(int farmId, int tourId)
         {
-            var tourDestination = await _context.TourDestinations.FindAsync(farmId,tourId);
+            var tourDestination = await _context.TourDestinations.FindAsync(farmId, tourId);
 
             if (tourDestination == null)
             {
@@ -40,12 +40,17 @@ namespace Project_SWP391.Repository
 
         public async Task<List<TourDestination>> GetAllAsync()
         {
-            return await _context.TourDestinations.ToListAsync();
+            return await _context.TourDestinations.Include(c => c.Tour).Include(c => c.KoiFarm).ToListAsync();
         }
 
         public async Task<TourDestination?> GetByIdAsync(int farmId, int tourId)
         {
             return await _context.TourDestinations.FirstOrDefaultAsync(x => x.FarmId == farmId && x.TourId == tourId);
+        }
+
+        public async Task<List<TourDestination>> GetByTourIdAsync(int tourId)
+        {
+            return await _context.TourDestinations.Where(x => x.TourId == tourId).ToListAsync();
         }
 
         public async Task<TourDestination> UpdateAsync(int farmId, int tourId, UpdateTourDestinationDto updateTourDestinationDto)
