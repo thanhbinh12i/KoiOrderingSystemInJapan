@@ -30,21 +30,30 @@ function QuotationManager() {
       }
       return (
             <>
-                  <Row gutter={[20, 20]}>
-                        {quotation.map((item) => (
-                              <Col span={8} key={item.quotationId}>
-                                    <Card title="Xác nhận báo giá">
-                                          <p>UserId: <strong>{item.userId}</strong></p>
-                                          <p>TourId: <strong>{item.tourId}</strong></p>
-                                          <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
-                                          <p>
-                                                <Badge status={item.status === "confirmed" ? "success" : "default"} text={item.status} />
-                                          </p>
-                                          <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)}>Xác nhận</Button>
-                                    </Card>
-                              </Col>
-                        ))}
-                  </Row>
+                  {quotation.length > 0 ? (
+                        <>
+                              <Row gutter={[20, 20]}>
+                                    {quotation.map((item) => (
+                                          <Col span={8} key={item.quotationId}>
+                                                <Card title="Xác nhận báo giá">
+                                                      <p>UserId: <strong>{item.userId}</strong></p>
+                                                      <p>TourId: <strong>{item.tourId}</strong></p>
+                                                      <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
+                                                      <p>
+                                                            <Badge status={item.status === "confirmed" ? "success" : "default"} text={item.status} />
+                                                      </p>
+                                                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)}>Xác nhận</Button>
+                                                </Card>
+                                          </Col>
+                                    ))}
+                              </Row>
+                        </>
+                  ) : (
+                        <>
+                              <h1>Không có báo giá nào</h1>
+                        </>
+                  )}
+
             </>
       )
 }

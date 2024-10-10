@@ -33,7 +33,6 @@ function FarmDetail() {
 
                         <Card
                               className="farm-info-card"
-
                         >
                               <Title level={2}>{farm.farmName}</Title>
                               <Divider />
