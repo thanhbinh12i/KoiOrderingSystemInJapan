@@ -105,7 +105,7 @@ function EditKoi(props) {
                                           </Col>
                                           <Col span={8}>
                                                 <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
-                                                      <Select options={varieties} />
+                                                      <Select mode="multiple" options={varieties} />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={24}>

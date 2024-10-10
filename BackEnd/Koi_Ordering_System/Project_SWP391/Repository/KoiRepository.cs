@@ -73,8 +73,6 @@ namespace Project_SWP391.Repository
             koiModel.YOB = updateKoi.YOB;
             koiModel.Gender = updateKoi.Gender;
             koiModel.UpdateDate = DateOnly.FromDateTime(DateTime.Now).ToString();
-            koiModel.FarmId = updateKoi.FarmId;
-
             await _context.SaveChangesAsync();
 
             return koiModel;

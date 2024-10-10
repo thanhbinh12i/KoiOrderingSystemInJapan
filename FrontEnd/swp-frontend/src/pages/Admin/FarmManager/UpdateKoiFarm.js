@@ -1,14 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Button, message, TimePicker, Tooltip } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  message,
+  TimePicker,
+  Tooltip,
+  Upload,
+} from "antd";
+import { EditOutlined, UploadOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { put } from "../../../utils/request";
-
 function UpdateKoiFarm({ reload, record }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [visible, setVisible] = useState(false);
+  const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     if (record) {
@@ -61,6 +70,7 @@ function UpdateKoiFarm({ reload, record }) {
   const handleModalCancel = () => {
     setVisible(false);
   };
+  const handleFileChange = ({ fileList }) => setFileList(fileList);
 
   return (
     <>
@@ -123,13 +133,6 @@ function UpdateKoiFarm({ reload, record }) {
             <Input placeholder="Nhập email" />
           </Form.Item>
           <Form.Item
-            label="Đánh giá"
-            name="rating"
-            rules={[{ required: true, message: "Vui lòng nhập đánh giá!" }]}
-          >
-            <Input type="number" min={0} max={5} step={0.1} />
-          </Form.Item>
-          <Form.Item
             label="Số điện thoại"
             name="hotline"
             rules={[
@@ -137,6 +140,17 @@ function UpdateKoiFarm({ reload, record }) {
             ]}
           >
             <Input />
+          </Form.Item>
+          <Form.Item label="Hình ảnh trang trại" name="farmImage">
+            <Upload
+              listType="picture"
+              maxCount={1}
+              fileList={fileList}
+              onChange={handleFileChange}
+              beforeUpload={() => false} // Không tự upload
+            >
+              <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+            </Upload>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading}>

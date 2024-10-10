@@ -22,6 +22,11 @@ function KoiList() {
       }
       const column = [
             {
+                  title: "ID",
+                  dataIndex: "koiId",
+                  key: "koiId",
+            },
+            {
                   title: "Tên cá koi",
                   dataIndex: "koiName",
                   key: "koiName",

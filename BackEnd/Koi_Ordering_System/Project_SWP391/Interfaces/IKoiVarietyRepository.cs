@@ -11,5 +11,7 @@ namespace Project_SWP391.Interfaces
         Task<KoiVariety> CreateAsync(KoiVariety variety);
         Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto variety);
         Task<KoiVariety?> DeleteAsync(int id);
+        Task<bool> KoiVarietyExists(int id);
+
     }
 }

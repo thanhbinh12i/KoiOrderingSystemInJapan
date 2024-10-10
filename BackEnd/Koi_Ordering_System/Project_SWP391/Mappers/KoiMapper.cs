@@ -5,20 +5,21 @@ namespace Project_SWP391.Mappers
 {
     public static class KoiMapper
     {
-        public static KoiDto ToKoiDto(this Koi koi)
+        public static KoiDto ToKoiDto(this Koi koiModel)
         {
             return new KoiDto
             {
-                KoiId = koi.KoiId,
-                KoiName = koi.KoiName,
-                Description = koi.Description,
-                Price = koi.Price,
-                Quantity = koi.Quantity,
-                Length = koi.Length,
-                YOB = koi.YOB,
-                Gender = koi.Gender,
-                UpdateDate = koi.UpdateDate,
-                KoiImages = koi.KoiImages.Select(k => k.ToKoiImageDtoFromKoiImage()).ToList()
+                KoiId = koiModel.KoiId,
+                KoiName = koiModel.KoiName,
+                Description = koiModel.Description,
+                Price = koiModel.Price,
+                Quantity = koiModel.Quantity,
+                Length = koiModel.Length,
+                YOB = koiModel.YOB,
+                Gender = koiModel.Gender,
+                UpdateDate = koiModel.UpdateDate,
+                FarmId = koiModel.FarmId,
+                KoiImages = koiModel.KoiImages
             };
         }
         public static Koi ToKoiFromCreateDto(this CreateKoiDto createKoi, int farmId)
@@ -32,7 +33,7 @@ namespace Project_SWP391.Mappers
                 Length = createKoi.Length,
                 YOB = createKoi.YOB,
                 Gender = createKoi.Gender,
-                UpdateDate = DateOnly.FromDateTime(DateTime.Now).ToString(),
+                UpdateDate = createKoi.UpdateDate,
                 FarmId = farmId,
             };
         }

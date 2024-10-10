@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Table, Button, message, Spin } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, message, Spin, Button, Tooltip } from "antd";
 import { get } from "../../../utils/request";
-import CreateTour from "./CreateTour";
 import DeleteTour from "./DeleteTour";
 import UpdateTour from "./UpdateTour";
 import SearchByName from "./SearchByName";
 import "./Tour.scss";
+import { EyeOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 function TourList() {
   const [tours, setTours] = useState([]);
   const [filteredTours, setFilteredTours] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
   const fetchApi = useCallback(async () => {
@@ -33,13 +33,6 @@ function TourList() {
   useEffect(() => {
     fetchApi();
   }, [fetchApi]);
-
-  const showModal = () => setIsModalVisible(true);
-  const handleOk = () => {
-    setIsModalVisible(false);
-    fetchApi();
-  };
-  const handleCancel = () => setIsModalVisible(false);
 
   const handleSearch = (value) => {
     if (value) {
@@ -74,10 +67,20 @@ function TourList() {
       key: "finishTime",
     },
     {
+      title: "Số lượng người tham gia",
+      dataIndex: "numberOfParticipate",
+      key: "numberOfParticipate",
+    },
+    {
       title: "Hành động",
       key: "actions",
       render: (_, record) => (
         <>
+          <Link to={`/tour-detail/${record.tourId}`}>
+            <Tooltip title="Xem chi tiết">
+              <Button icon={<EyeOutlined />}></Button>
+            </Tooltip>
+          </Link>
           <DeleteTour record={record} handleReload={fetchApi} />
           <UpdateTour record={record} reload={fetchApi} />
         </>
@@ -89,19 +92,6 @@ function TourList() {
     <>
       <div className="tour">
         <div className="tour__search-create">
-          <Button
-            icon={<PlusOutlined />}
-            onClick={showModal}
-            className="create-button"
-            style={{ marginBottom: 16 }}
-          >
-            Thêm tour mới
-          </Button>
-          <CreateTour
-            isModalVisible={isModalVisible}
-            handleOk={handleOk}
-            handleCancel={handleCancel}
-          />
           <SearchByName onSearch={handleSearch} className="search-button" />
         </div>
         <div className="tour__table">
