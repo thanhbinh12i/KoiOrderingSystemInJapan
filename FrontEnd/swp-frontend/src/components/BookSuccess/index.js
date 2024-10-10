@@ -14,7 +14,7 @@ function BookSuccess() {
                                     <Link to="/" key="home">
                                           <Button type="primary">Quay về trang chủ</Button>
                                     </Link>,
-                                    <Link to="/my-bookings" key="bookings">
+                                    <Link to="/profile/my-bookings" key="bookings">
                                           <Button>Danh sách đặt tour của tôi</Button>
                                     </Link>,
                               ]}

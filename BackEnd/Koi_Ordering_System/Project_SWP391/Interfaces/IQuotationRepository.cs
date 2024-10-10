@@ -10,6 +10,7 @@ namespace Project_SWP391.Interfaces
         Task<List<Quotation>> GetAllAsync();
         Task<Quotation?> GetByQuotationIdAsync(int quotationId);
         Task<List<Quotation>> GetByIdAsync(string userId, int tourId);
+        Task<List<Quotation>> GetByUserIdAsync(string userId);
         Task<Quotation> CreateAsync(Quotation quotationModel);
         Task<Quotation> UpdateAsync(int quotationId, UpdateQuotationDto updateQuotatinDto);
         Task<Quotation> DeleteAsync(int quotationId);

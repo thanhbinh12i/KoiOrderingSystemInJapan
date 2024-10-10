@@ -1,5 +1,6 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
+import PayBooking from "../components/PayBooking";
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
@@ -26,6 +27,7 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
 import Profile from "../pages/Profile";
+import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
 import Tour from "../pages/Tours";
 import Variety from "../pages/Varitety";
@@ -80,7 +82,17 @@ export const routes = [
                         children: [
                               {
                                     path: "profile",
-                                    element: <Profile />
+                                    element: <Profile />,
+                                    children: [
+                                          {
+                                                path: "my-bookings",
+                                                element: <MyBooking />
+                                          },
+                                          {
+                                                path: "main-content",
+                                                element: <MainContent />
+                                          }
+                                    ]
                               },
                               {
                                     path: "book-tour/:id",
@@ -91,8 +103,8 @@ export const routes = [
                                     element: <BookSuccess />
                               },
                               {
-                                    path: "my-bookings",
-                                    element: <MyBooking />
+                                    path: "pay-booking/:id",
+                                    element: <PayBooking />
                               }
                         ]
                   }
@@ -100,69 +112,69 @@ export const routes = [
       },
       {
             element: <PrivateRoutes />,
-            children: 
-            [     
-                  {
-                        element: <LayoutAdmin />,
-                        children: [
-                              {
-                                    path: "admin",
-                                    element: <Dashboard />
-                              },
-                              {
-                                    path: "user-manager",
-                                    element: <UserManager />
-                              },
-                              {
-                                    path: "farm-manager",
-                                    element: <FarmManager />
-                              },
-                              {
-                                    path: "create-farm",
-                                    element: <CreateKoiFarm />
-                              },
-                              {
-                                    path: "farm-detail/:id",
-                                    element: <FarmDetail />
-                              },
-                              {
-                                    path: "koi-manager",
-                                    element: <KoiManager />
-                              },
-                              {
-                                    path: "koi-detail/:id",
-                                    element: <KoiDetail />
-                              },
-                              {
-                                    path: "create-koi",
-                                    element: <CreateKoi />
-                              },
-                              {
-                                    path: "koivariety-manager",
-                                    element: <KoiVarietyManager />
-                              },
-                              {
-                                    path: "service-manager",
-                                    element: <ServiceManager />
-                              },
-                              {
-                                    path: "tour-manager",
-                                    element: <TourManager />
-                              },
-                              {
-                                    path: "create-tour",
-                                    element: <CreateTour />
-                              },
-                              {
-                                    path: "tour-detail/:id",
-                                    element: <TourDetail />
-                              },
-                              {
-                                    path: "quotation-manager",
-                                    element: <QuotationManager />
-                              }
-                        ]
-                  }
-            ]
+            children:
+                  [
+                        {
+                              element: <LayoutAdmin />,
+                              children: [
+                                    {
+                                          path: "admin",
+                                          element: <Dashboard />
+                                    },
+                                    {
+                                          path: "user-manager",
+                                          element: <UserManager />
+                                    },
+                                    {
+                                          path: "farm-manager",
+                                          element: <FarmManager />
+                                    },
+                                    {
+                                          path: "create-farm",
+                                          element: <CreateKoiFarm />
+                                    },
+                                    {
+                                          path: "farm-detail/:id",
+                                          element: <FarmDetail />
+                                    },
+                                    {
+                                          path: "koi-manager",
+                                          element: <KoiManager />
+                                    },
+                                    {
+                                          path: "koi-detail/:id",
+                                          element: <KoiDetail />
+                                    },
+                                    {
+                                          path: "create-koi",
+                                          element: <CreateKoi />
+                                    },
+                                    {
+                                          path: "koivariety-manager",
+                                          element: <KoiVarietyManager />
+                                    },
+                                    {
+                                          path: "service-manager",
+                                          element: <ServiceManager />
+                                    },
+                                    {
+                                          path: "tour-manager",
+                                          element: <TourManager />
+                                    },
+                                    {
+                                          path: "create-tour",
+                                          element: <CreateTour />
+                                    },
+                                    {
+                                          path: "tour-detail/:id",
+                                          element: <TourDetail />
+                                    },
+                                    {
+                                          path: "quotation-manager",
+                                          element: <QuotationManager />
+                                    }
+                              ]
+                        }
+                  ]
       }
 ]

@@ -14,7 +14,8 @@ function BookTour() {
       const navigate = useNavigate();
       const onFinish = async () => {
             const getTimeCurrent = () => {
-                  return new Date().toISOString();
+                  const now = new Date();
+                  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             };
             const quotationData = {
                   "priceOffer": price,

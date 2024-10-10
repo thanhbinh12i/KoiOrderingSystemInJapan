@@ -1,6 +1,6 @@
 import { Badge, Button, Card, Col, Row } from "antd";
 import { useEffect, useState } from "react";
-import { get, patch, put } from "../../../utils/request";
+import { get, put } from "../../../utils/request";
 
 function QuotationManager() {
       const [quotation, setQuotation] = useState([]);
@@ -16,7 +16,8 @@ function QuotationManager() {
       }, [])
       const handleSuccess = async (quotationId, priceOffer) => {
             const getTimeCurrent = () => {
-                  return new Date().toISOString();
+                  const now = new Date();
+                  return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             };
             const quotationData = {
                   "priceOffer": priceOffer,
