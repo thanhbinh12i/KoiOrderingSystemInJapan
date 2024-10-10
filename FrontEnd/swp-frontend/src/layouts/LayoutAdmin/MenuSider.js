@@ -9,6 +9,11 @@ function MenuSider() {
                   key: "/admin"
             },
             {
+                  label: <Link to="/quotation-manager">Quản lí báo giá</Link>,
+                  icon: <BankOutlined />,
+                  key: "/quotation-manager"
+            },
+            {
                   label: <Link to="/user-manager">Quản lí người dùng</Link>,
                   icon: <UserOutlined />,
                   key: "/user-manager"
@@ -52,11 +57,11 @@ function MenuSider() {
                         }
                   ]
             },
-            {
-                  label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
-                  icon: <ToolOutlined />,
-                  key: "/service-manager"
-            },
+            // {
+            //       label: <Link to="/service-manager">Quản lí dịch vụ</Link>,
+            //       icon: <ToolOutlined />,
+            //       key: "/service-manager"
+            // },
             {
                   label: "Quản lí tour",
                   icon: <CompassOutlined />,
