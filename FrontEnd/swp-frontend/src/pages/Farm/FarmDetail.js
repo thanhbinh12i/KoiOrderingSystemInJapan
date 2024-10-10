@@ -2,38 +2,31 @@ import { useParams } from 'react-router-dom';
 import { Card, Descriptions, Rate, Typography, Space, Divider, Carousel } from 'antd';
 import { EnvironmentOutlined, ClockCircleOutlined, MailOutlined, PhoneOutlined, StarOutlined, GlobalOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
-import banner1 from "../../assets/home/banner-1.jpg"
-import banner2 from "../../assets/home/banner-2.jpg"
-import banner3 from "../../assets/home/banner-3.jpg"
-import banner4 from "../../assets/home/banner-4.jpg"
+import { get } from '../../utils/request';
+import GoBack from '../../components/GoBack';
 const { Title, Text } = Typography;
 
 function FarmDetail() {
       const [farm, setFarm] = useState([]);
-      const { id } = useParams();
+      const params = useParams();
 
       useEffect(() => {
-            const fetchedFarm = {
-                  FarmId: 1,
-                  FarmName: "Dainichi Koi Farm",
-                  Location: "Japan",
-                  OpenHour: "08:00",
-                  CloseHour: "18:00",
-                  Email: "info@dainichi.com",
-                  Hotline: "123-456-7890",
-                  FarmImages: [banner1, banner2, banner3, banner4],
-                  Introduction: "Dainichi Koi Farm là một trong những trang trại cá Koi nổi tiếng nhất tại Nhật Bản, với hơn 50 năm kinh nghiệm trong việc lai tạo và chăm sóc cá Koi chất lượng cao.",
-                  AverageRating: 5,
-            };
-            setFarm(fetchedFarm);
-      }, [id]);
+            const fetchApi = async () => {
+                  const response = await get(`koiFarm/view/${params.id}`);
+                  if (response) {
+                        setFarm(response);
+                  }
+            }
+            fetchApi();
+      }, [params.id]);
       return (
             <>
+                  <GoBack />
                   <div className="farm-detail">
                         <Carousel autoplay>
-                              {farm.FarmImages && farm.FarmImages.map((img, index) => (
+                              {farm.farmImages && farm.farmImages.map((img, index) => (
                                     <div key={index}>
-                                          <img src={img} alt={`${farm.FarmName} - Ảnh ${index + 1}`} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
+                                          <img src={`https://localhost:7087/uploads/koiFarm/${img.urlImage}`} alt={`${farm.farmName} - Ảnh ${index + 1}`} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
                                     </div>
                               ))}
                         </Carousel>
@@ -42,36 +35,36 @@ function FarmDetail() {
                               className="farm-info-card"
 
                         >
-                              <Title level={2}>{farm.FarmName}</Title>
+                              <Title level={2}>{farm.farmName}</Title>
                               <Divider />
                               <Space direction="vertical" size="middle" style={{ width: '100%' }}>
                                     <Descriptions column={1} labelStyle={{ fontWeight: 'bold' }}>
                                           <Descriptions.Item label={<Space><EnvironmentOutlined /> Địa điểm</Space>}>
-                                                {farm.Location}
+                                                <strong>{farm.location}</strong>
                                           </Descriptions.Item>
                                           <Descriptions.Item label={<Space><ClockCircleOutlined /> Giờ mở cửa</Space>}>
-                                                {farm.OpenHour} - {farm.CloseHour}
+                                                <strong>{farm.openHour} - {farm.closeHour}</strong>
                                           </Descriptions.Item>
                                           <Descriptions.Item label={<Space><MailOutlined /> Email</Space>}>
-                                                {farm.Email}
+                                                <strong>{farm.email}</strong>
                                           </Descriptions.Item>
                                           <Descriptions.Item label={<Space><PhoneOutlined /> Hotline</Space>}>
-                                                {farm.Hotline}
+                                                <strong>{farm.hotline}</strong>
                                           </Descriptions.Item>
                                           <Descriptions.Item label={<Space><GlobalOutlined /> Mô tả</Space>}>
-                                                <strong>{farm.Introduction}</strong>
+                                                <strong>{farm.introduction}</strong>
                                           </Descriptions.Item>
                                     </Descriptions>
                                     <Divider />
                                     <Space align="center">
                                           <StarOutlined />
                                           <Text strong>Đánh giá:</Text>
-                                          <Rate disabled value={farm.AverageRating}/>
-                                          <Text type="secondary">({farm.AverageRating})</Text>
+                                          <Rate disabled value={5} />
+                                          <Text type="secondary">({5})</Text>
                                     </Space>
                               </Space>
                         </Card>
-                  </div>
+                  </div >
             </>
       )
 }
