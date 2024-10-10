@@ -53,6 +53,11 @@ namespace Project_SWP391.Repository
             return await _context.Quotations.FindAsync(quotationId);
         }
 
+        public async Task<List<Quotation>> GetByUserIdAsync(string userId)
+        {
+            return await _context.Quotations.Where(x => x.UserId == userId).ToListAsync();
+        }
+
         public async Task<Quotation> UpdateAsync(int quotationId, UpdateQuotationDto updateQuotatinDto)
         {
             var quotationModel = await _context.Quotations.FirstOrDefaultAsync(x => x.QuotationId == quotationId);

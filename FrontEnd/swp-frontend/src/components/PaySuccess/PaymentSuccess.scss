@@ -1,0 +1,107 @@
+.payment-success-page {
+      min-height: 80vh;
+      background: #1070d0;
+      padding: 40px 20px;
+
+      .success-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+
+            &:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            }
+      }
+
+      .success-icon {
+            font-size: 72px;
+            color: #52c41a;
+      }
+
+      .success-subtitle {
+            font-size: 18px;
+            color: #8c8c8c;
+      }
+
+      .payment-details {
+            margin-top: 30px;
+
+            .ant-descriptions {
+                  background: #f0f2f5;
+                  border-radius: 10px;
+                  padding: 20px;
+            }
+
+            .ant-descriptions-title {
+                  font-size: 20px;
+                  color: #1890ff;
+            }
+
+            .ant-descriptions-item-label {
+                  font-weight: bold;
+            }
+      }
+
+      .amount-container {
+            margin-top: 20px;
+            text-align: right;
+
+            .amount-statistic {
+                  .ant-statistic-title {
+                        font-size: 18px;
+                        color: #8c8c8c;
+                  }
+                  .ant-statistic-content {
+                        font-size: 28px;
+                        color: #1890ff;
+                  }
+            }
+      }
+
+      .action-buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+
+            .ant-btn {
+                  min-width: 150px;
+                  height: 45px;
+                  font-size: 16px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+
+                  &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                  }
+            }
+      }
+}
+
+@media print {
+      .action-buttons {
+            display: none !important;
+      }
+}
+
+@media (max-width: 576px) {
+      .payment-success-page {
+            padding: 20px 10px;
+      }
+
+      .action-buttons {
+            flex-direction: column;
+            align-items: stretch;
+
+            .ant-btn {
+                  width: 100%;
+            }
+      }
+}

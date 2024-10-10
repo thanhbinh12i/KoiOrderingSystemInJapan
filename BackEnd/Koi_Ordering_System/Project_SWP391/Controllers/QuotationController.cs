@@ -62,6 +62,21 @@ namespace Project_SWP391.Controllers
             }
             return Ok(quotationDto);
         }
+        [HttpGet("view/{userId}")]
+        public async Task<IActionResult> ViewByUserId([FromRoute] string userId)
+        {
+            var quotation = await _quotationRepo.GetByUserIdAsync(userId);
+            if (quotation == null)
+            {
+                return NotFound($"No TourDestination found for Quotation ID {userId}");
+            }
+            var quotationDto = quotation.Select(q => q.ToQuotationDto()).ToList();
+            if (quotationDto == null)
+            {
+                return NotFound();
+            }
+            return Ok(quotationDto);
+        }
         [HttpPost("create/{userId}&{tourId:int}")]
         public async Task<IActionResult> Create(string userId, int tourId, [FromBody] CreateQuotationDto quotation)
         {

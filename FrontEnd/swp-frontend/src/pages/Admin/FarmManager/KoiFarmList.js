@@ -44,12 +44,6 @@ function KoiFarmList() {
 
   const columns = [
     { title: "Tên trang trại", dataIndex: "farmName", key: "farmName" },
-    {
-      title: "Giới thiệu",
-      dataIndex: "introduction",
-      key: "introduction",
-      ellipsis: true,
-    },
     { title: "Địa chỉ", dataIndex: "location", key: "location" },
     {
       title: "Giờ mở cửa",

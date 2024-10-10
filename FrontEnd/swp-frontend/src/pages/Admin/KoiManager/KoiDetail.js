@@ -7,8 +7,6 @@ import { Image } from "antd";
 function KoiDetail() {
   const params = useParams();
   const [data, setData] = useState();
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const id = params.id;
 
