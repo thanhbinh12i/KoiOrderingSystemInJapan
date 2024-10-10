@@ -44,7 +44,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{billId}-{koiId}")]
-        public async Task<IActionResult> Create([FromRoute] int billId, [FromRoute] int koiId, CreateKoiBillDto createKoiBill)
+        public async Task<IActionResult> Create([FromRoute] int billId, [FromRoute] int koiId, [FromBody] CreateKoiBillDto createKoiBill)
         {
 
             if (createKoiBill == null)
@@ -75,7 +75,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{billId}-{koiId}")]
-        public async Task<IActionResult> Update([FromRoute] int billId, [FromRoute] int koiId, UpdateKoiBillDto updateKoiBill)
+        public async Task<IActionResult> Update([FromRoute] int billId, [FromRoute] int koiId, [FromBody] UpdateKoiBillDto updateKoiBill)
         {
             var koiBillModel = await _koiBillRepo.UpdateAsync(koiId, billId, updateKoiBill);
 

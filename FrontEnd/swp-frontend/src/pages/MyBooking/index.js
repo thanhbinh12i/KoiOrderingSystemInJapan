@@ -46,7 +46,7 @@ function MyBooking() {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => (
-                        record.status === "confirmed" && (
+                        record.status === "Đã xác nhận" && (
                               <Link to={`/pay-booking/${record.quotationId}`} state={{price: record.priceOffer}}>
                                     <Button type="primary">
                                           Thanh toán
