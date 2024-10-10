@@ -2,7 +2,8 @@ import React from "react";
 import { Layout } from "antd";
 import "./App.scss";
 import Sidebar from "./SideBar";
-import MainContent from "./MainContent";
+
+import { Outlet } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
@@ -13,7 +14,9 @@ function Profile() {
         <Sidebar />
       </Sider>
       <Content>
-        <MainContent />
+        <div>
+          <Outlet />
+        </div>
       </Content>
     </Layout>
   );
