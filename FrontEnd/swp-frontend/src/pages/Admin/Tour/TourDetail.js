@@ -40,19 +40,19 @@ function TourDetail() {
     <div className="tour-detail">
       <GoBack />
       <h1>{data.tourName}</h1>
-      <div className="info-item">
+      <div className="mb-20">
         <strong>Giá:</strong> {data.price} VND
       </div>
-      <div className="info-item">
+      <div className="mb-20">
         <strong>Thời gian bắt đầu:</strong> {data.startTime}
       </div>
-      <div className="info-item">
+      <div className="mb-20">
         <strong>Thời gian kết thúc:</strong> {data.finishTime}
       </div>
-      <div className="info-item">
+      <div className="mb-20">
         <strong>Số người tham gia:</strong> {data.numberOfParticipate}
       </div>
-      <div className="info-item">
+      <div className="mb-20">
         <strong>Trang trại trong chuyến đi:</strong>
         <ul>
           {data.tourDestinations.map((destination, index) => (
