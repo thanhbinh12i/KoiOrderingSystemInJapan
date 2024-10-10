@@ -30,7 +30,7 @@ namespace Project_SWP391.Controllers
             var tourDestination = await _tourDestinationRepo.GetAllAsync();
             if (tourDestination.IsNullOrEmpty()) return NotFound();
             var tourDestinationDto = tourDestination.Select(v => v.ToTourDestinationDto());
-            return Ok(tourDestinationDto);
+            return Ok(tourDestination);
         }
         [HttpGet("view/{farmId:int}&{tourId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId, int tourId)
@@ -46,6 +46,21 @@ namespace Project_SWP391.Controllers
                 return NotFound();
             }
             return Ok(tourDestinationDto);
+        }
+        [HttpGet("view-tourId/{tourId:int}")]
+        public async Task<IActionResult> ViewByTourId([FromRoute] int tourId)
+        {
+            var tourDestination = await _tourDestinationRepo.GetByTourIdAsync(tourId);
+            if (tourDestination == null)
+            {
+                return NotFound($"No TourDestination found for TourId {tourId}");
+            }
+            //var tourDestinationDto = tourDestination.ToTourDestinationDto();
+            //if (tourDestinationDto == null)
+            //{
+            //    return NotFound();
+            //}
+            return Ok(tourDestination);
         }
         [HttpPost("create/{farmId:int}&{tourId:int}")]
         public async Task<IActionResult> Create(int farmId, int tourId, [FromBody] CreateTourDestinationDto tourDestination)
