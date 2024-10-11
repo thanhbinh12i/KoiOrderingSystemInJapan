@@ -16,10 +16,10 @@ namespace Project_SWP391.Model
         [PersonalData]
         public string Gender { get; set; }
 
+        public ICollection<Bill> Bills { get; set; } = new HashSet<Bill>();
         public ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public ICollection<Quotation> Quotations { get; set; } = new HashSet<Quotation>();
         public Feedback Feedback { get; set; }
-        public Bill Bill { get; set; }
 
     }
 }
