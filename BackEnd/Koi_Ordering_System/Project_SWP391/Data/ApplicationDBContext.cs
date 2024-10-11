@@ -93,11 +93,6 @@ namespace Project_SWP391.Data
                 .HasForeignKey<Bill>(b => b.QuotationId)
                 .OnDelete(DeleteBehavior.Restrict); // Hạn chế xóa liên quan, tránh gây chu kỳ
 
-            modelBuilder.Entity<Bill>()
-                .HasOne(b => b.User)
-                .WithOne(u => u.Bill)
-                .HasForeignKey<Bill>(b => b.UserId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade xóa khi xóa User
             // Seed roles
             var roles = new List<IdentityRole>
             {
