@@ -21,7 +21,6 @@ namespace Project_SWP391.Mappers
             {
                 VarietyName = variety.VarietyName,
                 Description = variety.Description,
-                UrlImage = variety.UrlImage,
             };
         }
     }

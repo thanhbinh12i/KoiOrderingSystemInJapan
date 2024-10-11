@@ -20,8 +20,7 @@ function KoiVarietyList() {
       const fetchApi = async () => {
             const response = await get("koi-variable/view-all");
             if (response) {
-                  setVarieties(response);
-                  setFilterVarieties(response);
+                  setVarieties(response)
             }
       };
 

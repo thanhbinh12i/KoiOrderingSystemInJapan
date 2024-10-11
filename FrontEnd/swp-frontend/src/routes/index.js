@@ -31,6 +31,7 @@ import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
 import Tour from "../pages/Tours";
+import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Varitety";
 
 export const routes = [
@@ -57,6 +58,10 @@ export const routes = [
                   {
                         path: "tours",
                         element: <Tour />
+                  },
+                  {
+                        path: "tours/:id",
+                        element: <TourDetailUser />
                   },
                   {
                         path: "farms",
