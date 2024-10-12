@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Project_SWP391.Dtos.Account;
+using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using System;
@@ -313,7 +314,7 @@ namespace Project_SWP391.Controllers
                 Gender = user.Gender,
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
-                Token =  await _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             });
         }
         [HttpGet("{id}")]
@@ -336,10 +337,10 @@ namespace Project_SWP391.Controllers
                 );
         }
         [HttpGet]
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
-            var users = _userManager.Users.OfType<AppUser>().ToList();
+            var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
 
             if (users == null || !users.Any())
                 return NotFound("No users found");
@@ -360,7 +361,15 @@ namespace Project_SWP391.Controllers
                         FullName = user.FullName,
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth,
-                        Role = roles.FirstOrDefault() 
+                        Role = roles.FirstOrDefault(),
+                        Bills = user.Bills.Select(bill => new Bill
+                        {
+                            BillId = bill.BillId,
+                            UserFullName = bill.UserFullName,
+                            Price = bill.Price,
+                            PhoneNumber = bill.PhoneNumber,
+                            Email = bill.Email
+                        }).ToList()
                     };
                     userDtos.Add(userDto);
                 }
