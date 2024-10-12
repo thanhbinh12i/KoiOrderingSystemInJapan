@@ -32,6 +32,16 @@ namespace Project_SWP391.Controllers
             }
             return Ok(tour);
         }
+        [HttpGet("view/{min:float}&&{max:float}")]
+        public async Task<IActionResult> ViewPriceMinToMax([FromRoute] float min, float max)
+        {
+            var tour = await _tourRepo.GetPriceByAsync(min,max);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+            return Ok(tour);
+        }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateTourDto tour)
         {

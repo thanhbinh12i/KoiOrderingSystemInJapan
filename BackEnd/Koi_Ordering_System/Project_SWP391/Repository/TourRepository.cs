@@ -70,5 +70,10 @@ namespace Project_SWP391.Repository
         {
             return _context.Tours.AnyAsync(s => s.TourId == tourId);
         }
+
+        public async Task<List<Tour?>> GetPriceByAsync(float min, float max)
+        {
+            return await _context.Tours.Where(x => x.Price <= max && x.Price >=min).ToListAsync();
+        }
     }
 }
