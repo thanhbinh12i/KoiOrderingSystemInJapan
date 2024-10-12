@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.Bill;
+﻿using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Mappers

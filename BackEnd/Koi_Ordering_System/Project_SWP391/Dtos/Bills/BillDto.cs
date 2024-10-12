@@ -1,4 +1,4 @@
-﻿namespace Project_SWP391.Dtos.Bill
+﻿namespace Project_SWP391.Dtos.Bills
 {
     public class BillDto
     {
