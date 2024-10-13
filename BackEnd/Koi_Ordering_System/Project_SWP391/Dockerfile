@@ -2,7 +2,6 @@
 
 # This stage is used when running from VS in fast mode (Default for Debug configuration)
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -17,7 +16,7 @@ COPY ["BackEnd/Koi_Ordering_System/Project_SWP391/Project_SWP391.csproj", "Proje
 RUN dotnet restore "Project_SWP391/Project_SWP391.csproj"
 
 # Copy the rest of the application code
-COPY backend-koiOrderingsystem/projectSWP391/. .
+COPY BackEnd/Koi_Ordering_System/Project_SWP391/. .
 
 # Build the project
 WORKDIR "/src/Project_SWP391"
@@ -31,5 +30,6 @@ RUN dotnet publish "Project_SWP391.csproj" -c $BUILD_CONFIGURATION -o /app/publi
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
+USER app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Project_SWP391.dll"]
