@@ -13,7 +13,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy the csproj file and restore dependencies
-COPY ["backend-koiOrderingsystem/projectSWP391/Project_SWP391.csproj", "Project_SWP391/"]
+COPY ["BackEnd/Koi_Ordering_System/Project_SWP391/Project_SWP391.csproj", "Project_SWP391/"]
 RUN dotnet restore "Project_SWP391/Project_SWP391.csproj"
 
 # Copy the rest of the application code
