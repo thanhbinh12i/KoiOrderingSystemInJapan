@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import { post } from "../../utils/request";
 function Login() {
       const navigate = useNavigate();
@@ -27,14 +27,18 @@ function Login() {
                         localStorage.setItem('token', token);
                         localStorage.setItem('id', userId);
                         const role = decodedToken.role;
-                        localStorage.setItem('role',role);
+                        localStorage.setItem('role', role);
                         dispatch(checkLogin(true));
-                        
-                        if(role === "Manager"){
-                              navigate("/admin");  
-                        }else{
+
+
+                        if (role === "Manager") {
+                              navigate("/admin");
+                        } else if (role.includes("Staff")) {
+                              navigate("/staff");
+                        } else {
                               navigate("/");
                         }
+
                   }
 
             } catch (error) {
@@ -47,15 +51,24 @@ function Login() {
             setLoading(true);
             const values = credentialResponse.credential;
             try {
-                  const data = await post("account/google-login", {token: values});
+                  const data = await post("account/google-login", { token: values });
                   messageApi.success('Google login successful');
                   const token = data.token;
                   const decodedToken = jwtDecode(token);
                   const userId = decodedToken.nameid;
                   localStorage.setItem('token', token);
                   localStorage.setItem('id', userId);
+                  const role = decodedToken.role;
+                  localStorage.setItem('role', role);
                   dispatch(checkLogin(true));
-                  navigate("/");
+
+                  if (role === "Manager") {
+                        navigate("/admin");
+                  } else if (role.includes("Staff")) {
+                        navigate("/staff");
+                  } else {
+                        navigate("/");
+                  }
 
             } catch (error) {
                   messageApi.error('Google login failed');

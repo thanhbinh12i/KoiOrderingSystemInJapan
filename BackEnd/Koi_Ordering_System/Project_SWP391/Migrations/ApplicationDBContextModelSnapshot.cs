@@ -51,31 +51,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5d6fa5db-32f1-46ca-ab1c-b7ee130f6bce",
+                            Id = "65c663ca-b543-4db8-9a3b-7c1be05a16a3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "4f2f59d2-2bc6-4b4a-a986-ad96bed65ac0",
+                            Id = "7e190e9d-0715-4a5c-a840-375c7c771caf",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "6a8e991f-4656-4588-bce8-6ed052fec12d",
+                            Id = "80058da3-eac9-49e7-b9e1-ca4b6e299170",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "3fbfa96f-70bb-4069-917e-9ce5e828c0e8",
+                            Id = "0cbfd504-ba58-4eb6-a600-5b338336a300",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "4d2bd26f-e4f4-4ecd-99a7-efb0ef3294ca",
+                            Id = "9ebefaee-8495-429c-ae5d-de6ce873f6cf",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -304,8 +304,7 @@ namespace Project_SWP391.Migrations
                     b.HasIndex("QuotationId")
                         .IsUnique();
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bills");
                 });
@@ -493,7 +492,6 @@ namespace Project_SWP391.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("UpdateDate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YOB")
@@ -842,8 +840,8 @@ namespace Project_SWP391.Migrations
                         .IsRequired();
 
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithOne("Bill")
-                        .HasForeignKey("Project_SWP391.Model.Bill", "UserId")
+                        .WithMany("Bills")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1034,8 +1032,7 @@ namespace Project_SWP391.Migrations
 
             modelBuilder.Entity("Project_SWP391.Model.AppUser", b =>
                 {
-                    b.Navigation("Bill")
-                        .IsRequired();
+                    b.Navigation("Bills");
 
                     b.Navigation("Feedback")
                         .IsRequired();

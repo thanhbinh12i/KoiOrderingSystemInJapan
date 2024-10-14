@@ -11,7 +11,7 @@ function VarietyDetail(props) {
                         footer={null}>
                         <div>
                               <div className="mb-20">
-                                    <img src={record.urlImage} alt=""/>
+                                    <img style={{width: 200}} src={`https://localhost:7087/uploads/koiVariety/${record.urlImage}`} alt="" />
                               </div>
                               <div className="mb-20">
                                     <p>Tên giống cá: <strong>{record.varietyName}</strong></p>

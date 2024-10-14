@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
+import { Form, Input, Button, Card, Row, Col, Typography, QRCode, Checkbox } from 'antd';
 import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from 'react-router-dom';
 import { post, put } from '../../utils/request';
@@ -28,6 +28,14 @@ function PayBooking() {
                   }
             }
       }
+      const ACCOUNT_NUMBER = '0905024174';
+      const BANK_CODE = 'MB';
+      const ACCOUNT_NAME = "Nguyen Pham Thanh Binh";
+      const Description = "Thanh toán";
+      const amount = price / 1000;
+
+      const paymentInfo = `https://img.vietqr.io/image/${BANK_CODE}-${ACCOUNT_NUMBER}-compact.png?amount=${amount}&addInfo=${Description}&accountName=${ACCOUNT_NAME}`;
+
       return (
             <>
                   <div className="payment-page">
@@ -41,7 +49,7 @@ function PayBooking() {
                                                 name="payment_form"
                                                 onFinish={onFinish}
                                                 layout="vertical"
-                                                initialValues={ price }
+                                                initialValues={price}
                                           >
                                                 <Form.Item
                                                       name="userFullName"
@@ -72,8 +80,11 @@ function PayBooking() {
                                                       <Input value={price} disabled />
                                                 </Form.Item>
                                                 <Form.Item>
+                                                      <img src={paymentInfo} alt='' />
+                                                </Form.Item>
+                                                <Form.Item>
                                                       <Button type="primary" htmlType="submit" size="large" block icon={<LockOutlined />}>
-                                                            Thanh toán an toàn
+                                                            Thanh toán
                                                       </Button>
                                                 </Form.Item>
                                           </Form>

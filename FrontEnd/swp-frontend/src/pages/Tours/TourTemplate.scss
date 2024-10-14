@@ -94,3 +94,132 @@
             }
       }
 }
+.tour-info-card {
+      margin-top: 10px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+      .ant-card-body {
+            padding: 24px;
+      }
+
+      .ant-typography {
+            color: #1a1a1a;
+      }
+
+      .ant-divider {
+            background-color: #e8e8e8;
+      }
+
+      .ant-descriptions {
+            .ant-descriptions-item-label {
+                  color: #595959;
+
+                  .anticon {
+                        margin-right: 8px;
+                        color: #1890ff;
+                  }
+            }
+
+            .ant-descriptions-item-content {
+                  color: #262626;
+                  font-weight: 500;
+            }
+      }
+
+      .farm-section {
+            margin-top: 24px;
+            h4{
+                  margin-top: 0;
+            }
+            .ant-typography {
+                  margin-bottom: 16px;
+
+                  .anticon {
+                        color: #1890ff;
+                        margin-right: 8px;
+                  }
+            }
+
+            .ant-list {
+                  .farm-list-item {
+                        margin-bottom: 24px;
+                        padding: 16px;
+                        background-color: #f5f5f5;
+                        border-radius: 8px;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        }
+
+                        .farm-container {
+                              display: flex;
+                              align-items: center;
+
+                              .farm-image {
+                                    width: 240px;
+                                    height: 140px;
+                                    object-fit: cover;
+                                    border-radius: 8px;
+                                    margin-right: 16px;
+                              }
+
+                              .farm-info {
+                                    flex: 1;
+
+                                    .farm-name {
+                                          margin-bottom: 8px;
+                                          color: #262626;
+                                    }
+
+                                    .farm-location {
+                                          color: #595959;
+
+                                          .location-icon {
+                                                color: #1890ff;
+                                                margin-right: 4px;
+                                          }
+                                    }
+                              }
+                        }
+                  }
+            }
+      }
+
+      .tour-rating {
+            display: flex;
+            align-items: center;
+
+            .anticon-star {
+                  color: #faad14;
+                  margin-right: 8px;
+            }
+
+            .ant-typography {
+                  margin-right: 8px;
+            }
+
+            .ant-rate {
+                  margin-right: 8px;
+            }
+      }
+}
+
+
+.form-container {
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .ant-form-item {
+        margin-bottom: 15px;
+    }
+}
