@@ -17,6 +17,8 @@ import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
 import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
+import StaffManager from "../pages/Admin/StaffManager";
+import CreateStaff from "../pages/Admin/StaffManager/CreateStaff";
 import TourManager from "../pages/Admin/Tour";
 import CreateTour from "../pages/Admin/Tour/CreateTour";
 import TourDetail from "../pages/Admin/Tour/TourDetail";
@@ -189,6 +191,14 @@ export const routes = [
                                     {
                                           path: "quotation-manager",
                                           element: <QuotationManager />
+                                    },
+                                    {
+                                          path: "staff-manager",
+                                          element: <StaffManager />
+                                    },
+                                    {
+                                          path: "create-staff",
+                                          element: <CreateStaff />
                                     }
                               ]
                         }
