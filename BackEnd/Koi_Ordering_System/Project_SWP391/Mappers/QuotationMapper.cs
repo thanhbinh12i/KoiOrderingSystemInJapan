@@ -11,6 +11,8 @@ namespace Project_SWP391.Mappers
             return new QuotationDto
             {
                 QuotationId = quotationModel.QuotationId,
+                Username = quotationModel.Username,
+                TourName = quotationModel.TourName,
                 PriceOffer = quotationModel.PriceOffer,
                 Status = quotationModel.Status,
                 ApprovedDate = quotationModel.ApprovedDate,
@@ -18,10 +20,12 @@ namespace Project_SWP391.Mappers
                 TourId = quotationModel.TourId
             };
         }
-        public static Quotation ToQuotationFromToCreateDto(this CreateQuotationDto quotationDto, string userId, int tourId)
+        public static Quotation ToQuotationFromToCreateDto(this CreateQuotationDto quotationDto, string userId, int tourId, string userName, string tourName)
         {
             return new Quotation
             {
+                Username = userName,
+                TourName = tourName,
                 PriceOffer = quotationDto.PriceOffer,
                 Status = quotationDto.Status,
                 ApprovedDate = quotationDto.ApprovedDate,

@@ -20,7 +20,7 @@ namespace Project_SWP391.Controllers
         {
             var tour = await _tourRepo.GetAllAsync();
             var tourDto = tour.Select(v => v.ToTourDto());
-            return Ok(tourDto);
+            return Ok(tour);
         }
         [HttpGet("view/{tourId:int}")]
         public async Task<IActionResult> ViewAllId([FromRoute] int tourId)

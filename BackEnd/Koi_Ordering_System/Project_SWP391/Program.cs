@@ -136,8 +136,7 @@ namespace Project_SWP391
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseSwagger();
-            app.UseSwaggerUI();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("AllowOrigin");
