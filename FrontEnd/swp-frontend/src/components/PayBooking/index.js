@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card, Row, Col, Typography, QRCode, Checkbox } from 'antd';
+import { Form, Input, Button, Card, Row, Col, Typography} from 'antd';
 import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from 'react-router-dom';
 import { post, put } from '../../utils/request';
@@ -32,7 +32,7 @@ function PayBooking() {
       const BANK_CODE = 'MB';
       const ACCOUNT_NAME = "Nguyen Pham Thanh Binh";
       const Description = "Thanh toán";
-      const amount = price / 1000;
+      const amount = 55000;
 
       const paymentInfo = `https://img.vietqr.io/image/${BANK_CODE}-${ACCOUNT_NUMBER}-compact.png?amount=${amount}&addInfo=${Description}&accountName=${ACCOUNT_NAME}`;
 

@@ -88,11 +88,11 @@ function Quotation() {
                                                       </p>
                                                       {item.status !== "Đã thanh toán" && (
                                                             <>
-                                                            {prices[item.quotationId] > 0 ? (
-                                                                  <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
-                                                            ) : (
-                                                                  <></>
-                                                            )}
+                                                                  {prices[item.quotationId] > 0 ? (
+                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
+                                                                  ) : (
+                                                                        <></>
+                                                                  )}
                                                                   <Modal
                                                                         title="Nhập giá tiền cho chuyến đi"
                                                                         visible={modalVisibility[item.quotationId]}
@@ -105,12 +105,12 @@ function Quotation() {
                                                                               onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                         />
                                                                   </Modal>
-                                                                  {item.status !== "Báo giá cho quản lý" && item.status !== "Đã xác nhận" && (
+                                                                  {item.status !== "Báo giá cho quản lý" && item.status !== "Đã xác nhận" && item.status !== "Xác nhận báo giá" && (
                                                                         <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer)}>
                                                                               Báo giá cho quản lí
                                                                         </Button>
                                                                   )}
-                                                                  {item.status !== "Đã xác nhận" && item.status === "Báo giá cho sales" && (
+                                                                  {item.status !== "Đã xác nhận" && item.status === "Xác nhận báo giá" && (
                                                                         <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>
                                                                               Báo giá cho khách hàng
                                                                         </Button>

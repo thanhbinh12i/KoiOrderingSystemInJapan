@@ -28,6 +28,7 @@ import Koi from "../pages/Koi";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
+import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
@@ -117,6 +118,10 @@ export const routes = [
                               {
                                     path: "pay-success/:id",
                                     element: <PaymentSuccess />
+                              },
+                              {
+                                    path: "order-koi",
+                                    element: <OrderKoi />
                               }
                         ]
                   }

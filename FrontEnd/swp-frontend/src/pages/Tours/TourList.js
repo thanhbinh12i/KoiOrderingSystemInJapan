@@ -22,10 +22,10 @@ function TourList() {
             fetchApi();
       });
       const filteredTours = useMemo(() => {
-            return tours.filter(tour => 
-              tourDestination.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
+            return tours.filter(tour =>
+                  tourDestination.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
             );
-          }, [tours, tourDestination]);
+      }, [tours, tourDestination]);
       return (
             <>
 

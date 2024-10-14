@@ -8,6 +8,7 @@ namespace Project_SWP391.Interfaces
     {
         Task<List<Tour>> GetAllAsync();
         Task<Tour?> GetIdByAsync(int tourId);
+        Task<List<Tour?>> GetPriceByAsync(float min, float max);
         Task<Tour> CreateAsync(Tour tourModel);
         Task<Tour?> UpdateAsync(int tourId, UpdateTourDto tourDto);
         Task<Tour?> DeleteAsync(int tourId);

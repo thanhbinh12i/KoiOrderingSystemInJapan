@@ -30,7 +30,7 @@ namespace Project_SWP391.Controllers
             var tourDestination = await _tourDestinationRepo.GetAllAsync();
             if (tourDestination.IsNullOrEmpty()) return NotFound();
             var tourDestinationDto = tourDestination.Select(v => v.ToTourDestinationDto());
-            return Ok(tourDestination);
+            return Ok(tourDestinationDto);
         }
         [HttpGet("view/{farmId:int}&{tourId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId, int tourId)
