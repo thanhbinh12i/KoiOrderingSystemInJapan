@@ -17,7 +17,7 @@ namespace Project_SWP391.Dtos.Kois
         public string UpdateDate { get; set; }
         public int FarmId { get; set; }
         public ICollection<KoiImage> KoiImages { get; set; }
-        public ICollection<KoiBill> KoiBills { get; set; }
+        //public ICollection<KoiBill> KoiBills { get; set; }
         public ICollection<VarietyOfKoi> VarietyOfKois { get; set; }
     }
 }
