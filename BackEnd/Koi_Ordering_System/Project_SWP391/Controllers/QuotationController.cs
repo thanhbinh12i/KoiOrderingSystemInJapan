@@ -91,13 +91,15 @@ namespace Project_SWP391.Controllers
                 return BadRequest("User does not exist");
             }
             var tour = await _tourRepo.GetIdByAsync(tourId);
-            if (tour==null)
+            if (tour == null)
             {
                 return BadRequest("Tour does not exist");
             }
-            string userName = user.UserName;
+            string fullName = user.FullName;
             string tourName = tour.TourName;
-            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId,userName,tourName);
+            string phoneNumber = user.PhoneNumber;
+            string email = user.Email;
+            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId, fullName, tourName, phoneNumber, email);
             if (quotationModel == null)
             {
                 return NotFound();

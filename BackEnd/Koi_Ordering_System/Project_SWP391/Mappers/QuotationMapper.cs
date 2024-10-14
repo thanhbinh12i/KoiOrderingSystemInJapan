@@ -11,24 +11,30 @@ namespace Project_SWP391.Mappers
             return new QuotationDto
             {
                 QuotationId = quotationModel.QuotationId,
-                Username = quotationModel.Username,
+                FullName = quotationModel.FullName,
                 TourName = quotationModel.TourName,
+                PhoneNumber = quotationModel.PhoneNumber,
+                Email = quotationModel.Email,
                 PriceOffer = quotationModel.PriceOffer,
                 Status = quotationModel.Status,
                 ApprovedDate = quotationModel.ApprovedDate,
+                Description = quotationModel.Description,
                 UserId = quotationModel.UserId,
                 TourId = quotationModel.TourId
             };
         }
-        public static Quotation ToQuotationFromToCreateDto(this CreateQuotationDto quotationDto, string userId, int tourId, string userName, string tourName)
+        public static Quotation ToQuotationFromToCreateDto(this CreateQuotationDto quotationDto, string userId, int tourId, string fullName, string tourName, string phoneNumber, string email)
         {
             return new Quotation
             {
-                Username = userName,
+                FullName = fullName,
                 TourName = tourName,
+                PhoneNumber = phoneNumber,
+                Email = email,
                 PriceOffer = quotationDto.PriceOffer,
                 Status = quotationDto.Status,
                 ApprovedDate = quotationDto.ApprovedDate,
+                Description = quotationDto.Description,
                 UserId = userId,
                 TourId = tourId
             };

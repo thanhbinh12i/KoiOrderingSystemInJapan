@@ -51,31 +51,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4124988f-6166-4644-9b68-f21a0b882e84",
+                            Id = "309fb6bd-40e3-431c-9c26-95509bdf9e0f",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "282a0369-ce70-46ea-93a3-6c961e58d9ae",
+                            Id = "1176b0e9-c4dd-4dcb-aad8-e35151fcad88",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "c6fad17b-df5d-4083-bff4-f4d7553f7050",
+                            Id = "f43f7548-6345-4c6f-82eb-e627ee2674a1",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "2c6e8e34-bcdf-44ef-aa79-e1491e808b85",
+                            Id = "8b9189ea-dab5-4d77-a2a8-7edbe60944e7",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "4146dd7e-ddec-49de-94cd-3713006d5153",
+                            Id = "510e9f6b-430e-4fa8-aea1-652d533fa553",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -669,6 +669,22 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<float>("PriceOffer")
                         .HasColumnType("real");
 
@@ -686,10 +702,6 @@ namespace Project_SWP391.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("QuotationId");
 
