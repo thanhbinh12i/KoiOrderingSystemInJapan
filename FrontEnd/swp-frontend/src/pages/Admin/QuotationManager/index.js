@@ -20,7 +20,7 @@ function QuotationManager() {
             };
             const quotationData = {
                   "priceOffer": priceOffer,
-                  "status": "Đã xác nhận",
+                  "status": "Xác nhận báo giá",
                   "approvedDate": getTimeCurrent(),
             };
             const response = await put(`quotation/update/${quotationId}`, quotationData);
@@ -42,7 +42,10 @@ function QuotationManager() {
                                                       <p>
                                                             <Badge status={item.status === "confirmed" ? "success" : "default"} text={item.status} />
                                                       </p>
-                                                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)}>Xác nhận</Button>
+                                                      {item.status === "Báo giá cho quản lý" && (
+                                                             <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)}>Xác nhận</Button>
+                                                      )}
+                                                     
                                                 </Card>
                                           </Col>
                                     ))}

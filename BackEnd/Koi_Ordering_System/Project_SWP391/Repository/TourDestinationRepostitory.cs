@@ -40,7 +40,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<TourDestination>> GetAllAsync()
         {
-            return await _context.TourDestinations.Include(c => c.Tour).Include(c => c.KoiFarm).ToListAsync();
+            return await _context.TourDestinations.ToListAsync();
         }
 
         public async Task<TourDestination?> GetByIdAsync(int farmId, int tourId)

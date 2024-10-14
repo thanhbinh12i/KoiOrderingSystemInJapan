@@ -31,6 +31,13 @@ function MyBooking() {
                   title: 'Giá tiền',
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
+                  render: (_, record) => {
+                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán") {
+                              return record.priceOffer;
+                        } else {
+                              return "Chưa xác nhận";
+                        }
+                  }
             },
             {
                   title: 'Ngày xác nhận',
@@ -46,23 +53,40 @@ function MyBooking() {
             {
                   title: 'Hành động',
                   key: 'action',
-                  render: (_, record) => (
-                        record.status === "Đã xác nhận" && (
-                              <Link to={`/pay-booking/${record.quotationId}`} state={{price: record.priceOffer}}>
-                                    <Button type="primary">
-                                          Thanh toán
-                                    </Button>
-                              </Link>
-
-                        )
-                  ),
+                  render: (_, record) => {
+                        if (record.status === "Đã xác nhận") {
+                              return (
+                                    <>
+                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
+                                                <Button type="primary">
+                                                      Thanh toán
+                                                </Button>
+                                          </Link>
+                                    </>
+                              )
+                        }else if (record.status === "Đã thanh toán"){
+                              return (
+                                    <>
+                                          <Link to={`order-koi`}>
+                                                <Button type="primary">
+                                                      Mua cá nào
+                                                </Button>
+                                          </Link>
+                                    </>
+                              )
+                        }else{
+                              return (
+                                    <></>
+                              )
+                        }
+                  }
             },
       ];
       return (
             <>
                   <div className="booking-list-container">
                         <h2>Danh sách đặt chỗ</h2>
-                        <Table columns={columns} dataSource={quotation} pagination={false} />
+                        <Table columns={columns} dataSource={quotation} pagination={false} bordered />
                   </div>
             </>
       )
