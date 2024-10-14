@@ -41,6 +41,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán'].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',

@@ -30,11 +30,15 @@ function Login() {
                         localStorage.setItem('role', role);
                         dispatch(checkLogin(true));
 
+
                         if (role === "Manager") {
                               navigate("/admin");
+                        } else if (role.includes("Staff")) {
+                              navigate("/staff");
                         } else {
                               navigate("/");
                         }
+
                   }
 
             } catch (error) {
@@ -60,6 +64,8 @@ function Login() {
 
                   if (role === "Manager") {
                         navigate("/admin");
+                  } else if (role.includes("Staff")) {
+                        navigate("/staff");
                   } else {
                         navigate("/");
                   }
