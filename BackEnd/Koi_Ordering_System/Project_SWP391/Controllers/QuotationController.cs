@@ -35,7 +35,7 @@ namespace Project_SWP391.Controllers
         [HttpGet("view/{userId}&{tourId}")]
         public async Task<IActionResult> ViewById([FromRoute] string userId, int tourId)
         {
-            var quotation = await _quotationRepo.GetByIdAsync(userId,tourId);
+            var quotation = await _quotationRepo.GetByIdAsync(userId, tourId);
             if (quotation == null)
             {
                 return NotFound($"No TourDestination found for UserId {userId} and TourId {tourId}");
@@ -90,11 +90,16 @@ namespace Project_SWP391.Controllers
             {
                 return BadRequest("User does not exist");
             }
-            if (!await _tourRepo.ExistTour(tourId))
+            var tour = await _tourRepo.GetIdByAsync(tourId);
+            if (tour == null)
             {
                 return BadRequest("Tour does not exist");
             }
-            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId);
+            string fullName = user.FullName;
+            string tourName = tour.TourName;
+            string phoneNumber = user.PhoneNumber;
+            string email = user.Email;
+            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId, fullName, tourName, phoneNumber, email);
             if (quotationModel == null)
             {
                 return NotFound();

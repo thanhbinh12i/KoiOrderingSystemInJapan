@@ -38,7 +38,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Tour>> GetAllAsync()
         {
-            return await _context.Tours.ToListAsync();
+            return await _context.Tours.Include(x => x.TourDestinations).ToListAsync();
         }
 
         public async Task<Tour> GetIdByAsync(int tourId)
@@ -69,6 +69,11 @@ namespace Project_SWP391.Repository
         public Task<bool> ExistTour(int tourId)
         {
             return _context.Tours.AnyAsync(s => s.TourId == tourId);
+        }
+
+        public async Task<List<Tour?>> GetPriceByAsync(float min, float max)
+        {
+            return await _context.Tours.Where(x => x.Price <= max && x.Price >= min).ToListAsync();
         }
     }
 }
