@@ -28,14 +28,13 @@ function Variety() {
           <Card
             hoverable
             className="variety-card"
-            cover={
-              <img
-                alt={variety.varietyName}
-                src={`/images/${variety.urlImage}.jpg`}
-                className="variety-image"
-              />
-            }
           >
+            <img
+              width={135} height={200}
+              alt={variety.varietyName}
+              src={`https://localhost:7087/uploads/koiVariety/${variety.urlImage}`}
+              className="variety-image"
+            />
             <Title level={4}>{variety.varietyName}</Title>
             <Paragraph>{variety.description}</Paragraph>
           </Card>

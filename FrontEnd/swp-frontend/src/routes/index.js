@@ -5,6 +5,7 @@ import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
+import LayoutStaff from "../layouts/LayoutStaff";
 import AboutUs from "../pages/AboutUs";
 import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
@@ -30,6 +31,7 @@ import MyBooking from "../pages/MyBooking";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import Quotation from "../pages/Staff/Quotation";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Varitety";
@@ -186,5 +188,15 @@ export const routes = [
                               ]
                         }
                   ]
+      },
+      {
+            path: "staff",                      
+            element: <LayoutStaff />,
+            children: [
+                  {
+                        path: 'quotation-staff',
+                        element: <Quotation />
+                  }
+            ]
       }
 ]

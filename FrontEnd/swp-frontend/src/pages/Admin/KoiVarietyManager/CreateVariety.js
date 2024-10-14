@@ -15,14 +15,12 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
             formData.append('VarietyName', values.VarietyName);
             formData.append('Description', values.Description);
 
-            console.log(formData)
             try {
                   setLoading(true);
                   const response = await fetch('https://localhost:7087/api/koi-variable/upload', {
                         method: 'POST',
                         body: formData,
                   });
-                  console.log(response);
                   if (!response.ok) {
                         throw new Error('Lỗi tải lên hình ảnh');
                   }
