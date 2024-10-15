@@ -92,7 +92,6 @@ export const routes = [
                         element: <PrivateRoutes />,
                         children: [
                               {
-                                    path: "profile",
                                     element: <Profile />,
                                     children: [
                                           {
@@ -100,7 +99,7 @@ export const routes = [
                                                 element: <MyBooking />
                                           },
                                           {
-                                                path: "main-content",
+                                                path: "profile",
                                                 element: <MainContent />
                                           }
                                     ]
