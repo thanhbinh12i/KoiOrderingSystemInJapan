@@ -7,7 +7,6 @@ const UserList = () => {
   const fetchPersonalInfo = async () => {
     try {
       const response = await get("account");
-      console.log(response);
       setPersonalInfo(response);
     } catch (error) {
       console.error("Error:", error);
@@ -58,7 +57,7 @@ const UserList = () => {
     {
       title: "Date of Birth",
       dataIndex: "dateOfBirth",
-      key: "dateOfBirth"
+      key: "dateOfBirth",
     },
     {
       title: "Role",

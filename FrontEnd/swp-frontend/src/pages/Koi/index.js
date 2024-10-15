@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Typography } from "antd";
-// import "./Variety.scss";
+import "./Koi.scss";
 import { get } from "../../utils/request";
 
 const { Title, Paragraph } = Typography;
@@ -22,9 +22,9 @@ function Koi() {
   }, []);
 
   return (
-    <Row gutter={[16, 16]} className="variety-container">
+    <Row gutter={[16, 16]} className="koi-container">
       {koi.map((koi) => (
-        <Col xs={24} sm={12} md={8} key={koi.varietyId}>
+        <Col xs={24} sm={12} md={8} key={koi.koiId}>
           <Card hoverable className="koi-card">
             {koi.koiImages.map((image) => (
               <img
@@ -32,7 +32,7 @@ function Koi() {
                 width={135}
                 height={200}
                 alt={koi.koiName}
-                src={`https://localhost:7087/uploads/koi/${image.urlImage}`} // Lấy urlImage từ từng phần tử trong koiImages
+                src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
                 className="koi-image"
               />
             ))}
