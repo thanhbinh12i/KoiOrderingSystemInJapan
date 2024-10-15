@@ -2,6 +2,9 @@
 {
     public class UpdateQuotationDto
     {
+        public string FullName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
         public float PriceOffer { get; set; }
         public string Status { get; set; }
         public string ApprovedDate { get; set; }
