@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { get, post } from "../../utils/request";
 import { useNavigate } from "react-router-dom";
 
+const { TextArea } = Input;
 
 function FormTour() {
       const [farms, setFarms] = useState([]);
@@ -24,7 +25,7 @@ function FormTour() {
             fetchApi();
       }, [])
       const onFinish = async (values) => {
-            const tourName = "Tour " + values.name + "-" + values.phoneNumber + "-" + values.email;
+            const tourName = "Tour ";
             try {
                   setLoading(true);
                   const { farmId } = values;
@@ -56,16 +57,20 @@ function FormTour() {
                         return new Date().toLocaleString();
                   };
                   const quotationData = {
+                        "fullName": values.fullName,
+                        "phoneNumber": values.phoneNumber,
+                        "email": values.email,
                         "priceOffer": 0,
                         "status": "Chờ xác nhận",
                         "approvedDate": getTimeCurrent(),
+                        "description": values.description
                   };
                   setLoading(true);
                   const response = await post(`quotation/create/${userId}&${tourResponse.tourId}`, quotationData);
                   if (!response) {
                         setLoading(false);
                         navigate("/book-success");
-                  } 
+                  }
             } catch (error) {
                   console.log(error);
                   messageApi.error("Lỗi");
@@ -81,7 +86,7 @@ function FormTour() {
                   <Form layout="vertical" form={form} onFinish={onFinish}>
                         <Form.Item
                               label="Họ và tên"
-                              name="name"
+                              name="fullName"
                               rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}
                         >
                               <Input placeholder="Họ và tên" />
@@ -146,6 +151,9 @@ function FormTour() {
                                     ></Form.Item>
                               </Col>
                         </Row>
+                        <Form.Item label="Lời nhắn" name="description" initialValue="">
+                              <TextArea placeholder='Lời nhắn (nếu có)' />
+                        </Form.Item>
                         <Form.Item>
                               <Button type="primary" htmlType="submit" loading={loading}>
                                     Gửi
