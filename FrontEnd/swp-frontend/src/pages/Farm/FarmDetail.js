@@ -7,6 +7,7 @@ import {
   Space,
   Divider,
   Carousel,
+  Spin,
 } from "antd";
 import {
   EnvironmentOutlined,
@@ -24,15 +25,16 @@ const { Title, Text } = Typography;
 function FarmDetail() {
   const [farm, setFarm] = useState([]);
   const params = useParams();
-  const [koiData, setKoiData] = useState([]);
+  const [koiData, setKoiData] = useState(null);
 
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get(`koiFarm/view/${params.id}`);
+      console.log(response);
       if (response) {
         setFarm(response);
-        //   console.log(response);
-        //   console.log(response.farmName);
+        console.log(response);
+        console.log(response.farmName);
         const fetchKoiByFarm = async () => {
           const res = await get(`koiFarm/view/${response.farmName}`);
           if (res) {
@@ -46,6 +48,9 @@ function FarmDetail() {
     fetchApi();
     // eslint-disable-next-line
   }, [params.id]);
+  if (!farm || !koiData) {
+    return <Spin>Loading...</Spin>;
+  }
   return (
     <>
       <GoBack />
