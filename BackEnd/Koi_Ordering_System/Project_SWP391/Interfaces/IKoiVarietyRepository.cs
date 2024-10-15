@@ -7,6 +7,7 @@ namespace Project_SWP391.Interfaces
     {
         Task<List<KoiVariety>> GetAllAsync();
         Task<KoiVariety?> GetByIdAsync(int id);
+        Task<List<KoiVariety>> GetByKoiIdAsync(int koiId);
         Task<List<KoiVariety>> GetByNameAsync(string name);
         Task<KoiVariety> CreateAsync(KoiVariety variety);
         Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto variety);

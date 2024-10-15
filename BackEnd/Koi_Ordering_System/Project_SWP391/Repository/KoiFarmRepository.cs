@@ -77,5 +77,12 @@ namespace Project_SWP391.Repository
         {
             return _context.KoiFarms.AnyAsync(s => s.FarmId == farmId);
         }
+
+        public async Task<KoiFarm?> GetByKoiIdAsync(int koiId)
+        {
+            var koi = await _context.Kois.FirstOrDefaultAsync(k => k.KoiId == koiId);
+
+            return await _context.KoiFarms.Include(c => c.Kois).Include(c => c.FarmImages).FirstOrDefaultAsync(f => f.FarmId == koi.FarmId);
+        }
     }
 }

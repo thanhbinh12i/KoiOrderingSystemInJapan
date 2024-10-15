@@ -17,6 +17,7 @@ namespace Project_SWP391.Controllers
         {
             _koiVarietyRepo = koiVarietyRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -24,6 +25,7 @@ namespace Project_SWP391.Controllers
             var varietyDto = variety.Select(v => v.ToKoiVarietyDto());
             return Ok(varietyDto);
         }
+
         [HttpGet("view-by-id/{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -34,6 +36,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(variety);
         }
+
         [HttpGet("view-by-name/{name}")]
         public async Task<IActionResult> GetByName([FromRoute] string name)
         {
@@ -44,6 +47,20 @@ namespace Project_SWP391.Controllers
             }
             return Ok(variety);
         }
+
+        [HttpGet("view-by-koi-id/{koiId}")]
+        public async Task<IActionResult> GetByKoiId([FromRoute] int koiId)
+        {
+            var variety = await _koiVarietyRepo.GetByKoiIdAsync(koiId);
+
+            if (variety == null)
+            {
+                return NotFound("No variety found!");
+            }
+
+            return Ok(variety);
+        }
+
         //[HttpPost("create")]
         //public async Task<IActionResult> Create([FromBody] CreateKoiVarietyDto createVariety)
         //{
@@ -63,6 +80,7 @@ namespace Project_SWP391.Controllers
 
         //    return CreatedAtAction(nameof(GetById), new { id = varietyModel.VarietyId }, varietyModel);
         //}
+
         [HttpPost("upload")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateKoiVarietyDto createKoiVariety)
         {
@@ -117,6 +135,7 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
             }
         }
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto updateVariety, int id)
         {
@@ -134,6 +153,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(varietyModel.ToKoiVarietyDto());
         }
+
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
