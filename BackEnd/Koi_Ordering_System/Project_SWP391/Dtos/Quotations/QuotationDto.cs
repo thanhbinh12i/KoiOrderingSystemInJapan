@@ -7,7 +7,6 @@ namespace Project_SWP391.Dtos.Quotations
     {
         public int QuotationId { get; set; }
         public string FullName { get; set; }
-        public string TourName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public float PriceOffer { get; set; }

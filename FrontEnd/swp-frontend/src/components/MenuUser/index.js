@@ -46,7 +46,7 @@ function MenuUser() {
                   }
 
                   <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
-                        <Link to="/my-bookings">Đặt chỗ của tôi</Link>
+                        <Link to="/profile/my-bookings">Đặt chỗ của tôi</Link>
                   </Menu.Item>
                   <Menu.Item key="settings" icon={<SettingOutlined />} className="settings-item">
                         <Link to="/settings">Thay đổi mật khẩu</Link>
