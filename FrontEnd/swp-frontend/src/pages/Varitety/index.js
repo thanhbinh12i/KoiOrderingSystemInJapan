@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./Variety.scss";
 import { get } from "../../utils/request";
 
@@ -7,6 +8,7 @@ const { Title, Paragraph } = Typography;
 
 function Variety() {
   const [varieties, setVarieties] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVarieties = async () => {
@@ -21,6 +23,10 @@ function Variety() {
     fetchVarieties();
   }, []);
 
+  const handleCardClick = (varietyName) => {
+    navigate(`/varieties/${varietyName}`);
+  };
+
   return (
     <Row gutter={[16, 16]} className="variety-container">
       {varieties.map((variety) => (
@@ -28,9 +34,11 @@ function Variety() {
           <Card
             hoverable
             className="variety-card"
+            onClick={() => handleCardClick(variety.varietyName)}
           >
             <img
-              width={135} height={200}
+              width={135}
+              height={200}
               alt={variety.varietyName}
               src={`https://localhost:7087/uploads/koiVariety/${variety.urlImage}`}
               className="variety-image"

@@ -80,7 +80,7 @@ function Sidebar() {
           Thẻ của tôi
         </Menu.Item>
         <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
-          <Link to="/profile/my-bookings">Đặt chỗ của tôi</Link>
+          <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
         <Menu.Item key="transactions" icon={<HistoryOutlined />}>
           Danh sách giao dịch

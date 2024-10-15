@@ -75,7 +75,7 @@ function LayoutAdmin() {
           </div>
         </header>
         <Layout>
-          <Sider className="sider" collapsed={collapse} theme="light">
+          <Sider className="sider" collapsed={collapse} theme="light" width={250}>
             <MenuSider />
           </Sider>
           <Content className="content">

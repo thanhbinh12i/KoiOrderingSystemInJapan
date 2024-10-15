@@ -29,6 +29,23 @@ function MenuSider() {
       key: "/user-manager",
     },
     {
+      label: "Quản lý nhân sự",
+      icon: <UserOutlined />,
+      key: "/staff-manager",
+      children: [
+        {
+          label: <Link to="/staff-manager">Danh sách nhân viên</Link>,
+          icon: <OrderedListOutlined />,
+          key: "/staff-list",
+        },
+        {
+          label: <Link to="/create-staff">Tạo tài khoản nhân viên</Link>,
+          icon: <PlusOutlined />,
+          key: "/create-staff",
+        },
+      ],
+    },
+    {
       label: "Quản lí trang trại",
       icon: <BankOutlined />,
       key: "/farm-manager",

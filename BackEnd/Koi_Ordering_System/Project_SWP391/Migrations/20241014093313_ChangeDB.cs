@@ -37,11 +37,6 @@ namespace Project_SWP391.Migrations
                 keyColumn: "Id",
                 keyValue: "c6fad17b-df5d-4083-bff4-f4d7553f7050");
 
-            migrationBuilder.RenameColumn(
-                name: "Username",
-                table: "Quotations",
-                newName: "PhoneNumber");
-
             migrationBuilder.AddColumn<string>(
                 name: "Description",
                 table: "Quotations",
@@ -58,6 +53,13 @@ namespace Project_SWP391.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "FullName",
+                table: "Quotations",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "PhoneNumber",
                 table: "Quotations",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -103,23 +105,6 @@ namespace Project_SWP391.Migrations
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "f43f7548-6345-4c6f-82eb-e627ee2674a1");
-
-            migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Quotations");
-
-            migrationBuilder.DropColumn(
-                name: "Email",
-                table: "Quotations");
-
-            migrationBuilder.DropColumn(
-                name: "FullName",
-                table: "Quotations");
-
-            migrationBuilder.RenameColumn(
-                name: "PhoneNumber",
-                table: "Quotations",
-                newName: "Username");
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",

@@ -17,6 +17,8 @@ import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
 import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
+import StaffManager from "../pages/Admin/StaffManager";
+import CreateStaff from "../pages/Admin/StaffManager/CreateStaff";
 import TourManager from "../pages/Admin/Tour";
 import CreateTour from "../pages/Admin/Tour/CreateTour";
 import TourDetail from "../pages/Admin/Tour/TourDetail";
@@ -28,6 +30,7 @@ import Koi from "../pages/Koi";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
+import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
@@ -35,168 +38,184 @@ import Quotation from "../pages/Staff/Quotation";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Varitety";
-
+import KoiByVariety from "../pages/Varitety/KoiByVariety";
 export const routes = [
+  {
+    path: "/",
+    element: <LayoutDefault />,
+    children: [
       {
-            path: "/",
-            element: <LayoutDefault />,
-            children: [
-                  {
-                        index: true,
-                        element: <Home />
-                  },
-                  {
-                        path: "login",
-                        element: <Login />
-                  },
-                  {
-                        path: "register",
-                        element: <Register />
-                  },
-                  {
-                        path: "logout",
-                        element: <Logout />
-                  },
-                  {
-                        path: "tours",
-                        element: <Tour />
-                  },
-                  {
-                        path: "tours/:id",
-                        element: <TourDetailUser />
-                  },
-                  {
-                        path: "farms",
-                        element: <Farm />
-                  },
-                  {
-                        path: "farms/:id",
-                        element: <FarmDetailUser />
-                  },
-                  {
-                        path: "kois",
-                        element: <Koi />
-                  },
-                  {
-                        path: "varieties",
-                        element: <Variety />
-                  },
-                  {
-                        path: "aboutus",
-                        element: <AboutUs />
-                  },
-                  {
-                        element: <PrivateRoutes />,
-                        children: [
-                              {
-                                    path: "profile",
-                                    element: <Profile />,
-                                    children: [
-                                          {
-                                                path: "my-bookings",
-                                                element: <MyBooking />
-                                          },
-                                          {
-                                                path: "main-content",
-                                                element: <MainContent />
-                                          }
-                                    ]
-                              },
-                              {
-                                    path: "book-tour/:id",
-                                    element: <BookTour />
-                              },
-                              {
-                                    path: "book-success",
-                                    element: <BookSuccess />
-                              },
-                              {
-                                    path: "pay-booking/:id",
-                                    element: <PayBooking />
-                              },
-                              {
-                                    path: "pay-success/:id",
-                                    element: <PaymentSuccess />
-                              }
-                        ]
-                  }
-            ]
+        index: true,
+        element: <Home />,
       },
       {
-            element: <PrivateRoutes />,
-            children:
-                  [
-                        {
-                              element: <LayoutAdmin />,
-                              children: [
-                                    {
-                                          path: "admin",
-                                          element: <Dashboard />
-                                    },
-                                    {
-                                          path: "user-manager",
-                                          element: <UserManager />
-                                    },
-                                    {
-                                          path: "farm-manager",
-                                          element: <FarmManager />
-                                    },
-                                    {
-                                          path: "create-farm",
-                                          element: <CreateKoiFarm />
-                                    },
-                                    {
-                                          path: "farm-detail/:id",
-                                          element: <FarmDetail />
-                                    },
-                                    {
-                                          path: "koi-manager",
-                                          element: <KoiManager />
-                                    },
-                                    {
-                                          path: "koi-detail/:id",
-                                          element: <KoiDetail />
-                                    },
-                                    {
-                                          path: "create-koi",
-                                          element: <CreateKoi />
-                                    },
-                                    {
-                                          path: "koivariety-manager",
-                                          element: <KoiVarietyManager />
-                                    },
-                                    {
-                                          path: "service-manager",
-                                          element: <ServiceManager />
-                                    },
-                                    {
-                                          path: "tour-manager",
-                                          element: <TourManager />
-                                    },
-                                    {
-                                          path: "create-tour",
-                                          element: <CreateTour />
-                                    },
-                                    {
-                                          path: "tour-detail/:id",
-                                          element: <TourDetail />
-                                    },
-                                    {
-                                          path: "quotation-manager",
-                                          element: <QuotationManager />
-                                    }
-                              ]
-                        }
-                  ]
+        path: "login",
+        element: <Login />,
       },
       {
-            path: "staff",                      
-            element: <LayoutStaff />,
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "logout",
+        element: <Logout />,
+      },
+      {
+        path: "tours",
+        element: <Tour />,
+      },
+      {
+        path: "tours/:id",
+        element: <TourDetailUser />,
+      },
+      {
+        path: "farms",
+        element: <Farm />,
+      },
+      {
+        path: "farms/:id",
+        element: <FarmDetailUser />,
+      },
+      {
+        path: "kois",
+        element: <Koi />,
+      },
+      {
+        path: "varieties",
+        element: <Variety />,
+      },
+      {
+        path: "varieties/:name",
+        element: <KoiByVariety />,
+      },
+      {
+        path: "aboutus",
+        element: <AboutUs />,
+      },
+
+      {
+        element: <PrivateRoutes />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />,
             children: [
-                  {
-                        path: 'quotation-staff',
-                        element: <Quotation />
-                  }
-            ]
-      }
-]
+              {
+                path: "my-bookings",
+                element: <MyBooking />,
+              },
+              {
+                path: "main-content",
+                element: <MainContent />,
+              },
+            ],
+          },
+          {
+            path: "book-tour/:id",
+            element: <BookTour />,
+          },
+          {
+            path: "book-success",
+            element: <BookSuccess />,
+          },
+          {
+            path: "pay-booking/:id",
+            element: <PayBooking />,
+          },
+          {
+            path: "pay-success/:id",
+            element: <PaymentSuccess />,
+          },
+          {
+            path: "order-koi",
+            element: <OrderKoi />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    element: <PrivateRoutes />,
+    children: [
+      {
+        element: <LayoutAdmin />,
+        children: [
+          {
+            path: "admin",
+            element: <Dashboard />,
+          },
+          {
+            path: "user-manager",
+            element: <UserManager />,
+          },
+          {
+            path: "farm-manager",
+            element: <FarmManager />,
+          },
+          {
+            path: "create-farm",
+            element: <CreateKoiFarm />,
+          },
+          {
+            path: "farm-detail/:id",
+            element: <FarmDetail />,
+          },
+          {
+            path: "koi-manager",
+            element: <KoiManager />,
+          },
+          {
+            path: "koi-detail/:id",
+            element: <KoiDetail />,
+          },
+          {
+            path: "create-koi",
+            element: <CreateKoi />,
+          },
+          {
+            path: "koivariety-manager",
+            element: <KoiVarietyManager />,
+          },
+          {
+            path: "service-manager",
+            element: <ServiceManager />,
+          },
+          {
+            path: "tour-manager",
+            element: <TourManager />,
+          },
+          {
+            path: "create-tour",
+            element: <CreateTour />,
+          },
+          {
+            path: "tour-detail/:id",
+            element: <TourDetail />,
+          },
+          {
+            path: "quotation-manager",
+            element: <QuotationManager />,
+          },
+          {
+            path: "staff-manager",
+            element: <StaffManager />,
+          },
+          {
+            path: "create-staff",
+            element: <CreateStaff />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "staff",
+    element: <LayoutStaff />,
+    children: [
+      {
+        path: "quotation-staff",
+        element: <Quotation />,
+      },
+    ],
+  },
+];
