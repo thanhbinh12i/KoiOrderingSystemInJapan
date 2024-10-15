@@ -21,6 +21,8 @@ function PayBooking() {
             }
             fetchApi();
       })
+
+      console.log(quotation);
       const onFinish = async (values) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
@@ -29,7 +31,7 @@ function PayBooking() {
             const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
             if (response) {
                   const quotationData = {
-                        "priceOffer": price,
+                        ...quotation,
                         "status": "Đã thanh toán",
                         "approvedDate": getTimeCurrent(),
                   };
@@ -60,28 +62,31 @@ function PayBooking() {
                                                 name="payment_form"
                                                 onFinish={onFinish}
                                                 layout="vertical"
-                                                initialValues={quotation}
+
                                           >
                                                 <Form.Item
                                                       name="userFullName"
                                                       label="Họ và tên"
+                                                      initialValue={quotation.fullName}
                                                       rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}
                                                 >
-                                                      <Input size="large" placeholder="Nguyễn Văn A" />
+                                                      <Input value={quotation.fullName} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="phoneNumber"
                                                       label="Số điện thoại"
+                                                      initialValue={quotation.phoneNumber}
                                                       rules={[{ required: true, message: 'Vui lòng số điện thoại!' }]}
                                                 >
-                                                      <Input size="large" placeholder="0xxxxxxxxxx" />
+                                                      <Input value={quotation.phoneNumber} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="Email"
                                                       label="email"
+                                                      initialValue={quotation.email}
                                                       rules={[{ required: true, message: 'Vui lòng email!' }]}
                                                 >
-                                                      <Input size="large" placeholder="abc@gmail.com" />
+                                                      <Input value={quotation.email} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="price"
