@@ -45,6 +45,20 @@ namespace Project_SWP391.Controllers
             }
             return Ok(koiFarm);
         }
+
+        [HttpGet("view-by-koi-id/{koiId}")]
+        public async Task<IActionResult> GetByKoiId([FromRoute] int koiId)
+        {
+            var koiFarm = await _koiFarmRepo.GetByKoiIdAsync(koiId);
+
+            if (koiFarm == null)
+            {
+                return NotFound("No farm found");
+            }
+            
+            return Ok(koiFarm);
+        }
+
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateKoiFarmDto koiFarm)
         {

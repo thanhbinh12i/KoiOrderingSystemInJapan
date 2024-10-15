@@ -49,6 +49,11 @@ namespace Project_SWP391.Repository
             return await _context.KoiVarieties.FirstOrDefaultAsync(variety => variety.VarietyId == id);
         }
 
+        public async Task<List<KoiVariety>> GetByKoiIdAsync(int koiId)
+        {
+            return await _context.KoiVarieties.Where(v => v.VarietyOfKois.Any(v => v.KoiId == koiId)).ToListAsync();
+        }
+
         public async Task<List<KoiVariety>> GetByNameAsync(string name)
         {
             return await _context.KoiVarieties.Where(v => v.VarietyName.Contains(name)).ToListAsync();
