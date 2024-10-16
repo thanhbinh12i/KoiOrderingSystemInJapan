@@ -95,11 +95,8 @@ namespace Project_SWP391.Controllers
             {
                 return BadRequest("Tour does not exist");
             }
-            string fullName = user.FullName;
-            string tourName = tour.TourName;
-            string phoneNumber = user.PhoneNumber;
-            string email = user.Email;
-            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId, fullName, tourName, phoneNumber, email);
+
+            var quotationModel = quotation.ToQuotationFromToCreateDto(userId, tourId);
             if (quotationModel == null)
             {
                 return NotFound();

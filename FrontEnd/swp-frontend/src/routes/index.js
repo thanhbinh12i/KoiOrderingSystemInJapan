@@ -97,7 +97,6 @@ export const routes = [
         element: <PrivateRoutes />,
         children: [
           {
-            path: "profile",
             element: <Profile />,
             children: [
               {
@@ -105,7 +104,7 @@ export const routes = [
                 element: <MyBooking />,
               },
               {
-                path: "main-content",
+                path: "profile",
                 element: <MainContent />,
               },
             ],
@@ -127,7 +126,7 @@ export const routes = [
             element: <PaymentSuccess />,
           },
           {
-            path: "order-koi",
+            path: "my-bookings/order-koi/:id",
             element: <OrderKoi />,
           },
         ],

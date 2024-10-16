@@ -1,7 +1,8 @@
 import { Form, Input, Button, Card, Row, Col, Typography} from 'antd';
 import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
-import { useLocation, useParams } from 'react-router-dom';
-import { post, put } from '../../utils/request';
+import { useLocation, useParams} from 'react-router-dom';
+import { get, post, put } from '../../utils/request';
+import { useEffect, useState } from 'react';
 
 const { Title } = Typography;
 
@@ -10,6 +11,18 @@ function PayBooking() {
       const { price } = location.state || { price: 0 };;
       const params = useParams();
       const userId = localStorage.getItem("id");
+      const [quotation, setQuotation] = useState({});
+      useEffect(() => {
+            const fetchApi = async () => {
+                  const response = await get(`quotation/view/${params.id}`);
+                  if(response){
+                        setQuotation(response);
+                  }
+            }
+            fetchApi();
+      })
+
+      console.log(quotation);
       const onFinish = async (values) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
@@ -18,7 +31,7 @@ function PayBooking() {
             const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
             if (response) {
                   const quotationData = {
-                        "priceOffer": price,
+                        ...quotation,
                         "status": "Đã thanh toán",
                         "approvedDate": getTimeCurrent(),
                   };
@@ -49,28 +62,31 @@ function PayBooking() {
                                                 name="payment_form"
                                                 onFinish={onFinish}
                                                 layout="vertical"
-                                                initialValues={price}
+
                                           >
                                                 <Form.Item
                                                       name="userFullName"
                                                       label="Họ và tên"
+                                                      initialValue={quotation.fullName}
                                                       rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}
                                                 >
-                                                      <Input size="large" placeholder="Nguyễn Văn A" />
+                                                      <Input value={quotation.fullName} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="phoneNumber"
                                                       label="Số điện thoại"
+                                                      initialValue={quotation.phoneNumber}
                                                       rules={[{ required: true, message: 'Vui lòng số điện thoại!' }]}
                                                 >
-                                                      <Input size="large" placeholder="0xxxxxxxxxx" />
+                                                      <Input value={quotation.phoneNumber} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="Email"
                                                       label="email"
+                                                      initialValue={quotation.email}
                                                       rules={[{ required: true, message: 'Vui lòng email!' }]}
                                                 >
-                                                      <Input size="large" placeholder="abc@gmail.com" />
+                                                      <Input value={quotation.email} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="price"
