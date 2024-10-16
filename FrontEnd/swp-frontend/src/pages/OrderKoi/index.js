@@ -66,7 +66,7 @@ function OrderKoi() {
                                                       title={koi.koiName}
                                                       description={
                                                             <>
-                                                                  <p>Price: ${koi.price}</p>
+                                                                  <p>Price: {koi.price}</p>
                                                                   <p>Length: {koi.length} cm</p>
                                                                   <p>Year of Birth: {koi.yob}</p>
                                                                   <p>Gender: {koi.gender}</p>
