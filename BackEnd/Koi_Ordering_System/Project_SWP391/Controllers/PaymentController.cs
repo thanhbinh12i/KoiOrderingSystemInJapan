@@ -56,7 +56,10 @@ namespace Project_SWP391.Controllers
             try
             {
                 var response = _vnPayService.PaymentExecute(Request.Query);
-                return Ok(response);
+                var quotationId = response.QuotationId;
+
+                // Redirect to the specified URL
+                return Redirect($"http://localhost:3000/pay-success/{quotationId}");
             }
             catch (Exception ex)
             {

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { get, post } from "../../utils/request";
 import { Button, Card, Col, Row } from "antd";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../actions/cart";
+import { ShoppingCartOutlined } from "@ant-design/icons"
 
 function OrderKoi() {
       const location = useLocation();
@@ -42,6 +43,9 @@ function OrderKoi() {
       }
       return (
             <div className="order-koi-container">
+                  <Link to="cart">
+                        <ShoppingCartOutlined />
+                  </Link>
                   <Row gutter={20}>
                         {koiByFarm.flatMap((farm, farmIndex) =>
                               farm.kois.map((koi, koiIndex) => (

@@ -1,5 +1,6 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
+import Cart from "../components/Cart";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
@@ -92,7 +93,10 @@ export const routes = [
         path: "aboutus",
         element: <AboutUs />,
       },
-
+      {
+        path: "my-bookings/order-koi/:id/cart",
+        element: <Cart />
+      },
       {
         element: <PrivateRoutes />,
         children: [

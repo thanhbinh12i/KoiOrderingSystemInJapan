@@ -13,7 +13,7 @@ function TourDetail() {
       const [farm, setFarm] = useState([]);
       useEffect(() => {
             const fetchApi = async () => {
-                  const response = await get(`tour/view/${params.id}`);
+                  const response = await get(`tour/view-tourId/${params.id}`);
                   if (response) {
                         setTour(response);
                   }
@@ -35,7 +35,6 @@ function TourDetail() {
             }
             fetchApi();
       }, [params.id])
-      console.log(farm);
       return (
             <>
                   <GoBack />

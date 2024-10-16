@@ -34,8 +34,6 @@ const KoiByVariety = () => {
     return <p>No data available</p>;
   }
 
-  console.log(koiData);
-
   return (
     <div className="koi-by-variety-container">
       {koiData.map((koi, index) => (

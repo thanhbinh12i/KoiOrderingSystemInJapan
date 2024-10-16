@@ -9,6 +9,7 @@ const { Option } = Select;
 function SearchTour() {
       const [varieties, setVarieties] = useState([]);
       const [farms, setFarms] = useState([]);
+      const [searchResult, setSearchResult] = useState([]);
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get("koi-variable/view-all");
@@ -35,11 +36,33 @@ function SearchTour() {
             }
             fetchApi();
       }, [])
+      const handleSearch = async (values) => {
+            let results = [];
+            if (values.farm) {
+                  const responseFarm = await get(`tour/view-farmId/${values.farm}`);
+                  if (responseFarm) {
+                        results = [...results, ...responseFarm];
+                  }
+            }
+            if (values.variety) {
+                  const responseVariety = await get(`tour/view-farmId/${values.variety}`);
+                  if (responseVariety) {
+                        results = [...results, ...responseVariety];
+                  }
+            }
+            if (values.priceMin && values.priceMax) {
+                  const priceResponse = await get(`/api/tour/view/${values.priceMin}&&${values.priceMax}`);
+                  if (priceResponse) {
+                        results = [...results, ...priceResponse];
+                  }
+            }
+            setSearchResult(results);
+      }
       return (
             <>
                   <div className='search-form-container'>
                         <h1>Tìm kiếm Tour</h1>
-                        <Form className="search-form" layout="vertical">
+                        <Form className="search-form" layout="vertical" onFinish={handleSearch}>
                               <Row gutter={16}>
                                     <Col span={24}>
                                           <Form.Item label="Trang trại" name="farm">

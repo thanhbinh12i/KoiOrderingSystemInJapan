@@ -24,7 +24,7 @@ function Quotation() {
             setModalVisibility(prev => ({ ...prev, [id]: true }));
       };
 
-      const updatePrice = async (id) => {
+      const updatePrice = async (id, fullName, email, phoneNumber) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
@@ -32,13 +32,15 @@ function Quotation() {
                   "priceOffer": prices[id],
                   "status": "Chờ xác nhận",
                   "approvedDate": getTimeCurrent(),
-                  "description": ""
+                  "description": "",
+                  "fullName": fullName,
+                  "email": email,
+                  "phoneNumber": phoneNumber,
             };
             const response = await put(`quotation/update/${id}`, quotationData);
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
                   setPrices(prev => ({ ...prev, [id]: '' }));
-                  setMessages(prev => ({ ...prev, [id]: '' }));
                   fetchApi();
             }
       };
@@ -46,7 +48,6 @@ function Quotation() {
       const handleCancel = (id) => {
             setModalVisibility(prev => ({ ...prev, [id]: false }));
             setPrices(prev => ({ ...prev, [id]: '' }));
-            setMessages(prev => ({ ...prev, [id]: '' }));
       };
 
       const sendToManager = async (quotationId, priceOffer, fullName, email, phoneNumber) => {
@@ -108,23 +109,7 @@ function Quotation() {
                                                       </p>
                                                       {item.status !== "Đã thanh toán" && (
                                                             <>
-                                                                  {prices[item.quotationId] > 0 ? (
-                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
-                                                                  ) : (
-                                                                        <></>
-                                                                  )}
-                                                                  <Modal
-                                                                        title="Nhập giá tiền cho chuyến đi"
-                                                                        visible={modalVisibility[item.quotationId]}
-                                                                        onOk={() => updatePrice(item.quotationId)}
-                                                                        onCancel={() => handleCancel(item.quotationId)}
-                                                                  >
-                                                                        <Input
-                                                                              placeholder="Nhập giá"
-                                                                              value={prices[item.quotationId] || ''}
-                                                                              onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                        />
-                                                                  </Modal>
+
                                                                   {item.status !== "Báo giá cho quản lý" && item.status !== "Đã xác nhận" && item.status !== "Xác nhận báo giá" && (
                                                                         <>
                                                                               <Input.TextArea
@@ -133,6 +118,19 @@ function Quotation() {
                                                                                     onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                                     style={{ marginBottom: '10px' }}
                                                                               />
+                                                                              <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
+                                                                              <Modal
+                                                                                    title="Nhập giá tiền cho chuyến đi"
+                                                                                    visible={modalVisibility[item.quotationId]}
+                                                                                    onOk={() => updatePrice(item.quotationId, item.fullName, item.email, item.phoneNumber)}
+                                                                                    onCancel={() => handleCancel(item.quotationId)}
+                                                                              >
+                                                                                    <Input
+                                                                                          placeholder="Nhập giá"
+                                                                                          value={prices[item.quotationId] || ''}
+                                                                                          onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                                    />
+                                                                              </Modal>
                                                                               <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer, item.fullName, item.email, item.phoneNumber)}>
                                                                                     Báo giá cho quản lí
                                                                               </Button>
