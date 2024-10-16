@@ -72,7 +72,19 @@ namespace Project_SWP391.Data
                 .HasOne(vof => vof.Koi)
                 .WithMany(k => k.VarietyOfKois)
                 .HasForeignKey(vof => vof.KoiId);
+            // Config for table N-N KoiBill
+            modelBuilder.Entity<KoiBill>()
+                .HasKey(kb => new { kb.KoiId, kb.BillId });
 
+            modelBuilder.Entity<KoiBill>()
+                .HasOne(kb => kb.Koi)
+                .WithMany(k => k.KoiBills)
+                .HasForeignKey(kb => kb.KoiId);
+
+            modelBuilder.Entity<KoiBill>()
+                .HasOne(kb => kb.Bill)
+                .WithMany(b => b.KoiBills)
+                .HasForeignKey(kb => kb.BillId);
             // Config for table Quotation
             modelBuilder.Entity<Quotation>()
                 .HasKey(q => q.QuotationId);
