@@ -29,7 +29,6 @@ namespace Project_SWP391.Data
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<VarietyOfKoi> VarietyOfKois { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Config for table N-N TourDestination

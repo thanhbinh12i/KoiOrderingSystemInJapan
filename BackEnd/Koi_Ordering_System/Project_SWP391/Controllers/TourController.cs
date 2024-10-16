@@ -22,10 +22,30 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
-        [HttpGet("view/{tourId:int}")]
+        [HttpGet("view-tourId/{tourId:int}")]
         public async Task<IActionResult> ViewAllId([FromRoute] int tourId)
         {
             var tour = await _tourRepo.GetIdByAsync(tourId);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+            return Ok(tour);
+        }
+        [HttpGet("view-farmId/{farmId:int}")]
+        public async Task<IActionResult> ViewAllFarmId([FromRoute] int farmId)
+        {
+            var tour = await _tourRepo.GetByFarmIdAsync(farmId);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+            return Ok(tour);
+        }
+        [HttpGet("view-varietyId/{varietyId:int}")]
+        public async Task<IActionResult> ViewAllVarietyId([FromRoute] int varietyId)
+        {
+            var tour = await _tourRepo.GetByVarietyIdAsync(varietyId);
             if (tour == null)
             {
                 return NotFound();

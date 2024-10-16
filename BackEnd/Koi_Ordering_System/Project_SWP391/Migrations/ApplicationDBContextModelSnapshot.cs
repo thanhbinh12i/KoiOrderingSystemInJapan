@@ -51,31 +51,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "309fb6bd-40e3-431c-9c26-95509bdf9e0f",
+                            Id = "54d792e3-a48a-46eb-9309-3b917e288b9b",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "1176b0e9-c4dd-4dcb-aad8-e35151fcad88",
+                            Id = "2b10d3cb-c1ea-4fc9-a058-b8d2c97d84e9",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "f43f7548-6345-4c6f-82eb-e627ee2674a1",
+                            Id = "87f0bc67-4012-429d-90e0-ea7f6752fa1a",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "8b9189ea-dab5-4d77-a2a8-7edbe60944e7",
+                            Id = "4a0a69f7-5ee6-40d0-8cc1-2328be2a9cbc",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "510e9f6b-430e-4fa8-aea1-652d533fa553",
+                            Id = "7a87051a-adbd-49a5-ab15-c720b11edf85",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -783,6 +783,55 @@ namespace Project_SWP391.Migrations
                     b.HasIndex("TourId");
 
                     b.ToTable("TourDestinations");
+                });
+
+            modelBuilder.Entity("Project_SWP391.Model.VNPayReturnModel", b =>
+                {
+                    b.Property<int>("VNPayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VNPayId"));
+
+                    b.Property<string>("vnp_Amount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_BankCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_OrderInfo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_PayDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_ResponseCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_SecureHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_TmnCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_TransactionNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("vnp_TxnRef")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VNPayId");
+
+                    b.ToTable("VNPay");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.VarietyOfKoi", b =>
