@@ -1,15 +1,18 @@
 .koi-by-variety-container {
   margin-top: 20px;
   display: flex;
-  justify-content: center; // Center the card in the container
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
 }
 
 .koi-detail-card {
-  height: 100%;
+  width: calc(100%);
+  min-width: 200px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
-  width: 100%; // Ensures the card takes full width available
-  max-width: 400px; // Limit card width to a reasonable size
+  height: 100%;
 
   .ant-card-cover {
     flex: 0 0 auto;
@@ -36,15 +39,28 @@
 .koi-detail-image {
   object-fit: cover;
   border: 1px solid #c54125;
-  border-radius: 8px; // Optional: add a slight rounding to the image corners
+  border-radius: 8px;
+}
+
+@media (max-width: 992px) {
+  .koi-detail-card {
+    width: calc(33.33% - 20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .koi-detail-card {
+    width: calc(50% - 20px);
+  }
 }
 
 @media (max-width: 576px) {
   .koi-by-variety-container {
-    flex-direction: column; // Stack content vertically on smaller screens
+    flex-direction: column;
   }
 
-  .ant-card {
+  .koi-detail-card {
+    width: 100%;
     margin-bottom: 16px;
   }
 }

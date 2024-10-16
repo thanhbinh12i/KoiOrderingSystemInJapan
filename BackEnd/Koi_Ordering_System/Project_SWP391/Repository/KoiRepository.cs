@@ -88,7 +88,7 @@ namespace Project_SWP391.Repository
                 return null;
             }
 
-            var kois = await _context.Kois.Include(k => k.KoiImages).Where(k => k.VarietyOfKois.Any(v => v.VarietyId == v.VarietyId)).ToListAsync();
+            var kois = await _context.Kois.Include(k => k.KoiImages).Where(k => k.VarietyOfKois.Any(v => v.VarietyId == variety.VarietyId)).ToListAsync();
 
             return kois;
         }
