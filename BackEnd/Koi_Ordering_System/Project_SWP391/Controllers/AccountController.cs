@@ -72,6 +72,56 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, e);
             }
         }
+        [HttpPost("createStaff")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> CreateStaff([FromBody] RegisterDto registerDto,string role)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!(role.Equals("DeliveringStaff") || role.Equals("ConsultingStaff") || role.Equals("SalesStaff")))
+                {
+                    return BadRequest("Invalid role.");
+                }
+                var appUser = new AppUser
+                {
+                    UserName = registerDto.UserName,
+                    Email = registerDto.Email,
+                    Gender = registerDto.Gender,
+                    Address = registerDto.Address,
+                    FullName = registerDto.FullName,
+                    PhoneNumber = registerDto.PhoneNumber,
+                    DateOfBirth = registerDto.DateOfBirth
+                };
+                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+                if (createdUser.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, role);
+                    if (roleResult.Succeeded)
+                    {
+                        return Ok(
+                            new NewUserDto
+                            {
+                                UserName = appUser.UserName,
+                                Email = appUser.Email,
+                                Gender = appUser.Gender,
+                                Address = appUser.Address,
+                                FullName = appUser.FullName,
+                                PhoneNumber = appUser.PhoneNumber,
+                                DateOfBirth = appUser.DateOfBirth,
+                                Token = await _tokenService.CreateToken(appUser)
+                            }
+                        );
+                    }
+                    else return StatusCode(500, roleResult.Errors);
+                }
+                else return StatusCode(500, createdUser.Errors);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
@@ -337,7 +387,7 @@ namespace Project_SWP391.Controllers
                 );
         }
         [HttpGet]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
             var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
