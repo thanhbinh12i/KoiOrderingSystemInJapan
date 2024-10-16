@@ -2,12 +2,12 @@ import { Button, Card, Col, Form, Input, message, Row } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import "./Login.scss";
 import { useNavigate } from "react-router-dom";
-import { login, loginGoogle } from "../../services/userServices";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { post } from "../../utils/request";
 function Login() {
       const navigate = useNavigate();
       const [messageApi, contextHolder] = message.useMessage();
@@ -15,8 +15,10 @@ function Login() {
       const dispatch = useDispatch();
       const onFinish = async (values) => {
             setLoading(true);
+            const account = values.account;
+            const password = values.password;
             try {
-                  const data = await login(values.email, values.password);
+                  const data = await post('account/login', { account, password });
                   if (data) {
                         messageApi.success('Login successful');
                         const token = data.token;
@@ -24,9 +26,19 @@ function Login() {
                         const userId = decodedToken.nameid;
                         localStorage.setItem('token', token);
                         localStorage.setItem('id', userId);
-
+                        const role = decodedToken.role;
+                        localStorage.setItem('role', role);
                         dispatch(checkLogin(true));
-                        navigate("/");
+
+
+                        if (role === "Manager") {
+                              navigate("/admin");
+                        } else if (role.includes("Staff")) {
+                              navigate("/staff");
+                        } else {
+                              navigate("/");
+                        }
+
                   }
 
             } catch (error) {
@@ -37,16 +49,26 @@ function Login() {
       }
       const handleGoogleLogin = async (credentialResponse) => {
             setLoading(true);
+            const values = credentialResponse.credential;
             try {
-                  const data = await loginGoogle(credentialResponse.credential);
+                  const data = await post("account/google-login", { token: values });
                   messageApi.success('Google login successful');
                   const token = data.token;
                   const decodedToken = jwtDecode(token);
                   const userId = decodedToken.nameid;
                   localStorage.setItem('token', token);
                   localStorage.setItem('id', userId);
+                  const role = decodedToken.role;
+                  localStorage.setItem('role', role);
                   dispatch(checkLogin(true));
-                  navigate("/");
+
+                  if (role === "Manager") {
+                        navigate("/admin");
+                  } else if (role.includes("Staff")) {
+                        navigate("/staff");
+                  } else {
+                        navigate("/");
+                  }
 
             } catch (error) {
                   messageApi.error('Google login failed');
@@ -54,6 +76,14 @@ function Login() {
                   setLoading(false);
             }
       };
+      useEffect(() => {
+
+            const token = localStorage.getItem("token");
+            if (token) {
+                  navigate("/");
+            }
+            // eslint-disable-next-line
+      }, [])
       return (
             <>
                   {contextHolder}
@@ -64,8 +94,8 @@ function Login() {
                                     <Col span={12}>
                                           <Card title="Đăng nhập" className="login__card">
                                                 <Form onFinish={onFinish} layout="vertical">
-                                                      <Form.Item label="Email" name="email">
-                                                            <Input placeholder="Nhập địa chỉ Email" />
+                                                      <Form.Item label="Account" name="account">
+                                                            <Input placeholder="Nhập tên người dùng hoặc email hoặc số điện thoại" />
                                                       </Form.Item>
                                                       <Form.Item label="Mật khẩu" name="password">
                                                             <Input.Password placeholder="Nhập mật khẩu" />

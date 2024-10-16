@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.KoiVariable;
+using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 using Project_SWP391.Model;
@@ -24,7 +24,7 @@ namespace Project_SWP391.Repository
             return variety;
         }
 
-        public async Task<KoiVariety> DeleteAsync(int id)
+        public async Task<KoiVariety?> DeleteAsync(int id)
         {
             var variety = await _context.KoiVarieties.FindAsync(id);
 
@@ -34,7 +34,7 @@ namespace Project_SWP391.Repository
             }
 
             _context.KoiVarieties.Remove(variety);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return variety;
         }
@@ -46,21 +46,36 @@ namespace Project_SWP391.Repository
 
         public async Task<KoiVariety?> GetByIdAsync(int id)
         {
-            var variety = await _context.KoiVarieties.Include(k => k.Kois).FirstOrDefaultAsync(variety => variety.VarietyId == id);
-
-            return variety;
+            return await _context.KoiVarieties.FirstOrDefaultAsync(variety => variety.VarietyId == id);
         }
 
-        public async Task<KoiVariety> UpdateAsync(int id, UpdateKoiVarietyDto updateVariety)
+        public async Task<List<KoiVariety>> GetByKoiIdAsync(int koiId)
+        {
+            return await _context.KoiVarieties.Where(v => v.VarietyOfKois.Any(v => v.KoiId == koiId)).ToListAsync();
+        }
+
+        public async Task<List<KoiVariety>> GetByNameAsync(string name)
+        {
+            return await _context.KoiVarieties.Where(v => v.VarietyName.Contains(name)).ToListAsync();
+        }
+
+        public Task<bool> KoiVarietyExists(int id)
+        {
+            return _context.KoiVarieties.AnyAsync(k => k.VarietyId == id);
+        }
+
+        public async Task<KoiVariety?> UpdateAsync(int id, UpdateKoiVarietyDto updateVariety)
         {
             var varietyModel = await _context.KoiVarieties.FirstOrDefaultAsync(v => v.VarietyId == id);
-            if (varietyModel != null)
+
+            if (varietyModel == null)
             {
                 return null;
             }
 
             varietyModel.VarietyName = updateVariety.VarietyName;
-            varietyModel.Color = updateVariety.Color;
+            varietyModel.Description = updateVariety.Description;
+            varietyModel.UrlImage = updateVariety.UrlImage;
 
             await _context.SaveChangesAsync();
 

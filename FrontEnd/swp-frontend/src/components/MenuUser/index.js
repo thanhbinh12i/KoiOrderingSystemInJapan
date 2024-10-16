@@ -2,7 +2,7 @@
 import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar } from 'antd';
 import { useDispatch } from 'react-redux';
-import { Link,   useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { checkLogin } from '../../actions/login';
 import { useEffect, useState } from 'react';
 import { get } from '../../utils/request';
@@ -11,32 +11,42 @@ function MenuUser() {
       const dispatch = useDispatch();
       const navigate = useNavigate();
       const userId = localStorage.getItem("id");
+      const role = localStorage.getItem('role');
       const [userName, setUserName] = useState('');
       const handleLogout = () => {
             localStorage.removeItem("token");
             localStorage.removeItem("id");
+            localStorage.removeItem("role");
             dispatch(checkLogin(false));
             navigate("/");
       };
       useEffect(() => {
             const fetchUserProfile = async () => {
-                  const response = await get(`account/${userId}`);
-                  if(response){
-                        setUserName(response.fullName);
+                  if (userId) {
+                        const response = await get(`account/${userId}`);
+                        if (response) {
+                              setUserName(response.fullName);
+                        }
                   }
+
             }
             fetchUserProfile();
-      },[userId])
+      }, [userId])
       const userMenu = (
             <Menu>
                   <Menu.Item key="profile" icon={<UserOutlined />} className="profile-item">
                         <Link to="/profile">Tài khoản của tôi</Link>
                   </Menu.Item>
-                  <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
-                        <Link to="/admin">Trang quản lý</Link>
-                  </Menu.Item>
-                  <Menu.Item key="bookings" icon={<HistoryOutlined />} className="bookings-item">
-                        <Link to="/bookings">Đặt chỗ của tôi</Link>
+                  {
+                        role === "Manager" && (
+                              <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
+                                    <Link to="/admin">Trang quản lý</Link>
+                              </Menu.Item>
+                        )
+                  }
+
+                  <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
+                        <Link to="/my-bookings">Đặt chỗ của tôi</Link>
                   </Menu.Item>
                   <Menu.Item key="settings" icon={<SettingOutlined />} className="settings-item">
                         <Link to="/settings">Thay đổi mật khẩu</Link>
@@ -49,7 +59,7 @@ function MenuUser() {
       );
       return (
             <>
-                  <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight"  align={{ offset: [0, 4] }} >
+                  <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight" align={{ offset: [0, 4] }} >
                         <div className="user-menu-trigger">
                               <Avatar icon={<UserOutlined />} />
                               <span className="user-name">{userName}</span>

@@ -1,9 +1,11 @@
 ﻿using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using Project_SWP391.Dtos.Account;
+using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using System;
@@ -37,7 +39,7 @@ namespace Project_SWP391.Controllers
                     Email = registerDto.Email,
                     Gender = registerDto.Gender,
                     Address = registerDto.Address,
-                    FullName  = registerDto.FullName,
+                    FullName = registerDto.FullName,
                     PhoneNumber = registerDto.PhoneNumber,
                     DateOfBirth = registerDto.DateOfBirth
                 };
@@ -57,7 +59,7 @@ namespace Project_SWP391.Controllers
                                 FullName = appUser.FullName,
                                 PhoneNumber = appUser.PhoneNumber,
                                 DateOfBirth = appUser.DateOfBirth,
-                                Token = _tokenService.CreateToken(appUser)
+                                Token = await _tokenService.CreateToken(appUser)
                             }
                         );
                     }
@@ -98,7 +100,7 @@ namespace Project_SWP391.Controllers
                     FullName = user.FullName,
                     PhoneNumber = user.PhoneNumber,
                     DateOfBirth = user.DateOfBirth,
-                    Token = _tokenService.CreateToken(user)
+                    Token = await _tokenService.CreateToken(user)
                 }
             );
         }
@@ -112,7 +114,6 @@ namespace Project_SWP391.Controllers
                 var user = await _userManager.FindByEmailAsync(payload.Email);
                 if (user == null)
                 {
-                    // Nếu email không tồn tại, tạo tài khoản mới cho người dùng
                     user = new AppUser
                     {
                         UserName = Regex.Replace(payload.Name, @"[^a-zA-Z0-9]", ""),
@@ -147,7 +148,7 @@ namespace Project_SWP391.Controllers
                         FullName = user.FullName,
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth,
-                        Token = _tokenService.CreateToken(user)
+                        Token = await _tokenService.CreateToken(user)
                     }
                 );
             }
@@ -222,21 +223,21 @@ namespace Project_SWP391.Controllers
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) return NotFound("User not found");
 
-            if(!string.IsNullOrEmpty(updateUser.UserName))
+            if (!string.IsNullOrEmpty(updateUser.UserName))
             {
                 var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
                 if (usernameExists) return Conflict("Username already in use by another user");
                 user.UserName = updateUser.UserName;
             }
 
-            if(!string.IsNullOrEmpty(updateUser.Email))
+            if (!string.IsNullOrEmpty(updateUser.Email))
             {
                 var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
                 if (emailExists) return Conflict("Email already in use by another user");
                 user.Email = updateUser.Email;
             }
 
-            if(!string.IsNullOrEmpty(updateUser.PhoneNumber))
+            if (!string.IsNullOrEmpty(updateUser.PhoneNumber))
             {
                 string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
                 if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
@@ -278,7 +279,7 @@ namespace Project_SWP391.Controllers
                 Gender = user.Gender,
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             });
         }
         [HttpPut("change-password/{id}")]
@@ -313,7 +314,7 @@ namespace Project_SWP391.Controllers
                 Gender = user.Gender,
                 Address = user.Address,
                 DateOfBirth = user.DateOfBirth,
-                Token = _tokenService.CreateToken(user)
+                Token = await _tokenService.CreateToken(user)
             });
         }
         [HttpGet("{id}")]
@@ -329,20 +330,61 @@ namespace Project_SWP391.Controllers
                         Email = user.Email,
                         Gender = user.Gender,
                         Address = user.Address,
-                        FullName= user.FullName,
+                        FullName = user.FullName,
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth
                     }
                 );
+        }
+        [HttpGet]
+        //[Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ViewAllUser()
+        {
+            var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
+
+            if (users == null || !users.Any())
+                return NotFound("No users found");
+            var userDtos = new List<ViewAllAccountDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (!roles.Contains("Manager"))
+                {
+                    var userDto = new ViewAllAccountDto
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Gender = user.Gender,
+                        Address = user.Address,
+                        FullName = user.FullName,
+                        PhoneNumber = user.PhoneNumber,
+                        DateOfBirth = user.DateOfBirth,
+                        Role = roles.FirstOrDefault(),
+                        Bills = user.Bills.Select(bill => new Bill
+                        {
+                            BillId = bill.BillId,
+                            UserFullName = bill.UserFullName,
+                            Price = bill.Price,
+                            PhoneNumber = bill.PhoneNumber,
+                            Email = bill.Email
+                        }).ToList()
+                    };
+                    userDtos.Add(userDto);
+                }
+            }
+
+            return Ok(userDtos);
         }
         private string FormatPhoneNumber(string phoneNumber)
         {
             if (phoneNumber.Length == 10)
             {
                 return string.Format("{0}.{1}.{2}",
-                                      phoneNumber.Substring(0, 4), 
-                                      phoneNumber.Substring(4, 3), 
-                                      phoneNumber.Substring(7, 3) 
+                                      phoneNumber.Substring(0, 4),
+                                      phoneNumber.Substring(4, 3),
+                                      phoneNumber.Substring(7, 3)
                                      );
             }
             return phoneNumber;

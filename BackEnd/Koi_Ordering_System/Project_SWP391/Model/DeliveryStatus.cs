@@ -6,14 +6,16 @@ namespace Project_SWP391.Model
     public class DeliveryStatus
     {
         [Key]
-        public int DeliveryId { get; set; }
+        public int DeliveryStatusId { get; set; }
         public string DeliveryAddress { get; set; } = string.Empty;
         public string DeliveryStatusText { get; set; } = string.Empty;
-        public DateTime EstimatedDate { get; set; }
-        [Column(TypeName = "decimal(18,2)")]
-        public float DeliveryFee { get; set; }
+        public string EstimatedDate { get; set; }
 
-        // Foreign key
-        public ICollection<Bill> Bills { get; set; }
+        public int BillId { get; set; }
+        [ForeignKey(nameof(BillId))]
+        public Bill Bill { get; set; }
+        public int DeliveryId { get; set; }
+        [ForeignKey(nameof(DeliveryId))]
+        public Delivery Delivery { get; set; }
     }
 }

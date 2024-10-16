@@ -8,7 +8,6 @@ import {
   BellOutlined,
   GiftOutlined,
   SettingOutlined,
-  LogoutOutlined,
   GoogleOutlined,
 } from "@ant-design/icons";
 import { get } from "../../utils/request";
@@ -16,6 +15,7 @@ import { useState, useEffect } from "react";
 import avatarMale from "../../assets/home/avatar-Male.jpg";
 import avatarFemale from "../../assets/home/avatar-Female.jpg";
 import avatarDefault from "../../assets/home/avatar-default.jpg";
+import { Link } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -79,8 +79,8 @@ function Sidebar() {
         <Menu.Item key="cards" icon={<CreditCardOutlined />}>
           Thẻ của tôi
         </Menu.Item>
-        <Menu.Item key="bookings" icon={<CalendarOutlined />}>
-          Đặt chỗ của tôi
+        <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
+          <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
         <Menu.Item key="transactions" icon={<HistoryOutlined />}>
           Danh sách giao dịch
@@ -96,9 +96,6 @@ function Sidebar() {
         </Menu.Item>
         <Menu.Item key="account" icon={<SettingOutlined />}>
           Tài khoản
-        </Menu.Item>
-        <Menu.Item key="logout" icon={<LogoutOutlined />}>
-          Đăng xuất
         </Menu.Item>
       </Menu>
     </div>

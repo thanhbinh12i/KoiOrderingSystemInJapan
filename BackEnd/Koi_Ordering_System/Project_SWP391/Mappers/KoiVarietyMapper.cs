@@ -1,4 +1,4 @@
-﻿using Project_SWP391.Dtos.KoiVariable;
+﻿using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Mappers
@@ -9,9 +9,10 @@ namespace Project_SWP391.Mappers
         {
             return new KoiVarietyDto
             {
+                VarietyId = variety.VarietyId,
                 VarietyName = variety.VarietyName,
-                Color = variety.Color,
-                Kois = variety.Kois,
+                Description = variety.Description,
+                UrlImage = variety.UrlImage,
             };
         }
         public static KoiVariety ToKoiVarietyFromToCreateDto(this CreateKoiVarietyDto variety)
@@ -19,7 +20,7 @@ namespace Project_SWP391.Mappers
             return new KoiVariety
             {
                 VarietyName = variety.VarietyName,
-                Color = variety.Color,
+                Description = variety.Description,
             };
         }
     }
