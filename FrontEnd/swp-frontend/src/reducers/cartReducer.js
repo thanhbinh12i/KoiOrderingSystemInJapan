@@ -6,6 +6,11 @@ const initialState = {
 
 export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'FETCH_CART_ITEMS':
+      return {
+        ...state,
+        items: action.payload
+      };
     case "ADD_TO_CART":
       const existingItem = state.items.find(item => item.koiId === action.payload.koiId);
       if (existingItem) {
