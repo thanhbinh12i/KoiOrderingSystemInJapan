@@ -6,12 +6,22 @@ import { Link } from "react-router-dom";
 
 function MyBooking() {
       const [quotation, setQuotation] = useState([]);
+      const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`quotation/view/${userId}`);
                   if (response) {
                         setQuotation(response);
+                  }
+            }
+            fetchApi();
+      }, [userId]);
+      useEffect(() => {
+            const fetchApi = async () => {
+                  const response = await get(`bill/view-by-user-id/${userId}`);
+                  if (response) {
+                        setBill(response);
                   }
             }
             fetchApi();
@@ -67,7 +77,7 @@ function MyBooking() {
                         }else if (record.status === "Đã thanh toán"){
                               return (
                                     <>
-                                          <Link to={`order-koi`}>
+                                          <Link to={`order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
                                                 <Button type="primary">
                                                       Mua cá nào
                                                 </Button>

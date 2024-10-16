@@ -126,7 +126,7 @@ export const routes = [
             element: <PaymentSuccess />,
           },
           {
-            path: "order-koi",
+            path: "my-bookings/order-koi/:id",
             element: <OrderKoi />,
           },
         ],
