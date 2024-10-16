@@ -23,34 +23,31 @@ import GoBack from "../../components/GoBack";
 const { Title, Text } = Typography;
 
 function FarmDetail() {
-  const [farm, setFarm] = useState([]);
+  const [farm, setFarm] = useState({});
   const params = useParams();
-  const [koiData, setKoiData] = useState(null);
+  const [koiData, setKoiData] = useState([]);
 
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get(`koiFarm/view/${params.id}`);
-      console.log(response);
       if (response) {
         setFarm(response);
-        console.log(response);
-        console.log(response.farmName);
         const fetchKoiByFarm = async () => {
-          const res = await get(`koiFarm/view/${response.farmName}`);
+          const res = await get(`koi/view-by-farm/${response.farmName})`);
           if (res) {
             setKoiData(res);
-            console.log(koiData);
           }
         };
         fetchKoiByFarm();
       }
     };
     fetchApi();
-    // eslint-disable-next-line
   }, [params.id]);
-  if (!farm || !koiData) {
+
+  if (!farm.farmName || koiData.length === 0) {
     return <Spin>Loading...</Spin>;
   }
+
   return (
     <>
       <GoBack />
@@ -135,22 +132,19 @@ function FarmDetail() {
       </div>
 
       <div className="koi-by-farm-container">
-        {koiData.kois.map((koi, index) => (
-          <Card key={index} hoverable className="koi-detail-card">
-            {koi.koiImages && koi.koiImages.length > 0 ? (
-              koi.koiImages.map((image, imgIndex) => (
-                <img
-                  key={imgIndex}
-                  width={135}
-                  height={200}
-                  alt={koi.koiName}
-                  src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
-                  className="koi-detail-image"
-                />
-              ))
-            ) : (
-              <p>No images available</p>
-            )}
+        {koiData.map((koi) => (
+          <Card key={koi.koiId} hoverable className="koi-detail-card">
+            {koi.koiImages.map((image, imgIndex) => (
+              <img
+                key={imgIndex}
+                width={135}
+                height={200}
+                alt={koi.koiName}
+                src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
+                className="koi-detail-image"
+              />
+            ))}
+
             <Title level={4}>{koi.koiName}</Title>
             <p>Price: {koi.price}</p>
             <p>Length: {koi.length} cm</p>
@@ -162,4 +156,5 @@ function FarmDetail() {
     </>
   );
 }
+
 export default FarmDetail;
