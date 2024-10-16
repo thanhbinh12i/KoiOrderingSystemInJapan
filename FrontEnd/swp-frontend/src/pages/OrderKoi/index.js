@@ -4,6 +4,7 @@ import { get, post } from "../../utils/request";
 import { Button, Card, Col, Row } from "antd";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../actions/cart";
+import Cart from "../../components/Cart";
 
 function OrderKoi() {
       const location = useLocation();
@@ -42,6 +43,7 @@ function OrderKoi() {
       }
       return (
             <div className="order-koi-container">
+                  <Cart />
                   <Row gutter={20}>
                         {koiByFarm.flatMap((farm, farmIndex) =>
                               farm.kois.map((koi, koiIndex) => (
