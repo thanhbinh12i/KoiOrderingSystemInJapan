@@ -67,7 +67,7 @@ function MyBooking() {
                         if (record.status === "Đã xác nhận") {
                               return (
                                     <>
-                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ tourId: record.tourId }}>
+                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
                                                 <Button type="primary">
                                                       Thanh toán
                                                 </Button>
@@ -77,7 +77,7 @@ function MyBooking() {
                         }else if (record.status === "Đã thanh toán"){
                               return (
                                     <>
-                                          <Link to={`order-koi/${bill.billId}`}>
+                                          <Link to={`order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
                                                 <Button type="primary">
                                                       Mua cá nào
                                                 </Button>

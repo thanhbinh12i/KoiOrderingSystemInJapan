@@ -72,7 +72,20 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiDto);
         }
+        [HttpGet("view-by-farmId/{farmId}")]
+        public async Task<IActionResult> GetByFarmIdName([FromRoute] int farmId)
+        {
+            var kois = await _koiRepo.GetByFarmIdAsync(farmId);
 
+            if (kois == null)
+            {
+                return NotFound("No koi found!");
+            }
+
+            var koiDto = kois.Select(kois => kois.ToKoiDto());
+
+            return Ok(koiDto);
+        }
         [HttpGet("view-by-variety/{varietyName})")]
         public async Task<IActionResult> GetByVarietyName([FromRoute] string varietyName)
         {
