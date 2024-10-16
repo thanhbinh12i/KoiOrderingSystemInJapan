@@ -127,7 +127,7 @@ namespace Project_SWP391
             builder.Services.AddScoped<IVarietyOfKoiRepository, VarietyOfKoiRepository>();
             builder.Services.AddScoped<IPayStatusRepository, PayStatusRepository>();
             builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
-
+            builder.Services.AddScoped<IVNPayService, VNPayService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

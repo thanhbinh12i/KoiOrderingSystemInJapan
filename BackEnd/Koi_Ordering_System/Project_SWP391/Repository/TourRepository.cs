@@ -75,5 +75,27 @@ namespace Project_SWP391.Repository
         {
             return await _context.Tours.Where(x => x.Price <= max && x.Price >= min).ToListAsync();
         }
+
+        public async Task<List<Tour?>> GetByFarmIdAsync(int farmId)
+        {
+            return await _context.TourDestinations
+                        .Where(td => td.FarmId == farmId)
+                        .Select(td => td.Tour)
+                        .ToListAsync();
+        }
+
+        public async Task<List<Tour?>> GetByVarietyIdAsync(int varietyId)
+        {
+            return await (from t in _context.Tours
+                          join td in _context.TourDestinations on t.TourId equals td.TourId
+                          join kf in _context.KoiFarms on td.FarmId equals kf.FarmId
+                          join k in _context.Kois on kf.FarmId equals k.FarmId
+                          join vok in _context.VarietyOfKois on k.KoiId equals vok.KoiId
+                          join kv in _context.KoiVarieties on vok.VarietyId equals kv.VarietyId
+                          where kv.VarietyId == varietyId
+                          select t)
+          .Distinct()
+          .ToListAsync();
+        }
     }
 }
