@@ -66,12 +66,10 @@ namespace Project_SWP391.Repository
             {
                 return null;
             }
-            quotationModel.FullName =updateQuotatinDto.FullName;
-            quotationModel.PhoneNumber = updateQuotatinDto.PhoneNumber;
-            quotationModel.Email = updateQuotatinDto.Email;
             quotationModel.PriceOffer = updateQuotatinDto.PriceOffer;
             quotationModel.Status = updateQuotatinDto.Status;
             quotationModel.ApprovedDate = updateQuotatinDto.ApprovedDate;
+            quotationModel.Description = updateQuotatinDto.Description;
             await _context.SaveChangesAsync();
             return quotationModel;
         }

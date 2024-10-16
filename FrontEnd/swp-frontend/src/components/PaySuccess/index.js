@@ -23,9 +23,10 @@ const PaymentSuccess = () => {
                                     return new Date().toLocaleString();
                               };
                               const quotationData = {
-                                    ...paymentData,
+                                    "priceOffer": paymentData.price,
                                     "status": "Đã thanh toán",
                                     "approvedDate": getTimeCurrent(),
+                                    "description": ""
                               };
                               await put(`quotation/update/${paymentData.quotationId}`, quotationData);
                               const response = await get(`bill/view-by-id/${billResponse.billId}`);
