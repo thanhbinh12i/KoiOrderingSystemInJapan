@@ -369,7 +369,6 @@ namespace Project_SWP391.Controllers
             });
         }
         [HttpGet("{id}")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
