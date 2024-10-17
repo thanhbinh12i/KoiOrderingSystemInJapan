@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { get } from "../../../utils/request";
-const UserList = () => {
+const StaffList = () => {
   const [personalInfo, setPersonalInfo] = useState([]);
 
   const fetchPersonalInfo = async () => {
     try {
-      const response = await get("account/view-all-user");
+      const response = await get("account/view-all-staff");
       setPersonalInfo(response);
     } catch (error) {
       console.error("Error:", error);
@@ -77,4 +77,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default StaffList;
