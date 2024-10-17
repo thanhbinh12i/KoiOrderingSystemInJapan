@@ -26,6 +26,7 @@ function FarmDetail() {
   const [farm, setFarm] = useState({});
   const params = useParams();
   const [koiData, setKoiData] = useState([]);
+  const [userRate, setUserRate] = useState(0);
 
   useEffect(() => {
     const fetchApi = async () => {

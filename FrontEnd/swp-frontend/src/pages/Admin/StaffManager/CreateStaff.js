@@ -43,7 +43,7 @@ function CreateStaff() {
   return (
     <>
       <Form form={form} onFinish={onFinish}>
-        <Row gutter={16}>
+        <Row gutter={20}>
           <Col span={12}>
             <FormItem
               label="Tên nhân viên"
@@ -59,7 +59,10 @@ function CreateStaff() {
             <FormItem
               label="Email"
               name="email"
-              rules={[{ required: true, message: "Vui lòng nhập email" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập email" },
+                { type: "email", message: "Vui lòng nhập email hợp lệ!" },
+              ]}
             >
               <Input />
             </FormItem>
