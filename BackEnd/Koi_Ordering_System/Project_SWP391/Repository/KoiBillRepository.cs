@@ -45,7 +45,6 @@ namespace Project_SWP391.Repository
         {
             return await _context.KoiBills.FirstOrDefaultAsync(b => b.KoiId == koiId && b.BillId == billId);
         }
-
         public async Task<KoiBill> UpdateAsync(int koiId, int billId, UpdateKoiBillDto updateKoiBill)
         {
             var koiBillModel = await _context.KoiBills.FirstOrDefaultAsync(b => b.KoiId == koiId && b.BillId == billId);
@@ -62,6 +61,11 @@ namespace Project_SWP391.Repository
             await _context.SaveChangesAsync();
 
             return koiBillModel;
+        }
+
+        public async Task<List<KoiBill>> GetByBillIdAsync(int billId)
+        {
+            return await _context.KoiBills.Where(b => b.BillId == billId).ToListAsync();
         }
     }
 }

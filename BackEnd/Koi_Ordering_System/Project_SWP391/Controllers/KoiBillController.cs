@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.KoiBills;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using Project_SWP391.Model;
 
 namespace Project_SWP391.Controllers
 {
@@ -41,6 +42,18 @@ namespace Project_SWP391.Controllers
             }
 
             return Ok(koiBill.ToKoiBillDtoFromKoiBill());
+        }
+        [HttpGet("view-by-billId/{billId}")]
+        public async Task<IActionResult> GetByBillId([FromRoute] int billId)
+        {
+            var koiBill = await _koiBillRepo.GetByBillIdAsync(billId);
+
+            if (koiBill == null)
+            {
+                return NotFound("No koi bill found");
+            }
+            var koiBillDto = koiBill.Select(b => b.ToKoiBillDtoFromKoiBill());
+            return Ok(koiBillDto);
         }
 
         [HttpPost("create/{billId}-{koiId}")]
