@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import { Button, Table } from "antd";
 import "./MyBooking.scss"
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function MyBooking() {
       const [quotation, setQuotation] = useState([]);
@@ -77,11 +77,11 @@ function MyBooking() {
                         }else if (record.status === "Đã thanh toán"){
                               return (
                                     <>
-                                          <Link to={`order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
+                                          <NavLink to={`/order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
                                                 <Button type="primary">
                                                       Mua cá nào
                                                 </Button>
-                                          </Link>
+                                          </NavLink>
                                     </>
                               )
                         }else{

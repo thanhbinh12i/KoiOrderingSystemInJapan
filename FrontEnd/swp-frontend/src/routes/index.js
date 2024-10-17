@@ -1,6 +1,7 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
+import CheckOutKoi from "../components/CheckOutKoi";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
@@ -96,7 +97,7 @@ export const routes = [
         element: <AboutUs />,
       },
       {
-        path: "my-bookings/order-koi/:id/cart",
+        path: "order-koi/:id/cart",
         element: <Cart />
       },
       {
@@ -132,9 +133,13 @@ export const routes = [
             element: <PaymentSuccess />,
           },
           {
-            path: "my-bookings/order-koi/:id",
+            path: "order-koi/:id",
             element: <OrderKoi />,
           },
+          {
+            path: "check-out-koi/:id",
+            element: <CheckOutKoi />,
+          }
         ],
       },
     ],
