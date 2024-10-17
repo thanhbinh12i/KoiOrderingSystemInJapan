@@ -44,7 +44,7 @@ function OrderKoi() {
       return (
             <div className="order-koi-container">
                   <Link to="cart">
-                        <ShoppingCartOutlined />
+                        <Button icon={<ShoppingCartOutlined />}></Button>
                   </Link>
                   <Row gutter={20}>
                         {koiByFarm.flatMap((farm, farmIndex) =>

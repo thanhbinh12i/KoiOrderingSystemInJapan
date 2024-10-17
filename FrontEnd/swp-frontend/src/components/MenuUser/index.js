@@ -44,6 +44,13 @@ function MenuUser() {
                               </Menu.Item>
                         )
                   }
+                  {
+                        role.includes("Staff") && (
+                              <Menu.Item key="staff" icon={<UserOutlined />} className="admin-item">
+                                    <Link to="/staff">Trang nhân viên</Link>
+                              </Menu.Item>
+                        )
+                  }
 
                   <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
                         <Link to="/my-bookings">Đặt chỗ của tôi</Link>
