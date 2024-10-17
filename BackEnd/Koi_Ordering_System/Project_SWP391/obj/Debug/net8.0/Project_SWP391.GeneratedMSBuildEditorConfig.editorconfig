@@ -15,5 +15,6 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+
 build_property.MSBuildProjectDirectory = C:\Users\lienm\source\repos\swp391_G1_SE1857_koiOrderingSystem\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\Project_SWP391
 build_property._RazorSourceGeneratorDebug = 
