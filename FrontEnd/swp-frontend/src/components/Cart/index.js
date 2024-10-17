@@ -7,6 +7,7 @@ import { fetchCartItems} from '../../actions/cart';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 
+
 function Cart() {
       const { id: billId } = useParams();
       const dispatch = useDispatch();

@@ -31,7 +31,7 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         items: state.items.map(item =>
-          item.id === action.id ? { ...item, quantity: action.quantity } : item
+          item.koiId === action.id ? { ...item, quantity: action.quantity } : item
         )
       };
     case 'REMOVE_FROM_CART':
