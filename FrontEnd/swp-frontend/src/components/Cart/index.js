@@ -12,7 +12,16 @@ function Cart() {
       const { id: billId } = useParams();
       const dispatch = useDispatch();
       const cartItems = useSelector(state => state.cartReducer.items);
-      const totalPrice = cartItems.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0);
+      const totalPrice = cartItems.reduce((sum, item) => {
+            if(item.finalPrice > 0){
+                  return sum + item.finalPrice * item.quantity
+            }else {
+                  return sum + item.originalPrice * item.quantity
+            }
+      }
+            
+            
+      , 0);
       const [loading, setLoading] = useState(false);
       useEffect(() => {
             const fetchCart = async () => {
@@ -38,7 +47,7 @@ function Cart() {
       return (
             <>
                   <GoBack />
-                  <Card title="Your Cart">
+                  <Card title="Giỏ hàng của tôi">
                         <List
                               dataSource={cartItems}
                               renderItem={(item) => (
@@ -48,10 +57,10 @@ function Cart() {
                               )}
                         />
                         <div style={{ marginTop: 16 }}>
-                              <strong>Total: {totalPrice} đ</strong>
+                              <strong>Tổng tiền: {totalPrice} đ</strong>
                         </div>
                         <Button type="primary" style={{ marginTop: 16 }} block>
-                              Checkout
+                              Thanh toán
                         </Button>
                   </Card>
             </>
