@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using Project_SWP391.Dtos.Account;
 using Project_SWP391.Dtos.Bills;
@@ -47,6 +48,56 @@ namespace Project_SWP391.Controllers
                 if (createdUser.Succeeded)
                 {
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
+                    if (roleResult.Succeeded)
+                    {
+                        return Ok(
+                            new NewUserDto
+                            {
+                                UserName = appUser.UserName,
+                                Email = appUser.Email,
+                                Gender = appUser.Gender,
+                                Address = appUser.Address,
+                                FullName = appUser.FullName,
+                                PhoneNumber = appUser.PhoneNumber,
+                                DateOfBirth = appUser.DateOfBirth,
+                                Token = await _tokenService.CreateToken(appUser)
+                            }
+                        );
+                    }
+                    else return StatusCode(500, roleResult.Errors);
+                }
+                else return StatusCode(500, createdUser.Errors);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
+        }
+        [HttpPost("createStaff")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> CreateStaff([FromBody] RegisterDto registerDto,string role)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!(role.Equals("DeliveringStaff") || role.Equals("ConsultingStaff") || role.Equals("SalesStaff")))
+                {
+                    return BadRequest("Invalid role.");
+                }
+                var appUser = new AppUser
+                {
+                    UserName = registerDto.UserName,
+                    Email = registerDto.Email,
+                    Gender = registerDto.Gender,
+                    Address = registerDto.Address,
+                    FullName = registerDto.FullName,
+                    PhoneNumber = registerDto.PhoneNumber,
+                    DateOfBirth = registerDto.DateOfBirth
+                };
+                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+                if (createdUser.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, role);
                     if (roleResult.Succeeded)
                     {
                         return Ok(
@@ -318,6 +369,7 @@ namespace Project_SWP391.Controllers
             });
         }
         [HttpGet("{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -336,8 +388,29 @@ namespace Project_SWP391.Controllers
                     }
                 );
         }
-        [HttpGet]
-        //[Authorize(Roles = "Manager")]
+        [HttpGet("view-staff{id}")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ViewStaff(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var roles = await _userManager.GetRolesAsync(user);
+            if (user == null || roles.Contains("Customer") || roles.Contains("Manager") || roles.IsNullOrEmpty()) return NotFound("No user found");
+            return Ok
+                (
+                    new ViewAccountDto
+                    {
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Gender = user.Gender,
+                        Address = user.Address,
+                        FullName = user.FullName,
+                        PhoneNumber = user.PhoneNumber,
+                        DateOfBirth = user.DateOfBirth
+                    }
+                );
+        }
+        [HttpGet("view-all-user")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
             var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
@@ -350,6 +423,47 @@ namespace Project_SWP391.Controllers
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 if (!roles.Contains("Manager"))
+                {
+                    var userDto = new ViewAllAccountDto
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName,
+                        Email = user.Email,
+                        Gender = user.Gender,
+                        Address = user.Address,
+                        FullName = user.FullName,
+                        PhoneNumber = user.PhoneNumber,
+                        DateOfBirth = user.DateOfBirth,
+                        Role = roles.FirstOrDefault(),
+                        Bills = user.Bills.Select(bill => new Bill
+                        {
+                            BillId = bill.BillId,
+                            UserFullName = bill.UserFullName,
+                            Price = bill.Price,
+                            PhoneNumber = bill.PhoneNumber,
+                            Email = bill.Email
+                        }).ToList()
+                    };
+                    userDtos.Add(userDto);
+                }
+            }
+
+            return Ok(userDtos);
+        }
+        [HttpGet("view-all-staff")]
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> ViewAllStaff()
+        {
+            var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
+
+            if (users == null || !users.Any())
+                return NotFound("No users found");
+            var userDtos = new List<ViewAllAccountDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Contains("DeliveringStaff") || roles.Contains("ConsultingStaff") || roles.Contains("SalesStaff"))
                 {
                     var userDto = new ViewAllAccountDto
                     {

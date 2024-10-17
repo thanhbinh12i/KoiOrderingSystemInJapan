@@ -6,6 +6,7 @@ namespace Project_SWP391.Interfaces
     public interface IKoiBillRepository
     {
         Task<List<KoiBill>> GetAllAsync();
+        Task<List<KoiBill>> GetByBillIdAsync(int billId);
 
         Task<KoiBill?> GetByIdAsync(int koiId, int billId);
 

@@ -1,5 +1,6 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
+import Cart from "../components/Cart";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
@@ -34,11 +35,13 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import KoiDeal from "../pages/Staff/KoiDeal";
+import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
-import Variety from "../pages/Varitety";
-import KoiByVariety from "../pages/Varitety/KoiByVariety";
+import Variety from "../pages/Variety";
+import KoiByVariety from "../pages/Variety/KoiByVariety";
 export const routes = [
   {
     path: "/",
@@ -92,7 +95,10 @@ export const routes = [
         path: "aboutus",
         element: <AboutUs />,
       },
-
+      {
+        path: "my-bookings/order-koi/:id/cart",
+        element: <Cart />
+      },
       {
         element: <PrivateRoutes />,
         children: [
@@ -205,16 +211,24 @@ export const routes = [
           },
         ],
       },
-    ],
-  },
-  {
-    path: "staff",
-    element: <LayoutStaff />,
-    children: [
       {
-        path: "quotation-staff",
-        element: <Quotation />,
+        path: "staff",
+        element: <LayoutStaff />,
+        children: [
+          {
+            path: "quotation-staff",
+            element: <Quotation />,
+          },
+          {
+            path: "koi-deal-staff",
+            element: <KoiDeal />,
+          },
+          {
+            path: "koi-deal-staff/:id",
+            element: <KoiDealDetail />,
+          },
+        ],
       },
     ],
-  },
+  }
 ];

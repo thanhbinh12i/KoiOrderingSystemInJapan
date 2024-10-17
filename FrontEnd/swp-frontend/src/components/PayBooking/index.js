@@ -1,6 +1,6 @@
-import { Form, Input, Button, Card, Row, Col, Typography} from 'antd';
+import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
 import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
-import { useLocation, useParams} from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { get, post, put } from '../../utils/request';
 import { useEffect, useState } from 'react';
 
@@ -12,17 +12,16 @@ function PayBooking() {
       const params = useParams();
       const userId = localStorage.getItem("id");
       const [quotation, setQuotation] = useState({});
+      const [form] = Form.useForm();
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`quotation/view/${params.id}`);
-                  if(response){
+                  if (response) {
                         setQuotation(response);
                   }
             }
             fetchApi();
       })
-
-      console.log(quotation);
       const onFinish = async (values) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
@@ -41,14 +40,26 @@ function PayBooking() {
                   }
             }
       }
-      const ACCOUNT_NUMBER = '0905024174';
-      const BANK_CODE = 'MB';
-      const ACCOUNT_NAME = "Nguyen Pham Thanh Binh";
-      const Description = "Thanh toán";
-      const amount = 55000;
+      const onFinishVNPay = async (values) => {
+            console.log(values);
+            try {
+                  const paymentData = {
+                        orderType: "string", 
+                        amount: price,
+                        orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
+                        name: "Binh",
+                        quotationId: params.id
+                      };
+                  const paymentResponse = await post('payment', paymentData);
 
-      const paymentInfo = `https://img.vietqr.io/image/${BANK_CODE}-${ACCOUNT_NUMBER}-compact.png?amount=${amount}&addInfo=${Description}&accountName=${ACCOUNT_NAME}`;
-
+                  if (paymentResponse) {
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({...values, price, quotationId: params.id}));
+                        window.location.href = paymentResponse;
+                      }
+            } catch (error) {
+                  console.error('Lỗi khi xử lý thanh toán VNPay:', error);
+            }
+      };
       return (
             <>
                   <div className="payment-page">
@@ -62,7 +73,7 @@ function PayBooking() {
                                                 name="payment_form"
                                                 onFinish={onFinish}
                                                 layout="vertical"
-
+                                                form={form}
                                           >
                                                 <Form.Item
                                                       name="userFullName"
@@ -96,11 +107,11 @@ function PayBooking() {
                                                       <Input value={price} disabled />
                                                 </Form.Item>
                                                 <Form.Item>
-                                                      <img src={paymentInfo} alt='' />
-                                                </Form.Item>
-                                                <Form.Item>
                                                       <Button type="primary" htmlType="submit" size="large" block icon={<LockOutlined />}>
                                                             Thanh toán
+                                                      </Button>
+                                                      <Button onClick={() => onFinishVNPay(form.getFieldsValue())} size="large" block icon={<CreditCardOutlined />}>
+                                                            Thanh toán qua VNPay
                                                       </Button>
                                                 </Form.Item>
                                           </Form>

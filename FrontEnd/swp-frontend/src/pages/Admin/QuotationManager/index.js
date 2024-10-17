@@ -15,7 +15,7 @@ function QuotationManager() {
 
             fetchApi();
       }, [])
-      const handleSuccess = async (quotationId, priceOffer, fullName, email, phoneNumber) => {
+      const handleSuccess = async (quotationId, priceOffer) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
@@ -23,9 +23,6 @@ function QuotationManager() {
                   "priceOffer": priceOffer,
                   "status": "Xác nhận báo giá",
                   "approvedDate": getTimeCurrent(),
-                  "fullName": fullName,
-                  "email": email,
-                  "phoneNumber": phoneNumber,
                   "description": messages[quotationId] || ''
             };
             const response = await put(`quotation/update/${quotationId}`, quotationData);
@@ -57,7 +54,7 @@ function QuotationManager() {
                                                                         onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                         style={{ marginBottom: '10px' }}
                                                                   />
-                                                                  <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer, item.fullName, item.email, item.phoneNumber)}>
+                                                                  <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)}>
                                                                         Xác nhận
                                                                   </Button>
                                                             </>
