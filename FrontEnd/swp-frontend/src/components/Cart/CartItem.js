@@ -17,13 +17,13 @@ function CartItem(props) {
       const handleUp = () => {
             const newQuantity = quantity + 1;
             setQuantity(newQuantity);
-            dispatch(updateQuantity(item.id, newQuantity));
+            dispatch(updateQuantity(item.koiId, newQuantity));
       }
       const handleDown = () => {
             if (quantity > 1) {
                   const newQuantity = quantity - 1;
                   setQuantity(newQuantity);
-                  dispatch(updateQuantity(item.id, newQuantity));
+                  dispatch(updateQuantity(item.koiId, newQuantity));
             }
       }
       return (
