@@ -2,8 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Card, List, Button, Spin } from 'antd';
 import GoBack from '../GoBack';
 import { get } from '../../utils/request';
-import { useParams } from 'react-router-dom';
-import { fetchCartItems} from '../../actions/cart';
+import { Link, useParams } from 'react-router-dom';
+import { fetchCartItems } from '../../actions/cart';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 
@@ -13,15 +13,12 @@ function Cart() {
       const dispatch = useDispatch();
       const cartItems = useSelector(state => state.cartReducer.items);
       const totalPrice = cartItems.reduce((sum, item) => {
-            if(item.finalPrice > 0){
+            if (item.finalPrice > 0) {
                   return sum + item.finalPrice * item.quantity
-            }else {
+            } else {
                   return sum + item.originalPrice * item.quantity
             }
-      }
-            
-            
-      , 0);
+      }, 0);
       const [loading, setLoading] = useState(false);
       useEffect(() => {
             const fetchCart = async () => {
@@ -52,16 +49,19 @@ function Cart() {
                               dataSource={cartItems}
                               renderItem={(item) => (
                                     <List.Item>
-                                          <CartItem item={item} billId={billId}/>
+                                          <CartItem item={item} billId={billId} />
                                     </List.Item>
                               )}
                         />
                         <div style={{ marginTop: 16 }}>
                               <strong>Tổng tiền: {totalPrice} đ</strong>
                         </div>
-                        <Button type="primary" style={{ marginTop: 16 }} block>
-                              Thanh toán
-                        </Button>
+                        <Link to={`/check-out-koi/${billId}`} state={{totalPrice: totalPrice}}>
+                              <Button type="primary" style={{ marginTop: 16 }} block>
+                                    Thanh toán
+                              </Button>
+                        </Link>
+
                   </Card>
             </>
       )
