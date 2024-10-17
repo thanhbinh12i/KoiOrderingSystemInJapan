@@ -27,6 +27,18 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         items: [...state.items, action.payload],
       };
+    case 'UPDATE_QUANTITY':
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item.id === action.id ? { ...item, quantity: action.quantity } : item
+        )
+      };
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        items: state.items.filter(item => item.koiId !== action.payload)
+      };
     default:
       return state;
   }
