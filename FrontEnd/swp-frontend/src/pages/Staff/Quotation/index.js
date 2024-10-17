@@ -38,7 +38,6 @@ function Quotation() {
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
                   setPrices(prev => ({ ...prev, [id]: '' }));
-                  setMessages(prev => ({ ...prev, [id]: '' }));
                   fetchApi();
             }
       };
@@ -46,10 +45,9 @@ function Quotation() {
       const handleCancel = (id) => {
             setModalVisibility(prev => ({ ...prev, [id]: false }));
             setPrices(prev => ({ ...prev, [id]: '' }));
-            setMessages(prev => ({ ...prev, [id]: '' }));
       };
 
-      const sendToManager = async (quotationId, priceOffer, fullName, email, phoneNumber) => {
+      const sendToManager = async (quotationId, priceOffer) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
@@ -57,9 +55,6 @@ function Quotation() {
                   "priceOffer": priceOffer,
                   "status": "Báo giá cho quản lý",
                   "approvedDate": getTimeCurrent(),
-                  "fullName": fullName,
-                  "email": email,
-                  "phoneNumber": phoneNumber,
                   "description": messages[quotationId] || ''
             };
             const response = await put(`quotation/update/${quotationId}`, quotationData);
@@ -69,7 +64,7 @@ function Quotation() {
             }
       };
 
-      const sendToCustomer = async (quotationId, priceOffer, fullName, email, phoneNumber) => {
+      const sendToCustomer = async (quotationId, priceOffer) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
@@ -77,9 +72,6 @@ function Quotation() {
                   "priceOffer": priceOffer,
                   "status": "Đã xác nhận",
                   "approvedDate": getTimeCurrent(),
-                  "fullName": fullName,
-                  "email": email,
-                  "phoneNumber": phoneNumber,
                   "description": messages[quotationId] || ''
             };
             const response = await put(`quotation/update/${quotationId}`, quotationData);
@@ -108,23 +100,7 @@ function Quotation() {
                                                       </p>
                                                       {item.status !== "Đã thanh toán" && (
                                                             <>
-                                                                  {prices[item.quotationId] > 0 ? (
-                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
-                                                                  ) : (
-                                                                        <></>
-                                                                  )}
-                                                                  <Modal
-                                                                        title="Nhập giá tiền cho chuyến đi"
-                                                                        visible={modalVisibility[item.quotationId]}
-                                                                        onOk={() => updatePrice(item.quotationId)}
-                                                                        onCancel={() => handleCancel(item.quotationId)}
-                                                                  >
-                                                                        <Input
-                                                                              placeholder="Nhập giá"
-                                                                              value={prices[item.quotationId] || ''}
-                                                                              onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                        />
-                                                                  </Modal>
+
                                                                   {item.status !== "Báo giá cho quản lý" && item.status !== "Đã xác nhận" && item.status !== "Xác nhận báo giá" && (
                                                                         <>
                                                                               <Input.TextArea
@@ -133,7 +109,20 @@ function Quotation() {
                                                                                     onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                                     style={{ marginBottom: '10px' }}
                                                                               />
-                                                                              <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer, item.fullName, item.email, item.phoneNumber)}>
+                                                                              <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
+                                                                              <Modal
+                                                                                    title="Nhập giá tiền cho chuyến đi"
+                                                                                    visible={modalVisibility[item.quotationId]}
+                                                                                    onOk={() => updatePrice(item.quotationId)}
+                                                                                    onCancel={() => handleCancel(item.quotationId)}
+                                                                              >
+                                                                                    <Input
+                                                                                          placeholder="Nhập giá"
+                                                                                          value={prices[item.quotationId] || ''}
+                                                                                          onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                                    />
+                                                                              </Modal>
+                                                                              <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer)}>
                                                                                     Báo giá cho quản lí
                                                                               </Button>
                                                                         </>
@@ -146,7 +135,7 @@ function Quotation() {
                                                                                     onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                                     style={{ marginBottom: '10px' }}
                                                                               />
-                                                                              <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer, item.fullName, item.email, item.phoneNumber)}>
+                                                                              <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>
                                                                                     Báo giá cho khách hàng
                                                                               </Button>
                                                                         </>

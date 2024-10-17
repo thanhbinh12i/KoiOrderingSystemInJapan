@@ -3,7 +3,7 @@ import { Result, Button, Typography, Row, Col, Card, Descriptions, Statistic } f
 import { CheckCircleFilled, PrinterOutlined, HomeFilled } from '@ant-design/icons';
 import { Link, useParams } from 'react-router-dom';
 import './PaymentSuccess.scss';
-import { get } from '../../utils/request';
+import { get, post, put } from '../../utils/request';
 
 const { Title, Text } = Typography;
 
@@ -11,13 +11,37 @@ const PaymentSuccess = () => {
       const [bill, setBill] = useState();
       const params = useParams();
       const date = new Date().toLocaleString();
+      const userId = localStorage.getItem("id");
       useEffect(() => {
             const fetchApi = async () => {
-                  const response = await get(`bill/view-by-id/${params.id}`);
-                  if (response) {
-                        setBill(response);
+                  const pendingPaymentData = localStorage.getItem('pendingPaymentData');
+                  if (pendingPaymentData) {
+                        const paymentData = JSON.parse(pendingPaymentData);
+                        const billResponse = await post(`bill/create/${userId}-${paymentData.quotationId}`, paymentData);
+                        if (billResponse) {
+                              const getTimeCurrent = () => {
+                                    return new Date().toLocaleString();
+                              };
+                              const quotationData = {
+                                    "priceOffer": paymentData.price,
+                                    "status": "Đã thanh toán",
+                                    "approvedDate": getTimeCurrent(),
+                                    "description": ""
+                              };
+                              await put(`quotation/update/${paymentData.quotationId}`, quotationData);
+                              const response = await get(`bill/view-by-id/${billResponse.billId}`);
+                              if (response) {
+                                    setBill(response);
+                              }
+                              localStorage.removeItem('pendingPaymentData');
+                        }
+                  } else {
+                        const response = await get(`bill/view-by-id/${params.id}`);
+                        if (response) {
+                              setBill(response);
+                        }
                   }
-            }
+            };
             fetchApi();
       }, [params.id])
 

@@ -69,6 +69,7 @@ namespace Project_SWP391.Repository
             quotationModel.PriceOffer = updateQuotatinDto.PriceOffer;
             quotationModel.Status = updateQuotatinDto.Status;
             quotationModel.ApprovedDate = updateQuotatinDto.ApprovedDate;
+            quotationModel.Description = updateQuotatinDto.Description;
             await _context.SaveChangesAsync();
             return quotationModel;
         }
