@@ -2,6 +2,7 @@ import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
 import CheckOutKoi from "../components/CheckOutKoi";
+import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
@@ -114,6 +115,10 @@ export const routes = [
                 path: "profile",
                 element: <MainContent />,
               },
+              {
+                path: "my-bills",
+                element: <MyBill />,
+              }
             ],
           },
           {
