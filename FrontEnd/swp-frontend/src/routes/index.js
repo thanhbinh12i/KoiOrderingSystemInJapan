@@ -30,6 +30,7 @@ import Farm from "../pages/Farm";
 import FarmDetailUser from "../pages/Farm/FarmDetail";
 import Home from "../pages/Home";
 import Koi from "../pages/Koi";
+import KoiDetailById from "../pages/Koi/KoiDetailById";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
@@ -86,6 +87,10 @@ export const routes = [
         element: <Koi />,
       },
       {
+        path: "kois/:id",
+        element: <KoiDetailById />,
+      },
+      {
         path: "varieties",
         element: <Variety />,
       },
@@ -99,7 +104,7 @@ export const routes = [
       },
       {
         path: "order-koi/:id/cart",
-        element: <Cart />
+        element: <Cart />,
       },
       {
         element: <PrivateRoutes />,
@@ -144,7 +149,7 @@ export const routes = [
           {
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
-          }
+          },
         ],
       },
     ],
@@ -240,5 +245,5 @@ export const routes = [
         ],
       },
     ],
-  }
+  },
 ];
