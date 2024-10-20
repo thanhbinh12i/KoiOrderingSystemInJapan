@@ -38,7 +38,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<KoiBill>> GetAllAsync()
         {
-            return await _context.KoiBills.ToListAsync();
+            return await _context.KoiBills.Include(b => b.Koi).ToListAsync();
         }
 
         public async Task<KoiBill?> GetByIdAsync(int koiId, int billId)
@@ -65,7 +65,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<KoiBill>> GetByBillIdAsync(int billId)
         {
-            return await _context.KoiBills.Where(b => b.BillId == billId).ToListAsync();
+            return await _context.KoiBills.Where(b => b.BillId == billId).Include(b => b.Koi).ToListAsync();
         }
     }
 }
