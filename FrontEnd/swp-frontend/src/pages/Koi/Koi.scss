@@ -42,3 +42,80 @@
     margin-bottom: 16px;
   }
 }
+.koi-detail-container {
+  padding: 24px;
+  background-color: #f0f2f5;
+
+  .koi-image-container {
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+    .koi-main-image {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      background-color: #e6f7ff;
+      border-radius: 4px;
+    }
+
+    .image-thumbnails {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: 16px;
+
+      .thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 8px;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &.active {
+          border-color: #1890ff;
+        }
+      }
+    }
+  }
+
+  .koi-info-card {
+    height: 100%;
+
+    .ant-card-body {
+      padding: 24px;
+    }
+
+    .starting-bid {
+      color: #f5222d;
+    }
+
+    .time-left {
+      margin: 16px 0;
+      padding: 8px;
+      background-color: #fff1f0;
+      border: 1px solid #ffccc7;
+      border-radius: 4px;
+    }
+
+    .login-register {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f0f0;
+
+      a {
+        display: block;
+        margin-top: 8px;
+        color: #1890ff;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .koi-detail-container {
+    padding: 16px;
+  }
+}

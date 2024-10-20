@@ -69,7 +69,7 @@ function EliminatedDate() {
                                                 <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
                                                 <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
                                                 {item.deliveryStatusText === "Đã thanh toán" &&  (
-                                                      <Button onClick={() => showModal(item)}>Cập nhật ngày</Button>
+                                                      <Button type="primary" onClick={() => showModal(item)}>Cập nhật ngày</Button>
                                                 )}
                                           </div>
                                     </List.Item>

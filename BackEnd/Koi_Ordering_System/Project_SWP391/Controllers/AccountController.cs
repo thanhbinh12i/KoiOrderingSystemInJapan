@@ -266,6 +266,7 @@ namespace Project_SWP391.Controllers
         //        Token = _tokenService.CreateToken(user)
         //    });
         //}
+
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
         {
@@ -333,6 +334,87 @@ namespace Project_SWP391.Controllers
                 Token = await _tokenService.CreateToken(user)
             });
         }
+
+
+        //[HttpPut("update/{id}")]
+        //public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest(ModelState);
+
+        //    var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+        //    if (user == null) return NotFound("User not found");
+
+
+        //    await UpdateUserFieldsAsync(updateUser, user, id);
+        //    var result = await _userManager.UpdateAsync(user);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest(result.Errors);
+        //    }
+
+        //    return Ok(CreateUpdatedUserDto(user));
+        //}
+
+
+
+        //private async Task UpdateUserFieldsAsync(UpdateUserDto updateUser, AppUser user, string currentUserId)
+        //{
+        //    if (!string.IsNullOrEmpty(updateUser.UserName))
+        //    {
+        //        if (await IsUsernameTakenAsync(updateUser.UserName, currentUserId))
+        //            throw new("Username already in use by another user");
+        //        user.UserName = updateUser.UserName;
+        //    }
+
+        //    if (!string.IsNullOrEmpty(updateUser.Email))
+        //    {
+        //        if (await IsEmailTakenAsync(updateUser.Email, currentUserId))
+        //            throw new("Email already in use by another user");
+        //        user.Email = updateUser.Email;
+        //    }
+
+        //    if (!string.IsNullOrEmpty(updateUser.PhoneNumber))
+        //    {
+        //        var formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
+        //        if (formattedPhoneNumber == null)
+        //            throw new("Invalid phone number format");
+        //        user.PhoneNumber = formattedPhoneNumber;
+        //    }
+
+        //    user.Gender = updateUser.Gender ?? user.Gender;
+        //    user.Address = updateUser.Address ?? user.Address;
+        //    user.FullName = updateUser.FullName ?? user.FullName;
+        //    user.DateOfBirth = updateUser.DateOfBirth != default ? updateUser.DateOfBirth : user.DateOfBirth;
+        //}
+
+        //private async Task<bool> IsUsernameTakenAsync(string username, string currentUserId)
+        //{
+        //    return await _userManager.Users.AnyAsync(x => x.UserName == username && x.Id != currentUserId);
+        //}
+
+        //private async Task<bool> IsEmailTakenAsync(string email, string currentUserId)
+        //{
+        //    return await _userManager.Users.AnyAsync(x => x.Email == email && x.Id != currentUserId);
+        //}
+
+        //private UpdatedUserDto CreateUpdatedUserDto(AppUser user)
+        //{
+        //    return new UpdatedUserDto
+        //    {
+        //        UserName = user.UserName,
+        //        Email = user.Email,
+        //        FullName = user.FullName,
+        //        PhoneNumber = user.PhoneNumber,
+        //        Gender = user.Gender,
+        //        Address = user.Address,
+        //        DateOfBirth = user.DateOfBirth,
+        //        Token = _tokenService.CreateToken(user).Result
+        //    };
+        //}
+
+        //ndepend test
+
         [HttpPut("change-password/{id}")]
         public async Task<IActionResult> ChangePassword([FromBody] UpdateUserDto updateUser, string id)
         {

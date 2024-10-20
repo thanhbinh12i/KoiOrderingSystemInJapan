@@ -30,6 +30,7 @@ import Farm from "../pages/Farm";
 import FarmDetailUser from "../pages/Farm/FarmDetail";
 import Home from "../pages/Home";
 import Koi from "../pages/Koi";
+import KoiDetailById from "../pages/Koi/KoiDetailById";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
@@ -37,6 +38,7 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import DeliveryDate from "../pages/Staff/DeliveryDate";
 import EliminatedDate from "../pages/Staff/EliminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
@@ -87,6 +89,10 @@ export const routes = [
         element: <Koi />,
       },
       {
+        path: "kois/:id",
+        element: <KoiDetailById />,
+      },
+      {
         path: "varieties",
         element: <Variety />,
       },
@@ -100,7 +106,7 @@ export const routes = [
       },
       {
         path: "order-koi/:id/cart",
-        element: <Cart />
+        element: <Cart />,
       },
       {
         element: <PrivateRoutes />,
@@ -145,7 +151,7 @@ export const routes = [
           {
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
-          }
+          },
         ],
       },
     ],
@@ -242,8 +248,12 @@ export const routes = [
             path: "koi-eliminated-date",
             element: <EliminatedDate />,
           },
+          {
+            path: "koi-delivery-date",
+            element: <DeliveryDate />,
+          }
         ],
       },
     ],
-  }
+  },
 ];

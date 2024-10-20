@@ -37,6 +37,13 @@ function LayoutStaff() {
                                                 </Menu.Item>
                                           </>
                                     )}
+                                    {role === "DeliveringStaff" && (
+                                          <>
+                                                <Menu.Item key="2" icon={<NotificationOutlined />}>
+                                                      <Link to="/staff/koi-delivery-date">Cập nhật giao hàng</Link>
+                                                </Menu.Item>
+                                          </>
+                                    )}
 
                                     <Menu.Item key="4" icon={<MessageOutlined />}>
                                           Tin nhắn
