@@ -31,7 +31,7 @@ function CartItem(props) {
                   {item && (
                         <>
                               <div key={item.billId}>
-                                    <h3>Koi {item.koiId}</h3>
+                                    <h3>Koi {item.koiName}</h3>
                                     {
                                           item.finalPrice > 0 ? (
                                                 <p>Giá tiền: {item.finalPrice} đ</p>

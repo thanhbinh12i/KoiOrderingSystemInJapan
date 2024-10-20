@@ -82,8 +82,8 @@ function Sidebar() {
         <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
-        <Menu.Item key="transactions" icon={<HistoryOutlined />}>
-          Danh sách giao dịch
+        <Menu.Item key="my-bills" icon={<HistoryOutlined />}>
+        <Link to="/my-bills">Danh sachs </Link>
         </Menu.Item>
         <Menu.Item key="refunds" icon={<RollbackOutlined />}>
           Hoàn tiền
