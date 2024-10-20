@@ -421,7 +421,7 @@ namespace Project_SWP391.Controllers
             foreach (var user in users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                if (!roles.Contains("Manager"))
+                if (roles.Contains("Customer") || roles.IsNullOrEmpty())
                 {
                     var userDto = new ViewAllAccountDto
                     {

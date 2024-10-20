@@ -20,12 +20,14 @@ import {
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import GoBack from "../../components/GoBack";
+import RatingFarm from "../../components/RatingFarm";
 const { Title, Text } = Typography;
 
 function FarmDetail() {
   const [farm, setFarm] = useState({});
   const params = useParams();
   const [koiData, setKoiData] = useState([]);
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -153,6 +155,8 @@ function FarmDetail() {
           </Card>
         ))}
       </div>
+
+      <RatingFarm farmId={farm.farmId} userId={userId} />
     </>
   );
 }

@@ -17,22 +17,28 @@ function CartItem(props) {
       const handleUp = () => {
             const newQuantity = quantity + 1;
             setQuantity(newQuantity);
-            dispatch(updateQuantity(item.id, newQuantity));
+            dispatch(updateQuantity(item.koiId, newQuantity));
       }
       const handleDown = () => {
             if (quantity > 1) {
                   const newQuantity = quantity - 1;
                   setQuantity(newQuantity);
-                  dispatch(updateQuantity(item.id, newQuantity));
+                  dispatch(updateQuantity(item.koiId, newQuantity));
             }
       }
       return (
             <>
                   {item && (
                         <>
-                              <div key={item.id}>
-                                    <h3>{item.koiName}</h3>
-                                    <p>Price: {item.originalPrice} đ</p>
+                              <div key={item.billId}>
+                                    <h3>Koi {item.koiId}</h3>
+                                    {
+                                          item.finalPrice > 0 ? (
+                                                <p>Giá tiền: {item.finalPrice} đ</p>
+                                          ) : (
+                                                <p>Giá tiền: {item.originalPrice} đ</p>
+                                          )
+                                    }
                                     <div className="cart__quantity">
                                           <Button onClick={handleDown}>-</Button>
                                           <Input
@@ -44,7 +50,7 @@ function CartItem(props) {
                                     </div>
 
                                     <Button type="link" onClick={() => handleRemoveItem(item.koiId)}>
-                                          Remove
+                                          Xóa khỏi giỏ hàng
                                     </Button>
                               </div>
                         </>

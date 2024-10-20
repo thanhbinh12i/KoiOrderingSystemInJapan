@@ -14,6 +14,7 @@ export const post = async (path, options) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
 
     body: options !== null ? JSON.stringify(options) : undefined,
