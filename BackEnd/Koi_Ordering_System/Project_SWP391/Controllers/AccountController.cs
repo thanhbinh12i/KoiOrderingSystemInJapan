@@ -47,7 +47,7 @@ namespace Project_SWP391.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Manager");
                     if (roleResult.Succeeded)
                     {
                         return Ok(
@@ -369,7 +369,6 @@ namespace Project_SWP391.Controllers
             });
         }
         [HttpGet("{id}")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

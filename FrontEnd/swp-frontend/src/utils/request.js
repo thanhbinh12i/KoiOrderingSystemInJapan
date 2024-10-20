@@ -1,4 +1,4 @@
-const API_DOMAIN = "https://localhost:7087/api/";
+const API_DOMAIN = "https://koidayne.azurewebsites.net/api/";
 
 export const get = async (path) => {
   const response = await fetch(API_DOMAIN + path, {

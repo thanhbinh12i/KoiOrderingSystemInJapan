@@ -103,7 +103,7 @@ namespace Project_SWP391
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin", policy =>
-                    policy.WithOrigins("http://localhost:3000") // address of frontend
+                    policy.WithOrigins("*") // address of frontend
                           .AllowAnyMethod()
                           .AllowAnyHeader());
             });
@@ -133,10 +133,19 @@ namespace Project_SWP391
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectSWP391 API V1");
+                    c.RoutePrefix = String.Empty;
+                });
             }
-
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "https://koidaynevn.azurewebsites.net";
+            });
+            app.MapFallbackToFile("index.html");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("AllowOrigin");

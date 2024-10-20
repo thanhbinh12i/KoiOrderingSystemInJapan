@@ -95,7 +95,7 @@ export const routes = [
       },
       {
         path: "my-bookings/order-koi/:id/cart",
-        element: <Cart />
+        element: <Cart />,
       },
       {
         element: <PrivateRoutes />,

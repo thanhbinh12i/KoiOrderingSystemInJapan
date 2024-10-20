@@ -45,7 +45,7 @@ function Farm() {
                   <div className="farm-image">
                     <img
                       alt={farm.FarmName}
-                      src={`https://localhost:7087/uploads/koiFarm/${farm.farmImages[0].urlImage}`}
+                      src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${farm.farmImages[0].urlImage}`}
                     />
                   </div>
                 </div>
