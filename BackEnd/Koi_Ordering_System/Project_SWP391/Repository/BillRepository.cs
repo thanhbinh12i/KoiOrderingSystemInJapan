@@ -52,9 +52,9 @@ namespace Project_SWP391.Repository
            return await _context.Bills.FindAsync(billId);
         }
 
-        public Task<Bill?> GetByUserIdAsync(string userId)
+        public Task<List<Bill>> GetByUserIdAsync(string userId)
         {
-            return _context.Bills.FirstOrDefaultAsync(bill => bill.UserId == userId);
+            return _context.Bills.Where(bill => bill.UserId == userId).ToListAsync();
         }
 
         public async Task<Bill> UpdateAsync(int billId, UpdateBillDto billDto)

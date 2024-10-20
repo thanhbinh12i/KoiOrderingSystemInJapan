@@ -20,7 +20,7 @@ function MyBooking() {
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`bill/view-by-user-id/${userId}`);
-                  if (response) {
+                  if (response && Array.isArray(response)) {
                         setBill(response);
                   }
             }
@@ -74,17 +74,20 @@ function MyBooking() {
                                           </Link>
                                     </>
                               )
-                        }else if (record.status === "Đã thanh toán"){
-                              return (
-                                    <>
-                                          <NavLink to={`/order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
-                                                <Button type="primary">
-                                                      Mua cá nào
-                                                </Button>
+                        } else if (record.status === "Đã thanh toán") {
+                              const relatedBill = bill.find(b => b.quotationId === record.quotationId);
+                              if (relatedBill && relatedBill.price > record.priceOffer) {
+                                    return (
+                                          <Button type="primary">Xem chi tiết</Button>
+                                    )
+                              } else if (relatedBill) {
+                                    return (
+                                          <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
+                                                <Button type="primary">Mua cá nào</Button>
                                           </NavLink>
-                                    </>
-                              )
-                        }else{
+                                    );
+                              }
+                        } else {
                               return (
                                     <></>
                               )
