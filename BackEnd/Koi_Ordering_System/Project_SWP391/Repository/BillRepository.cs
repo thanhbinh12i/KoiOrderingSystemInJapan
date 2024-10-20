@@ -66,10 +66,7 @@ namespace Project_SWP391.Repository
                 return null;
             }
 
-            billModel.UserFullName = billDto.UserFullName;
             billModel.Price = billDto.Price;
-            billModel.PhoneNumber = billDto.PhoneNumber;
-            billModel.Email = billDto.Email;
 
             await _context.SaveChangesAsync();
 
