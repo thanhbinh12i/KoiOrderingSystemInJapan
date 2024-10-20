@@ -37,6 +37,7 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import EliminatedDate from "../pages/Staff/EliminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
@@ -236,6 +237,10 @@ export const routes = [
           {
             path: "koi-deal-staff/:id",
             element: <KoiDealDetail />,
+          },
+          {
+            path: "koi-eliminated-date",
+            element: <EliminatedDate />,
           },
         ],
       },
