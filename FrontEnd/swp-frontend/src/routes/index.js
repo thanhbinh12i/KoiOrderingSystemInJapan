@@ -6,6 +6,7 @@ import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
+import TourResult from "../components/SearchTour/TourResult";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
@@ -34,6 +35,7 @@ import KoiDetailById from "../pages/Koi/KoiDetailById";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
+import MyOrder from "../pages/MyOrder";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
@@ -75,6 +77,10 @@ export const routes = [
       {
         path: "tours/:id",
         element: <TourDetailUser />,
+      },
+      {
+        path: "/search-results",
+        element: <TourResult />
       },
       {
         path: "farms",
@@ -125,6 +131,10 @@ export const routes = [
               {
                 path: "my-bills",
                 element: <MyBill />,
+              },
+              {
+                path: "my-orders",
+                element: <MyOrder />,
               }
             ],
           },

@@ -49,6 +49,16 @@ namespace Project_SWP391.Repository
             return await _context.DeliveryStatuses.FirstOrDefaultAsync(d => d.DeliveryStatusId == deliveryStatusId);
         }
 
+        public async Task<List<DeliveryStatus?>> GetByUserId(string userId)
+        {
+            return await (from d in _context.DeliveryStatuses
+                          join b in _context.Bills on d.BillId equals b.BillId
+                          where b.UserId == userId
+                          select d)
+          .Distinct()
+          .ToListAsync();
+        }
+
         public async Task<DeliveryStatus> UpdateAsync(int deliveryStatusId, UpdateDeliveryStatusDto updateDeliveryStatusModel)
         {
             var deliveryStatusModel = await _context.DeliveryStatuses.FirstOrDefaultAsync(d => d.DeliveryStatusId == deliveryStatusId);

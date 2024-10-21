@@ -4,10 +4,10 @@ import { get } from "../../utils/request";
 
 import image from "../../assets/home/koi-farm-tour.jpg"
 import { Link } from "react-router-dom";
+import SearchTour from "../../components/SearchTour";
 
 function TourList() {
       const [tours, setTours] = useState([]);
-      const [tourDestination, setTourDestination] = useState([]);
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get("tour/view-all");
@@ -19,9 +19,9 @@ function TourList() {
       });
       const filteredTours = useMemo(() => {
             return tours.filter(tour =>
-                  tour.tourDestinations.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
+                  tour.tourDestinations && tour.tourDestinations.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
             );
-      }, [tours, tourDestination]);
+      }, [tours]);
       return (
             <>
 
