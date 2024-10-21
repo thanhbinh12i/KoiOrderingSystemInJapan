@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, DatePicker, List, Modal } from "antd";
-function EliminatedDate() {
-      //hiện đơn hàng và nhập ngày giao, nhập xong thì thôi
+function EstiminatedDate() {
       const [deliveryList, setDeliveryList] = useState([]);
       const [modalVisible, setModalVisible] = useState(false);
       const [currentItem, setCurrentItem] = useState(null);
@@ -92,4 +91,4 @@ function EliminatedDate() {
             </>
       )
 }
-export default EliminatedDate;
+export default EstiminatedDate;

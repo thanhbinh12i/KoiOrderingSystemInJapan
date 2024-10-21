@@ -42,7 +42,7 @@ function MyBooking() {
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
                   render: (_, record) => {
-                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán") {
+                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" ) {
                               return record.priceOffer;
                         } else {
                               return "Chưa xác nhận";

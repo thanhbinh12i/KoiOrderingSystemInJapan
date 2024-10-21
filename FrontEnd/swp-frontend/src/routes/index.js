@@ -41,7 +41,7 @@ import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
 import DeliveryDate from "../pages/Staff/DeliveryDate";
-import EliminatedDate from "../pages/Staff/EliminatedDate";
+import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
@@ -256,7 +256,7 @@ export const routes = [
           },
           {
             path: "koi-eliminated-date",
-            element: <EliminatedDate />,
+            element: <EstiminatedDate />,
           },
           {
             path: "koi-delivery-date",
