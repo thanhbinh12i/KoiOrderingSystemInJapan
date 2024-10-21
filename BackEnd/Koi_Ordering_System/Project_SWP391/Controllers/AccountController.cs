@@ -47,7 +47,7 @@ namespace Project_SWP391.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Manager");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
                     if (roleResult.Succeeded)
                     {
                         return Ok(
