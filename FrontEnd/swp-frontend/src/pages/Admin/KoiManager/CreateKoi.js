@@ -121,7 +121,7 @@ function CreateKoi() {
           </Col>
           <Col span={8}>
             <Form.Item
-              label="Độ dài"
+              label="Độ dài (cm)"
               name="length"
               rules={[{ required: true, message: "Vui lòng nhập độ dài!" }]}
             >
@@ -176,7 +176,16 @@ function CreateKoi() {
               <Select mode="multiple" options={varieties} />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
+            <Form.Item
+              label="Số lượng"
+              name="quantity"
+              rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
             <Form.Item label="Hình ảnh" name="images">
               <Upload
                 listType="picture-card"

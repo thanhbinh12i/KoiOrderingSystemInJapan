@@ -14,16 +14,12 @@ function TourList() {
                   if (response) {
                         setTours(response);
                   }
-                  const responseType = await get("tourDestination/view-all");
-                  if (responseType) {
-                        setTourDestination(responseType);
-                  }
             }
             fetchApi();
       });
       const filteredTours = useMemo(() => {
             return tours.filter(tour =>
-                  tourDestination.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
+                  tour.tourDestinations.some(dest => dest.type === "default" && dest.tourId === tour.tourId)
             );
       }, [tours, tourDestination]);
       return (

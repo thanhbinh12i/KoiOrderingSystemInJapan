@@ -7,7 +7,7 @@ namespace Project_SWP391.Interfaces
     {
         Task<List<Bill>> GetAllAsync();
         Task<Bill?> GetByIdAsync(int billId);
-        Task<Bill?> GetByUserIdAsync(string userId);
+        Task<List<Bill>> GetByUserIdAsync(string userId);
         Task<Bill?> DeleteAsync(int billId);
         Task<Bill> CreateAsync(Bill billModel);
         Task<Bill> UpdateAsync(int billId, UpdateBillDto billDto);

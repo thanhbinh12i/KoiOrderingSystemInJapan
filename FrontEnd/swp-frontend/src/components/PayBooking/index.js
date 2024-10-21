@@ -1,7 +1,7 @@
 import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
-import { CreditCardOutlined, LockOutlined } from '@ant-design/icons';
+import { CreditCardOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from 'react-router-dom';
-import { get, post, put } from '../../utils/request';
+import { get, post} from '../../utils/request';
 import { useEffect, useState } from 'react';
 
 const { Title } = Typography;
@@ -10,7 +10,6 @@ function PayBooking() {
       const location = useLocation();
       const { price } = location.state || { price: 0 };;
       const params = useParams();
-      const userId = localStorage.getItem("id");
       const [quotation, setQuotation] = useState({});
       const [form] = Form.useForm();
       useEffect(() => {
@@ -22,26 +21,25 @@ function PayBooking() {
             }
             fetchApi();
       })
-      const onFinish = async (values) => {
-            const getTimeCurrent = () => {
-                  return new Date().toLocaleString();
-            };
-            const updatedValues = { ...values, price };
-            const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
-            if (response) {
-                  const quotationData = {
-                        ...quotation,
-                        "status": "Đã thanh toán",
-                        "approvedDate": getTimeCurrent(),
-                  };
-                  const responseUpdate = await put(`quotation/update/${params.id}`, quotationData);
-                  if (responseUpdate) {
-                        window.location.href = `/pay-success/${response.billId}`;
-                  }
-            }
-      }
+      // const onFinish = async (values) => {
+      //       const getTimeCurrent = () => {
+      //             return new Date().toLocaleString();
+      //       };
+      //       const updatedValues = { ...values, price };
+      //       const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
+      //       if (response) {
+      //             const quotationData = {
+      //                   ...quotation,
+      //                   "status": "Đã thanh toán",
+      //                   "approvedDate": getTimeCurrent(),
+      //             };
+      //             const responseUpdate = await put(`quotation/update/${params.id}`, quotationData);
+      //             if (responseUpdate) {
+      //                   window.location.href = `/pay-success/${response.billId}`;
+      //             }
+      //       }
+      // }
       const onFinishVNPay = async (values) => {
-            console.log(values);
             try {
                   const paymentData = {
                         orderType: "string", 
@@ -71,8 +69,8 @@ function PayBooking() {
                                           </Title>
                                           <Form
                                                 name="payment_form"
-                                                onFinish={onFinish}
                                                 layout="vertical"
+                                                onFinish={onFinishVNPay}
                                                 form={form}
                                           >
                                                 <Form.Item
@@ -107,10 +105,7 @@ function PayBooking() {
                                                       <Input value={price} disabled />
                                                 </Form.Item>
                                                 <Form.Item>
-                                                      <Button type="primary" htmlType="submit" size="large" block icon={<LockOutlined />}>
-                                                            Thanh toán
-                                                      </Button>
-                                                      <Button onClick={() => onFinishVNPay(form.getFieldsValue())} size="large" block icon={<CreditCardOutlined />}>
+                                                      <Button htmlType='submit' size="large" block icon={<CreditCardOutlined />}>
                                                             Thanh toán qua VNPay
                                                       </Button>
                                                 </Form.Item>

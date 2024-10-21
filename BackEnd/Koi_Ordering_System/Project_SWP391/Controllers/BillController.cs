@@ -45,14 +45,15 @@ namespace Project_SWP391.Controllers
         [HttpGet("view-by-user-id/{userId}")]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {
-            var bill = await _billRepo.GetByUserIdAsync(userId);
+            var bills = await _billRepo.GetByUserIdAsync(userId);
 
-            if (bill == null)
+            if (bills == null)
             {
                 return NotFound("No bill found");
             }
+            var billDto = bills.Select(b => b.ToBillDtoFromBill());
 
-            return Ok(bill.ToBillDtoFromBill());
+            return Ok(billDto);
         }
 
         [HttpPost("create/{userId}-{quotationId}")]
