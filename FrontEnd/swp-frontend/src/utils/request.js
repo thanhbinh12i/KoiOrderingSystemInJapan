@@ -1,4 +1,4 @@
-const API_DOMAIN = "https://koidayne.azurewebsites.net/api/";
+const API_DOMAIN = `${process.env.REACT_APP_API_URL}`;
 
 export const get = async (path) => {
   const response = await fetch(API_DOMAIN + path, {

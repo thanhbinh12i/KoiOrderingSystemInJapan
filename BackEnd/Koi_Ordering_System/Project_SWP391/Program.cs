@@ -128,6 +128,7 @@ namespace Project_SWP391
             builder.Services.AddScoped<IPayStatusRepository, PayStatusRepository>();
             builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
             builder.Services.AddScoped<IVNPayService, VNPayService>();
+            builder.Services.AddScoped<IEmailService, EmailService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -141,11 +142,7 @@ namespace Project_SWP391
                     c.RoutePrefix = String.Empty;
                 });
             }
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "https://koidaynevn.azurewebsites.net";
-            });
-            app.MapFallbackToFile("index.html");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCors("AllowOrigin");
