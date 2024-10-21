@@ -19,7 +19,7 @@ namespace Project_SWP391.Mappers
                 ApprovedDate = quotationModel.ApprovedDate,
                 Description = quotationModel.Description,
                 UserId = quotationModel.UserId,
-                TourId = quotationModel.TourId
+                TourId = quotationModel.TourId,
             };
         }
         public static Quotation ToQuotationFromToCreateDto(this CreateQuotationDto quotationDto, string userId, int tourId)

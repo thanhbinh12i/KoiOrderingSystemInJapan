@@ -40,6 +40,7 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import Checkin from "../pages/Staff/Checkin";
 import DeliveryDate from "../pages/Staff/DeliveryDate";
 import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
@@ -261,6 +262,10 @@ export const routes = [
           {
             path: "koi-delivery-date",
             element: <DeliveryDate />,
+          },
+          {
+            path: "check-in",
+            element: <Checkin />
           }
         ],
       },
