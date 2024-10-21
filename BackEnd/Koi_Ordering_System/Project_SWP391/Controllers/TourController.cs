@@ -40,6 +40,7 @@ namespace Project_SWP391.Controllers
             {
                 return NotFound();
             }
+            var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
         [HttpGet("view-varietyId/{varietyId:int}")]
@@ -50,6 +51,7 @@ namespace Project_SWP391.Controllers
             {
                 return NotFound();
             }
+            var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
         [HttpGet("view/{min:float}&&{max:float}")]
@@ -60,6 +62,7 @@ namespace Project_SWP391.Controllers
             {
                 return NotFound();
             }
+            var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
         [HttpPost("create")]

@@ -3,6 +3,7 @@ using Project_SWP391.Dtos.BillDetails;
 using Project_SWP391.Dtos.DeliveryStatuses;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using Project_SWP391.Model;
 
 namespace Project_SWP391.Controllers
 {
@@ -41,6 +42,19 @@ namespace Project_SWP391.Controllers
             }
 
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
+        }
+        [HttpGet("view-by-user-id/{userId}")]
+        public async Task<IActionResult> GetByUserId([FromRoute] string userId)
+        {
+            var deliveryStatuses = await _deliveryStatusRepo.GetByUserId(userId);
+
+            if (deliveryStatuses == null)
+            {
+                return NotFound("No bill detail found");
+            }
+            var deliveryStatusDto = deliveryStatuses.Select(b => b.ToDeliveryStatusDtoFromDeliveryStatus());
+
+            return Ok(deliveryStatusDto);
         }
 
         [HttpPost("create/{billId}-{deliveryId}")]

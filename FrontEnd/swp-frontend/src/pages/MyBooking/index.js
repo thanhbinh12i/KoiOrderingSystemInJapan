@@ -58,7 +58,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán'].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',
@@ -75,6 +75,14 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
+                              return (
+                                    <>
+                                          <Button type="primary">
+                                                Check - in máy bay
+                                          </Button>
+                                    </>
+                              )
+                        } else if (record.status === "Đã check-in") {
                               const relatedBill = bill.find(b => b.quotationId === record.quotationId);
                               if (relatedBill && relatedBill.price > record.priceOffer) {
                                     return (
