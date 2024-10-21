@@ -20,7 +20,7 @@ function MyBooking() {
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`bill/view-by-user-id/${userId}`);
-                  if (response) {
+                  if (response && Array.isArray(response)) {
                         setBill(response);
                   }
             }
@@ -42,7 +42,7 @@ function MyBooking() {
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
                   render: (_, record) => {
-                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán") {
+                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" ) {
                               return record.priceOffer;
                         } else {
                               return "Chưa xác nhận";
@@ -58,7 +58,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán'].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',
@@ -74,17 +74,28 @@ function MyBooking() {
                                           </Link>
                                     </>
                               )
-                        }else if (record.status === "Đã thanh toán"){
+                        } else if (record.status === "Đã thanh toán") {
                               return (
                                     <>
-                                          <NavLink to={`/order-koi/${bill.billId}`} state={{ tourId: record.tourId }}>
-                                                <Button type="primary">
-                                                      Mua cá nào
-                                                </Button>
-                                          </NavLink>
+                                          <Button type="primary">
+                                                Check - in máy bay
+                                          </Button>
                                     </>
                               )
-                        }else{
+                        } else if (record.status === "Đã check-in") {
+                              const relatedBill = bill.find(b => b.quotationId === record.quotationId);
+                              if (relatedBill && relatedBill.price > record.priceOffer) {
+                                    return (
+                                          <Button type="primary">Xem chi tiết</Button>
+                                    )
+                              } else if (relatedBill) {
+                                    return (
+                                          <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
+                                                <Button type="primary">Mua cá nào</Button>
+                                          </NavLink>
+                                    );
+                              }
+                        } else {
                               return (
                                     <></>
                               )

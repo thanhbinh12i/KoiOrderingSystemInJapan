@@ -73,15 +73,18 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Tour?>> GetPriceByAsync(float min, float max)
         {
-            return await _context.Tours.Where(x => x.Price <= max && x.Price >= min).ToListAsync();
+            return await _context.Tours.Where(x => x.Price <= max && x.Price >= min).Include(x => x.TourDestinations).ToListAsync();
         }
 
         public async Task<List<Tour?>> GetByFarmIdAsync(int farmId)
         {
             return await _context.TourDestinations
-                        .Where(td => td.FarmId == farmId)
-                        .Select(td => td.Tour)
-                        .ToListAsync();
+                                  .Where(td => td.FarmId == farmId)
+                                  .Include(td => td.Tour) 
+                                  .ThenInclude(t => t.TourDestinations) 
+                                  .Select(td => td.Tour)
+                                  .Distinct()
+                                  .ToListAsync();
         }
 
         public async Task<List<Tour?>> GetByVarietyIdAsync(int varietyId)
@@ -95,6 +98,7 @@ namespace Project_SWP391.Repository
                           where kv.VarietyId == varietyId
                           select t)
           .Distinct()
+          .Include(t => t.TourDestinations)
           .ToListAsync();
         }
     }

@@ -15,6 +15,7 @@ namespace Project_SWP391.Mappers
                 Email = bill.Email,
                 PhoneNumber = bill.PhoneNumber,
                 UserId = bill.UserId,
+                QuotationId = bill.QuotationId,
             };
         }
 

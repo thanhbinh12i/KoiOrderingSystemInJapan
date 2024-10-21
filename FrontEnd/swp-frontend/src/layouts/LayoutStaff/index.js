@@ -32,16 +32,26 @@ function LayoutStaff() {
                                                 <Menu.Item key="2" icon={<NotificationOutlined />}>
                                                       <Link to="/staff/koi-deal-staff">Deal giá koi</Link>
                                                 </Menu.Item>
+                                                <Menu.Item key="3" icon={<MessageOutlined />}>
+                                                      <Link to="/staff/koi-eliminated-date">Xác nhận ngày giao hàng</Link>
+                                                </Menu.Item>
+                                          </>
+                                    )}
+                                    {role === "DeliveringStaff" && (
+                                          <>
+                                                <Menu.Item key="2" icon={<NotificationOutlined />}>
+                                                      <Link to="/staff/koi-delivery-date">Cập nhật giao hàng</Link>
+                                                </Menu.Item>
                                           </>
                                     )}
 
-                                    <Menu.Item key="3" icon={<MessageOutlined />}>
+                                    <Menu.Item key="4" icon={<MessageOutlined />}>
                                           Tin nhắn
                                     </Menu.Item>
-                                    <Menu.Item key="4" icon={<FileTextOutlined />}>
+                                    <Menu.Item key="5" icon={<FileTextOutlined />}>
                                           Báo giá
                                     </Menu.Item>
-                                    <Menu.Item key="5" icon={<LogoutOutlined />}>
+                                    <Menu.Item key="6" icon={<LogoutOutlined />}>
                                           Đăng xuất
                                     </Menu.Item>
                               </Menu>

@@ -14,6 +14,7 @@ namespace Project_SWP391.Mappers
                 FinalPrice = koiBIll.FinalPrice,
                 KoiId = koiBIll.KoiId,
                 BillId = koiBIll.BillId,
+                KoiName = koiBIll.Koi?.KoiName,
             };
         }
 
