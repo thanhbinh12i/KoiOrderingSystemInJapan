@@ -36,8 +36,9 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\uploads\koiFarm\" />
+    <Folder Include="wwwroot\uploads\koiVariety\" />
+    <Folder Include="wwwroot\uploads\koi\" />
   </ItemGroup>
 
 
