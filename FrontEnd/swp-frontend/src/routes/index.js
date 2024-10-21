@@ -35,6 +35,7 @@ import KoiDetailById from "../pages/Koi/KoiDetailById";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
+import MyOrder from "../pages/MyOrder";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
@@ -130,6 +131,10 @@ export const routes = [
               {
                 path: "my-bills",
                 element: <MyBill />,
+              },
+              {
+                path: "my-orders",
+                element: <MyOrder />,
               }
             ],
           },

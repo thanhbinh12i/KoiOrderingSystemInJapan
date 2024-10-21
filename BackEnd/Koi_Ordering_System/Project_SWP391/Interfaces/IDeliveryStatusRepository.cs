@@ -7,6 +7,7 @@ namespace Project_SWP391.Interfaces
     public interface IDeliveryStatusRepository
     {
         Task<List<DeliveryStatus>> GetAllAsync();
+        Task<List<DeliveryStatus>> GetByUserId(string userId);
 
         Task<DeliveryStatus?> GetByIdAsync(int deliveryStatusId);
 

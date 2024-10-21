@@ -83,7 +83,7 @@ function Sidebar() {
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
         <Menu.Item key="my-bills" icon={<HistoryOutlined />}>
-        <Link to="/my-bills">Danh sachs </Link>
+          <Link to="/my-orders">Đơn hàng của tôi </Link>
         </Menu.Item>
         <Menu.Item key="refunds" icon={<RollbackOutlined />}>
           Hoàn tiền
