@@ -2,6 +2,7 @@ import { Form, Input, Select, DatePicker, Button, Row, Col } from 'antd';
 import './SearchTour.scss';
 import { useEffect, useState } from 'react';
 import { get } from '../../utils/request';
+import { useNavigate } from 'react-router-dom';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -9,7 +10,7 @@ const { Option } = Select;
 function SearchTour() {
       const [varieties, setVarieties] = useState([]);
       const [farms, setFarms] = useState([]);
-      const [searchResult, setSearchResult] = useState([]);
+      const navigate = useNavigate();
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get("koi-variable/view-all");
@@ -37,26 +38,12 @@ function SearchTour() {
             fetchApi();
       }, [])
       const handleSearch = async (values) => {
-            let results = [];
-            if (values.farm) {
-                  const responseFarm = await get(`tour/view-farmId/${values.farm}`);
-                  if (responseFarm) {
-                        results = [...results, ...responseFarm];
-                  }
-            }
-            if (values.variety) {
-                  const responseVariety = await get(`tour/view-farmId/${values.variety}`);
-                  if (responseVariety) {
-                        results = [...results, ...responseVariety];
-                  }
-            }
-            if (values.priceMin && values.priceMax) {
-                  const priceResponse = await get(`/api/tour/view/${values.priceMin}&&${values.priceMax}`);
-                  if (priceResponse) {
-                        results = [...results, ...priceResponse];
-                  }
-            }
-            setSearchResult(results);
+            const queryParams = new URLSearchParams();
+            if (values.farm) queryParams.append('farm', values.farm);
+            if (values.variety) queryParams.append('variety', values.variety);
+            if (values.priceMin) queryParams.append('priceMin', values.priceMin);
+            if (values.priceMax) queryParams.append('priceMax', values.priceMax);
+            navigate(`/search-results?${queryParams.toString()}`);
       }
       return (
             <>

@@ -1,9 +1,12 @@
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
+import CheckOutKoi from "../components/CheckOutKoi";
+import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
+import TourResult from "../components/SearchTour/TourResult";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
@@ -28,13 +31,17 @@ import Farm from "../pages/Farm";
 import FarmDetailUser from "../pages/Farm/FarmDetail";
 import Home from "../pages/Home";
 import Koi from "../pages/Koi";
+import KoiDetailById from "../pages/Koi/KoiDetailById";
 import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
+import MyOrder from "../pages/MyOrder";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import DeliveryDate from "../pages/Staff/DeliveryDate";
+import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
@@ -72,6 +79,10 @@ export const routes = [
         element: <TourDetailUser />,
       },
       {
+        path: "/search-results",
+        element: <TourResult />
+      },
+      {
         path: "farms",
         element: <Farm />,
       },
@@ -82,6 +93,10 @@ export const routes = [
       {
         path: "kois",
         element: <Koi />,
+      },
+      {
+        path: "kois/:id",
+        element: <KoiDetailById />,
       },
       {
         path: "varieties",
@@ -96,8 +111,8 @@ export const routes = [
         element: <AboutUs />,
       },
       {
-        path: "my-bookings/order-koi/:id/cart",
-        element: <Cart />
+        path: "order-koi/:id/cart",
+        element: <Cart />,
       },
       {
         element: <PrivateRoutes />,
@@ -113,6 +128,14 @@ export const routes = [
                 path: "profile",
                 element: <MainContent />,
               },
+              {
+                path: "my-bills",
+                element: <MyBill />,
+              },
+              {
+                path: "my-orders",
+                element: <MyOrder />,
+              }
             ],
           },
           {
@@ -132,8 +155,12 @@ export const routes = [
             element: <PaymentSuccess />,
           },
           {
-            path: "my-bookings/order-koi/:id",
+            path: "order-koi/:id",
             element: <OrderKoi />,
+          },
+          {
+            path: "check-out-koi/:id",
+            element: <CheckOutKoi />,
           },
         ],
       },
@@ -227,8 +254,16 @@ export const routes = [
             path: "koi-deal-staff/:id",
             element: <KoiDealDetail />,
           },
+          {
+            path: "koi-eliminated-date",
+            element: <EstiminatedDate />,
+          },
+          {
+            path: "koi-delivery-date",
+            element: <DeliveryDate />,
+          }
         ],
       },
     ],
-  }
+  },
 ];

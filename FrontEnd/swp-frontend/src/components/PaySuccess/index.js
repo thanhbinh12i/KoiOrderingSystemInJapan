@@ -5,16 +5,18 @@ import { Link, useParams } from 'react-router-dom';
 import './PaymentSuccess.scss';
 import { get, post, put } from '../../utils/request';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const PaymentSuccess = () => {
       const [bill, setBill] = useState();
       const params = useParams();
       const date = new Date().toLocaleString();
       const userId = localStorage.getItem("id");
+      const [price, setPrice] = useState(0);
       useEffect(() => {
             const fetchApi = async () => {
                   const pendingPaymentData = localStorage.getItem('pendingPaymentData');
+                  const pendingPaymentKoi = localStorage.getItem('pendingPaymentKoi');
                   if (pendingPaymentData) {
                         const paymentData = JSON.parse(pendingPaymentData);
                         const billResponse = await post(`bill/create/${userId}-${paymentData.quotationId}`, paymentData);
@@ -32,18 +34,33 @@ const PaymentSuccess = () => {
                               const response = await get(`bill/view-by-id/${billResponse.billId}`);
                               if (response) {
                                     setBill(response);
+                                    setPrice(paymentData.price);
                               }
                               localStorage.removeItem('pendingPaymentData');
                         }
-                  } else {
-                        const response = await get(`bill/view-by-id/${params.id}`);
+                  } else if (pendingPaymentKoi) {
+                        const paymentData = JSON.parse(pendingPaymentKoi);
+                        const currentBill = await get(`bill/view-by-id/${paymentData.id}`);
+                        const newTotalPrice = currentBill.price + paymentData.totalPrice;
+                        const response = await put(`bill/update/${paymentData.id}`, { "price": newTotalPrice });
                         if (response) {
-                              setBill(response);
+                              const data = {
+                                    "deliveryAddress": paymentData.deliveryAddress,
+                                    "deliveryStatusText": "Đã thanh toán",
+                                    "estimatedDate": ""
+                              }
+                              const deliveryResponse = await post(`delivery-status/create/${paymentData.id}-${paymentData.deliveryId}`, data);
+                              if(deliveryResponse){
+                                    setBill(currentBill);
+                                    setPrice(paymentData.price);
+                              }
+                              localStorage.removeItem('pendingPaymentKoi');
                         }
+
                   }
             };
             fetchApi();
-      }, [params.id])
+      }, [params.id, userId])
 
       const handlePrint = () => {
             window.print();
@@ -57,7 +74,6 @@ const PaymentSuccess = () => {
                                     <Result
                                           icon={<CheckCircleFilled className="success-icon" />}
                                           title={<Title level={2}>Thanh toán thành công!</Title>}
-                                          subTitle={<Text className="success-subtitle">Cảm ơn bạn đã đặt tour. Chúc bạn có một chuyến đi thật thành công.</Text>}
                                     />
                                     {bill && (
                                           <>
@@ -75,7 +91,7 @@ const PaymentSuccess = () => {
                                                       <div className="amount-container">
                                                             <Statistic
                                                                   title="Tổng thanh toán"
-                                                                  value={bill.price}
+                                                                  value={price.toLocaleString()}
                                                                   precision={0}
                                                                   suffix="VND"
                                                                   className="amount-statistic"

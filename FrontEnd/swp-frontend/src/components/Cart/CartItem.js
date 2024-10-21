@@ -30,9 +30,15 @@ function CartItem(props) {
             <>
                   {item && (
                         <>
-                              <div key={item.id}>
-                                    <h3>{item.koiName}</h3>
-                                    <p>Price: {item.originalPrice} đ</p>
+                              <div key={item.billId}>
+                                    <h3>Koi {item.koiName}</h3>
+                                    {
+                                          item.finalPrice > 0 ? (
+                                                <p>Giá tiền: {item.finalPrice} đ</p>
+                                          ) : (
+                                                <p>Giá tiền: {item.originalPrice} đ</p>
+                                          )
+                                    }
                                     <div className="cart__quantity">
                                           <Button onClick={handleDown}>-</Button>
                                           <Input
@@ -44,7 +50,7 @@ function CartItem(props) {
                                     </div>
 
                                     <Button type="link" onClick={() => handleRemoveItem(item.koiId)}>
-                                          Remove
+                                          Xóa khỏi giỏ hàng
                                     </Button>
                               </div>
                         </>
