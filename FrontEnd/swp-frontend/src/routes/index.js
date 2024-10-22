@@ -19,6 +19,7 @@ import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import OrderManager from "../pages/Admin/OrderManager";
 import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
 import StaffManager from "../pages/Admin/StaffManager";
@@ -236,6 +237,10 @@ export const routes = [
           {
             path: "create-staff",
             element: <CreateStaff />,
+          },
+          {
+            path: "order-manager",
+            element: <OrderManager />,
           },
         ],
       },

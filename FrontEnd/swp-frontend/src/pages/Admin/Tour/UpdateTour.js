@@ -105,7 +105,7 @@ function UpdateTour({ reload, record }) {
               { validator: validateDates }
             ]}
           >
-            <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY"
+            <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"
             disabledDate={disabledDate}
             picker="date" />
           </Form.Item>
@@ -117,7 +117,7 @@ function UpdateTour({ reload, record }) {
               { validator: validateDates }
             ]}
           >
-            <DatePicker style={{ width: "100%" }} format="DD/MM/YYYY"
+            <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"
             disabledDate={disabledDate}
             picker="date"/>
           </Form.Item>

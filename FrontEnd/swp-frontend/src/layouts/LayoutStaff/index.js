@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Avatar } from 'antd';
-import { UserOutlined, MessageOutlined, FileTextOutlined, TeamOutlined, NotificationOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, MessageOutlined, TeamOutlined, NotificationOutlined, LogoutOutlined } from '@ant-design/icons';
 import "./LayoutStaff.scss";
 import { Link, Outlet } from 'react-router-dom';
 
@@ -50,9 +50,6 @@ function LayoutStaff() {
 
                                     <Menu.Item key="5" icon={<MessageOutlined />}>
                                           Tin nhắn
-                                    </Menu.Item>
-                                    <Menu.Item key="6" icon={<FileTextOutlined />}>
-                                          Báo giá
                                     </Menu.Item>
                                     <Menu.Item key="7" icon={<LogoutOutlined />}>
                                           Đăng xuất
