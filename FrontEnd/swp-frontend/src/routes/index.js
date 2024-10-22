@@ -15,6 +15,7 @@ import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
 import CreateKoiFarm from "../pages/Admin/FarmManager/CreateKoiFarm";
 import FarmDetail from "../pages/Admin/FarmManager/FarmDetail";
+import FeedbackManage from "../pages/Admin/FeedbackManager";
 import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
@@ -26,6 +27,7 @@ import CreateStaff from "../pages/Admin/StaffManager/CreateStaff";
 import TourManager from "../pages/Admin/Tour";
 import CreateTour from "../pages/Admin/Tour/CreateTour";
 import TourDetail from "../pages/Admin/Tour/TourDetail";
+import UpdateTour from "../pages/Admin/Tour/UpdateTour";
 import UserManager from "../pages/Admin/UserManager";
 import Farm from "../pages/Farm";
 import FarmDetailUser from "../pages/Farm/FarmDetail";
@@ -36,6 +38,7 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
 import MyOrder from "../pages/MyOrder";
+import Feedback from "../pages/MyOrder/Feedback";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
@@ -80,7 +83,7 @@ export const routes = [
       },
       {
         path: "/search-results",
-        element: <TourResult />
+        element: <TourResult />,
       },
       {
         path: "farms",
@@ -135,7 +138,11 @@ export const routes = [
               {
                 path: "my-orders",
                 element: <MyOrder />,
-              }
+              },
+              {
+                path: "feedback/",
+                element: <Feedback />,
+              },
             ],
           },
           {
@@ -225,6 +232,10 @@ export const routes = [
             element: <TourDetail />,
           },
           {
+            path: "tour-update/:id",
+            element: <UpdateTour />,
+          },
+          {
             path: "quotation-manager",
             element: <QuotationManager />,
           },
@@ -235,6 +246,10 @@ export const routes = [
           {
             path: "create-staff",
             element: <CreateStaff />,
+          },
+          {
+            path: "feedback-manager",
+            element: <FeedbackManage />,
           },
         ],
       },
@@ -261,7 +276,7 @@ export const routes = [
           {
             path: "koi-delivery-date",
             element: <DeliveryDate />,
-          }
+          },
         ],
       },
     ],

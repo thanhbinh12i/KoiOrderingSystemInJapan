@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Table, message, Spin, Button, Tooltip } from "antd";
 import { get } from "../../../utils/request";
 import DeleteTour from "./DeleteTour";
-import UpdateTour from "./UpdateTour";
+import { EditOutlined } from "@ant-design/icons";
 import SearchByName from "./SearchByName";
 import "./Tour.scss";
 import { EyeOutlined } from "@ant-design/icons";
@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 function TourList() {
   const [tours, setTours] = useState([]);
   const [filteredTours, setFilteredTours] = useState([]);
-
   const [loading, setLoading] = useState(false);
 
   const fetchApi = useCallback(async () => {
@@ -82,7 +81,11 @@ function TourList() {
             </Tooltip>
           </Link>
           <DeleteTour record={record} handleReload={fetchApi} />
-          <UpdateTour record={record} reload={fetchApi} />
+          <Link to={`/tour-update/${record.tourId}`}>
+            <Tooltip title="Update tour">
+              <Button icon={<EditOutlined />}></Button>
+            </Tooltip>
+          </Link>
         </>
       ),
     },

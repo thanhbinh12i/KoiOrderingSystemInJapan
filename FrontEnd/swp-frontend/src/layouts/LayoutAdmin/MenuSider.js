@@ -9,6 +9,7 @@ import {
   OrderedListOutlined,
   PlusOutlined,
   ToolOutlined,
+  CoffeeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
@@ -105,6 +106,11 @@ function MenuSider() {
           key: "/create-tour",
         },
       ],
+    },
+    {
+      label: <Link to="/feedback-manager">Quản lí feedback</Link>,
+      icon: <CoffeeOutlined />,
+      key: "/feedback-manager",
     },
   ];
   return (
