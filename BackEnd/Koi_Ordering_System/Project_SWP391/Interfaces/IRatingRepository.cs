@@ -10,6 +10,7 @@ namespace Project_SWP391.Interfaces
         Task<List<Rating>> GetAllAsync();
 
         Task<Rating?> GetByIdAsync(int farmId, string userId);
+        Task<List<Rating>> GetByFarmNameAsync(string farmName);
 
         Task<Rating> CreateAsync(Rating ratingModel);
 
