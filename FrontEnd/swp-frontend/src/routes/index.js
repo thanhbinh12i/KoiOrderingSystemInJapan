@@ -19,6 +19,7 @@ import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import OrderManager from "../pages/Admin/OrderManager";
 import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
 import StaffManager from "../pages/Admin/StaffManager";
@@ -40,6 +41,7 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import Checkin from "../pages/Staff/Checkin";
 import DeliveryDate from "../pages/Staff/DeliveryDate";
 import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
@@ -236,6 +238,10 @@ export const routes = [
             path: "create-staff",
             element: <CreateStaff />,
           },
+          {
+            path: "order-manager",
+            element: <OrderManager />,
+          },
         ],
       },
       {
@@ -261,6 +267,10 @@ export const routes = [
           {
             path: "koi-delivery-date",
             element: <DeliveryDate />,
+          },
+          {
+            path: "check-in",
+            element: <Checkin />
           }
         ],
       },

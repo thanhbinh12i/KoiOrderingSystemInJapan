@@ -1,21 +1,35 @@
 import { useEffect, useState } from "react";
-import { get } from "../../utils/request";
+import { get, put } from "../../utils/request";
 import { Button, Table } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink } from "react-router-dom";
+import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
-      useEffect(() => {
-            const fetchApi = async () => {
-                  const response = await get(`quotation/view/${userId}`);
-                  if (response) {
-                        setQuotation(response);
-                  }
-            }
+      const [isModalVisible, setIsModalVisible] = useState(false);
+      const showModal = () => {
+            setIsModalVisible(true);
+      };
+
+      const handleCancel = () => {
+            setIsModalVisible(false);
+      };
+      const handleOk = async () => {
+            handleCancel();
             fetchApi();
+      };
+      const fetchApi = async () => {
+            const response = await get(`quotation/view/${userId}`);
+            if (response) {
+                  setQuotation(response);
+            }
+      }
+      useEffect(() => {
+            fetchApi();
+            // eslint-disable-next-line
       }, [userId]);
       useEffect(() => {
             const fetchApi = async () => {
@@ -41,13 +55,14 @@ function MyBooking() {
                   title: 'Giá tiền',
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
-                  render: (_, record) => {
-                        if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" ) {
-                              return record.priceOffer;
-                        } else {
-                              return "Chưa xác nhận";
-                        }
-                  }
+                  // render: (_, record) => {
+                  //       // if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" || record.status === "Đang check-in") {
+                  //       //       return record.priceOffer;
+                  //       // } else {
+                  //       //       return "Chưa xác nhận";
+                  //       // }
+
+                  // }
             },
             {
                   title: 'Ngày xác nhận',
@@ -58,7 +73,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đang check-in", "Đã hủy"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',
@@ -75,11 +90,30 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
+                              const handleCheckIn = async () => {
+                                    const getTimeCurrent = () => {
+                                          return new Date().toLocaleString();
+                                    };
+                                    const quotationData = {
+                                          "priceOffer": record.priceOffer,
+                                          "status": "Đang check-in",
+                                          "approvedDate": getTimeCurrent(),
+                                          "description": record.description,
+                                    };
+                                    const response = await put(`quotation/update/${record.quotationId}`, quotationData);
+                                    if (response) {
+                                          fetchApi();
+                                    }
+                              }
                               return (
                                     <>
-                                          <Button type="primary">
+                                          <Button type="primary" onClick={handleCheckIn}>
                                                 Check - in máy bay
                                           </Button>
+                                          <Button type="primary" onClick={() => showModal()}>
+                                                Hủy
+                                          </Button>
+                                          <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
                                     </>
                               )
                         } else if (record.status === "Đã check-in") {
