@@ -23,7 +23,7 @@ namespace Project_SWP391.Services
                 throw new Exception("Email credentials are not set in the environment variables.");
             }
 
-            var fromAddress = new MailAddress(_emailAddress, "Ryan Hoang");
+            var fromAddress = new MailAddress(_emailAddress, "Koi Day Ne");
             var toAddress = new MailAddress(emailDTO.ToEmail);
             var smtp = new SmtpClient
             {
@@ -46,16 +46,14 @@ namespace Project_SWP391.Services
                     await smtp.SendMailAsync(mailMessage);
                     return true;
                 }
-                catch (SmtpException smtpEx) // Bắt riêng lỗi liên quan đến SMTP
+                //catch (SmtpException smtpEx)
+                //{
+                //    Console.WriteLine($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
+                //    throw new Exception($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
+                //}
+                catch (Exception ex)
                 {
-                    // Ghi log hoặc ném ngoại lệ với chi tiết lỗi
-                    Console.WriteLine($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
-                    throw new Exception($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
-                }
-                catch (Exception ex) // Bắt các lỗi khác
-                {
-                    // Ghi log hoặc ném ngoại lệ với chi tiết lỗi
-                    Console.WriteLine($"Error: {ex.Message}");
+                    //Console.WriteLine($"Error: {ex.Message}");
                     throw new Exception($"Error: {ex.Message}");
                 }
             }
