@@ -61,7 +61,7 @@ function KoiDealDetail() {
                   const response = await put(`koi-bill/update/${params.id}-${item.koiId}`, data)
                   if (response) {
                         setKoiBill(koiBill.map(koi =>
-                              koi.koiId === item.koiId ? { ...koi, finalPrice: parseFloat(newPrice) } : koi
+                              koi.koiId === item.koiId ? { ...koi, finalPrice: newPrice } : koi
                         ));
                   }
             } catch (error) {
