@@ -120,6 +120,10 @@ export const routes = [
         element: <Cart />,
       },
       {
+        path: "my-orders/feedback/:userId",
+        element: <Feedback />,
+      },
+      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -140,10 +144,6 @@ export const routes = [
               {
                 path: "my-orders",
                 element: <MyOrder />,
-              },
-              {
-                path: "feedback/",
-                element: <Feedback />,
               },
             ],
           },

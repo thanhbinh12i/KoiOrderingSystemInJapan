@@ -87,7 +87,7 @@ namespace Project_SWP391.Controllers
 
                 string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                var uploadPath = Path.Combine(webRootPath, "uploads", "koiVariety");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "feedback");
 
                 if (!Directory.Exists(uploadPath))
                 {
@@ -106,7 +106,7 @@ namespace Project_SWP391.Controllers
                             await file.CopyToAsync(fileStream);
                         }
 
-                        var relativePath = $"/uploads/koiVariety/{fileName}";
+                        var relativePath = $"/uploads/feedback/{fileName}";
                         uploadedFiles.Add(relativePath);
 
                         var feedback = new Feedback

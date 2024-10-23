@@ -2,112 +2,126 @@ import React, { useState } from "react";
 import { Form, Input, Button, Rate, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import "./Feedback.scss";
-import { post } from "../../utils/request";
 
 const { TextArea } = Input;
 
 const Feedback = () => {
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [fileList, setFileList] = useState([]);
+  const [files, setFiles] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const userId = localStorage.getItem("id");
-  console.log(userId);
+
   const onFinish = async (values) => {
     setLoading(true);
-    try {
-      const response = await post(`feedback/create/${userId}`, {
-        rating: values.rating,
-        urlImage: imageUrl,
-        content: values.content,
-      });
-      console.log(response);
-      if (response) {
-        if (fileList.length > 0) {
-          await uploadImages(response.farmId, fileList);
-        }
-        form.resetFields();
-        setFileList([]);
-        messageApi.success("Thêm feedback thành công");
-      } else {
-        throw new Error("No response from server");
-      }
-    } catch (error) {
-      message.error("Failed to submit feedback. Please try again.");
-      console.error("Error submitting feedback:", error);
-    }
-    setLoading(false);
-  };
-
-  const uploadImages = async (farmId, files) => {
     const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("files", file.originFileObj);
-    });
 
+    formData.append("files", files);
+
+    formData.append("Rating", values.Rating);
+    formData.append("Content", values.Content);
     try {
       const response = await fetch(
-        `https://localhost:7087/api/farmImage/upload/${farmId}`,
+        `https://localhost:7087/api/feedback/create/${userId}`,
         {
           method: "POST",
           body: formData,
         }
       );
-
-      if (!response.ok) {
-        throw new Error("Lỗi tải lên hình ảnh");
+      console.log(response);
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          messageApi.success("Thêm feedback thành công");
+          form.resetFields();
+          setFiles(null);
+        }
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Lỗi khi gửi feedback");
       }
-
-      const data = await response.json();
-      messageApi.success("Tải lên hình ảnh thành công");
-      return data.urls;
     } catch (error) {
-      console.error("Error uploading images:", error);
-      messageApi.error("Lỗi tải lên hình ảnh");
-      throw error;
+      messageApi.error(error.message || "Có lỗi xảy ra, vui lòng thử lại");
+      console.error("Error submitting feedback:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleFileChange = ({ fileList }) => {
-    setFileList(fileList);
+  const handleChange = (info) => {
+    setFiles(info.file.originFileObj);
+  };
+
+  const beforeUpload = (file) => {
+    const isImage = file.type?.startsWith("image/");
+    const isLt2M = file.size / 1024 / 1024 < 2;
+
+    if (!isImage) {
+      messageApi.error("Chỉ được upload file hình ảnh!");
+      return false;
+    }
+    if (!isLt2M) {
+      messageApi.error("Hình ảnh phải nhỏ hơn 2MB!");
+      return false;
+    }
+
+    return false;
   };
 
   return (
     <>
       {contextHolder}
       <div className="feedback-form">
-        <h2>Your Feedback</h2>
-        <Form form={form} onFinish={onFinish} layout="vertical">
+        <h2>Đánh giá của bạn</h2>
+        <Form
+          form={form}
+          onFinish={onFinish}
+          layout="vertical"
+          encType="multipart/form-data"
+        >
           <Form.Item
-            name="rating"
-            label="Rating"
-            rules={[{ required: true, message: "Please rate your experience" }]}
+            name="Rating"
+            label="Đánh giá"
+            rules={[{ required: true, message: "Vui lòng đánh giá" }]}
           >
             <Rate />
           </Form.Item>
+
           <Form.Item
-            name="content"
-            label="Comments"
-            rules={[{ required: true, message: "Please enter your feedback" }]}
+            name="Content"
+            label="Nội dung"
+            rules={[
+              { required: true, message: "Vui lòng nhập nội dung đánh giá" },
+            ]}
           >
-            <TextArea rows={4} placeholder="Tell us about your experience" />
+            <TextArea rows={4} placeholder="Chia sẻ trải nghiệm của bạn" />
           </Form.Item>
-          <Form.Item label="Hình ảnh trang trại" name="urlImage">
+
+          <Form.Item
+            label="Hình ảnh"
+            name="image"
+            rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}
+          >
             <Upload
-              listType="picture"
-              fileList={fileList}
-              onChange={handleFileChange}
-              beforeUpload={() => false}
-              multiple
+              listType="picture-card"
+              maxCount={1}
+              beforeUpload={beforeUpload}
+              onChange={handleChange}
+              accept="image/*"
             >
-              <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
+              <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
             </Upload>
           </Form.Item>
+
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
-              Submit Feedback
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              disabled={loading}
+            >
+              {loading ? "Đang gửi..." : "Gửi đánh giá"}
             </Button>
           </Form.Item>
         </Form>
