@@ -113,7 +113,7 @@ function MyBooking() {
                                           <Button type="primary" onClick={() => showModal()}>
                                                 Hủy
                                           </Button>
-                                          <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
+                                          <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
                                     </>
                               )
                         } else if (record.status === "Đã check-in") {
@@ -123,10 +123,17 @@ function MyBooking() {
                                           <Button type="primary">Xem chi tiết</Button>
                                     )
                               } else if (relatedBill) {
+                                    //đéo mua cá thì in ra bill detail luôn
+                                    //cập nhật status là đéo mua cá
                                     return (
-                                          <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
-                                                <Button type="primary">Mua cá nào</Button>
-                                          </NavLink>
+                                          <>
+                                                <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
+                                                      <Button type="primary">Mua cá nào</Button>
+                                                </NavLink>
+                                                
+                                                <Button type="primary">Đéo mua cá</Button>
+                                          </>
+
                                     );
                               }
                         } else {

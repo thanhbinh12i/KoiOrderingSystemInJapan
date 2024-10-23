@@ -63,11 +63,13 @@ function MyOrder() {
                   key: 'action',
                   render: (_, record) => {
                         if (record.deliveryStatusText === "Đang chờ thanh toán") {
+                              //thanh toán xong cho vào bill detail luôn
                               return (
                                     <>
                                           <Button type="primary">
                                                 Thanh toán
                                           </Button>
+                                          
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {

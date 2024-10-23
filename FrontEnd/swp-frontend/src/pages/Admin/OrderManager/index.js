@@ -24,8 +24,9 @@ function OrderManager() {
                         "estimatedDate": item.estimatedDate
                   }
                   const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
+                  
                   if (response) {
-                        fetchApi();
+                        
                         const emailData = {
                               "toEmail": "nptbinh17092004@gmail.com",
                               "subject": `Xác nhận hủy đơn đặt hàng- Mã đơn ${item.quotationId}`,
@@ -40,7 +41,7 @@ function OrderManager() {
                               body: JSON.stringify(emailData)
                         })
                         if (responseEmail) {
-                              console.log('Đã gửi email xác nhận hủy đơn thành công');
+                              fetchApi();
                         }
 
                   }
