@@ -66,7 +66,7 @@ function KoiDetailById() {
             <Title level={4} className="starting-bid">
               Giá tiền: ${koi.price}
             </Title>
-            <Paragraph>Trang trại: (s): {koi.farmName}</Paragraph>
+            <Paragraph>Trang trại: {koi.farmName}</Paragraph>
             <Paragraph>Giới tính: {koi.gender}</Paragraph>
             <Paragraph>Ngày sinh: {koi.yob}</Paragraph>
             <Paragraph>Chiều dài: {koi.length}</Paragraph>
