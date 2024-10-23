@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Dtos.Feedbacks;
+using Project_SWP391.Dtos.KoiVarieties;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 using Project_SWP391.Model;
@@ -49,28 +50,84 @@ namespace Project_SWP391.Controllers
             }
             return Ok(feedback);
         }
+        //[HttpPost("create/{userId}")]
+        //public async Task<IActionResult> Create(string userId, [FromBody] CreateFeedbackDto feedback)
+        //{
+
+        //    if (feedback == null)
+        //    {
+        //        return BadRequest("Missing data");
+        //    }
+        //    var user = await _userManager.FindByIdAsync(userId);
+        //    if (user == null)
+        //    {
+        //        return BadRequest("User does not exist");
+        //    }
+
+        //    var feedbackModel = feedback.ToCreateFeedbackDto(userId);
+        //    if (feedbackModel == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    await _feedbackRepo.CreateAsync(feedbackModel);
+        //    return Ok();
+        //}
+
         [HttpPost("create/{userId}")]
-        public async Task<IActionResult> Create(string userId, [FromBody] CreateFeedbackDto feedback)
+        public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateFeedbackDto createFeedback, [FromRoute] string userId)
         {
+            try
+            {
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
 
-            if (feedback == null)
-            {
-                return BadRequest("Missing data");
-            }
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return BadRequest("User does not exist");
-            }
+                var uploadedFiles = new List<string>();
 
-            var feedbackModel = feedback.ToCreateFeedbackDto(userId);
-            if (feedbackModel == null)
-            {
-                return NotFound();
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koiVariety");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koiVariety/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        var feedback = new Feedback
+                        {
+                            Rating = createFeedback.Rating,
+                            UrlImage = fileName,
+                            Content = createFeedback.Content,
+                            UserId = userId
+                        };
+                        await _feedbackRepo.CreateAsync(feedback);
+                    }
+                }
+
+                return Ok(new { message = "Images uploaded successfully", urls = uploadedFiles });
             }
-            await _feedbackRepo.CreateAsync(feedbackModel);
-            return Ok();
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
+            }
         }
+
         [HttpPut("update/{feedbackId:int}")]
         public async Task<IActionResult> Update([FromBody] UpdateFeedbackDto feedback, int feedbackId)
         {
