@@ -49,7 +49,7 @@ namespace Project_SWP391.Repository
 
         public async Task<Bill?> GetByIdAsync(int billId)
         {
-           return await _context.Bills.FindAsync(billId);
+            return await _context.Bills.FindAsync(billId);
         }
 
         public Task<List<Bill>> GetByUserIdAsync(string userId)
@@ -61,7 +61,7 @@ namespace Project_SWP391.Repository
         {
             var billModel = await _context.Bills.FirstOrDefaultAsync(b => b.BillId == billId);
 
-            if(billModel == null)
+            if (billModel == null)
             {
                 return null;
             }

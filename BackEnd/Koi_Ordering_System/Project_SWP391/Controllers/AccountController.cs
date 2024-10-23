@@ -75,7 +75,7 @@ namespace Project_SWP391.Controllers
         }
         [HttpPost("createStaff")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> CreateStaff([FromBody] RegisterDto registerDto,string role)
+        public async Task<IActionResult> CreateStaff([FromBody] RegisterDto registerDto, string role)
         {
             try
             {

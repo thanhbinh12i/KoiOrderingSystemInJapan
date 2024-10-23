@@ -119,7 +119,6 @@ namespace Project_SWP391
             builder.Services.AddScoped<ITourDestinationRepository, TourDestinationRepostitory>();
             builder.Services.AddScoped<IBillRepository, BillRepository>();
             builder.Services.AddScoped<IKoiBillRepository, KoiBillRepository>();
-            builder.Services.AddScoped<IBillDetailRepository, BillDetailRepository>();
             builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
             builder.Services.AddScoped<IDeliveryStatusRepository, DeliveryStatusRepository>();
             builder.Services.AddScoped<IRatingRepository, RatingRepository>();

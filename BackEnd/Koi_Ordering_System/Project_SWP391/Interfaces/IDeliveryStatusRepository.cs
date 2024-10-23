@@ -1,5 +1,4 @@
-﻿using Project_SWP391.Dtos.BillDetails;
-using Project_SWP391.Dtos.DeliveryStatuses;
+﻿using Project_SWP391.Dtos.DeliveryStatuses;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Interfaces
