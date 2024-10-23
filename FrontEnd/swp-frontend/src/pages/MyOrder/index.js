@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import { Button, Table } from "antd";
+import { Link } from "react-router-dom";
 
 function MyOrder() {
   //xem trạng thái vận chuyển đơn hàng, nút xác nhận nhận hàng và thanh toán tiền còn lại
@@ -58,7 +59,9 @@ function MyOrder() {
         } else if (record.deliveryStatusText === "Giao hàng thành công") {
           return (
             <>
-              <Button type="primary">Đánh giá</Button>
+              <Link to={`feedback/${userId}`}>
+                <Button type="primary">Đánh giá</Button>
+              </Link>
             </>
           );
         } else {
