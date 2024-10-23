@@ -29,12 +29,10 @@ function DeliveryDate() {
                   "deliveryStatusText": title,
                   "estimatedDate": item.estimatedDate
             }
-            console.log(data);
             const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
             if (response) {
                   setDeliveryList(prevList =>
-                        prevList.map(item =>
-                              item.billId === item.billId
+                        prevList.map((item) => item.billId === item.billId
                                     ? { ...item, deliveryStatusText: title }
                                     : item
                         )

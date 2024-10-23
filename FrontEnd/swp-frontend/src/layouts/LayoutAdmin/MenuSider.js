@@ -25,6 +25,11 @@ function MenuSider() {
       key: "/quotation-manager",
     },
     {
+      label: <Link to="/order-manager">Quản lí đơn hàng</Link>,
+      icon: <BankOutlined />,
+      key: "/order-manager",
+    },
+    {
       label: <Link to="/user-manager">Quản lí người dùng</Link>,
       icon: <UserOutlined />,
       key: "/user-manager",

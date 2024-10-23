@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
-import { Button, Table, Tooltip } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Table } from "antd";
 
 function MyOrder() {
   //xem trạng thái vận chuyển đơn hàng, nút xác nhận nhận hàng và thanh toán tiền còn lại
@@ -59,11 +58,7 @@ function MyOrder() {
         } else if (record.deliveryStatusText === "Giao hàng thành công") {
           return (
             <>
-              <Link to={`/feedback`}>
-                <Tooltip title="Feedback">
-                  <Button type="primary">Đánh giá</Button>
-                </Tooltip>
-              </Link>
+              <Button type="primary">Đánh giá</Button>
             </>
           );
         } else {

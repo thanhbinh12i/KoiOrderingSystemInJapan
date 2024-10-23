@@ -1,49 +1,32 @@
 import React, { useState, useEffect } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  message,
-  DatePicker,
-  Row,
-  Col,
-  InputNumber,
-} from "antd";
+import { Modal, Form, Input, Button, message, DatePicker, Tooltip } from "antd";
+import { EditOutlined } from "@ant-design/icons";
 import moment from "moment";
-import { put, get } from "../../../utils/request";
-import { useParams, useNavigate } from "react-router-dom";
+import { put } from "../../../utils/request";
+import FormItem from "antd/es/form/FormItem";
 
-function UpdateTour() {
+function UpdateTour({ reload, record }) {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const fetchTourData = async () => {
-      try {
-        const response = await get(`tour/view-tourId/${id}`);
-        if (response) {
-          const formattedRecord = {
-            ...response,
-            startTime: response.startTime ? moment(response.startTime) : null,
-            finishTime: response.finishTime
-              ? moment(response.finishTime)
-              : null,
-          };
-          form.setFieldsValue(formattedRecord);
-        }
-      } catch (error) {
-        console.error("Error fetching tour data:", error);
-        messageApi.error("Failed to load tour data. Please try again.");
-      }
-    };
+    if (record) {
+      const formattedRecord = {
+        ...record,
+        startTime: record.startTime ? moment(record.startTime) : null,
+        finishTime: record.finishTime ? moment(record.finishTime) : null,
+      };
+      form.setFieldsValue(formattedRecord);
+    }
+  }, [record, form]);
 
-    fetchTourData();
-  }, [id, form, messageApi]);
+  const showModal = () => {
+    setVisible(true);
+  };
 
-  const handleSubmit = async (values) => {
+  const handleModalOk = async (values) => {
     try {
       setLoading(true);
       const updatedValues = {
@@ -56,10 +39,11 @@ function UpdateTour() {
           : "",
       };
 
-      const response = await put(`tour/update/${id}`, updatedValues);
+      const response = await put(`tour/update/${record.tourId}`, updatedValues);
       if (response) {
         messageApi.success("Cập nhật tour thành công");
-        navigate("/tour-manager");
+        setVisible(false);
+        reload();
       } else {
         messageApi.error(response?.message || "Cập nhật tour không thành công");
       }
@@ -74,89 +58,77 @@ function UpdateTour() {
     }
   };
 
+  const handleModalCancel = () => {
+    setVisible(false);
+  };
+
   return (
-    <div>
+    <>
       {contextHolder}
-      <h2>Cập nhật tour</h2>
-      <Form form={form} layout="vertical" onFinish={handleSubmit}>
-        <Row gutter={20}>
-          <Col span={24}>
-            <Form.Item
-              label="Tên tour"
-              name="tourName"
-              rules={[{ required: true, message: "Vui lòng nhập tên tour!" }]}
-            >
-              <Input placeholder="Nhập tên tour" />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label="Giá (nghìn VND)"
-              name="price"
-              rules={[{ required: true, message: "Vui lòng nhập giá tour!" }]}
-            >
-              <InputNumber
-                min={0}
-                style={{ width: "100%" }}
-                placeholder="Nhập giá tour"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Ngày bắt đầu"
-              name="startTime"
-              rules={[
-                { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
-              ]}
-            >
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Ngày kết thúc"
-              name="finishTime"
-              rules={[
-                { required: true, message: "Vui lòng chọn ngày kết thúc!" },
-              ]}
-            >
-              <DatePicker style={{ width: "100%" }} />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Số người tham gia"
-              name="numberOfParticipate"
-              rules={[
-                { required: true, message: "Vui lòng nhập số người tham gia" },
-              ]}
-            >
-              <InputNumber
-                min={0}
-                style={{ width: "100%" }}
-                placeholder="Nhập số người tham gia"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}></Col>
-          <Col span={0}>
-            <Form.Item
-              label="Kiểu chuyến đi"
-              name="type"
-              value="default"
-            ></Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" loading={loading}>
-                Cập nhập
-              </Button>
-            </Form.Item>
-          </Col>
-        </Row>
-      </Form>
-    </div>
+      <Tooltip title="Cập nhật">
+        <Button type="link" icon={<EditOutlined />} onClick={showModal} />
+      </Tooltip>
+      <Modal
+        title="Cập nhật tour"
+        visible={visible}
+        onCancel={handleModalCancel}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleModalOk}>
+          <Form.Item
+            label="Tên tour"
+            name="tourName"
+            rules={[{ required: true, message: "Vui lòng nhập tên tour!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Giá (nghìn VND)"
+            name="price"
+            rules={[{ required: true, message: "Vui lòng nhập giá tour!" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            label="Ngày bắt đầu"
+            name="startTime"
+            rules={[{ required: true, message: "Vui lòng chọn ngày bắt đầu!" }]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item
+            label="Ngày kết thúc"
+            name="finishTime"
+            rules={[
+              { required: true, message: "Vui lòng chọn ngày kết thúc!" },
+            ]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <FormItem
+            label="Số người tham gia"
+            name="numberOfParticipate"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng chọn số lượng người có thể tham gia!",
+              },
+            ]}
+          >
+            <Input
+              min={0}
+              style={{ width: "100%" }}
+              placeholder="Nhập giá tour"
+            />
+          </FormItem>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Cập nhật
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 }
 

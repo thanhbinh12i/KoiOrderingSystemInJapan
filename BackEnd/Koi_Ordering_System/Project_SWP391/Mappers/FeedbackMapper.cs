@@ -22,7 +22,6 @@ namespace Project_SWP391.Mappers
             return new Feedback
             {
                 Rating = feedbackDto.Rating,
-                UrlImage = feedbackDto.UrlImage,
                 Content = feedbackDto.Content,
                 UserId = userId,
             };
