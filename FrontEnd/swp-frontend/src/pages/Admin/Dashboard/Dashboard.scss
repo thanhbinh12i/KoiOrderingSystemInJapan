@@ -1,0 +1,17 @@
+.dashboard {
+  padding: 24px;
+
+  .stats-cards {
+    margin-bottom: 24px;
+
+    .ant-card {
+      height: 100%;
+    }
+  }
+
+  .charts {
+    .ant-card {
+      margin-bottom: 24px;
+    }
+  }
+}

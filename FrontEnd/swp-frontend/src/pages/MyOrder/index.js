@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import { Button, Table } from "antd";
+import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 function MyOrder() {
       //xem trạng thái vận chuyển đơn hàng, nút xác nhận nhận hàng và thanh toán tiền còn lại
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
-      const userId = localStorage.getItem('id');
+      const userId = localStorage.getItem("id");
       const fetchApi = async () => {
             try {
                   setLoading(true);
@@ -16,7 +17,7 @@ function MyOrder() {
                         setDeliveryList(response);
                   }
             } catch (error) {
-                  console.error('Không thể tải danh sách giao hàng');
+                  console.error("Không thể tải danh sách giao hàng");
             } finally {
                   setLoading(false);
             }
@@ -63,21 +64,19 @@ function MyOrder() {
                   key: 'action',
                   render: (_, record) => {
                         if (record.deliveryStatusText === "Đang chờ thanh toán") {
-                              //thanh toán xong cho vào bill detail luôn
                               return (
                                     <>
                                           <Button type="primary">
                                                 Thanh toán
                                           </Button>
-                                          
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {
                               return (
                                     <>
-                                          <Button type="primary">
-                                                Đánh giá
-                                          </Button>
+                                          <Link to={`feedback/${userId}`}>
+                                                <Button type="primary">Đánh giá</Button>
+                                          </Link>
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Đang chờ vận chuyển") {
@@ -97,9 +96,8 @@ function MyOrder() {
       ]
       return (
             <>
-                  <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
-
+                  <Table dataSource={deliveryList} columns={columns} bordered />
             </>
-      )
+      );
 }
 export default MyOrder;
