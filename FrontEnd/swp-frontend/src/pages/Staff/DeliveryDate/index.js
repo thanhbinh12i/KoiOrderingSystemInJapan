@@ -23,16 +23,16 @@ function DeliveryDate() {
             }
             fetchApi();
       }, [])
-      const handleUpdate = async (item, title) => {
+      const handleUpdate = async (itemToUpdate, title) => {
             const data = {
-                  "deliveryAddress": item.deliveryAddress,
+                  "deliveryAddress": itemToUpdate.deliveryAddress,
                   "deliveryStatusText": title,
-                  "estimatedDate": item.estimatedDate
+                  "estimatedDate": itemToUpdate.estimatedDate
             }
-            const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
+            const response = await put(`delivery-status/update/${itemToUpdate.deliveryStatusId}`, data);
             if (response) {
                   setDeliveryList(prevList =>
-                        prevList.map((item) => item.billId === item.billId
+                        prevList.map((item) => item.billId === itemToUpdate.billId
                                     ? { ...item, deliveryStatusText: title }
                                     : item
                         )
