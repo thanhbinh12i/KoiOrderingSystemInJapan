@@ -59,9 +59,9 @@ function FarmDetail() {
     fetchApi();
   }, [params.id]);
   console.log(ratingFarm);
-  if (!farm.farmName || koiData.length === 0) {
-    return <Spin>Loading...</Spin>;
-  }
+  // if (!farm.farmName || koiData.length === 0) {
+  //   return <Spin>Loading...</Spin>;
+  // }
   return (
     <>
       <GoBack />

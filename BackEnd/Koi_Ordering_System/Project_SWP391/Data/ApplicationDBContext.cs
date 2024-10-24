@@ -19,7 +19,6 @@ namespace Project_SWP391.Data
         public DbSet<KoiImage> KoiImages { get; set; }
         public DbSet<FarmImage> FarmImages { get; set; }
         public DbSet<Bill> Bills { get; set; }
-        public DbSet<BillDetail> BillDetails { get; set; }
         public DbSet<TourDestination> TourDestinations { get; set; }
         public DbSet<Tour> Tours { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }

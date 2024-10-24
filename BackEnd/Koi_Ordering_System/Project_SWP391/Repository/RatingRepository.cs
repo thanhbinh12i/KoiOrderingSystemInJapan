@@ -71,6 +71,7 @@ namespace Project_SWP391.Repository
 
             ratingModel.Content = updateRatingDto.Content;
             ratingModel.Rate = updateRatingDto.Rate;
+            ratingModel.RatingDate = updateRatingDto.RatingDate;
 
             await _context.SaveChangesAsync();
 

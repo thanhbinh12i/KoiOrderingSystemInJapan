@@ -39,10 +39,18 @@ const PaymentSuccess = () => {
                               localStorage.removeItem('pendingPaymentData');
                         }
                   } else if (pendingPaymentKoi) {
+                        const getTimeCurrent = () => {
+                              return new Date().toLocaleString();
+                        };
                         const paymentData = JSON.parse(pendingPaymentKoi);
                         const currentBill = await get(`bill/view-by-id/${paymentData.id}`);
-                        const newTotalPrice = currentBill.price + paymentData.totalPrice;
-                        const response = await put(`bill/update/${paymentData.id}`, { "price": newTotalPrice });
+                        const koiPrice = paymentData.totalPrice;
+                        const dataToUpdate = {
+                              "koiPrice": koiPrice,
+                              "totalPrice": currentBill.tourPrice + koiPrice,
+                              "paymentDate": getTimeCurrent()
+                        }
+                        const response = await put(`bill/update/${paymentData.id}`, dataToUpdate);
                         if (response) {
                               const data = {
                                     "deliveryAddress": paymentData.deliveryAddress,
@@ -50,7 +58,7 @@ const PaymentSuccess = () => {
                                     "estimatedDate": ""
                               }
                               const deliveryResponse = await post(`delivery-status/create/${paymentData.id}-${paymentData.deliveryId}`, data);
-                              if(deliveryResponse){
+                              if (deliveryResponse) {
                                     setBill(currentBill);
                                     setPrice(paymentData.price);
                               }

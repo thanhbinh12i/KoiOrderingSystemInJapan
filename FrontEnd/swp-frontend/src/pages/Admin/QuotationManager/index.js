@@ -11,7 +11,7 @@ function QuotationManager() {
       const fetchApi = async () => {
             const response = await get("quotation/view-all");
             if (response) {
-                  setQuotation(response);
+                  setQuotation(response.reverse());
             }
       };
       useEffect(() => {
@@ -36,6 +36,7 @@ function QuotationManager() {
             try {
                   setLoading(true);
                   const cancellationTemplate = ReactDOMServer.renderToString(<CancelTemplate item={item} />);
+                  console.log(cancellationTemplate);
                   const getTimeCurrent = () => {
                         return new Date().toLocaleString();
                   };

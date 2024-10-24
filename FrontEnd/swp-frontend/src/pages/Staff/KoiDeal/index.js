@@ -14,9 +14,6 @@ function KoiDeal() {
             }
             fetchApi();
       }, [])
-      //consulting staff ->hiện bill -> bấm vào xem chi tiết -> hiện full trong bill koi theo bill Id -> cập nhật giá vài con 
-      //-> gửi lại giá về cart của customer -> cus checkout -> thanh toán tiền cọc (bỏ vào deposit) ->
-      //xem lại bill trong danh sách giao dịch (có nút xem chi tiết) -> hiện tiền còn thiếu
       const columns = [
             {
                   title: 'Id',

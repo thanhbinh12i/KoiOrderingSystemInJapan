@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_SWP391.Data;
 
@@ -11,9 +12,11 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241024055711_Update_Bill")]
+    partial class Update_Bill
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "08d21cbc-b7b8-4671-af3f-6cf6cbaf750d",
+                            Id = "7b74099f-427d-42ed-9f8f-057e1219703d",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "625ddc54-9c16-4fce-9bbe-f7059ae69c92",
+                            Id = "8c27da1e-a056-45d0-8f36-c63433c23067",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "8990a672-84d2-444d-a35b-b4179e525e05",
+                            Id = "d4ae62ff-2a9a-4f58-bd30-9e21d9bbf7c4",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "68423525-7949-42f5-b67d-6d608177ebb9",
+                            Id = "e9fafde9-229e-4825-b771-2c5a182f670d",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "d7dee160-47fb-4afa-8478-edc338ea0181",
+                            Id = "002d9d08-4531-413c-a02a-41ff719bc8f7",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -685,12 +688,8 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
-
-                    b.Property<string>("RatingDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.HasKey("FarmId", "UserId");
 
