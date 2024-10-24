@@ -28,40 +28,47 @@ function FarmDetail() {
   const params = useParams();
   const [koiData, setKoiData] = useState([]);
   const [ratingFarm, setRatingFarm] = useState([]);
-  const userId = localStorage.getItem("id");
+  const [averageRating, setAverageRating] = useState(0);
 
-  useEffect(() => {
-    const fetchApi = async () => {
-      const response = await get(`koiFarm/view/${params.id}`);
-      if (response) {
-        setFarm(response);
-        const fetchKoiByFarm = async () => {
-          const res = await get(`koi/view-by-farm/${response.farmName})`);
-          const ratingFarm = await get(
-            `rating/view-by-farm-name/${response.farmName}`
+  const userId = localStorage.getItem("id");
+  const fetchApi = async () => {
+    const response = await get(`koiFarm/view/${params.id}`);
+    if (response) {
+      setFarm(response);
+      const fetchKoiByFarm = async () => {
+        const res = await get(`koi/view-by-farm/${response.farmName})`);
+        const ratingFarm = await get(
+          `rating/view-by-farm-name/${response.farmName}`
+        );
+        if (res) {
+          setKoiData(res);
+        }
+        if (ratingFarm) {
+          const updated = await Promise.all(
+            ratingFarm.map(async (rating) => {
+              const userName = await get(`account/${rating.userId}`);
+              return { ...rating, userName: userName.fullName };
+            })
           );
-          if (res) {
-            setKoiData(res);
-          }
-          if (ratingFarm) {
-            const updated = await Promise.all(
-              ratingFarm.map(async (rating) => {
-                const userName = await get(`account/${rating.userId}`);
-                return { ...rating, userName: userName.fullName };
-              })
-            );
-            setRatingFarm(updated);
-          }
-        };
-        fetchKoiByFarm();
-      }
-    };
+          setRatingFarm(updated);
+
+          const avgRating =
+            updated.reduce((acc, curr) => acc + curr.rate, 0) / updated.length;
+          setAverageRating(Math.round(avgRating));
+        }
+      };
+      fetchKoiByFarm();
+    }
+  };
+  useEffect(() => {
     fetchApi();
   }, [params.id]);
-  console.log(ratingFarm);
-  // if (!farm.farmName || koiData.length === 0) {
-  //   return <Spin>Loading...</Spin>;
-  // }
+  const onReload = () => {
+    fetchApi();
+  };
+  if (!farm.farmName || koiData.length === 0) {
+    return <Spin>Loading...</Spin>;
+  }
   return (
     <>
       <GoBack />
@@ -136,8 +143,8 @@ function FarmDetail() {
             <Space align="center">
               <StarOutlined />
               <Text strong>Đánh giá:</Text>
-              <Rate disabled value={5} />
-              <Text type="secondary">({5})</Text>
+              <Rate disabled value={averageRating} />
+              <Text type="secondary">({ratingFarm.length} đánh giá)</Text>
             </Space>
           </Space>
         </Card>
@@ -183,8 +190,12 @@ function FarmDetail() {
                       <Text strong>{rating.userName || "Anonymous User"}</Text>
                       <div>
                         <Rate disabled value={rating.rate} />
-                        <Text type="secondary" style={{ marginLeft: "8px" }}>
-                          {new Date(rating.createdAt).toLocaleDateString()}
+                        <Text
+                          strong
+                          type="secondary"
+                          style={{ marginLeft: "8px" }}
+                        >
+                          {rating.ratingDate}
                         </Text>
                       </div>
                     </div>
@@ -195,7 +206,7 @@ function FarmDetail() {
             ))}
         </Card>
       </div>
-      <RatingFarm farmId={farm.farmId} userId={userId} />
+      <RatingFarm farmId={params.id} userId={userId} onReload={onReload} />
     </>
   );
 }
