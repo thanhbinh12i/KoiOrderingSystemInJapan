@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
-using Project_SWP391.Dtos.BillDetails;
 using Project_SWP391.Dtos.Deliveries;
 using Project_SWP391.Dtos.DeliveryStatuses;
 using Project_SWP391.Interfaces;

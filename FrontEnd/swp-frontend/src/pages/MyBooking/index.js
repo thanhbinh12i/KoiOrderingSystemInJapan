@@ -143,7 +143,7 @@ function MyBooking() {
                                           setIsModalVisible(false);
                                     }
                               }
-                              if (relatedBill && relatedBill.price > record.priceOffer) {
+                              if (relatedBill.koiPrice > 0) {
                                     return (
                                           <Button type="primary">Xem chi tiết</Button>
                                     )

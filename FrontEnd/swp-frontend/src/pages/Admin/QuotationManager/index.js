@@ -11,7 +11,7 @@ function QuotationManager() {
       const fetchApi = async () => {
             const response = await get("quotation/view-all");
             if (response) {
-                  setQuotation(response);
+                  setQuotation(response.reverse());
             }
       };
       useEffect(() => {
