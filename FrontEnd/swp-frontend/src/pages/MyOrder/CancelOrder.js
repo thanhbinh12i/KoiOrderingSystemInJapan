@@ -38,7 +38,7 @@ function CancelOrder(props){
                                     <Text strong>Địa chỉ:</Text> {record.deliveryAddress}<br />
                               </Paragraph>
                               <Paragraph type="warning">
-                                    Lưu ý: Theo chính sách của chúng tôi, quý khách sẽ được hoàn lại số tiền đã cọc (không bao gồm tiền dịch vụ vận chuyển).
+                                    Lưu ý: Theo chính sách của chúng tôi, quý khách sẽ được hoàn lại số tiền đã cọc.
                               </Paragraph>
                               <Form.Item>
                                     <Button type="primary" htmlType="submit">

@@ -12,7 +12,7 @@ function DeliveryDate() {
                   try {
                         setLoading(true);
                         const response = await get("delivery-status/view-all");
-                        if (response) {
+                        if (response.deliveryStatusText === "Đang chờ vận chuyển") {
                               setDeliveryList(response);
                         }
                   } catch (error) {

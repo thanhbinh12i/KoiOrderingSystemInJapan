@@ -16,7 +16,10 @@ const PaymentSuccess = () => {
       useEffect(() => {
             const fetchApi = async () => {
                   const pendingPaymentData = localStorage.getItem('pendingPaymentData');
+                  //thêm cái gửi email về thông tin chuyến đi, chuyến bay sau khi thanh toán thành công
+                  //thêm cái gửi email mấy cái bill sau khi
                   const pendingPaymentKoi = localStorage.getItem('pendingPaymentKoi');
+                  
                   if (pendingPaymentData) {
                         const paymentData = JSON.parse(pendingPaymentData);
                         const billResponse = await post(`bill/create/${userId}-${paymentData.quotationId}`, paymentData);
@@ -64,7 +67,6 @@ const PaymentSuccess = () => {
                               }
                               localStorage.removeItem('pendingPaymentKoi');
                         }
-
                   }
             };
             fetchApi();
