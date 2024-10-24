@@ -93,7 +93,6 @@ namespace Project_SWP391.Controllers
 
                 var uploadedFiles = new List<string>();
 
-
                 string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
                 var uploadPath = Path.Combine(webRootPath, "uploads", "koiVariety");
@@ -118,13 +117,13 @@ namespace Project_SWP391.Controllers
                         var relativePath = $"/uploads/koiVariety/{fileName}";
                         uploadedFiles.Add(relativePath);
 
-                        var farmImage = new KoiVariety
+                        var koiVariety = new KoiVariety
                         {
                             VarietyName = createKoiVariety.VarietyName,
                             Description = createKoiVariety.Description,
                             UrlImage = fileName,
                         };
-                        await _koiVarietyRepo.CreateAsync(farmImage);
+                        await _koiVarietyRepo.CreateAsync(koiVariety);
                     }
                 }
 

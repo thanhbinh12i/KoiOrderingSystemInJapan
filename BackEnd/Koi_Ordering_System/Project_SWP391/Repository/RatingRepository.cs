@@ -43,6 +43,18 @@ namespace Project_SWP391.Repository
             return await _context.Ratings.ToListAsync();
         }
 
+        public async Task<List<Rating>> GetByFarmNameAsync(string farmName)
+        {
+            var farm = await _context.KoiFarms.FirstOrDefaultAsync(f => f.FarmName == farmName);
+
+            if (farm == null)
+            {
+                return null;
+            }
+
+            return await _context.Ratings.Where(r => r.FarmId == farm.FarmId).ToListAsync();
+        }
+
         public async Task<Rating?> GetByIdAsync(int farmId, string userId)
         {
             return await _context.Ratings.FirstOrDefaultAsync(x => x.FarmId == farmId && x.UserId == userId);
@@ -59,6 +71,7 @@ namespace Project_SWP391.Repository
 
             ratingModel.Content = updateRatingDto.Content;
             ratingModel.Rate = updateRatingDto.Rate;
+            ratingModel.RatingDate = updateRatingDto.RatingDate;
 
             await _context.SaveChangesAsync();
 

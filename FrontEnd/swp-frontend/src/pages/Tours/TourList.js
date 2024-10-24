@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button, Card, Col, Row } from 'antd';
 import { get } from "../../utils/request";
-
 import image from "../../assets/home/koi-farm-tour.jpg"
 import { Link } from "react-router-dom";
-import SearchTour from "../../components/SearchTour";
 
 function TourList() {
       const [tours, setTours] = useState([]);

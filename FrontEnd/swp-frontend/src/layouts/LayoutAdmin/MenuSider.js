@@ -9,6 +9,7 @@ import {
   OrderedListOutlined,
   PlusOutlined,
   ToolOutlined,
+  CoffeeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
@@ -22,6 +23,11 @@ function MenuSider() {
       label: <Link to="/quotation-manager">Quản lí báo giá</Link>,
       icon: <BankOutlined />,
       key: "/quotation-manager",
+    },
+    {
+      label: <Link to="/order-manager">Quản lí đơn hàng</Link>,
+      icon: <BankOutlined />,
+      key: "/order-manager",
     },
     {
       label: <Link to="/user-manager">Quản lí người dùng</Link>,
@@ -105,6 +111,11 @@ function MenuSider() {
           key: "/create-tour",
         },
       ],
+    },
+    {
+      label: <Link to="/feedback-manager">Quản lí feedback</Link>,
+      icon: <CoffeeOutlined />,
+      key: "/feedback-manager",
     },
   ];
   return (

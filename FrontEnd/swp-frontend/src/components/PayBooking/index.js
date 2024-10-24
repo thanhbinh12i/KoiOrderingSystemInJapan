@@ -1,7 +1,7 @@
 import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
 import { CreditCardOutlined } from '@ant-design/icons';
 import { useLocation, useParams } from 'react-router-dom';
-import { get, post} from '../../utils/request';
+import { get, post } from '../../utils/request';
 import { useEffect, useState } from 'react';
 
 const { Title } = Typography;
@@ -42,18 +42,21 @@ function PayBooking() {
       const onFinishVNPay = async (values) => {
             try {
                   const paymentData = {
-                        orderType: "string", 
+                        orderType: "string",
                         amount: price,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: "Binh",
                         quotationId: params.id
-                      };
+                  };
+                  const getTimeCurrent = () => {
+                        return new Date().toLocaleString();
+                  };
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({...values, price, quotationId: params.id}));
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values, price, quotationId: params.id, paymentDate: getTimeCurrent() }));
                         window.location.href = paymentResponse;
-                      }
+                  }
             } catch (error) {
                   console.error('Lỗi khi xử lý thanh toán VNPay:', error);
             }
@@ -98,7 +101,7 @@ function PayBooking() {
                                                       <Input value={quotation.email} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
-                                                      name="price"
+                                                      name="tourPrice"
                                                       label="Số tiền"
                                                       initialValue={price}
                                                 >

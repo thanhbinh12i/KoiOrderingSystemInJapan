@@ -14,6 +14,7 @@ namespace Project_SWP391.Dtos.Quotations
         public string ApprovedDate { get; set; }
         public string Description { get; set; }
         public string UserId { get; set; }
+        public string TourName { get; set; }
         public int TourId { get; set; }
     }
 }

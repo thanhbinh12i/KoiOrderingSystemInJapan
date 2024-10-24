@@ -46,6 +46,22 @@ namespace Project_SWP391.Controllers
             }
             return Ok(ratingDto);
         }
+
+        [HttpGet("view-by-farm-name/{farmName}")]
+        public async Task<IActionResult> GetByFarmName([FromRoute] string farmName)
+        {
+            var ratings = await _ratingRepo.GetByFarmNameAsync(farmName);
+
+            if (ratings == null)
+            {
+                return NotFound("No rating found");
+            }
+
+            var ratingDto = ratings.Select(v => v.ToRatingDto());
+
+            return Ok(ratingDto);
+        }
+
         [HttpPost("create/{farmId:int}&{userId}")]
         public async Task<IActionResult> Create(int farmId, string userId, [FromBody] CreateRatingDto rating)
         {

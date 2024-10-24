@@ -12,7 +12,7 @@ function TourDetail() {
   const fetchApi = async () => {
     setLoading(true);
     try {
-      const response = await get(`tour/view/${id}`);
+      const response = await get(`tour/view-tourId/${id}`);
       setData(response);
     } catch (error) {
       console.error("Error fetching tours:", error);

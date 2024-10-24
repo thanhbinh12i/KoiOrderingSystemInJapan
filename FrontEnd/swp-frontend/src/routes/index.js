@@ -2,6 +2,7 @@ import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
 import CheckOutKoi from "../components/CheckOutKoi";
+import Feedback from "../components/Feedback";
 import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
@@ -15,10 +16,12 @@ import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
 import CreateKoiFarm from "../pages/Admin/FarmManager/CreateKoiFarm";
 import FarmDetail from "../pages/Admin/FarmManager/FarmDetail";
+import FeedbackManage from "../pages/Admin/FeedbackManager";
 import KoiManager from "../pages/Admin/KoiManager";
 import CreateKoi from "../pages/Admin/KoiManager/CreateKoi";
 import KoiDetail from "../pages/Admin/KoiManager/KoiDetail";
 import KoiVarietyManager from "../pages/Admin/KoiVarietyManager";
+import OrderManager from "../pages/Admin/OrderManager";
 import QuotationManager from "../pages/Admin/QuotationManager";
 import ServiceManager from "../pages/Admin/ServiceManager";
 import StaffManager from "../pages/Admin/StaffManager";
@@ -26,6 +29,7 @@ import CreateStaff from "../pages/Admin/StaffManager/CreateStaff";
 import TourManager from "../pages/Admin/Tour";
 import CreateTour from "../pages/Admin/Tour/CreateTour";
 import TourDetail from "../pages/Admin/Tour/TourDetail";
+import UpdateTour from "../pages/Admin/Tour/UpdateTour";
 import UserManager from "../pages/Admin/UserManager";
 import Farm from "../pages/Farm";
 import FarmDetailUser from "../pages/Farm/FarmDetail";
@@ -40,6 +44,7 @@ import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
 import Register from "../pages/Register";
+import Checkin from "../pages/Staff/Checkin";
 import DeliveryDate from "../pages/Staff/DeliveryDate";
 import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
@@ -80,7 +85,7 @@ export const routes = [
       },
       {
         path: "/search-results",
-        element: <TourResult />
+        element: <TourResult />,
       },
       {
         path: "farms",
@@ -115,6 +120,10 @@ export const routes = [
         element: <Cart />,
       },
       {
+        path: "my-orders/feedback/:userId",
+        element: <Feedback />,
+      },
+      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -135,7 +144,7 @@ export const routes = [
               {
                 path: "my-orders",
                 element: <MyOrder />,
-              }
+              },
             ],
           },
           {
@@ -225,6 +234,10 @@ export const routes = [
             element: <TourDetail />,
           },
           {
+            path: "tour-update/:id",
+            element: <UpdateTour />,
+          },
+          {
             path: "quotation-manager",
             element: <QuotationManager />,
           },
@@ -235,6 +248,14 @@ export const routes = [
           {
             path: "create-staff",
             element: <CreateStaff />,
+          },
+          {
+            path: "feedback-manager",
+            element: <FeedbackManage />,
+          },
+          {
+            path: "order-manager",
+            element: <OrderManager />,
           },
         ],
       },
@@ -261,7 +282,11 @@ export const routes = [
           {
             path: "koi-delivery-date",
             element: <DeliveryDate />,
-          }
+          },
+          {
+            path: "check-in",
+            element: <Checkin />,
+          },
         ],
       },
     ],

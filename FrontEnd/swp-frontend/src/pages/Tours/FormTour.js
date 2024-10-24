@@ -25,10 +25,11 @@ function FormTour() {
             fetchApi();
       }, [])
       const onFinish = async (values) => {
-            const tourName = "Tour ";
+            
             try {
                   setLoading(true);
                   const { farmId } = values;
+                  const tourName = "Tour Custom";
                   const formattedValues = {
                         ...values,
                         tourName: tourName,
