@@ -515,15 +515,7 @@ namespace Project_SWP391.Controllers
                         FullName = user.FullName,
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth,
-                        Role = roles.FirstOrDefault(),
-                        Bills = user.Bills.Select(bill => new Bill
-                        {
-                            BillId = bill.BillId,
-                            UserFullName = bill.UserFullName,
-                            Price = bill.Price,
-                            PhoneNumber = bill.PhoneNumber,
-                            Email = bill.Email
-                        }).ToList()
+                        Role = roles.FirstOrDefault()
                     };
                     userDtos.Add(userDto);
                 }
@@ -557,14 +549,6 @@ namespace Project_SWP391.Controllers
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth,
                         Role = roles.FirstOrDefault(),
-                        Bills = user.Bills.Select(bill => new Bill
-                        {
-                            BillId = bill.BillId,
-                            UserFullName = bill.UserFullName,
-                            Price = bill.Price,
-                            PhoneNumber = bill.PhoneNumber,
-                            Email = bill.Email
-                        }).ToList()
                     };
                     userDtos.Add(userDto);
                 }
