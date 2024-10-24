@@ -155,3 +155,32 @@
     margin-bottom: 16px;
   }
 }
+.farm-ratings-container {
+  margin: 24px 0;
+}
+
+.ratings-card {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1890ff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.ant-card-grid {
+  box-shadow: none;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.ant-card-grid:last-child {
+  border-bottom: none;
+}

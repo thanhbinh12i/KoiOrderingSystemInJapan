@@ -4,7 +4,7 @@ import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
@@ -54,11 +54,6 @@ function Koi() {
               <Title level={5}>Giới tính: {koi.gender}</Title>
               <Title level={5}>Ngày đăng: {koi.updateDate}</Title>
               <Title level={5}>Trang trại: {koi.farmName}</Title>
-
-              <Paragraph>
-                Mô tả <br />
-                {koi.description}
-              </Paragraph>
             </Card>
           </Link>
         </Col>
