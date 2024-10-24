@@ -13,7 +13,8 @@ namespace Project_SWP391.Mappers
                 FarmId = ratingModel.FarmId,
                 UserId = ratingModel.UserId,
                 Rate = ratingModel.Rate,
-                Content = ratingModel.Content
+                Content = ratingModel.Content,
+                RatingDate = ratingModel.RatingDate,
             };
         }
         public static Rating ToRatingFromToCreateDto(this CreateRatingDto ratingDto, int farmId, string userId)
@@ -23,7 +24,8 @@ namespace Project_SWP391.Mappers
                 FarmId = farmId,
                 UserId = userId,
                 Content = ratingDto.Content,
-                Rate = ratingDto.Rate
+                Rate = ratingDto.Rate,
+                RatingDate= ratingDto.RatingDate,
             };
         }
     }

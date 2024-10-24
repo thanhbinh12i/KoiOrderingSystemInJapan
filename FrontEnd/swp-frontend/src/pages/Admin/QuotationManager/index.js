@@ -36,6 +36,7 @@ function QuotationManager() {
             try {
                   setLoading(true);
                   const cancellationTemplate = ReactDOMServer.renderToString(<CancelTemplate item={item} />);
+                  console.log(cancellationTemplate);
                   const getTimeCurrent = () => {
                         return new Date().toLocaleString();
                   };
