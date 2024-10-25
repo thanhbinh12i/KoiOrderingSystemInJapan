@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_SWP391.Data;
 
@@ -11,9 +12,11 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241023173218_DeleteBillDetail")]
+    partial class DeleteBillDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "42fcb48d-b5e9-47cc-8482-860f1608bdfd",
+                            Id = "91f74e87-5514-4cca-9856-be97c919b86b",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "1a070119-0353-4f3b-b2bf-aa0bf284601c",
+                            Id = "282577cc-2c0e-4695-a780-4a24b60f178f",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "ece9df02-a877-4a40-8c68-506947d9d5e9",
+                            Id = "626ac319-a9ca-4f0a-ad3d-f62c46b5e239",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "bb952c3b-4f99-4995-894c-be08795b1b38",
+                            Id = "24d3a29e-1254-4aba-b8fa-4142afc63424",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "598b999b-8d2a-48b4-9cce-4cf6d063d89c",
+                            Id = "4dfe2b81-e58b-4f3f-aa99-c90b94308e7b",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -284,10 +287,6 @@ namespace Project_SWP391.Migrations
                     b.Property<float?>("KoiPrice")
                         .HasColumnType("real");
 
-                    b.Property<string>("PaymentDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -426,7 +425,8 @@ namespace Project_SWP391.Migrations
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Feedbacks");
                 });
@@ -684,12 +684,8 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
-
-                    b.Property<string>("RatingDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.HasKey("FarmId", "UserId");
 
@@ -867,8 +863,8 @@ namespace Project_SWP391.Migrations
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
                 {
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithMany("Feedback")
-                        .HasForeignKey("UserId")
+                        .WithOne("Feedback")
+                        .HasForeignKey("Project_SWP391.Model.Feedback", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1007,7 +1003,8 @@ namespace Project_SWP391.Migrations
                 {
                     b.Navigation("Bills");
 
-                    b.Navigation("Feedback");
+                    b.Navigation("Feedback")
+                        .IsRequired();
 
                     b.Navigation("Quotations");
 

@@ -43,7 +43,7 @@ function Koi() {
                 width={135}
                 height={200}
                 alt={koi.koiName}
-                src={`https://localhost:7087/uploads/koi/${koi.koiImages[0].urlImage}`}
+                          src={`https://koidayne.azurewebsites.net/uploads/koi/${koi.koiImages[0].urlImage}`}
                 className="koi-image"
               />
 

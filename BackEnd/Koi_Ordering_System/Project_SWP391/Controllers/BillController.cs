@@ -57,7 +57,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{userId}-{quotationId}")]
-        public async Task<IActionResult> Create([FromRoute] string userId, [FromRoute]int quotationId, [FromBody] CreateBillDto createBill)
+        public async Task<IActionResult> Create([FromRoute] string userId, [FromRoute] int quotationId, [FromBody] CreateBillDto createBill)
         {
 
             if (createBill == null)
