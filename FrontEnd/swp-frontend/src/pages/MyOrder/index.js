@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { get } from "../../utils/request";
+import { get, post } from "../../utils/request";
 import { Button, Table } from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 function MyOrder() {
-      //xem trạng thái vận chuyển đơn hàng, nút xác nhận nhận hàng và thanh toán tiền còn lại
+      //xem chi tiết đơn hàng
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const userId = localStorage.getItem("id");
@@ -63,10 +63,37 @@ function MyOrder() {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
-                        if (record.deliveryStatusText === "Đang chờ thanh toán") {
+                        if (record.deliveryStatusText === "Đơn hàng đã giao đến bạn") {
+                              const onFinishVNPay = async () => {
+                                    try {
+                                          const billResponse = await get(`bill/view-by-id/${record.billId}`);
+                                          const payStatusResponse = await get(`payStatus/view-billId/${record.billId}`);
+                                          console.log(billResponse);
+                                          console.log(payStatusResponse);
+                                          const price = billResponse.koiPrice - payStatusResponse.deposit;
+                                          // const paymentData = {
+                                          //       orderType: "string",
+                                          //       amount: price,
+                                          //       orderDescription: `Thanh toán cho đơn hàng ${record.billId}`,
+                                          //       name: billResponse.userFullName,
+                                          //       quotationId: record.billId
+                                          // };
+                                          // const getTimeCurrent = () => {
+                                          //       return new Date().toLocaleString();
+                                          // };
+                                          // const paymentResponse = await post('payment', paymentData);
+                        
+                                          // if (paymentResponse) {
+                                          //       localStorage.setItem('pendingPaymentData', JSON.stringify({ paymentDate: getTimeCurrent() }));
+                                          //       window.location.href = paymentResponse;
+                                          // }
+                                    } catch (error) {
+                                          console.error('Lỗi khi xử lý thanh toán VNPay:', error);
+                                    }
+                              };
                               return (
                                     <>
-                                          <Button type="primary">
+                                          <Button type="primary" onClick={() => onFinishVNPay()}>
                                                 Thanh toán
                                           </Button>
                                     </>

@@ -3,6 +3,7 @@ import { get, put } from "../../../utils/request";
 import { Button, Card, Col, Row } from "antd";
 
 function Checkin() {
+      //hiện thêm thông tin về tour nữa
       const [quotation, setQuotation] = useState([]);
 
       const fetchApi = async () => {

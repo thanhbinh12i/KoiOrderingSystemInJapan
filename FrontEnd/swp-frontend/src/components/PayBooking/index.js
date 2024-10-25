@@ -54,7 +54,7 @@ function PayBooking() {
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values, price, quotationId: params.id, paymentDate: getTimeCurrent() }));
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values,tourPrice: price, quotationId: params.id, paymentDate: getTimeCurrent() }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {

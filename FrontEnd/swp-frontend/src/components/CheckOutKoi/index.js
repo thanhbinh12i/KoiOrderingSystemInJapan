@@ -40,7 +40,7 @@ function CheckOutKoi() {
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentKoi', JSON.stringify({ totalPrice: totalPrice + selectedDeliveryFee, price, id: params.id, deliveryId: selectedDeliveryId, deliveryAddress: values.address }));
+                        localStorage.setItem('pendingPaymentKoi', JSON.stringify({ totalPrice: totalPrice + selectedDeliveryFee, deposit, id: params.id, deliveryId: selectedDeliveryId, deliveryAddress: values.address }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {
@@ -49,7 +49,7 @@ function CheckOutKoi() {
       }
       useEffect(() => {
             const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice, 0);
-            setDeposit(itemsTotal * 0.1);
+            setDeposit(itemsTotal * 0.2);
             setTotalPrice(itemsTotal);
       }, [koiBill, selectedDeliveryFee]);
       useEffect(() => {
@@ -113,7 +113,7 @@ function CheckOutKoi() {
                                           <Text>{selectedDeliveryFee.toLocaleString()} đ</Text>
                                     </div>
                                     <div style={{ marginBottom: 16 }}>
-                                          <Text strong>Tiền đặt cọc (10%): </Text>
+                                          <Text strong>Tiền đặt cọc (20%): </Text>
                                           <Text>{deposit.toLocaleString()} VND</Text>
                                     </div>
                                     <Divider />
