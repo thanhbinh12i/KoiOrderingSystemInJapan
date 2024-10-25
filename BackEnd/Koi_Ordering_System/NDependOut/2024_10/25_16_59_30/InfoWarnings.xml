@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <InfoWarnings>
-  <Info>Begin full analysis with NDepend v2024.2.0 on 25 Oct 2024 23:01:33</Info>
+  <Info>Begin full analysis with NDepend v2024.2.0 on 25 Oct 2024 16:59:33</Info>
   <Warning>Evaluation 1 day left.
 You can ask for evaluation extension if required from the VisualNDepend.exe's menu Help then License Information.</Warning>
   <Info>Visual Studio solution file resolved to absolute file path: from    {.\SWP391.KoiOrderingSystem.FA24.sln}    to    {E:\Ki5-FPT\SWP\MiniCapstone\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\SWP391.KoiOrderingSystem.FA24.sln}</Info>
@@ -68,6 +68,6 @@ A query or rule name is defined in a comment in the query body this way:  // &lt
 - the query defined in {Project Rules \ Samples of Custom rules \ Check Architecture}
 - the query defined in {Project Rules \ Samples of Custom rules \ Check Architecture}</Warning>
   <Info>No SuppressMessageAttribute found in the analyzed code base. Since NDepend v2018.2 SuppressMessageAttribute can be used to suppress NDepend issues. Don't forget to set in your projects the compilation symbol CODE_ANALYSIS to use this attribute to suppress NDepend issues.</Info>
-  <Info>Persisting code model snapshot in {E:\Ki5-FPT\SWP\MiniCapstone\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\NDependOut\NDependAnalysisResult_SWP391_KoiOrderingSystem_FA24_2024Oct25_23h01m30.ndar}</Info>
-  <Info>NDepend analysis done. Duration: 00:17.295</Info>
+  <Info>Persisting code model snapshot in {E:\Ki5-FPT\SWP\MiniCapstone\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\NDependOut\NDependAnalysisResult_SWP391_KoiOrderingSystem_FA24_2024Oct25_16h59m30.ndar}</Info>
+  <Info>NDepend analysis done. Duration: 00:15.725</Info>
 </InfoWarnings>
