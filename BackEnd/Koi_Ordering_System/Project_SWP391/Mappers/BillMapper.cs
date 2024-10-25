@@ -11,9 +11,12 @@ namespace Project_SWP391.Mappers
             {
                 BillId = bill.BillId,
                 UserFullName = bill.UserFullName,
-                Price = bill.Price,
+                KoiPrice = bill.KoiPrice,
+                TourPrice = bill.TourPrice,
                 Email = bill.Email,
                 PhoneNumber = bill.PhoneNumber,
+                TotalPrice = bill.TotalPrice,
+                PaymentDate = bill.PaymentDate,
                 UserId = bill.UserId,
                 QuotationId = bill.QuotationId,
             };
@@ -24,9 +27,12 @@ namespace Project_SWP391.Mappers
             return new Bill
             {
                 UserFullName = createBill.UserFullName,
-                Price = createBill.Price,
+                KoiPrice = createBill.KoiPrice,
+                TourPrice = createBill.TourPrice,
                 Email = createBill.Email,
                 PhoneNumber = createBill.PhoneNumber,
+                TotalPrice = createBill.TotalPrice,
+                PaymentDate = createBill.PaymentDate,
                 UserId = userId,
                 QuotationId = quotationId
             };

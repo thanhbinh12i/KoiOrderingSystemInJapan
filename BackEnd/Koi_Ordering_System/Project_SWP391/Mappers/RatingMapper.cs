@@ -13,6 +13,7 @@ namespace Project_SWP391.Mappers
                 FarmId = ratingModel.FarmId,
                 UserId = ratingModel.UserId,
                 Rate = ratingModel.Rate,
+                RatingDate = ratingModel.RatingDate,
                 Content = ratingModel.Content
             };
         }
@@ -23,6 +24,7 @@ namespace Project_SWP391.Mappers
                 FarmId = farmId,
                 UserId = userId,
                 Content = ratingDto.Content,
+                RatingDate= ratingDto.RatingDate,
                 Rate = ratingDto.Rate
             };
         }

@@ -66,7 +66,9 @@ namespace Project_SWP391.Repository
                 return null;
             }
 
-            billModel.Price = billDto.Price;
+            billModel.KoiPrice = billDto.KoiPrice;
+            billModel.TotalPrice = billDto.TotalPrice;
+            billModel.PaymentDate = billDto.PaymentDate;
 
             await _context.SaveChangesAsync();
 

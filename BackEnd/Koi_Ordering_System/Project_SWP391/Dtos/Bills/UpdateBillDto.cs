@@ -2,6 +2,8 @@
 {
     public class UpdateBillDto
     {
-        public float Price { get; set; }
+        public float? KoiPrice { get; set; }
+        public float TotalPrice { get; set; }
+        public string PaymentDate { get; set; }
     }
 }

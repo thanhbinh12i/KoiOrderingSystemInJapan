@@ -8,7 +8,8 @@
         public int FarmId { get; set; }
         public KoiFarm KoiFarm { get; set; }
 
-        public int Rate { get; set; }
+        public float Rate { get; set; }
+        public string RatingDate { get; set; }
         public string Content { get; set; }
     }
 }

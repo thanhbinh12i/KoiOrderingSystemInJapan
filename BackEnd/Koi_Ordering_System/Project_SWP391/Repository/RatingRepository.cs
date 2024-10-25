@@ -56,9 +56,9 @@ namespace Project_SWP391.Repository
             {
                 return null;
             }
-
-            ratingModel.Content = updateRatingDto.Content;
             ratingModel.Rate = updateRatingDto.Rate;
+            ratingModel.RatingDate = updateRatingDto.RatingDate;
+            ratingModel.Content = updateRatingDto.Content;
 
             await _context.SaveChangesAsync();
 

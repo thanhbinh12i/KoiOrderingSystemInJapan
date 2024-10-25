@@ -38,7 +38,8 @@ namespace Project_SWP391.Services
             using (var mailMessage = new MailMessage(fromAddress, toAddress)
             {
                 Subject = emailDTO.Subject,
-                Body = emailDTO.Message
+                Body = emailDTO.Message,
+                IsBodyHtml = true
             })
             {
                 try
@@ -46,14 +47,14 @@ namespace Project_SWP391.Services
                     await smtp.SendMailAsync(mailMessage);
                     return true;
                 }
-                //catch (SmtpException smtpEx)
-                //{
-                //    Console.WriteLine($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
-                //    throw new Exception($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
-                //}
+                catch (SmtpException smtpEx)
+                {
+                    Console.WriteLine($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
+                    throw new Exception($"SMTP Error: {smtpEx.Message}, Status Code: {smtpEx.StatusCode}");
+                }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine($"Error: {ex.Message}");
+                    Console.WriteLine($"Error: {ex.Message}");
                     throw new Exception($"Error: {ex.Message}");
                 }
             }

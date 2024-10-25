@@ -520,9 +520,12 @@ namespace Project_SWP391.Controllers
                         {
                             BillId = bill.BillId,
                             UserFullName = bill.UserFullName,
-                            Price = bill.Price,
+                            Email = bill.Email,
                             PhoneNumber = bill.PhoneNumber,
-                            Email = bill.Email
+                            KoiPrice = bill.KoiPrice,
+                            TourPrice = bill.TourPrice,
+                            TotalPrice = bill.TotalPrice,
+                            PaymentDate = bill.PaymentDate
                         }).ToList()
                     };
                     userDtos.Add(userDto);
@@ -561,9 +564,12 @@ namespace Project_SWP391.Controllers
                         {
                             BillId = bill.BillId,
                             UserFullName = bill.UserFullName,
-                            Price = bill.Price,
+                            Email = bill.Email,
                             PhoneNumber = bill.PhoneNumber,
-                            Email = bill.Email
+                            KoiPrice = bill.KoiPrice,
+                            TourPrice = bill.TourPrice,
+                            TotalPrice = bill.TotalPrice,
+                            PaymentDate = bill.PaymentDate
                         }).ToList()
                     };
                     userDtos.Add(userDto);
