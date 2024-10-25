@@ -10,6 +10,7 @@ using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using System;
+using System.Data;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -453,19 +454,41 @@ namespace Project_SWP391.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> View(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userManager.Users
+    .Include(u => u.Feedback)
+    .Include(u => u.Bills)
+    .FirstOrDefaultAsync(u => u.Id == id);
             if (user == null) return NotFound("No user found");
             return Ok
                 (
-                    new ViewAccountDto
+                    new ViewAllAccountDto
                     {
+                        UserId = user.Id,
                         UserName = user.UserName,
                         Email = user.Email,
                         Gender = user.Gender,
                         Address = user.Address,
                         FullName = user.FullName,
                         PhoneNumber = user.PhoneNumber,
-                        DateOfBirth = user.DateOfBirth
+                        DateOfBirth = user.DateOfBirth,
+                        Feedbacks = user.Feedback.Select(fb => new Feedback
+                        {
+                            FeedbackId = fb.FeedbackId,
+                            Rating = fb.Rating,
+                            UrlImage = fb.UrlImage,
+                            Content = fb.Content,
+                        }).ToList(),
+                        Bills = user.Bills.Select(bill => new Bill
+                        {
+                            BillId = bill.BillId,
+                            UserFullName = bill.UserFullName,
+                            Email = bill.Email,
+                            PhoneNumber = bill.PhoneNumber,
+                            KoiPrice = bill.KoiPrice,
+                            TourPrice = bill.TourPrice,
+                            TotalPrice = bill.TotalPrice,
+                            PaymentDate = bill.PaymentDate
+                        }).ToList()
                     }
                 );
         }
@@ -494,7 +517,7 @@ namespace Project_SWP391.Controllers
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
-            var users = await _userManager.Users.OfType<AppUser>().Include(u => u.Bills).ToListAsync();
+            var users = await _userManager.Users.OfType<AppUser>().Include(u=>u.Feedback).Include(u => u.Bills).ToListAsync();
 
             if (users == null || !users.Any())
                 return NotFound("No users found");
@@ -516,6 +539,14 @@ namespace Project_SWP391.Controllers
                         PhoneNumber = user.PhoneNumber,
                         DateOfBirth = user.DateOfBirth,
                         Role = roles.FirstOrDefault(),
+                        Feedbacks = user.Feedback.Select(fb => new Feedback
+                        {
+                            FeedbackId = fb.FeedbackId,
+                            Rating = fb.Rating,
+                            UrlImage = fb.UrlImage,
+                            Content = fb.Content,
+
+                        }).ToList(),
                         Bills = user.Bills.Select(bill => new Bill
                         {
                             BillId = bill.BillId,
