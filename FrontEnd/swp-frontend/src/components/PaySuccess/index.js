@@ -63,7 +63,7 @@ const PaymentSuccess = () => {
                               const dataPayStatus = {
                                     "paymentMethod": "VN PAY",
                                     "deposit": paymentData.deposit,
-                                    "remain": 0,
+                                    "remain": koiPrice - paymentData.deposit,
                                     "status": "Đã thanh toán tiền cọc"
                               }
                               const deliveryResponse = await post(`delivery-status/create/${paymentData.id}-${paymentData.deliveryId}`, data);

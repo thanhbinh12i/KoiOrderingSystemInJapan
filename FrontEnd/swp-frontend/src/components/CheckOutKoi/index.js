@@ -40,7 +40,7 @@ function CheckOutKoi() {
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentKoi', JSON.stringify({ totalPrice: totalPrice + selectedDeliveryFee, deposit, id: params.id, deliveryId: selectedDeliveryId, deliveryAddress: values.address }));
+                        localStorage.setItem('pendingPaymentKoi', JSON.stringify({ totalPrice: totalPrice, deposit, id: params.id, deliveryId: selectedDeliveryId, deliveryAddress: values.address }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {

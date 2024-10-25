@@ -41,21 +41,6 @@ function KoiDeal() {
                   key: 'billId',
             },
             {
-                  title: 'Họ và tên',
-                  dataIndex: 'userFullName',
-                  key: 'userFullName',
-            },
-            {
-                  title: 'Email',
-                  dataIndex: 'email',
-                  key: 'email',
-            },
-            {
-                  title: 'Số điện thoại',
-                  dataIndex: 'phoneNumber',
-                  key: 'phoneNumber',
-            },
-            {
                   title: 'Tên tour',
                   key: 'tourName',
                   render: (record) => {

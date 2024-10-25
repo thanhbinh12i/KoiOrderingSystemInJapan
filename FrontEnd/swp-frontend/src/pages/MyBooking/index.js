@@ -148,7 +148,7 @@ function MyBooking() {
                               }
                               if (relatedBill.koiPrice > 0) {
                                     return (
-                                          <Button type="primary">Xem chi tiết</Button>
+                                          <Button type="primary">Xem chi tiết đơn hàng</Button>
                                     )
                               } else if (relatedBill) {
                                     return (

@@ -38,6 +38,31 @@ function MyOrder() {
             handleCancel();
             fetchApi();
       };
+      const onFinishVNPay = async (billId) => {
+            const billResponse = await get(`bill/view-by-id/${billId}`);
+            const payStatusResponse = await get(`payStatus/view-billId/${billId}`);
+            try {
+                  console.log(payStatusResponse.remain);
+                  const paymentData = {
+                        orderType: "VNPAY",
+                        amount: payStatusResponse.remain,
+                        orderDescription: `Thanh toán cho đơn hàng ${billId}`,
+                        name: billResponse.userFullName,
+                        quotationId: billId
+                  };
+                  const getTimeCurrent = () => {
+                        return new Date().toLocaleString();
+                  };
+                  const paymentResponse = await post('payment', paymentData);
+
+                  if (paymentResponse) {
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({ paymentDate: getTimeCurrent() }));
+                        window.location.href = paymentResponse;
+                  }
+            } catch (error) {
+                  console.error('Lỗi khi xử lý thanh toán VNPay:', error);
+            }
+      };
       const columns = [
             {
                   title: 'Đơn hàng',
@@ -64,36 +89,9 @@ function MyOrder() {
                   key: 'action',
                   render: (_, record) => {
                         if (record.deliveryStatusText === "Đơn hàng đã giao đến bạn") {
-                              const onFinishVNPay = async () => {
-                                    try {
-                                          const billResponse = await get(`bill/view-by-id/${record.billId}`);
-                                          const payStatusResponse = await get(`payStatus/view-billId/${record.billId}`);
-                                          console.log(billResponse);
-                                          console.log(payStatusResponse);
-                                          const price = billResponse.koiPrice - payStatusResponse.deposit;
-                                          // const paymentData = {
-                                          //       orderType: "string",
-                                          //       amount: price,
-                                          //       orderDescription: `Thanh toán cho đơn hàng ${record.billId}`,
-                                          //       name: billResponse.userFullName,
-                                          //       quotationId: record.billId
-                                          // };
-                                          // const getTimeCurrent = () => {
-                                          //       return new Date().toLocaleString();
-                                          // };
-                                          // const paymentResponse = await post('payment', paymentData);
-                        
-                                          // if (paymentResponse) {
-                                          //       localStorage.setItem('pendingPaymentData', JSON.stringify({ paymentDate: getTimeCurrent() }));
-                                          //       window.location.href = paymentResponse;
-                                          // }
-                                    } catch (error) {
-                                          console.error('Lỗi khi xử lý thanh toán VNPay:', error);
-                                    }
-                              };
                               return (
                                     <>
-                                          <Button type="primary" onClick={() => onFinishVNPay()}>
+                                          <Button type="primary" onClick={() => onFinishVNPay(record.billId)}>
                                                 Thanh toán
                                           </Button>
                                     </>
@@ -123,7 +121,7 @@ function MyOrder() {
       ]
       return (
             <>
-                  <Table dataSource={deliveryList} columns={columns} bordered />
+                  <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
             </>
       );
 }

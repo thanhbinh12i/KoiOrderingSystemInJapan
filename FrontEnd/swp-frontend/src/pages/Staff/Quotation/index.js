@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Badge, Button, Card, Col, Input, Modal, Row } from "antd";
+import { Badge, Button, Card, Col, Input, Modal, Pagination, Row } from "antd";
 
 
 function Quotation() {
@@ -8,6 +8,13 @@ function Quotation() {
       const [modalVisibility, setModalVisibility] = useState({});
       const [prices, setPrices] = useState({});
       const [messages, setMessages] = useState({});
+      const [currentPage, setCurrentPage] = useState(1);
+      const pageSize = 4;
+
+      const getCurrentPageData = () => {
+            const startIndex = (currentPage - 1) * pageSize;
+            return quotation.slice(startIndex, startIndex + pageSize);
+      };
 
       const fetchApi = async () => {
             const response = await get("quotation/view-all");
@@ -86,66 +93,80 @@ function Quotation() {
                   <div>
                         <h2>Thông tin đặt tour</h2>
                         {quotation.length > 0 ? (
-                              <Row gutter={[20, 20]}>
-                                    {quotation.map((item) => (
-                                          <Col span={12} key={item.quotationId}>
-                                                <Card title={`Xác nhận báo giá ${item.quotationId}`}>
-                                                      <p>Họ và tên: <strong>{item.fullName}</strong></p>
-                                                      <p>Email: <strong>{item.email}</strong></p>
-                                                      <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
-                                                      <p>TourId: <strong>{item.tourId}</strong></p>
-                                                      <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
-                                                      <p>
-                                                            <Badge status={item.status === "confirmed" ? "success" : "default"} text={item.status} />
-                                                      </p>
-                                                      {item.status === "Chờ xác nhận" && (
-                                                            <>
-                                                                  <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
-                                                                  <Modal
-                                                                        title="Nhập giá tiền cho chuyến đi"
-                                                                        visible={modalVisibility[item.quotationId]}
-                                                                        onOk={() => updatePrice(item.quotationId)}
-                                                                        onCancel={() => handleCancel(item.quotationId)}
-                                                                  >
-                                                                        <Input
-                                                                              placeholder="Nhập giá"
-                                                                              value={prices[item.quotationId] || ''}
-                                                                              onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                              <>
+                                    <Row gutter={[20, 20]}>
+                                          {getCurrentPageData().map((item) => (
+                                                <Col span={12} key={item.quotationId}>
+                                                      <Card title={`Xác nhận báo giá ${item.quotationId}`}>
+                                                            <p>Họ và tên: <strong>{item.fullName}</strong></p>
+                                                            <p>Email: <strong>{item.email}</strong></p>
+                                                            <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
+                                                            <p>TourId: <strong>{item.tourId}</strong></p>
+                                                            <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
+                                                            <p>
+                                                                  <Badge status={item.status === "confirmed" ? "success" : "default"} text={item.status} />
+                                                            </p>
+                                                            {item.status === "Chờ xác nhận" && (
+                                                                  <>
+                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
+                                                                        <Modal
+                                                                              title="Nhập giá tiền cho chuyến đi"
+                                                                              visible={modalVisibility[item.quotationId]}
+                                                                              onOk={() => updatePrice(item.quotationId)}
+                                                                              onCancel={() => handleCancel(item.quotationId)}
+                                                                        >
+                                                                              <Input
+                                                                                    placeholder="Nhập giá"
+                                                                                    value={prices[item.quotationId] || ''}
+                                                                                    onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                              />
+                                                                        </Modal>
+                                                                  </>
+                                                            )}
+                                                            {item.status === "Đã nhập giá chuyến đi" && (
+                                                                  <>
+                                                                        <Input.TextArea
+                                                                              placeholder="Nhập lời nhắn"
+                                                                              value={messages[item.quotationId] || ''}
+                                                                              onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                              style={{ marginBottom: '10px' }}
                                                                         />
-                                                                  </Modal>
-                                                            </>
-                                                      )}
-                                                      {item.status === "Đã nhập giá chuyến đi" && (
-                                                            <>
-                                                                  <Input.TextArea
-                                                                        placeholder="Nhập lời nhắn"
-                                                                        value={messages[item.quotationId] || ''}
-                                                                        onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                        style={{ marginBottom: '10px' }}
-                                                                  />
 
-                                                                  <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer)}>
-                                                                        Báo giá cho quản lí
-                                                                  </Button>
-                                                            </>
-                                                      )}
-                                                      {item.status === "Xác nhận báo giá" && (
-                                                            <>
-                                                                  <Input.TextArea
-                                                                        placeholder="Nhập lời nhắn"
-                                                                        value={messages[item.quotationId] || ''}
-                                                                        onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                        style={{ marginBottom: '10px' }}
-                                                                  />
-                                                                  <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>
-                                                                        Báo giá cho khách hàng
-                                                                  </Button>
-                                                            </>
-                                                      )}
-                                                </Card>
-                                          </Col>
-                                    ))}
-                              </Row>
+                                                                        <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer)}>
+                                                                              Báo giá cho quản lí
+                                                                        </Button>
+                                                                  </>
+                                                            )}
+                                                            {item.status === "Xác nhận báo giá" && (
+                                                                  <>
+                                                                        <Input.TextArea
+                                                                              placeholder="Nhập lời nhắn"
+                                                                              value={messages[item.quotationId] || ''}
+                                                                              onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                              style={{ marginBottom: '10px' }}
+                                                                        />
+                                                                        <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>
+                                                                              Báo giá cho khách hàng
+                                                                        </Button>
+                                                                  </>
+                                                            )}
+                                                      </Card>
+                                                </Col>
+                                          ))}
+                                    </Row>
+                                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                          <Pagination
+                                                current={currentPage}
+                                                onChange={(page) => setCurrentPage(page)}
+                                                total={quotation.length}
+                                                pageSize={pageSize}
+                                                showSizeChanger={false}
+                                                showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                                          />
+                                    </div>
+                              </>
+
+
                         ) : (
                               <h1>Không có báo giá nào</h1>
                         )}
