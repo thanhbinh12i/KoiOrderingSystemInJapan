@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Avatar } from 'antd';
-import { UserOutlined, MessageOutlined, FileTextOutlined, TeamOutlined, NotificationOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, MessageOutlined, TeamOutlined, NotificationOutlined, LogoutOutlined } from '@ant-design/icons';
 import "./LayoutStaff.scss";
 import { Link, Outlet } from 'react-router-dom';
 
@@ -29,10 +29,13 @@ function LayoutStaff() {
                                     )}
                                     {role === "ConsultingStaff" && (
                                           <>
-                                                <Menu.Item key="2" icon={<NotificationOutlined />}>
+                                                <Menu.Item key="2" icon={<MessageOutlined />}>
+                                                      <Link to="/staff/check-in">Check-in máy bay</Link>
+                                                </Menu.Item>
+                                                <Menu.Item key="3" icon={<NotificationOutlined />}>
                                                       <Link to="/staff/koi-deal-staff">Deal giá koi</Link>
                                                 </Menu.Item>
-                                                <Menu.Item key="3" icon={<MessageOutlined />}>
+                                                <Menu.Item key="4" icon={<MessageOutlined />}>
                                                       <Link to="/staff/koi-eliminated-date">Xác nhận ngày giao hàng</Link>
                                                 </Menu.Item>
                                           </>
@@ -45,13 +48,10 @@ function LayoutStaff() {
                                           </>
                                     )}
 
-                                    <Menu.Item key="4" icon={<MessageOutlined />}>
+                                    <Menu.Item key="5" icon={<MessageOutlined />}>
                                           Tin nhắn
                                     </Menu.Item>
-                                    <Menu.Item key="5" icon={<FileTextOutlined />}>
-                                          Báo giá
-                                    </Menu.Item>
-                                    <Menu.Item key="6" icon={<LogoutOutlined />}>
+                                    <Menu.Item key="7" icon={<LogoutOutlined />}>
                                           Đăng xuất
                                     </Menu.Item>
                               </Menu>

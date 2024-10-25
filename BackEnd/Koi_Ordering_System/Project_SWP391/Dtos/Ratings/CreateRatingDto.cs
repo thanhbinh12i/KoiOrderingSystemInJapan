@@ -5,5 +5,6 @@
         public float Rate { get; set; }
         public string RatingDate { get; set; }
         public string Content { get; set; }
+        public string RatingDate { get; set; }
     }
 }

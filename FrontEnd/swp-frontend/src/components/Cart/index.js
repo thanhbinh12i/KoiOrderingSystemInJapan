@@ -12,6 +12,7 @@ function Cart() {
       const { id: billId } = useParams();
       const dispatch = useDispatch();
       const cartItems = useSelector(state => state.cartReducer.items);
+
       const totalPrice = cartItems.reduce((sum, item) => {
             if (item.finalPrice > 0) {
                   return sum + item.finalPrice * item.quantity
@@ -19,7 +20,11 @@ function Cart() {
                   return sum + item.originalPrice * item.quantity
             }
       }, 0);
+
+      const allItemsHaveFinalPrice = cartItems.length > 0 && cartItems.every(item => item.finalPrice > 0);
+
       const [loading, setLoading] = useState(false);
+
       useEffect(() => {
             const fetchCart = async () => {
                   try {
@@ -28,7 +33,6 @@ function Cart() {
                         if (response) {
                               dispatch(fetchCartItems(response));
                         }
-
                   } catch (error) {
                         console.error('Error fetching cart items:', error);
                   } finally {
@@ -38,9 +42,11 @@ function Cart() {
 
             fetchCart();
       }, [dispatch, billId]);
+
       if (loading) {
             return <Spin size="large" />;
       }
+
       return (
             <>
                   <GoBack />
@@ -56,14 +62,23 @@ function Cart() {
                         <div style={{ marginTop: 16 }}>
                               <strong>Tổng tiền: {totalPrice} đ</strong>
                         </div>
-                        <Link to={`/check-out-koi/${billId}`} state={{totalPrice: totalPrice}}>
-                              <Button type="primary" style={{ marginTop: 16 }} block>
-                                    Thanh toán
+                        {allItemsHaveFinalPrice ? (
+                              <Link to={`/check-out-koi/${billId}`} state={{ totalPrice: totalPrice }}>
+                                    <Button type="primary" style={{ marginTop: 16 }} block>
+                                          Thanh toán
+                                    </Button>
+                              </Link>
+                        ) : (
+                              <Button
+                                    type="primary"
+                                    style={{ marginTop: 16, background: '#52c41a' }}
+                                    block
+                              >
+                                    Liên hệ deal Koi với nhân viên
                               </Button>
-                        </Link>
-
+                        )}
                   </Card>
             </>
-      )
+      );
 }
 export default Cart;
