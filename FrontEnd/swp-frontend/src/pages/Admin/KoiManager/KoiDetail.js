@@ -51,7 +51,7 @@ function KoiDetail() {
                   {data.koiImages.map((image, index) => (
                     <Image
                       key={index}
-                      src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
+                      src={`https://koidayne.azurewebsites.net/uploads/koi/${image.urlImage}`}
                       alt={`Koi fish ${index + 1}`}
                       width={200}
                       className="mr-10 mb-10"

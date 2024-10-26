@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_SWP391.Data;
 
@@ -11,9 +12,11 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241024072248_EditRatingTable")]
+    partial class EditRatingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "42fcb48d-b5e9-47cc-8482-860f1608bdfd",
+                            Id = "059c5f1b-1654-47de-9cea-b34aa06c1aeb",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "1a070119-0353-4f3b-b2bf-aa0bf284601c",
+                            Id = "b3b26912-ddf9-4a35-b191-74f719029532",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "ece9df02-a877-4a40-8c68-506947d9d5e9",
+                            Id = "5e0b423b-4ffa-437b-a187-7371814db644",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "bb952c3b-4f99-4995-894c-be08795b1b38",
+                            Id = "5505f63f-5d22-4aa9-b7f0-d7d6eb25917f",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "598b999b-8d2a-48b4-9cce-4cf6d063d89c",
+                            Id = "38475125-12d4-4634-bf58-7570ad751e36",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -426,7 +429,8 @@ namespace Project_SWP391.Migrations
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Feedbacks");
                 });
@@ -867,8 +871,8 @@ namespace Project_SWP391.Migrations
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
                 {
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithMany("Feedback")
-                        .HasForeignKey("UserId")
+                        .WithOne("Feedback")
+                        .HasForeignKey("Project_SWP391.Model.Feedback", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1007,7 +1011,8 @@ namespace Project_SWP391.Migrations
                 {
                     b.Navigation("Bills");
 
-                    b.Navigation("Feedback");
+                    b.Navigation("Feedback")
+                        .IsRequired();
 
                     b.Navigation("Quotations");
 

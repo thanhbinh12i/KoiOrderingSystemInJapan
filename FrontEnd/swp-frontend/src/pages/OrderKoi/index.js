@@ -80,7 +80,7 @@ function OrderKoi() {
                                                                   width="100%"
                                                                   height={300}
                                                                   alt={koi.koiName}
-                                                                  src={`https://localhost:7087/uploads/koi/${koi.koiImages[0].urlImage}`}
+                                                        src={`https://koidayne.azurewebsites.net/uploads/koi/${koi.koiImages[0].urlImage}`}
                                                             />
                                                       ) : (
                                                             <p>No images available</p>
