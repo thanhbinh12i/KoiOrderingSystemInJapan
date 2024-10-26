@@ -32,6 +32,16 @@ namespace Project_SWP391.Controllers
             }
             return Ok(tour);
         }
+        [HttpGet("view-by-quotationId/{quotationId:int}")]
+        public async Task<IActionResult> ViewByQuotationId([FromRoute] int quotationId)
+        {
+            var tour = await _tourRepo.GetByQuotationIdAsync(quotationId);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+            return Ok(tour);
+        }
         [HttpGet("view-farmId/{farmId:int}")]
         public async Task<IActionResult> ViewAllFarmId([FromRoute] int farmId)
         {

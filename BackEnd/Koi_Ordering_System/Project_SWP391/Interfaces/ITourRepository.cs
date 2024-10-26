@@ -8,6 +8,7 @@ namespace Project_SWP391.Interfaces
     {
         Task<List<Tour>> GetAllAsync();
         Task<Tour?> GetIdByAsync(int tourId);
+        Task<Tour> GetByQuotationIdAsync(int quotationId);
         Task<List<Tour?>> GetByFarmIdAsync(int farmId);
         Task<List<Tour?>> GetByVarietyIdAsync(int varietyId);
         Task<List<Tour?>> GetPriceByAsync(float min, float max);
