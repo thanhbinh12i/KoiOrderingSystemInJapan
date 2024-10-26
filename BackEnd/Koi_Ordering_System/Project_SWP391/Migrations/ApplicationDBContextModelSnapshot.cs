@@ -51,31 +51,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "08d21cbc-b7b8-4671-af3f-6cf6cbaf750d",
+                            Id = "42fcb48d-b5e9-47cc-8482-860f1608bdfd",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "625ddc54-9c16-4fce-9bbe-f7059ae69c92",
+                            Id = "1a070119-0353-4f3b-b2bf-aa0bf284601c",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "8990a672-84d2-444d-a35b-b4179e525e05",
+                            Id = "ece9df02-a877-4a40-8c68-506947d9d5e9",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "68423525-7949-42f5-b67d-6d608177ebb9",
+                            Id = "bb952c3b-4f99-4995-894c-be08795b1b38",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "d7dee160-47fb-4afa-8478-edc338ea0181",
+                            Id = "598b999b-8d2a-48b4-9cce-4cf6d063d89c",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -295,7 +295,7 @@ namespace Project_SWP391.Migrations
                     b.Property<int>("QuotationId")
                         .HasColumnType("int");
 
-                    b.Property<float?>("TotalPrice")
+                    b.Property<float>("TotalPrice")
                         .HasColumnType("real");
 
                     b.Property<float>("TourPrice")
@@ -426,8 +426,7 @@ namespace Project_SWP391.Migrations
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -868,8 +867,8 @@ namespace Project_SWP391.Migrations
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
                 {
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithOne("Feedback")
-                        .HasForeignKey("Project_SWP391.Model.Feedback", "UserId")
+                        .WithMany("Feedback")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1008,8 +1007,7 @@ namespace Project_SWP391.Migrations
                 {
                     b.Navigation("Bills");
 
-                    b.Navigation("Feedback")
-                        .IsRequired();
+                    b.Navigation("Feedback");
 
                     b.Navigation("Quotations");
 

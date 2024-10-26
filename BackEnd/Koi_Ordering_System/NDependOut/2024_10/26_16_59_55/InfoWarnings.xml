@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <InfoWarnings>
-  <Info>Begin full analysis with NDepend v2024.2.0 on 26 Oct 2024 22:02:00</Info>
+  <Info>Begin full analysis with NDepend v2024.2.0 on 26 Oct 2024 16:59:57</Info>
   <Warning>Last day of evaluation.
 You can ask for evaluation extension if required from the VisualNDepend.exe's menu Help then License Information.</Warning>
   <Info>Visual Studio solution file resolved to absolute file path: from    {.\SWP391.KoiOrderingSystem.FA24.sln}    to    {E:\Ki5-FPT\SWP\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\SWP391.KoiOrderingSystem.FA24.sln}</Info>
@@ -54,7 +54,7 @@ Row tag expected</Warning>
    Microsoft.AspNetCore.Routing.dll   v8.0.0.0
    Microsoft.Extensions.Configuration.dll   v8.0.0.0
    Microsoft.AspNetCore.Authentication.OAuth.dll   v8.0.0.0</Info>
-  <Info>164 source files parsed ; all source files found ; all source files in-sync with PDB</Info>
+  <Info>168 source files parsed ; all source files found ; all source files in-sync with PDB</Info>
   <Info>0 code rule has been extracted from code.</Info>
   <Info>No issue have been imported. No directory that contains issue files have been resolved from the project SWP391.KoiOrderingSystem.FA24</Info>
   <Info>No dependency cycle detected in assemblies referencement graph.</Info>
@@ -68,6 +68,6 @@ A query or rule name is defined in a comment in the query body this way:  // &lt
 - the query defined in {Project Rules \ Samples of Custom rules \ Check Architecture}
 - the query defined in {Project Rules \ Samples of Custom rules \ Check Architecture}</Warning>
   <Info>No SuppressMessageAttribute found in the analyzed code base. Since NDepend v2018.2 SuppressMessageAttribute can be used to suppress NDepend issues. Don't forget to set in your projects the compilation symbol CODE_ANALYSIS to use this attribute to suppress NDepend issues.</Info>
-  <Info>Persisting code model snapshot in {E:\Ki5-FPT\SWP\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\NDependOut\NDependAnalysisResult_SWP391_KoiOrderingSystem_FA24_2024Oct26_22h02m00.ndar}</Info>
-  <Info>NDepend analysis done. Duration: 00:03.612</Info>
+  <Info>Persisting code model snapshot in {E:\Ki5-FPT\SWP\swp391_G1_SE1857_koiOrderingSystem\BackEnd\Koi_Ordering_System\NDependOut\NDependAnalysisResult_SWP391_KoiOrderingSystem_FA24_2024Oct26_16h59m55.ndar}</Info>
+  <Info>NDepend analysis done. Duration: 00:06.308</Info>
 </InfoWarnings>

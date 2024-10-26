@@ -12,8 +12,8 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241024072300_Update_rating")]
-    partial class Update_rating
+    [Migration("20241023174205_AddingAttribute")]
+    partial class AddingAttribute
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "08d21cbc-b7b8-4671-af3f-6cf6cbaf750d",
+                            Id = "5e3458f1-ea18-409e-96d3-6a30ff0c7afd",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "625ddc54-9c16-4fce-9bbe-f7059ae69c92",
+                            Id = "c3c48c2b-3691-4fd7-8a45-a025b26a47a4",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "8990a672-84d2-444d-a35b-b4179e525e05",
+                            Id = "4c8d8d6f-41da-4d0b-8bde-0178499417da",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "68423525-7949-42f5-b67d-6d608177ebb9",
+                            Id = "ea4fbef6-ebd2-4679-929c-b7e29b0e7d5a",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "d7dee160-47fb-4afa-8478-edc338ea0181",
+                            Id = "29aac3e6-3410-4288-bbf2-cb9fabe66764",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -298,7 +298,7 @@ namespace Project_SWP391.Migrations
                     b.Property<int>("QuotationId")
                         .HasColumnType("int");
 
-                    b.Property<float?>("TotalPrice")
+                    b.Property<float>("TotalPrice")
                         .HasColumnType("real");
 
                     b.Property<float>("TourPrice")
@@ -688,12 +688,8 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
-
-                    b.Property<string>("RatingDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
 
                     b.HasKey("FarmId", "UserId");
 

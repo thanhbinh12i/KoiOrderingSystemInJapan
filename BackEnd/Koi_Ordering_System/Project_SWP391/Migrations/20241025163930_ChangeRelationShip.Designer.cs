@@ -12,8 +12,8 @@ using Project_SWP391.Data;
 namespace Project_SWP391.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241016085015_ChangTableBill")]
-    partial class ChangTableBill
+    [Migration("20241025163930_ChangeRelationShip")]
+    partial class ChangeRelationShip
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,31 +54,31 @@ namespace Project_SWP391.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3cb4e351-ff7d-4086-a318-3c412f9820e7",
+                            Id = "42fcb48d-b5e9-47cc-8482-860f1608bdfd",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "c38ff5a3-962d-436b-ba3a-9502a5f36096",
+                            Id = "1a070119-0353-4f3b-b2bf-aa0bf284601c",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "305c89dc-8a78-4580-88a4-8a88735440b3",
+                            Id = "ece9df02-a877-4a40-8c68-506947d9d5e9",
                             Name = "SalesStaff",
                             NormalizedName = "SALESSTAFF"
                         },
                         new
                         {
-                            Id = "68e6cebd-f42f-435a-a8a8-f54f3e851a84",
+                            Id = "bb952c3b-4f99-4995-894c-be08795b1b38",
                             Name = "ConsultingStaff",
                             NormalizedName = "CONSULTINGSTAFF"
                         },
                         new
                         {
-                            Id = "57100a18-8304-4feb-acfc-7a2f63733f67",
+                            Id = "598b999b-8d2a-48b4-9cce-4cf6d063d89c",
                             Name = "DeliveringStaff",
                             NormalizedName = "DELIVERINGSTAFF"
                         });
@@ -284,15 +284,25 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<float?>("KoiPrice")
+                        .HasColumnType("real");
+
+                    b.Property<string>("PaymentDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
                     b.Property<int>("QuotationId")
                         .HasColumnType("int");
+
+                    b.Property<float>("TotalPrice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("TourPrice")
+                        .HasColumnType("real");
 
                     b.Property<string>("UserFullName")
                         .IsRequired()
@@ -310,43 +320,6 @@ namespace Project_SWP391.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Bills");
-                });
-
-            modelBuilder.Entity("Project_SWP391.Model.BillDetail", b =>
-                {
-                    b.Property<int>("BillDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillDetailId"));
-
-                    b.Property<string>("ArriveDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BillId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BookBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DeliveryEstimateDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DepartDate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("TotalPrice")
-                        .HasColumnType("real");
-
-                    b.Property<string>("TourName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BillDetailId");
-
-                    b.HasIndex("BillId")
-                        .IsUnique();
-
-                    b.ToTable("BillDetails");
                 });
 
             modelBuilder.Entity("Project_SWP391.Model.Delivery", b =>
@@ -456,8 +429,7 @@ namespace Project_SWP391.Migrations
 
                     b.HasKey("FeedbackId");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -690,10 +662,6 @@ namespace Project_SWP391.Migrations
                     b.Property<int>("TourId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TourName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -719,8 +687,12 @@ namespace Project_SWP391.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rate")
-                        .HasColumnType("int");
+                    b.Property<float>("Rate")
+                        .HasColumnType("real");
+
+                    b.Property<string>("RatingDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FarmId", "UserId");
 
@@ -865,17 +837,6 @@ namespace Project_SWP391.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Project_SWP391.Model.BillDetail", b =>
-                {
-                    b.HasOne("Project_SWP391.Model.Bill", "Bill")
-                        .WithOne("BillDetails")
-                        .HasForeignKey("Project_SWP391.Model.BillDetail", "BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bill");
-                });
-
             modelBuilder.Entity("Project_SWP391.Model.DeliveryStatus", b =>
                 {
                     b.HasOne("Project_SWP391.Model.Bill", "Bill")
@@ -909,8 +870,8 @@ namespace Project_SWP391.Migrations
             modelBuilder.Entity("Project_SWP391.Model.Feedback", b =>
                 {
                     b.HasOne("Project_SWP391.Model.AppUser", "User")
-                        .WithOne("Feedback")
-                        .HasForeignKey("Project_SWP391.Model.Feedback", "UserId")
+                        .WithMany("Feedback")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1049,8 +1010,7 @@ namespace Project_SWP391.Migrations
                 {
                     b.Navigation("Bills");
 
-                    b.Navigation("Feedback")
-                        .IsRequired();
+                    b.Navigation("Feedback");
 
                     b.Navigation("Quotations");
 
@@ -1059,9 +1019,6 @@ namespace Project_SWP391.Migrations
 
             modelBuilder.Entity("Project_SWP391.Model.Bill", b =>
                 {
-                    b.Navigation("BillDetails")
-                        .IsRequired();
-
                     b.Navigation("DeliveryStatus")
                         .IsRequired();
 
