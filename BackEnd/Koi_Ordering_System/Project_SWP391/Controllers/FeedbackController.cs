@@ -87,7 +87,7 @@ namespace Project_SWP391.Controllers
 
                 string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 
-                var uploadPath = Path.Combine(webRootPath, "uploads", "koiVariety");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "feedback");
 
                 if (!Directory.Exists(uploadPath))
                 {
