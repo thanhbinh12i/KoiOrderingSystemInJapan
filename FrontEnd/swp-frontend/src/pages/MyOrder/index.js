@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { get, post } from "../../utils/request";
-import { Button, Table } from "antd";
+import { get } from "../../utils/request";
+import { Button, Table} from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 function MyOrder() {
-      //xem chi tiết đơn hàng
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const userId = localStorage.getItem("id");
@@ -38,31 +37,6 @@ function MyOrder() {
             handleCancel();
             fetchApi();
       };
-      const onFinishVNPay = async (billId) => {
-            const billResponse = await get(`bill/view-by-id/${billId}`);
-            const payStatusResponse = await get(`payStatus/view-billId/${billId}`);
-            try {
-                  console.log(payStatusResponse.remain);
-                  const paymentData = {
-                        orderType: "VNPAY",
-                        amount: payStatusResponse.remain,
-                        orderDescription: `Thanh toán cho đơn hàng ${billId}`,
-                        name: billResponse.userFullName,
-                        quotationId: billId
-                  };
-                  const getTimeCurrent = () => {
-                        return new Date().toLocaleString();
-                  };
-                  const paymentResponse = await post('payment', paymentData);
-
-                  if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({ paymentDate: getTimeCurrent() }));
-                        window.location.href = paymentResponse;
-                  }
-            } catch (error) {
-                  console.error('Lỗi khi xử lý thanh toán VNPay:', error);
-            }
-      };
       const columns = [
             {
                   title: 'Đơn hàng',
@@ -91,9 +65,11 @@ function MyOrder() {
                         if (record.deliveryStatusText === "Đơn hàng đã giao đến bạn") {
                               return (
                                     <>
-                                          <Button type="primary" onClick={() => onFinishVNPay(record.billId)}>
-                                                Thanh toán
-                                          </Button>
+                                          <Link to={`/payment-remain/${record.billId}`}>
+                                                <Button type="primary">
+                                                      Đến trang thanh toán
+                                                </Button>
+                                          </Link>
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {
