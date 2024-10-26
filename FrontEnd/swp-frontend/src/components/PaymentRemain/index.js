@@ -24,7 +24,7 @@ function PaymentRemain() {
 
                   const paymentData = {
                         orderType: "VNPAY",
-                        amount: payStatusResponse.remain,
+                        amount: payStatusResponse.remain/10,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: billData.userFullName,
                         quotationId: params.id
@@ -44,7 +44,7 @@ function PaymentRemain() {
       };
       return (
             <>
-                  <div style={{ padding: '24px' }}>
+                  <div style={{ padding: '24px', width: '300px' }}>
                         <Card title="Thông tin thanh toán">
                               {billData && (
                                     <>
