@@ -29,13 +29,12 @@
       }
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:62103",
-      "sslPort": 44391
+      "applicationUrl": "http://localhost:52310/",
+      "sslPort": 44376
     }
   }
 }

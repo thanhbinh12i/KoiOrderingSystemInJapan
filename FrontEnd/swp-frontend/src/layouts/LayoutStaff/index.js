@@ -47,10 +47,6 @@ function LayoutStaff() {
                                                 </Menu.Item>
                                           </>
                                     )}
-
-                                    <Menu.Item key="5" icon={<MessageOutlined />}>
-                                          Tin nhắn
-                                    </Menu.Item>
                                     <Menu.Item key="7" icon={<LogoutOutlined />}>
                                           Đăng xuất
                                     </Menu.Item>

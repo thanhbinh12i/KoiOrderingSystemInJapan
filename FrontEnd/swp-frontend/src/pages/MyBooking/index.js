@@ -6,6 +6,9 @@ import { Link, NavLink } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
+      //thêm cái hủy đặt chỗ khi đang chờ xác nhận 
+      //thêm cái ko chấp nhận giá
+      //style và nhiều thông tin hơn
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
@@ -145,7 +148,7 @@ function MyBooking() {
                               }
                               if (relatedBill.koiPrice > 0) {
                                     return (
-                                          <Button type="primary">Xem chi tiết</Button>
+                                          <Button type="primary">Xem chi tiết đơn hàng</Button>
                                     )
                               } else if (relatedBill) {
                                     return (

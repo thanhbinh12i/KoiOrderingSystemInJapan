@@ -101,5 +101,14 @@ namespace Project_SWP391.Repository
           .Include(t => t.TourDestinations)
           .ToListAsync();
         }
+
+        public async Task<Tour> GetByQuotationIdAsync(int quotationId)
+        {
+            return await (from t in _context.Tours
+                          join td in _context.Quotations on t.TourId equals td.TourId
+                          where td.QuotationId == quotationId
+                          select t)
+                          .FirstOrDefaultAsync();
+        }
     }
 }

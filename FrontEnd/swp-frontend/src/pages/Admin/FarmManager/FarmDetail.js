@@ -60,7 +60,7 @@ function FarmDetail() {
                   data.farmImages.map((image, index) => (
                     <Image
                       key={index}
-                      src={`https://localhost:7087/uploads/koiFarm/${image.urlImage}`}
+                      src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${image.urlImage}`}
                       alt={`Koi farm ${index + 1}`}
                       width={200}
                       className="mr-10 mb-10"

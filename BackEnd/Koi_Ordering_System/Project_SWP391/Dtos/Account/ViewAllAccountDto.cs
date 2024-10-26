@@ -14,6 +14,8 @@ namespace Project_SWP391.Dtos.Account
         public string? PhoneNumber { get; set; }
         public string? DateOfBirth { get; set; }
         public string Role { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+
         public ICollection<Bill> Bills { get; set; }
     }
 }

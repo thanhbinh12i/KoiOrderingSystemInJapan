@@ -23,7 +23,7 @@ function KoiDealDetail() {
 
       const showModal = (koi) => {
             setCurrentKoi(koi);
-            setNewPrice(koi.originalPrice.toString());
+            setNewPrice(koi.originalPrice);
             setModalVisible(true);
       };
 
@@ -61,7 +61,7 @@ function KoiDealDetail() {
                   const response = await put(`koi-bill/update/${params.id}-${item.koiId}`, data)
                   if (response) {
                         setKoiBill(koiBill.map(koi =>
-                              koi.koiId === item.koiId ? { ...koi, finalPrice: newPrice } : koi
+                              koi.koiId === item.koiId ? { ...koi, finalPrice: item.originalPrice } : koi
                         ));
                   }
             } catch (error) {

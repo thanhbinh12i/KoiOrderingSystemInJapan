@@ -5,11 +5,31 @@ import { Link } from "react-router-dom";
 
 function KoiDeal() {
       const [bill, setBill] = useState([]);
+      const [quotations, setQuotations] = useState({});
+      const [tours, setTours] = useState({});
+
       useEffect(() => {
             const fetchApi = async () => {
-                  const response = await get("bill/view-all");
-                  if (response) {
-                        setBill(response);
+                  const billResponse = await get("bill/view-all");
+                  if (billResponse) {
+                        setBill(billResponse);
+
+                        const quotationData = {};
+                        for (let item of billResponse) {
+                              const quotationResponse = await get(`quotation/view/${item.quotationId}`);
+                              if (quotationResponse) {
+                                    quotationData[item.quotationId] = quotationResponse;
+
+                                    const tourResponse = await get(`tour/view-tourId/${quotationResponse.tourId}`);
+                                    if (tourResponse) {
+                                          setTours(prev => ({
+                                                ...prev,
+                                                [quotationResponse.tourId]: tourResponse
+                                          }));
+                                    }
+                              }
+                        }
+                        setQuotations(quotationData);
                   }
             }
             fetchApi();
@@ -21,19 +41,30 @@ function KoiDeal() {
                   key: 'billId',
             },
             {
-                  title: 'Họ và tên',
-                  dataIndex: 'userFullName',
-                  key: 'userFullName',
+                  title: 'Tên tour',
+                  key: 'tourName',
+                  render: (record) => {
+                        const quotation = quotations[record.quotationId];
+                        const tour = quotation ? tours[quotation.tourId] : null;
+                        return tour ? tour.tourName : 'N/A';
+                  }
             },
             {
-                  title: 'Email',
-                  dataIndex: 'email',
-                  key: 'email',
+                  title: 'Ngày khởi hành',
+                  key: 'startDate',
+                  render: (record) => {
+                        const quotation = quotations[record.quotationId];
+                        const tour = quotation ? tours[quotation.tourId] : null;
+                        return tour ? tour.startTime : 'N/A';
+                  }
             },
             {
-                  title: 'Số điện thoại',
-                  dataIndex: 'phoneNumber',
-                  key: 'phoneNumber',
+                  title: 'Giá tour',
+                  key: 'price',
+                  render: (record) => {
+                        const quotation = quotations[record.quotationId];
+                        return quotation ? quotation.priceOffer + ' VNĐ' : 'N/A';
+                  }
             },
             {
                   title: 'Hành động',
