@@ -83,7 +83,7 @@ function CreateKoi() {
 
     try {
       const response = await fetch(
-        `https://localhost:7087/api/koi-image/upload/${koiId}`,
+        `https://koidayne.azurewebsites.net/api/koi-image/upload/${koiId}`,
         {
           method: "POST",
           body: formData,

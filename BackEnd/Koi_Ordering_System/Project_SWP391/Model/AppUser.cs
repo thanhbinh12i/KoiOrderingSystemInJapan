@@ -21,7 +21,7 @@ namespace Project_SWP391.Model
         public ICollection<Rating> Ratings { get; set; } = new HashSet<Rating>();
         public ICollection<Quotation> Quotations { get; set; } = new HashSet<Quotation>();
 
-        public Feedback Feedback { get; set; }
+        public ICollection<Feedback> Feedback { get; set; } = new HashSet<Feedback>();
 
     }
 }
