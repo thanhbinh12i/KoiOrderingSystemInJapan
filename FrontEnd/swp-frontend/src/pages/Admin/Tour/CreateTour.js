@@ -49,11 +49,6 @@ function CreateTour() {
             })
           );
           await Promise.all(farmPromises);
-
-          const updatedTourData = await get(`tour/view/${tourId}`);
-          if (updatedTourData) {
-            console.log("Updated tour data:", updatedTourData);
-          }
         }
 
         form.resetFields();
