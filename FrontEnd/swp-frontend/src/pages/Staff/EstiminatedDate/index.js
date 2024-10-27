@@ -33,14 +33,14 @@ function EstiminatedDate() {
                   const data = {
                         "deliveryAddress": currentItem.deliveryAddress,
                         "deliveryStatusText": "Đang chờ vận chuyển",
-                        "estimatedDate": newDate.format('YYYY-MM-DD')
+                        "estimatedDate": newDate.format('DD-MM-YYYY')
                   }
                   const response = await put(`delivery-status/update/${currentItem.deliveryStatusId}`, data);
                   if (response) {
                         setDeliveryList(prevList =>
                               prevList.map(item =>
                                     item.billId === currentItem.billId
-                                          ? { ...item, deliveryStatusText: "Đang chờ vận chuyển", estimatedDate: newDate.format('YYYY-MM-DD') }
+                                          ? { ...item, deliveryStatusText: "Đang chờ vận chuyển", estimatedDate: newDate.format('DD-MM-YYYY') }
                                           : item
                               )
                         );
@@ -84,7 +84,7 @@ function EstiminatedDate() {
                         {currentItem && (
                               <>
                                     <p>Nhập ngày giao hàng: </p>
-                                    <DatePicker onChange={(date) => setNewDate(date)} />
+                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY"/>
                               </>
                         )}
                   </Modal>

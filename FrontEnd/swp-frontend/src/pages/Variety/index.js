@@ -41,7 +41,7 @@ function Variety() {
                 width={135}
                 height={200}
                 alt={variety.varietyName}
-                src={`https://localhost:7087/uploads/koiVariety/${variety.urlImage}`}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}koiVariety/${variety.urlImage}`}
                 className="variety-image"
               />
               <Title level={4}>{variety.varietyName}</Title>

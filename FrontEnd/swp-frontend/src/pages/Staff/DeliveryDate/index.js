@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, List, Row, Steps } from "antd";
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 function DeliveryDate() {
-      //thêm cái update ngày nhận hàng
-      //nút xác nhận đã nhận tiền r ms cập nhật giao hàng thành công, chuyển sang màu tích xanh
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const [receivedPayment, setReceivedPayment] = useState({});
@@ -50,30 +48,34 @@ function DeliveryDate() {
       const steps = [
             {
                   title: 'Đang chờ vận chuyển',
-                  icon: <UserOutlined />,
+                  icon: <ClockCircleOutlined />,
             },
             {
                   title: 'Đã nhận hàng',
-                  icon: <SolutionOutlined />,
+                  icon: <FileDoneOutlined />,
             },
             {
                   title: 'Đang vận chuyển',
-                  icon: <LoadingOutlined />,
+                  icon: <CarOutlined />,
             },
             {
                   title: 'Đơn hàng đã giao đến bạn',
-                  icon: <LoadingOutlined />,
+                  icon: <ShoppingOutlined />,
             },
             {
                   title: 'Giao hàng thành công',
-                  icon: <SmileOutlined />,
-            },
+                  icon: <CheckCircleOutlined />,
+            }
       ];
-      const handlePaymentConfirmation = (billId) => {
-            setReceivedPayment(prev => ({
-                  ...prev,
-                  [billId]: true
-            }));
+      const handlePaymentConfirmation = async (item) => {
+            const response = await get(`payStatus/view-billId/${item.billId}`);
+            if (response.status === "Đã thanh toán") {
+                  setReceivedPayment(prev => ({
+                        ...prev,
+                        [item.billId]: true
+                  }));
+                  handleUpdate(item, 'Giao hàng thành công');
+            }
       };
       const getStepStatus = (item, stepIndex) => {
             const currentStepIndex = steps.findIndex(step => step.title === item.deliveryStatusText);
@@ -99,7 +101,7 @@ function DeliveryDate() {
                                                 {item.deliveryStatusText === 'Đơn hàng đã giao đến bạn' && !receivedPayment[item.billId] && (
                                                       <Button
                                                             type="primary"
-                                                            onClick={() => handlePaymentConfirmation(item.billId)}
+                                                            onClick={() => handlePaymentConfirmation(item)}
                                                       >
                                                             Xác nhận đã nhận tiền
                                                       </Button>
@@ -113,8 +115,10 @@ function DeliveryDate() {
                                                                         <Button
                                                                               type="primary"
                                                                               onClick={() => handleUpdate(item, step.title)}
-                                                                              disabled={step.title === item.deliveryStatusText ||
-                                                                                    index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1
+                                                                              disabled={
+                                                                                    step.title === item.deliveryStatusText ||
+                                                                                    index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1 ||
+                                                                                    step.title === 'Giao hàng thành công'
                                                                               }
                                                                         >
                                                                               Cập nhật

@@ -41,6 +41,11 @@ function KoiDeal() {
                   key: 'billId',
             },
             {
+                  title: 'Họ và tên',
+                  dataIndex: 'userFullName',
+                  key: 'userFullName',
+            },
+            {
                   title: 'Tên tour',
                   key: 'tourName',
                   render: (record) => {
@@ -56,14 +61,6 @@ function KoiDeal() {
                         const quotation = quotations[record.quotationId];
                         const tour = quotation ? tours[quotation.tourId] : null;
                         return tour ? tour.startTime : 'N/A';
-                  }
-            },
-            {
-                  title: 'Giá tour',
-                  key: 'price',
-                  render: (record) => {
-                        const quotation = quotations[record.quotationId];
-                        return quotation ? quotation.priceOffer + ' VNĐ' : 'N/A';
                   }
             },
             {

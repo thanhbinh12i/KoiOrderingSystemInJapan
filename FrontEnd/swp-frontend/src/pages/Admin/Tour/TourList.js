@@ -7,7 +7,6 @@ import SearchByName from "./SearchByName";
 import "./Tour.scss";
 import { EyeOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import dayjs from "dayjs";
 
 function TourList() {
   const [tours, setTours] = useState([]);
@@ -60,13 +59,11 @@ function TourList() {
       title: "Ngày bắt đầu",
       dataIndex: "startTime",
       key: "startTime",
-      render: (date) => (date ? dayjs(date).format("DD-MM-YYYY") : ""),
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "finishTime",
       key: "finishTime",
-      render: (date) => (date ? dayjs(date).format("DD-MM-YYYY") : ""),
     },
     {
       title: "Số lượng người tham gia",
