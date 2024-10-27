@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
-import { Button, Table} from "antd";
+import { Button, Table } from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
@@ -57,6 +57,17 @@ function MyOrder() {
                   title: 'Ngày nhận hàng',
                   dataIndex: 'estimatedDate',
                   key: 'estimatedDate',
+            },
+            {
+                  title: 'Xem đơn hàng',
+                  key: 'view',
+                  render: (_, record) => (
+                        <Link to={`/my-orders/${record.billId}`}>
+                              <Button type="primary">
+                                    Xem chi tiết
+                              </Button>
+                        </Link>
+                  )          
             },
             {
                   title: 'Hành động',
