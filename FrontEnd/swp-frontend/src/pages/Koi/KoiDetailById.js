@@ -41,7 +41,7 @@ function KoiDetailById() {
         <Col xs={24} md={12}>
           <div className="koi-image-container">
             <Image
-              src={`https://localhost:7087/uploads/koi/${selectedImage}`}
+              src={`${process.env.REACT_APP_API_URL_UPLOAD}/koi/${selectedImage}`}
               alt={koi.koiName}
               className="koi-main-image"
             />
@@ -49,7 +49,7 @@ function KoiDetailById() {
               {koi.koiImages.map((image) => (
                 <img
                   key={image.koiImageId}
-                  src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}/koi/${image.urlImage}`}
                   alt={`${koi.koiName} thumbnail`}
                   className={`thumbnail ${
                     selectedImage === image.urlImage ? "active" : ""

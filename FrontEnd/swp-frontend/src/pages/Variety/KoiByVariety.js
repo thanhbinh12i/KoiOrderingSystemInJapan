@@ -45,7 +45,7 @@ const KoiByVariety = () => {
                 width={135}
                 height={200}
                 alt={koi.koiName}
-                src={`https://koidayne.azurewebsites.net/uploads/koi/${image.urlImage}`}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}/koi/${image.urlImage}`}
                 className="koi-detail-image"
               />
             ))

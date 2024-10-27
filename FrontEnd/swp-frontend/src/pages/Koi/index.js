@@ -42,8 +42,12 @@ function Koi() {
                 key={koi.koiImageId}
                 width={135}
                 height={200}
-                alt={koi.koiName}
-                          src={`https://koidayne.azurewebsites.net/uploads/koi/${koi.koiImages[0].urlImage}`}
+                alt={koi?.koiName || "Default Alt Text"}
+                src={
+                  koi?.koiImages?.[0]?.urlImage
+                    ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
+                    : "path/to/default/image.jpg"
+                }
                 className="koi-image"
               />
 

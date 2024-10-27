@@ -18,7 +18,7 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://koidayne.azurewebsites.net/api/koi-variable/upload",
+        `${process.env.REACT_APP_API_URL}koi-variable/upload`,
         {
           method: "POST",
           body: formData,

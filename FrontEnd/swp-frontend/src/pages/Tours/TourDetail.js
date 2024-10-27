@@ -100,7 +100,7 @@ function TourDetail() {
                     <List.Item key={item.farmName} className="farm-list-item">
                       <div className="farm-container">
                         <img
-                          src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${item.farmImages[0].urlImage}`}
+                          src={`${process.env.REACT_APP_API_URL_UPLOAD}/koiFarm/${item.farmImages[0].urlImage}`}
                           alt={item.farmName}
                           className="farm-image"
                         />

@@ -10,7 +10,7 @@ function VarietyDetail(props) {
           <div className="mb-20">
             <img
               style={{ width: 200 }}
-              src={`https://koidayne.azurewebsites.net/uploads/koiVariety/${record.urlImage}`}
+              src={`${process.env.REACT_APP_API_URL_UPLOAD}/koiVariety/${record.urlImage}`}
               alt=""
             />
           </div>

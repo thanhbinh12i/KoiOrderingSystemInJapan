@@ -59,7 +59,7 @@ function FarmDetail() {
             farm.farmImages.map((img, index) => (
               <div key={index}>
                 <img
-                  src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${img.urlImage}`}
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}/koiFarm/${img.urlImage}`}
                   alt={`${farm.farmName} - Ảnh ${index + 1}`}
                   style={{ width: "100%", height: "400px", objectFit: "cover" }}
                 />
@@ -142,7 +142,7 @@ function FarmDetail() {
                 width={135}
                 height={200}
                 alt={koi.koiName}
-                src={`https://koidayne.azurewebsites.net/uploads/koi/${image.urlImage}`}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}/koi/${image.urlImage}`}
                 className="koi-detail-image"
               />
             ))}
