@@ -79,7 +79,7 @@ function QuotationManager() {
                               "subject": `Xác nhận hủy đơn đặt chỗ - Mã đơn ${item.quotationId}`,
                               "message": cancellationTemplate
                         };
-                      const responseEmail = await fetch(`${process.env.REACT_APP_API_URL}email/send`, {
+                        const responseEmail = await fetch(`${process.env.REACT_APP_API_URL}email/send`, {
                               method: "POST",
                               headers: {
                                     Accept: "application/json",
@@ -344,4 +344,3 @@ border-radius: 4px;
             </body>
         </html>
     `;
-}

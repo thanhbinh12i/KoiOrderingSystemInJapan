@@ -33,7 +33,7 @@ function Koi() {
       } catch (error) {
         console.error("Error fetching Koi:", error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -79,8 +79,8 @@ function Koi() {
           <Pagination
             current={currentPage}
             pageSize={koiPerPage}
-            total={totalCount}
-            onChange={(page) => setCurrentPage(page)} 
+            total={totalCount} 
+            onChange={(page) => setCurrentPage(page)}
             className="pagination"
           />
         </>
