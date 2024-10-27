@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Typography } from "antd";
+import { Card, Row, Col, Typography, Pagination, Spin } from "antd"; // Thêm Spin từ Ant Design
 import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
@@ -9,13 +9,21 @@ const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
+  const [totalCount, setTotalCount] = useState(0); // Tổng số cá Koi
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false); // Thêm loading state
+  const koiPerPage = 9;
 
   useEffect(() => {
     const fetchAPI = async () => {
+      setLoading(true); // Bắt đầu loading
       try {
-        const response = await get("koi/view-all");
+        const response = await get(
+          `koi/view-all/paging?PageNumber=${currentPage}&PageSize=${koiPerPage}`
+        );
+        setTotalCount(response.totalCount);
         const updatedKoiData = await Promise.all(
-          response.map(async (koi) => {
+          response.items.map(async (koi) => {
             const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
             return { ...koi, farmName: farmResponse.farmName };
           })
@@ -23,49 +31,60 @@ function Koi() {
         setKoi(updatedKoiData);
       } catch (error) {
         console.error("Error fetching Koi:", error);
+      } finally {
+        setLoading(false); // Kết thúc loading
       }
     };
 
     fetchAPI();
-  }, []);
-  return (
-    <Row gutter={[16, 16]} className="koi-container">
-      {koi.map((koi) => (
-        <Col xs={24} sm={12} md={8} key={koi.koiId}>
-          <Link
-            to={`/kois/${koi.koiId}`}
-            key={koi.koiName}
-            className="koi-link"
-          >
-            <Card hoverable className="koi-card">
-              <img
-                key={koi.koiImageId}
-                width={135}
-                height={200}
-                alt={koi?.koiName}
-                src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
-                alt={koi?.koiName || "Default Alt Text"}
-                src={
-                  koi?.koiImages?.[0]?.urlImage
-                    ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
-                    : "path/to/default/image.jpg"
-                }
-                className="koi-image"
-              />
+  }, [currentPage]);
 
-              <Title level={4}>Tên cá koi: {koi.koiName}</Title>
-              <Title level={5}>Giá: {koi.price}</Title>
-              <Title level={5}>Ngày sinh: {koi.yob}</Title>
-              <Title level={5}>Giới tính: {koi.gender}</Title>
-              <Title level={5}>
-                Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
-              </Title>
-              <Title level={5}>Trang trại: {koi.farmName}</Title>
-            </Card>
-          </Link>
-        </Col>
-      ))}
-    </Row>
+  return (
+    <>
+      {loading ? ( // Hiển thị loading khi đang tải
+        <Spin tip="Loading..." />
+      ) : (
+        <>
+          <Row gutter={[16, 16]} className="koi-container">
+            {koi.map((koi) => (
+              <Col xs={24} sm={12} md={8} key={koi.koiId}>
+                <Link to={`/kois/${koi.koiId}`} className="koi-link">
+                  <Card hoverable className="koi-card">
+                    <img
+                      width={135}
+                      height={200}
+                      alt={koi?.koiName || "Default Alt Text"}
+                      src={
+                        koi?.koiImages?.[0]?.urlImage
+                          ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
+                          : "path/to/default/image.jpg"
+                      }
+                      className="koi-image"
+                      loading="lazy"
+                    />
+                    <Title level={4}>Tên cá koi: {koi.koiName}</Title>
+                    <Title level={5}>Giá: {koi.price}</Title>
+                    <Title level={5}>Ngày sinh: {koi.yob}</Title>
+                    <Title level={5}>Giới tính: {koi.gender}</Title>
+                    <Title level={5}>
+                      Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
+                    </Title>
+                    <Title level={5}>Trang trại: {koi.farmName}</Title>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+          <Pagination
+            current={currentPage}
+            pageSize={koiPerPage}
+            total={totalCount} // Sử dụng tổng số lượng từ API
+            onChange={(page) => setCurrentPage(page)} // Cập nhật currentPage khi người dùng chuyển trang
+            className="pagination"
+          />
+        </>
+      )}
+    </>
   );
 }
 

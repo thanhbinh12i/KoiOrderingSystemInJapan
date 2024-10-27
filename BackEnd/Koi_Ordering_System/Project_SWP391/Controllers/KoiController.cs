@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Dtos.Kois;
+using Project_SWP391.Helper;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
 
@@ -28,6 +30,18 @@ namespace Project_SWP391.Controllers
             var koiDto = kois.Select(k => k.ToKoiDto());
 
             return Ok(koiDto);
+        }
+        [HttpGet("view-all/paging")]
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+        {
+            var totalKois = await _koiRepo.CountKoiAsync();
+            var kois = await _koiRepo.GetAllAsync(query);
+            var koiDto = kois.Select(k => k.ToKoiDto());
+            return Ok(new
+            {
+                items = kois,
+                totalCount = totalKois
+            });
         }
 
         [HttpGet("view-by-id/{id}")]
