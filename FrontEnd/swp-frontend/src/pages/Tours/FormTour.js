@@ -33,8 +33,8 @@ function FormTour() {
                   const formattedValues = {
                         ...values,
                         tourName: tourName,
-                        startTime: values.startTime.format("YYYY-MM-DD"),
-                        finishTime: values.finishTime.format("YYYY-MM-DD"),
+                        startTime: values.startTime.format("DD-MM-YYYY"),
+                        finishTime: values.finishTime.format("DD-MM-YYYY"),
                   };
                   const tourResponse = await post("tour/create", formattedValues);
 
@@ -130,7 +130,7 @@ function FormTour() {
                                                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
                                           ]}
                                     >
-                                          <DatePicker style={{ width: "100%" }} />
+                                          <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
                                     </Form.Item>
                               </Col>
                               <Col span={12}>
@@ -141,7 +141,7 @@ function FormTour() {
                                                 { required: true, message: "Vui lòng chọn ngày kết thúc!" },
                                           ]}
                                     >
-                                          <DatePicker style={{ width: "100%" }} />
+                                          <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
                                     </Form.Item>
                               </Col>
                               <Col span={0}>

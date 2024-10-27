@@ -34,10 +34,10 @@ function UpdateTour() {
       const updatedValues = {
         ...values,
         startTime: values.startTime
-          ? values.startTime.format("YYYY-MM-DD")
+          ? values.startTime.format("DD-MM-YYYY")
           : "",
         finishTime: values.finishTime
-          ? values.finishTime.format("YYYY-MM-DD")
+          ? values.finishTime.format("DD-MM-YYYY")
           : "",
       };
 
@@ -92,7 +92,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} />
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -103,7 +103,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày kết thúc!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} />
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
               </Form.Item>
             </Col>
           </Row>
