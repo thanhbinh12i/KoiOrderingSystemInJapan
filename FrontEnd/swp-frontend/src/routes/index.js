@@ -63,7 +63,7 @@ import KoiByVariety from "../pages/Variety/KoiByVariety";
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
 
-  if (role !== 'Manager ') {
+  if (role !== 'Manager') {
     return <Navigate to="/" />;
   }
 
