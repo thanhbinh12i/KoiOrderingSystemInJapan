@@ -4,6 +4,7 @@ import { get, post } from "../../utils/request";
 import { Button, Card, Space } from "antd";
 
 function PaymentRemain() {
+      //xem thêm thông tin đơn hàng
       const params = useParams();
       const [billData, setBillData] = useState(null);
 
