@@ -74,7 +74,7 @@ function Register() {
                                                 </Col>
                                                 <Col span={12}>
                                                       <Form.Item label="Ngày sinh" name="dateOfBirth" rules={[{ required: true, message: 'Vui lòng chọn ngày sinh!' }]}>
-                                                            <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+                                                            <DatePicker format="DD-MM-YYYY" style={{ width: '100%' }} />
                                                       </Form.Item>
                                                 </Col>
                                           </Row>

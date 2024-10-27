@@ -78,7 +78,8 @@ function KoiDealDetail() {
                               renderItem={(item) => (
                                     <List.Item>
                                           <div>
-                                                <h3>Koi {item.koiId}</h3>
+                                                <h3>Koi {item.koiName}</h3>
+                                                <p>Số lượng: <strong>{item.quantity}</strong></p>
                                                 <p>Giá tiền gốc: <strong>{item.originalPrice} đ</strong></p>
                                                 <p>Giá tiền chốt: <strong>{item.finalPrice} đ</strong></p>
                                                 {

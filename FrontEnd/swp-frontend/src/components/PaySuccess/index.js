@@ -124,7 +124,6 @@ const PaymentSuccess = () => {
                                         <Descriptions.Item label="Mã giao dịch">{params.id}</Descriptions.Item>
                                         <Descriptions.Item label="Ngày thanh toán">{date}</Descriptions.Item>
                                         <Descriptions.Item label="Phương thức">Thẻ ngân hàng</Descriptions.Item>
-                                        <Descriptions.Item label="Tour"></Descriptions.Item>
                                         <Descriptions.Item label="Khách hàng">{bill.userFullName}</Descriptions.Item>
                                         <Descriptions.Item label="Số điện thoại">{bill.phoneNumber}</Descriptions.Item>
                                         <Descriptions.Item label="Email">{bill.email}</Descriptions.Item>

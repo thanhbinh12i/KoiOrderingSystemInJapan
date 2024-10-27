@@ -6,9 +6,6 @@ import { Link, NavLink } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
-      //thêm cái hủy đặt chỗ khi đang chờ xác nhận 
-      //thêm cái ko chấp nhận giá
-      //style và nhiều thông tin hơn
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
@@ -67,14 +64,9 @@ function MyBooking() {
                   title: 'Giá tiền',
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
-                  // render: (_, record) => {
-                  //       // if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" || record.status === "Đang check-in") {
-                  //       //       return record.priceOffer;
-                  //       // } else {
-                  //       //       return "Chưa xác nhận";
-                  //       // }
-
-                  // }
+                  render: (_, record) => (
+                        <strong>{record.priceOffer.toLocaleString()}</strong>
+                  )
             },
             {
                   title: 'Ngày xác nhận',
@@ -85,13 +77,17 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy" , "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
-                        if (record.status === "Đã xác nhận") {
+                        if(record.status === "Chờ xác nhận"){
+                              return (
+                                    <Button color="primary" danger>Hủy đặt chỗ</Button>
+                              )
+                        }else if (record.status === "Đã xác nhận") {
                               return (
                                     <>
                                           <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
@@ -153,7 +149,8 @@ function MyBooking() {
                               }
                         } else {
                               return (
-                                    <></>
+                                    <>
+                                    </>
                               )
                         }
                   }

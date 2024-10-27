@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { del } from "../../utils/request";
+import { del, put } from "../../utils/request";
 import { removeFromCart, updateQuantity } from "../../actions/cart";
 import { useDispatch } from "react-redux";
 import { Button, Input } from "antd";
@@ -14,16 +14,32 @@ function CartItem(props) {
                   dispatch(removeFromCart(id));
             }
       };
-      const handleUp = () => {
+      const handleUp = async () => {
             const newQuantity = quantity + 1;
             setQuantity(newQuantity);
-            dispatch(updateQuantity(item.koiId, newQuantity));
+            const dataToUpdate = {
+                  "originalPrice": item.originalPrice,
+                  "quantity": newQuantity,
+                  "finalPrice": item.finalPrice
+            }
+            const response = await put(`koi-bill/update/${billId}-${item.koiId}`, dataToUpdate);
+            if (response) {
+                  dispatch(updateQuantity(item.koiId, newQuantity));
+            }
       }
-      const handleDown = () => {
+      const handleDown = async () => {
             if (quantity > 1) {
                   const newQuantity = quantity - 1;
                   setQuantity(newQuantity);
-                  dispatch(updateQuantity(item.koiId, newQuantity));
+                  const dataToUpdate = {
+                        "originalPrice": item.originalPrice,
+                        "quantity": newQuantity,
+                        "finalPrice": item.finalPrice
+                  }
+                  const response = await put(`koi-bill/update/${billId}-${item.koiId}`, dataToUpdate);
+                  if (response) {
+                        dispatch(updateQuantity(item.koiId, newQuantity));
+                  }
             }
       }
       return (
@@ -42,7 +58,7 @@ function CartItem(props) {
                                     <div className="cart__quantity">
                                           <Button onClick={handleDown}>-</Button>
                                           <Input
-                                                value={quantity}
+                                                value={item.quantity}
                                                 style={{ width: '150px', textAlign: 'center' }}
                                                 readOnly
                                           />
