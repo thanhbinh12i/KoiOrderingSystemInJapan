@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Typography, Pagination, Spin } from "antd"; // Thêm Spin từ Ant Design
+import { Card, Row, Col, Typography, Pagination, Spin } from "antd";
 import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
@@ -9,14 +9,15 @@ const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
-  const [totalCount, setTotalCount] = useState(0); // Tổng số cá Koi
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false); // Thêm loading state
+  const [loading, setLoading] = useState(false); 
   const koiPerPage = 9;
+
 
   useEffect(() => {
     const fetchAPI = async () => {
-      setLoading(true); // Bắt đầu loading
+      setLoading(true); 
       try {
         const response = await get(
           `koi/view-all/paging?PageNumber=${currentPage}&PageSize=${koiPerPage}`
@@ -32,7 +33,7 @@ function Koi() {
       } catch (error) {
         console.error("Error fetching Koi:", error);
       } finally {
-        setLoading(false); // Kết thúc loading
+        setLoading(false); 
       }
     };
 
@@ -41,7 +42,7 @@ function Koi() {
 
   return (
     <>
-      {loading ? ( // Hiển thị loading khi đang tải
+      {loading ? (
         <Spin tip="Loading..." />
       ) : (
         <>
@@ -78,8 +79,8 @@ function Koi() {
           <Pagination
             current={currentPage}
             pageSize={koiPerPage}
-            total={totalCount} // Sử dụng tổng số lượng từ API
-            onChange={(page) => setCurrentPage(page)} // Cập nhật currentPage khi người dùng chuyển trang
+            total={totalCount}
+            onChange={(page) => setCurrentPage(page)} 
             className="pagination"
           />
         </>

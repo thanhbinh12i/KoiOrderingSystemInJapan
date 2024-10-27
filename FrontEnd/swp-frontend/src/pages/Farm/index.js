@@ -45,7 +45,7 @@ function Farm() {
                   <div className="farm-image">
                     <img
                       alt={farm.FarmName}
-                      src={`${process.env.REACT_APP_API_URL_UPLOAD}/koiFarm/${farm.farmImages[0].urlImage}`}
+                      src={`${process.env.REACT_APP_API_URL_UPLOAD}koiFarm/${farm.farmImages[0].urlImage}`}
                     />
                   </div>
                 </div>

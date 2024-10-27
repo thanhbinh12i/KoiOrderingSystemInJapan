@@ -3,7 +3,6 @@ import { Button, Card, Col, Row } from "antd";
 import { get } from "../../utils/request";
 import image from "../../assets/home/koi-farm-tour.jpg";
 import { Link } from "react-router-dom";
-import dayjs from "dayjs";
 
 function TourList() {
   const [tours, setTours] = useState([]);
@@ -34,11 +33,8 @@ function TourList() {
               <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
                 <Card.Meta
                   title={tour.tourName}
-                  description={`Khởi hành: ${dayjs(tour.startTime).format(
-                    "DD-MM-YYYY"
-                  )} - Kết thúc: ${dayjs(tour.finishTime).format(
-                    "DD-MM-YYYY"
-                  )}`}
+                  description={`Khởi hành: ${tour.startTime}
+                  - Kết thúc: ${tour.finishTime}`}
                 />
                 <div className="price">{tour.price.toLocaleString()}đ</div>
                 <div className="participants">

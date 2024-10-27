@@ -41,7 +41,7 @@ function CreateKoi() {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
-      if (fileList.length == 0) {
+      if (fileList.length === 0) {
         messageApi.error("Yêu cầu thêm hình ảnh");
         setLoading(false);
         return;

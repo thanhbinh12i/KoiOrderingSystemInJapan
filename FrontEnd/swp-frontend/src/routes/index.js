@@ -52,6 +52,7 @@ import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
+import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Variety";
@@ -276,6 +277,10 @@ export const routes = [
           {
             path: "quotation-staff",
             element: <Quotation />,
+          },
+          {
+            path: "quotation-detail/:id",
+            element: <QuotationDetail />,
           },
           {
             path: "koi-deal-staff",
