@@ -23,7 +23,7 @@ function EditKoi(props) {
                   const response = await get("koi-variable/view-all");
                   if (response) {
                         const formattedVarieties = response.map(item => ({
-                              label: item.varietyName + " ( " + (item.color) + " ) ",
+                              label: item.varietyName,
                               value: item.varietyId
                         }));
                         setVarieties(formattedVarieties);
@@ -45,7 +45,10 @@ function EditKoi(props) {
             fetchApi();
       }, [])
       const handleFinish = async (values) => {
-            const response = await put(`koi/update/${record.koiId}`, values);
+            const getTimeCurrent = () => {
+                  new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            };
+            const response = await put(`koi/update/${record.koiId}`, { ...values, updateDate: getTimeCurrent() });
             if (response) {
                   setIsModalOpen(false);
                   handleReload();
@@ -91,6 +94,15 @@ function EditKoi(props) {
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
+                                                <Form.Item
+                                                      label="Số lượng"
+                                                      name="quantity"
+                                                      rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
+                                                >
+                                                      <Input />
+                                                </Form.Item>
+                                          </Col>
+                                          <Col span={8}>
                                                 <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}>
                                                       <Select>
                                                             <Option value="Koi Đực">Đực</Option>
@@ -103,6 +115,7 @@ function EditKoi(props) {
                                                       <Select options={farm} />
                                                 </Form.Item>
                                           </Col>
+
                                           <Col span={8}>
                                                 <Form.Item label="Giống cá" name="varietyId" rules={[{ required: true, message: 'Vui lòng chọn giống cá!' }]}>
                                                       <Select mode="multiple" options={varieties} />

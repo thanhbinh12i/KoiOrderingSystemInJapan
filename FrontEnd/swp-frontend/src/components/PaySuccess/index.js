@@ -8,6 +8,7 @@ import { get, post, put } from '../../utils/request';
 const { Title } = Typography;
 
 const PaymentSuccess = () => {
+    //làm lại paysucess đẹp hơn
     const [bill, setBill] = useState();
     const params = useParams();
     const date = new Date().toLocaleString();
@@ -16,8 +17,6 @@ const PaymentSuccess = () => {
     useEffect(() => {
         const fetchApi = async () => {
             const pendingPaymentData = localStorage.getItem('pendingPaymentData');
-            //thêm cái gửi email về thông tin chuyến đi, chuyến bay sau khi thanh toán thành công
-            //thêm cái gửi email mấy cái bill sau khi
             const pendingPaymentKoi = localStorage.getItem('pendingPaymentKoi');
 
             if (pendingPaymentData) {

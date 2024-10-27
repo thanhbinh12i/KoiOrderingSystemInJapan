@@ -64,7 +64,7 @@ function KoiDetailById() {
           <Card className="koi-info-card">
             <Title level={2}>{koi.koiName}</Title>
             <Title level={4} className="starting-bid">
-              Giá tiền: ${koi.price}
+              Giá tiền: {koi.price} đ
             </Title>
             <Paragraph>Trang trại: {koi.farmName}</Paragraph>
             <Paragraph>Giới tính: {koi.gender}</Paragraph>
@@ -74,13 +74,11 @@ function KoiDetailById() {
             <Paragraph>
               Ngày đăng: {new Date(koi.updateDate).toLocaleString()}
             </Paragraph>
-            <div className="login-register">
-              <>
-                <Title level={5}>You must login/register to purchase koi</Title>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-              </>
-            </div>
+            
+            <Paragraph>
+                Mô tả <br />
+                {koi.description}
+              </Paragraph>
           </Card>
         </Col>
       </Row>

@@ -42,10 +42,10 @@ function PayBooking() {
       const onFinishVNPay = async (values) => {
             try {
                   const paymentData = {
-                        orderType: "string",
+                        orderType: "VN PAY",
                         amount: price,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
-                        name: "Binh",
+                        name: values.userFullName,
                         quotationId: params.id
                   };
                   const getTimeCurrent = () => {
