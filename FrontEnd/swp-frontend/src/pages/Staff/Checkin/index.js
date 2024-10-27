@@ -40,7 +40,7 @@ function Checkin() {
                                                 <p>Email: <strong>{item.email}</strong></p>
                                                 <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
                                                 <p>TourId: <strong>{item.tourId}</strong></p>
-                                                {item.status === "Đang check-in" && (
+                                                {item.status === "Đã thanh toán" && (
                                                       <Button type="primary" onClick={() => checkIn(item.quotationId, item.priceOffer)}>
                                                             Làm thủ tục check-in
                                                       </Button>
