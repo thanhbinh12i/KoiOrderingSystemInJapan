@@ -41,10 +41,25 @@ function CreateKoi() {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
+      if (fileList.length == 0) {
+        messageApi.error("Yêu cầu thêm hình ảnh");
+        setLoading(false);
+        return;
+      }
+
+      const allKoi = await get("koi/view-all");
+      const isDuplicate = allKoi.some(
+        (koi) => koi.koiName === values.koiName.trim()
+      );
+      if (isDuplicate) {
+        messageApi.error("Tên cá Koi đã tồn tại, vui lòng chọn tên khác.");
+        setLoading(false);
+        return;
+      }
       const farmId = values.farmId;
       const varietyIds = values.varietyId;
       const getTimeCurrent = () => {
-        return new Date().toISOString();
+        return new Date().toLocaleString();
       };
 
       const koiResponse = await post(`koi/create/${farmId}`, {
@@ -83,7 +98,7 @@ function CreateKoi() {
 
     try {
       const response = await fetch(
-        `https://koidayne.azurewebsites.net/api/koi-image/upload/${koiId}`,
+        `${process.env.REACT_APP_API_URL}koi-image/upload/${koiId}`,
         {
           method: "POST",
           body: formData,

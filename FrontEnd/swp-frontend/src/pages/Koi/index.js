@@ -42,12 +42,8 @@ function Koi() {
                 key={koi.koiImageId}
                 width={135}
                 height={200}
-                alt={koi?.koiName || "Default Alt Text"}
-                src={
-                  koi?.koiImages?.[0]?.urlImage
-                    ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
-                    : "path/to/default/image.jpg"
-                }
+                alt={koi?.koiName}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
                 className="koi-image"
               />
 
