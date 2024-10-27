@@ -19,7 +19,7 @@ import {
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
-
+import dayjs from "dayjs";
 const { Title, Text } = Typography;
 
 function TourDetail() {
@@ -67,7 +67,8 @@ function TourDetail() {
                     </Space>
                   }
                 >
-                  {tour.startTime} đến {tour.finishTime}
+                  {dayjs(tour.startTime).format("DD-MM-YYYY")} đến{" "}
+                  {dayjs(tour.finishTime).format("DD-MM-YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item
                   label={

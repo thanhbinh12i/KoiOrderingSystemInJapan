@@ -3,8 +3,9 @@ import { Card, Row, Col, Typography } from "antd";
 import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
@@ -27,7 +28,6 @@ function Koi() {
 
     fetchAPI();
   }, []);
-
   return (
     <Row gutter={[16, 16]} className="koi-container">
       {koi.map((koi) => (
@@ -44,21 +44,23 @@ function Koi() {
                 height={200}
                 alt={koi?.koiName}
                 src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
+                alt={koi?.koiName || "Default Alt Text"}
+                src={
+                  koi?.koiImages?.[0]?.urlImage
+                    ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
+                    : "path/to/default/image.jpg"
+                }
                 className="koi-image"
               />
 
               <Title level={4}>Tên cá koi: {koi.koiName}</Title>
               <Title level={5}>Giá: {koi.price}</Title>
-              <Title level={5}>Số lượng: {koi.quantity}</Title>
               <Title level={5}>Ngày sinh: {koi.yob}</Title>
               <Title level={5}>Giới tính: {koi.gender}</Title>
-              <Title level={5}>Ngày đăng: {koi.updateDate}</Title>
+              <Title level={5}>
+                Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
+              </Title>
               <Title level={5}>Trang trại: {koi.farmName}</Title>
-
-              <Paragraph>
-                Mô tả <br />
-                {koi.description}
-              </Paragraph>
             </Card>
           </Link>
         </Col>

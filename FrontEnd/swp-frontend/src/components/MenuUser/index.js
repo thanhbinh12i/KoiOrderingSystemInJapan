@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
-import { Menu, Dropdown, Avatar } from 'antd';
+import { Menu, Dropdown, Avatar, Space, Typography } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { checkLogin } from '../../actions/login';
@@ -66,13 +66,26 @@ function MenuUser() {
       );
       return (
             <>
-                  <Dropdown overlay={userMenu} trigger={['click']} overlayClassName="user-menu" placement="bottomRight" align={{ offset: [0, 4] }} >
-                        <div className="user-menu-trigger">
+                  <Dropdown
+                        overlay={userMenu}
+                        trigger={['click']}
+                        overlayClassName="user-profile"
+                        placement="bottomRight"
+                        align={{ offset: [0, 4] }}
+                  >
+                        <Space className="user-profile__button">
                               <Avatar icon={<UserOutlined />} />
-                              <span className="user-name">{userName}</span>
-                              <DownOutlined />
-                        </div>
+                              <div>
+                                    <Typography.Text className="username">
+                                          {userName}
+                                    </Typography.Text>
+                                    <Typography.Text className="email">
+                                          nptbinh17092004@gmail.com
+                                    </Typography.Text>
+                              </div>
+                        </Space>
                   </Dropdown>
+
             </>
       )
 }

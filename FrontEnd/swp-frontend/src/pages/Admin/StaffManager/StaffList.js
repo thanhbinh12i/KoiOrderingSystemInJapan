@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { get } from "../../../utils/request";
+import dayjs from "dayjs";
 const StaffList = () => {
   const [personalInfo, setPersonalInfo] = useState([]);
 
@@ -58,6 +59,7 @@ const StaffList = () => {
       title: "Date of Birth",
       dataIndex: "dateOfBirth",
       key: "dateOfBirth",
+      render: (date) => (date ? dayjs(date).format("DD-MM-YYYY") : ""),
     },
     {
       title: "Role",

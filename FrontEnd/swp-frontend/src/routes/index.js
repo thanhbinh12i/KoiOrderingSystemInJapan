@@ -5,9 +5,11 @@ import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
 import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
+import PaymentRemain from "../components/PaymentRemain";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
+import ChangePasswordForm from "../components/Setting/ChangePasswordForm";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
@@ -116,14 +118,6 @@ export const routes = [
         element: <AboutUs />,
       },
       {
-        path: "order-koi/:id/cart",
-        element: <Cart />,
-      },
-      {
-        path: "my-orders/feedback/:userId",
-        element: <Feedback />,
-      },
-      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -145,7 +139,19 @@ export const routes = [
                 path: "my-orders",
                 element: <MyOrder />,
               },
+              {
+                path: "settings",
+                element: <ChangePasswordForm />,
+              },
             ],
+          },
+          {
+            path: "order-koi/:id/cart",
+            element: <Cart />,
+          },
+          {
+            path: "my-orders/feedback/:userId",
+            element: <Feedback />,
           },
           {
             path: "book-tour/:id",
@@ -170,6 +176,10 @@ export const routes = [
           {
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
+          },
+          {
+            path: "payment-remain/:id",
+            element: <PaymentRemain />,
           },
         ],
       },

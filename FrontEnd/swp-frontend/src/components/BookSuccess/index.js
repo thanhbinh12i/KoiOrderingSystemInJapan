@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './BookSuccess.scss';
 
 function BookSuccess() {
+      //hiển thị thêm cái contact zalo, email nếu cần
       return (
             <>
                   <div className="booking-success">
