@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import { get } from "../../../utils/request";
@@ -58,6 +59,7 @@ const UserList = () => {
       title: "Date of Birth",
       dataIndex: "dateOfBirth",
       key: "dateOfBirth",
+      render: (date) => (date ? dayjs(date).format("DD-MM-YYYY") : ""),
     },
     {
       title: "Role",

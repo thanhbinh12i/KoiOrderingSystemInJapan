@@ -21,6 +21,15 @@ function CreateTour() {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
+
+      const allTour = await get("tour/view-all");
+      const isDuplicate = allTour.some(
+        (tour) => values.tourName.trim() === tour.tourName
+      );
+      if (isDuplicate) {
+        messageApi.error("Đã tồn tại tour. Yêu cập nhập lại tên mới.");
+        return;
+      }
       const { farmId } = values;
       const formattedValues = {
         ...values,
