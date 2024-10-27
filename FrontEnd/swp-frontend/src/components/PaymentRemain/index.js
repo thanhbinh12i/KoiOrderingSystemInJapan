@@ -25,18 +25,15 @@ function PaymentRemain() {
 
                   const paymentData = {
                         orderType: "VNPAY",
-                        amount: payStatusResponse.remain/10,
+                        amount: payStatusResponse.remain,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: billData.userFullName,
                         quotationId: params.id
                   };
-                  const getTimeCurrent = () => {
-                        return new Date().toLocaleString();
-                  };
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({ paymentDate: getTimeCurrent() }));
+                        localStorage.setItem('pendingPaymentRemain', JSON.stringify({ payStatusResponse }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {
@@ -51,15 +48,12 @@ function PaymentRemain() {
                                     <>
                                           <p>Mã đơn hàng: {billData.billId}</p>
                                           <p>Người nhận: {billData.userFullName}</p>
+                                          <p>Số tiền:</p>
                                     </>
                               )}
 
                               <Space direction="vertical" style={{ width: '100%', marginTop: '20px' }}>
-                                    <Button
-                                          type="primary"
-                                          onClick={onFinishVNPay}
-                                          block
-                                    >
+                                    <Button type="primary" onClick={onFinishVNPay} block>
                                           Thanh toán qua VNPAY
                                     </Button>
                               </Space>

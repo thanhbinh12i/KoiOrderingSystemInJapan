@@ -18,14 +18,15 @@ const PaymentSuccess = () => {
         const fetchApi = async () => {
             const pendingPaymentData = localStorage.getItem('pendingPaymentData');
             const pendingPaymentKoi = localStorage.getItem('pendingPaymentKoi');
+            const pendingPaymentRemain = localStorage.getItem('pendingPaymentRemain');
+            const getTimeCurrent = () => {
+                return new Date().toLocaleString();
+            };
 
             if (pendingPaymentData) {
                 const paymentData = JSON.parse(pendingPaymentData);
                 const billResponse = await post(`bill/create/${userId}-${paymentData.quotationId}`, paymentData);
                 if (billResponse) {
-                    const getTimeCurrent = () => {
-                        return new Date().toLocaleString();
-                    };
                     const quotationData = {
                         "priceOffer": paymentData.tourPrice,
                         "status": "Đã thanh toán",
@@ -56,9 +57,6 @@ const PaymentSuccess = () => {
                     localStorage.removeItem('pendingPaymentData');
                 }
             } else if (pendingPaymentKoi) {
-                const getTimeCurrent = () => {
-                    return new Date().toLocaleString();
-                };
                 const paymentData = JSON.parse(pendingPaymentKoi);
                 const currentBill = await get(`bill/view-by-id/${paymentData.id}`);
                 const koiPrice = paymentData.totalPrice;
@@ -88,6 +86,19 @@ const PaymentSuccess = () => {
                     }
                     localStorage.removeItem('pendingPaymentKoi');
                 }
+            } else if (pendingPaymentRemain) {
+                const paymentData = JSON.parse(pendingPaymentRemain);
+                const dataPayStatus = {
+                    "paymentMethod": "VN PAY",
+                    "deposit": paymentData.payStatusResponse.deposit,
+                    "remain": paymentData.payStatusResponse.remain,
+                    "status": "Đã thanh toán"
+                }
+                const payStatusResponse = await put(`payStatus/update/${paymentData.payStatusResponse.payId}`, dataPayStatus);
+                if (payStatusResponse) {
+                    setPrice(paymentData.payStatusResponse.remain);
+                }
+                localStorage.removeItem('pendingPaymentRemain');
             }
         };
         fetchApi();
@@ -119,18 +130,19 @@ const PaymentSuccess = () => {
                                         <Descriptions.Item label="Email">{bill.email}</Descriptions.Item>
                                     </Descriptions>
 
-                                    <div className="amount-container">
-                                        <Statistic
-                                            title="Tổng thanh toán"
-                                            value={price}
-                                            precision={0}
-                                            suffix="VND"
-                                            className="amount-statistic"
-                                        />
-                                    </div>
+
                                 </div>
                             </>
                         )}
+                        <div className="amount-container">
+                            <Statistic
+                                title="Tổng thanh toán"
+                                value={price}
+                                precision={0}
+                                suffix="VND"
+                                className="amount-statistic"
+                            />
+                        </div>
 
 
                         <div className="action-buttons">

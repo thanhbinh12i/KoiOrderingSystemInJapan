@@ -69,11 +69,15 @@ function DeliveryDate() {
                   icon: <SmileOutlined />,
             },
       ];
-      const handlePaymentConfirmation = (billId) => {
-            setReceivedPayment(prev => ({
-                  ...prev,
-                  [billId]: true
-            }));
+      const handlePaymentConfirmation = async (item) => {
+            const response = await get(`payStatus/view-billId/${item.billId}`);
+            if(response.status === "Đã thanh toán"){
+                  setReceivedPayment(prev => ({
+                        ...prev,
+                        [item.billId]: true
+                  }));
+                  handleUpdate(item, 'Giao hàng thành công');
+            }
       };
       const getStepStatus = (item, stepIndex) => {
             const currentStepIndex = steps.findIndex(step => step.title === item.deliveryStatusText);
@@ -99,7 +103,7 @@ function DeliveryDate() {
                                                 {item.deliveryStatusText === 'Đơn hàng đã giao đến bạn' && !receivedPayment[item.billId] && (
                                                       <Button
                                                             type="primary"
-                                                            onClick={() => handlePaymentConfirmation(item.billId)}
+                                                            onClick={() => handlePaymentConfirmation(item)}
                                                       >
                                                             Xác nhận đã nhận tiền
                                                       </Button>
@@ -113,12 +117,14 @@ function DeliveryDate() {
                                                                         <Button
                                                                               type="primary"
                                                                               onClick={() => handleUpdate(item, step.title)}
-                                                                              disabled={step.title === item.deliveryStatusText ||
-                                                                                    index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1
-                                                                              }
-                                                                        >
-                                                                              Cập nhật
-                                                                        </Button>
+                                                                              disabled={
+                                                                                    step.title === item.deliveryStatusText ||
+                                                                                    index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1 ||
+                                                                                    step.title === 'Giao hàng thành công' 
+                                                                                }
+                                                                            >
+                                                                                Cập nhật
+                                                                            </Button>
                                                                   )
                                                             }))}
                                                       />

@@ -12,7 +12,7 @@ function MenuUser() {
       const navigate = useNavigate();
       const userId = localStorage.getItem("id");
       const role = localStorage.getItem('role');
-      const [userName, setUserName] = useState('');
+      const [user, setUser] = useState({});
       const handleLogout = () => {
             localStorage.removeItem("token");
             localStorage.removeItem("id");
@@ -25,7 +25,7 @@ function MenuUser() {
                   if (userId) {
                         const response = await get(`account/${userId}`);
                         if (response) {
-                              setUserName(response.fullName);
+                              setUser(response);
                         }
                   }
 
@@ -37,6 +37,15 @@ function MenuUser() {
                   <Menu.Item key="profile" icon={<UserOutlined />} className="profile-item">
                         <Link to="/profile">Tài khoản của tôi</Link>
                   </Menu.Item>
+                  {
+                        role === "Customer" && (
+                              <>
+                                    <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
+                                          <Link to="/my-bookings">Đặt chỗ của tôi</Link>
+                                    </Menu.Item>
+                              </>
+                        )
+                  }
                   {
                         role === "Manager" && (
                               <Menu.Item key="admin" icon={<UserOutlined />} className="admin-item">
@@ -51,10 +60,6 @@ function MenuUser() {
                               </Menu.Item>
                         )
                   }
-
-                  <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
-                        <Link to="/my-bookings">Đặt chỗ của tôi</Link>
-                  </Menu.Item>
                   <Menu.Item key="settings" icon={<SettingOutlined />} className="settings-item">
                         <Link to="/settings">Thay đổi mật khẩu</Link>
                   </Menu.Item>
@@ -77,10 +82,10 @@ function MenuUser() {
                               <Avatar icon={<UserOutlined />} />
                               <div>
                                     <Typography.Text className="username">
-                                          {userName}
+                                          {user.fullName}
                                     </Typography.Text>
                                     <Typography.Text className="email">
-                                          nptbinh17092004@gmail.com
+                                          {user.email}
                                     </Typography.Text>
                               </div>
                         </Space>
