@@ -42,10 +42,10 @@ function PayBooking() {
       const onFinishVNPay = async (values) => {
             try {
                   const paymentData = {
-                        orderType: "string",
+                        orderType: "VN PAY",
                         amount: price,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
-                        name: "Binh",
+                        name: values.userFullName,
                         quotationId: params.id
                   };
                   const getTimeCurrent = () => {
@@ -54,7 +54,7 @@ function PayBooking() {
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values, price, quotationId: params.id, paymentDate: getTimeCurrent() }));
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values,tourPrice: price, quotationId: params.id, paymentDate: getTimeCurrent() }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {

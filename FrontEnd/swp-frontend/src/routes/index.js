@@ -5,6 +5,7 @@ import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
 import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
+import PaymentRemain from "../components/PaymentRemain";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
@@ -117,14 +118,6 @@ export const routes = [
         element: <AboutUs />,
       },
       {
-        path: "order-koi/:id/cart",
-        element: <Cart />,
-      },
-      {
-        path: "my-orders/feedback/:userId",
-        element: <Feedback />,
-      },
-      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -153,6 +146,14 @@ export const routes = [
             ],
           },
           {
+            path: "order-koi/:id/cart",
+            element: <Cart />,
+          },
+          {
+            path: "my-orders/feedback/:userId",
+            element: <Feedback />,
+          },
+          {
             path: "book-tour/:id",
             element: <BookTour />,
           },
@@ -175,6 +176,10 @@ export const routes = [
           {
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
+          },
+          {
+            path: "payment-remain/:id",
+            element: <PaymentRemain />,
           },
         ],
       },

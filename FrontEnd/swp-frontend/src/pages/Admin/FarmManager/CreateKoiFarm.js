@@ -64,7 +64,7 @@ function CreateKoiFarm() {
 
     try {
       const response = await fetch(
-        `https://localhost:7087/api/farmImage/upload/${farmId}`,
+        `https://koidayne.azurewebsites.net/api/farmImage/upload/${farmId}`,
         {
           method: "POST",
           body: formData,

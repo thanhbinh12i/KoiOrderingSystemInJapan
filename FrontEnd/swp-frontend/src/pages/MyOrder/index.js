@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
-import { Button, Table } from "antd";
+import { Button, Table} from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 function MyOrder() {
-      //xem trạng thái vận chuyển đơn hàng, nút xác nhận nhận hàng và thanh toán tiền còn lại
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const userId = localStorage.getItem("id");
@@ -63,12 +62,14 @@ function MyOrder() {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
-                        if (record.deliveryStatusText === "Đang chờ thanh toán") {
+                        if (record.deliveryStatusText === "Đơn hàng đã giao đến bạn") {
                               return (
                                     <>
-                                          <Button type="primary">
-                                                Thanh toán
-                                          </Button>
+                                          <Link to={`/payment-remain/${record.billId}`}>
+                                                <Button type="primary">
+                                                      Đến trang thanh toán
+                                                </Button>
+                                          </Link>
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {
@@ -96,7 +97,7 @@ function MyOrder() {
       ]
       return (
             <>
-                  <Table dataSource={deliveryList} columns={columns} bordered />
+                  <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
             </>
       );
 }

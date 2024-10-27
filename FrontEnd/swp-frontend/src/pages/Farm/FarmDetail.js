@@ -78,7 +78,7 @@ function FarmDetail() {
             farm.farmImages.map((img, index) => (
               <div key={index}>
                 <img
-                  src={`https://localhost:7087/uploads/koiFarm/${img.urlImage}`}
+                  src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${img.urlImage}`}
                   alt={`${farm.farmName} - Ảnh ${index + 1}`}
                   style={{ width: "100%", height: "400px", objectFit: "cover" }}
                 />

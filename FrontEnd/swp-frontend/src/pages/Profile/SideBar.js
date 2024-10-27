@@ -1,12 +1,8 @@
 import React from "react";
 import { Menu, Typography, Avatar, Button } from "antd";
 import {
-  CreditCardOutlined,
   CalendarOutlined,
   HistoryOutlined,
-  RollbackOutlined,
-  BellOutlined,
-  GiftOutlined,
   SettingOutlined,
   GoogleOutlined,
 } from "@ant-design/icons";
@@ -73,29 +69,17 @@ function Sidebar() {
         Bạn là hội viên
       </Button>
       <Menu mode="vertical" defaultSelectedKeys={["account"]}>
+        <Menu.Item key="account" icon={<SettingOutlined />}>
+        <Link to="/profile">Tài khoản</Link>
+        </Menu.Item>
         <Menu.Item key="password" icon={<GoogleOutlined />}>
           Mật khẩu & Bảo mật
-        </Menu.Item>
-        <Menu.Item key="cards" icon={<CreditCardOutlined />}>
-          Thẻ của tôi
         </Menu.Item>
         <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
         <Menu.Item key="my-bills" icon={<HistoryOutlined />}>
           <Link to="/my-orders">Đơn hàng của tôi </Link>
-        </Menu.Item>
-        <Menu.Item key="refunds" icon={<RollbackOutlined />}>
-          Hoàn tiền
-        </Menu.Item>
-        <Menu.Item key="notifications" icon={<BellOutlined />}>
-          Thông báo chuyến đi
-        </Menu.Item>
-        <Menu.Item key="promotions" icon={<GiftOutlined />}>
-          Khuyến mãi
-        </Menu.Item>
-        <Menu.Item key="account" icon={<SettingOutlined />}>
-          Tài khoản
         </Menu.Item>
       </Menu>
     </div>

@@ -42,14 +42,17 @@ function Koi() {
                 key={koi.koiImageId}
                 width={135}
                 height={200}
-                alt={koi.koiName}
-                src={`https://localhost:7087/uploads/koi/${koi.koiImages[0].urlImage}`}
+                alt={koi?.koiName || "Default Alt Text"}
+                src={
+                  koi?.koiImages?.[0]?.urlImage
+                    ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
+                    : "path/to/default/image.jpg"
+                }
                 className="koi-image"
               />
 
               <Title level={4}>Tên cá koi: {koi.koiName}</Title>
               <Title level={5}>Giá: {koi.price}</Title>
-              <Title level={5}>Số lượng: {koi.quantity}</Title>
               <Title level={5}>Ngày sinh: {koi.yob}</Title>
               <Title level={5}>Giới tính: {koi.gender}</Title>
               <Title level={5}>

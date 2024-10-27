@@ -6,6 +6,9 @@ import { Link, NavLink } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
+      //thêm cái hủy đặt chỗ khi đang chờ xác nhận 
+      //thêm cái ko chấp nhận giá
+      //style và nhiều thông tin hơn
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
@@ -82,7 +85,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đang check-in", "Đã hủy" , "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy" , "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Hành động',
@@ -99,26 +102,8 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
-                              const handleCheckIn = async () => {
-                                    const getTimeCurrent = () => {
-                                          return new Date().toLocaleString();
-                                    };
-                                    const quotationData = {
-                                          "priceOffer": record.priceOffer,
-                                          "status": "Đang check-in",
-                                          "approvedDate": getTimeCurrent(),
-                                          "description": record.description,
-                                    };
-                                    const response = await put(`quotation/update/${record.quotationId}`, quotationData);
-                                    if (response) {
-                                          fetchApi();
-                                    }
-                              }
                               return (
                                     <>
-                                          <Button type="primary" onClick={handleCheckIn}>
-                                                Check - in máy bay
-                                          </Button>
                                           <Button type="primary" onClick={() => showModal()}>
                                                 Hủy
                                           </Button>
@@ -127,7 +112,7 @@ function MyBooking() {
                               )
                         } else if (record.status === "Đã check-in") {
                               const relatedBill = bill.find(b => b.quotationId === record.quotationId);
-                              const handleOk2 = async () => {
+                              const handleNoBuy = async () => {
                                     const getTimeCurrent = () => {
                                           return new Date().toLocaleString();
                                     };
@@ -145,7 +130,7 @@ function MyBooking() {
                               }
                               if (relatedBill.koiPrice > 0) {
                                     return (
-                                          <Button type="primary">Xem chi tiết</Button>
+                                          <Button type="primary">Xem chi tiết đơn hàng</Button>
                                     )
                               } else if (relatedBill) {
                                     return (
@@ -157,7 +142,7 @@ function MyBooking() {
                                                 <Modal
                                                       title="Xác nhận không mua cá"
                                                       open={isModalVisible}
-                                                      onOk={handleOk2}
+                                                      onOk={handleNoBuy}
                                                       onCancel={handleCancel}
                                                 >
                                                       <p>Bạn có chắc chắn không mua cá?</p>

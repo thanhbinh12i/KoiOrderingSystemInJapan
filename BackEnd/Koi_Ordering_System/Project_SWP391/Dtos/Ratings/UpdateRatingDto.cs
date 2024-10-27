@@ -2,8 +2,8 @@
 {
     public class UpdateRatingDto
     {
-        public float Rate { get; set; }
-        public string Content { get; set; }
+        public int Rate { get; set; }
         public string RatingDate { get; set; }
+        public string Content { get; set; }
     }
 }
