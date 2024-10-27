@@ -108,19 +108,26 @@ function Quotation() {
                                                             </p>
                                                             {item.status === "Chờ xác nhận" && (
                                                                   <>
-                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
-                                                                        <Modal
-                                                                              title="Nhập giá tiền cho chuyến đi"
-                                                                              visible={modalVisibility[item.quotationId]}
-                                                                              onOk={() => updatePrice(item.quotationId)}
-                                                                              onCancel={() => handleCancel(item.quotationId)}
-                                                                        >
-                                                                              <Input
-                                                                                    placeholder="Nhập giá"
-                                                                                    value={prices[item.quotationId] || ''}
-                                                                                    onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                              />
-                                                                        </Modal>
+                                                                        {item.priceOffer === 0 ? (
+                                                                              <>
+                                                                                    <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá</Button>
+                                                                                    <Modal
+                                                                                          title="Nhập giá tiền cho chuyến đi"
+                                                                                          visible={modalVisibility[item.quotationId]}
+                                                                                          onOk={() => updatePrice(item.quotationId)}
+                                                                                          onCancel={() => handleCancel(item.quotationId)}
+                                                                                    >
+                                                                                          <Input
+                                                                                                placeholder="Nhập giá"
+                                                                                                value={prices[item.quotationId] || ''}
+                                                                                                onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                                          />
+                                                                                    </Modal>
+                                                                              </>
+                                                                        ) : (
+                                                                              <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>Xác nhận đặt chỗ</Button>
+                                                                        )}
+
                                                                   </>
                                                             )}
                                                             {item.status === "Đã nhập giá chuyến đi" && (
