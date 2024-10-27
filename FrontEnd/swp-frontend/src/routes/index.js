@@ -42,6 +42,7 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
 import MyOrder from "../pages/MyOrder";
+import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
@@ -144,6 +145,10 @@ export const routes = [
                 path: "settings",
                 element: <ChangePasswordForm />,
               },
+              {
+                path: "my-orders/:id",
+                element: <MyOrderDetail />,
+              }
             ],
           },
           {

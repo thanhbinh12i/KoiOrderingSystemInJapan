@@ -11,7 +11,16 @@ function QuotationManager() {
       const fetchApi = async () => {
             const response = await get("quotation/view-all");
             if (response) {
-                  setQuotation(response.reverse());
+                  const quotationsWithTours = await Promise.all(
+                        response.map(async (quotation) => {
+                              const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
+                              return {
+                                    ...quotation,
+                                    tourDetail: tourResponse
+                              };
+                        })
+                  );
+                  setQuotation(quotationsWithTours.reverse());
             }
       };
       useEffect(() => {
@@ -106,11 +115,11 @@ function QuotationManager() {
                                     {quotation.map((item) => (
                                           <Col span={8} key={item.quotationId}>
                                                 <Card title={
-                                                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                                             <span>Xác nhận báo giá</span>
                                                             <Button type="primary">Xem chi tiết</Button>
                                                       </div>
-                                                }>
+                                                } style={{height: '400px' }}>
                                                       <p>
                                                             Họ và tên: <strong>{item.fullName}</strong>
                                                       </p>
@@ -121,7 +130,7 @@ function QuotationManager() {
                                                             Số điện thoại: <strong>{item.phoneNumber}</strong>
                                                       </p>
                                                       <p>
-                                                            TourId: <strong>{item.tourId}</strong>
+                                                            Chuyến đi: <strong>{item.tourDetail.tourName}</strong>
                                                       </p>
                                                       <p>
                                                             Giá tiền: <strong>{item.priceOffer}</strong>
