@@ -19,7 +19,7 @@ import {
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
-
+import dayjs from "dayjs";
 const { Title, Text } = Typography;
 
 function TourDetail() {
@@ -67,7 +67,8 @@ function TourDetail() {
                     </Space>
                   }
                 >
-                  {tour.startTime} đến {tour.finishTime}
+                  {dayjs(tour.startTime).format("DD-MM-YYYY")} đến{" "}
+                  {dayjs(tour.finishTime).format("DD-MM-YYYY")}
                 </Descriptions.Item>
                 <Descriptions.Item
                   label={
@@ -100,7 +101,7 @@ function TourDetail() {
                     <List.Item key={item.farmName} className="farm-list-item">
                       <div className="farm-container">
                         <img
-                          src={`https://koidayne.azurewebsites.net/uploads/koiFarm/${item.farmImages[0].urlImage}`}
+                          src={`https://localhost:7087/uploads/koiFarm/${item.farmImages[0].urlImage}`}
                           alt={item.farmName}
                           className="farm-image"
                         />

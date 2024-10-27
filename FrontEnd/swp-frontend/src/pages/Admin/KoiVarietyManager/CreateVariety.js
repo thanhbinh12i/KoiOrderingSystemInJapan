@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Button, message, Upload } from "antd";
 import { useState } from "react";
 import { UploadOutlined } from "@ant-design/icons";
+import { get } from "../../../utils/request";
 
 const { TextArea } = Input;
 function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
@@ -9,8 +10,17 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
   const [messageApi, contextHolder] = message.useMessage();
   const [file, setFile] = useState(null);
   const handleSubmit = async (values) => {
+    const allVarieties = await get("koi-variable/view-all");
+    console.log(allVarieties[0]);
+    const isDuplicate = allVarieties.some(
+      (variety) => variety.varietyName === values.VarietyName.trim()
+    );
+    console.log(isDuplicate);
+    if (isDuplicate) {
+      messageApi.error("Tên giống cá đã tồn tại. Vui lòng nhập tên khác!");
+      return;
+    }
     const formData = new FormData();
-
     formData.append("files", file);
     formData.append("VarietyName", values.VarietyName);
     formData.append("Description", values.Description);
@@ -18,7 +28,7 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://koidayne.azurewebsites.net/api/koi-variable/upload",
+        "https://localhost:7087/api/koi-variable/upload",
         {
           method: "POST",
           body: formData,

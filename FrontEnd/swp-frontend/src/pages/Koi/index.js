@@ -3,8 +3,9 @@ import { Card, Row, Col, Typography } from "antd";
 import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
@@ -27,7 +28,6 @@ function Koi() {
 
     fetchAPI();
   }, []);
-
   return (
     <Row gutter={[16, 16]} className="koi-container">
       {koi.map((koi) => (
@@ -55,8 +55,10 @@ function Koi() {
               <Title level={5}>Giá: {koi.price}</Title>
               <Title level={5}>Ngày sinh: {koi.yob}</Title>
               <Title level={5}>Giới tính: {koi.gender}</Title>
+              <Title level={5}>
+                Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
+              </Title>
               <Title level={5}>Trang trại: {koi.farmName}</Title>
-
             </Card>
           </Link>
         </Col>

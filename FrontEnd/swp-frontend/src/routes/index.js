@@ -9,6 +9,7 @@ import PaymentRemain from "../components/PaymentRemain";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
+import ChangePasswordForm from "../components/Setting/ChangePasswordForm";
 import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
@@ -137,7 +138,11 @@ export const routes = [
               {
                 path: "my-orders",
                 element: <MyOrder />,
-              }
+              },
+              {
+                path: "settings",
+                element: <ChangePasswordForm />,
+              },
             ],
           },
           {
@@ -174,8 +179,8 @@ export const routes = [
           },
           {
             path: "payment-remain/:id",
-            element: <PaymentRemain />
-          }
+            element: <PaymentRemain />,
+          },
         ],
       },
     ],

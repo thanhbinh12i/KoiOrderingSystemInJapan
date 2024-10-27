@@ -6,12 +6,29 @@
 
     .ant-card {
       height: 100%;
+
+      .ant-statistic {
+        .ant-statistic-title {
+          font-size: 16px;
+          color: rgba(0, 0, 0, 0.85);
+        }
+
+        .ant-statistic-content {
+          font-size: 24px;
+          font-weight: bold;
+        }
+      }
     }
   }
 
   .charts {
     .ant-card {
-      margin-bottom: 24px;
+      height: 100%;
+
+      .ant-card-head-title {
+        font-size: 16px;
+        font-weight: bold;
+      }
     }
   }
 }

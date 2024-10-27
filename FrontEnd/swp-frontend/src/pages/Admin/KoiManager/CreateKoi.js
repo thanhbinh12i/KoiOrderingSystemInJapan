@@ -41,6 +41,21 @@ function CreateKoi() {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
+      if (fileList.length == 0) {
+        messageApi.error("Yêu cầu thêm hình ảnh");
+        setLoading(false);
+        return;
+      }
+
+      const allKoi = await get("koi/view-all");
+      const isDuplicate = allKoi.some(
+        (koi) => koi.koiName === values.koiName.trim()
+      );
+      if (isDuplicate) {
+        messageApi.error("Tên cá Koi đã tồn tại, vui lòng chọn tên khác.");
+        setLoading(false);
+        return;
+      }
       const farmId = values.farmId;
       const varietyIds = values.varietyId;
       const getTimeCurrent = () => {

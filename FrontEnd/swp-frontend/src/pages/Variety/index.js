@@ -28,27 +28,29 @@ function Variety() {
   };
 
   return (
-    <Row gutter={[16, 16]} className="variety-container">
-      {varieties.map((variety) => (
-        <Col xs={24} sm={12} md={8} key={variety.varietyId}>
-          <Card
-            hoverable
-            className="variety-card"
-            onClick={() => handleCardClick(variety.varietyName)}
-          >
-            <img
-              width={135}
-              height={200}
-              alt={variety.varietyName}
-              src={`https://koidayne.azurewebsites.net/uploads/koiVariety/${variety.urlImage}`}
-              className="variety-image"
-            />
-            <Title level={4}>{variety.varietyName}</Title>
-            <Paragraph>{variety.description}</Paragraph>
-          </Card>
-        </Col>
-      ))}
-    </Row>
+    <>
+      <Row gutter={[16, 16]} className="variety-container">
+        {varieties.map((variety) => (
+          <Col xs={24} sm={12} md={8} key={variety.varietyId}>
+            <Card
+              hoverable
+              className="variety-card"
+              onClick={() => handleCardClick(variety.varietyName)}
+            >
+              <img
+                width={135}
+                height={200}
+                alt={variety.varietyName}
+                src={`https://localhost:7087/uploads/koiVariety/${variety.urlImage}`}
+                className="variety-image"
+              />
+              <Title level={4}>{variety.varietyName}</Title>
+              <Paragraph>{variety.description}</Paragraph>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </>
   );
 }
 
