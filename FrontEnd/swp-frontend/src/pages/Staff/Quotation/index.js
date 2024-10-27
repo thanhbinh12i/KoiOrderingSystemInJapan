@@ -10,7 +10,7 @@ function Quotation() {
       const [prices, setPrices] = useState({});
       const [messages, setMessages] = useState({});
       const [currentPage, setCurrentPage] = useState(1);
-      const pageSize = 4;
+      const pageSize = 3;
 
       const getCurrentPageData = () => {
             const startIndex = (currentPage - 1) * pageSize;
@@ -20,7 +20,16 @@ function Quotation() {
       const fetchApi = async () => {
             const response = await get("quotation/view-all");
             if (response) {
-                  setQuotation(response.reverse());
+                  const quotationsWithTours = await Promise.all(
+                        response.map(async (quotation) => {
+                              const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
+                              return {
+                                    ...quotation,
+                                    tourDetail: tourResponse
+                              };
+                        })
+                  );
+                  setQuotation(quotationsWithTours.reverse());
             }
       };
 
@@ -107,7 +116,7 @@ function Quotation() {
                                                                         <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
                                                                   </Col>
                                                                   <Col span={12}>
-                                                                        <p>TourId: <strong>{item.tourId}</strong></p>
+                                                                        <p>Chuyến đi: <strong>{item.tourDetail.tourName}</strong></p>
                                                                         <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
                                                                         <p>Trạng thái: <strong>{item.status}</strong></p>
                                                                   </Col>
