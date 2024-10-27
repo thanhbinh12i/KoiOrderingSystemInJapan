@@ -59,7 +59,7 @@ namespace Project_SWP391.Controllers
                 var quotationId = response.PaymentId;
 
                 // Redirect to the specified URL
-                return Redirect($"https://koidaynevn.azurewebsites.net/pay-success/{quotationId}");
+                return Redirect($"http://localhost:3000/pay-success/{quotationId}");
             }
             catch (Exception ex)
             {
