@@ -10,7 +10,7 @@ import {
   Upload,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { post } from "../../../utils/request";
+import { get, post } from "../../../utils/request";
 
 function CreateKoiFarm() {
   const [form] = Form.useForm();
@@ -21,6 +21,17 @@ function CreateKoiFarm() {
   const handleFinish = async (values) => {
     try {
       setLoading(true);
+
+      const allFarm = await get("koiFarm/view-all");
+      const isDuplicate = allFarm.some(
+        (farm) => farm.farmName === values.farmName.trim()
+      );
+      if (isDuplicate) {
+        messageApi.error("Tên trang trại đã tồn tại, vui lòng chọn tên khác.");
+        setLoading(false);
+        return;
+      }
+
       const formattedValues = {
         ...values,
         openHour: values.openHour.format("HH:mm"),

@@ -195,7 +195,7 @@ function FarmDetail() {
                           type="secondary"
                           style={{ marginLeft: "8px" }}
                         >
-                          {rating.ratingDate}
+                          {new Date(rating.ratingDate).toLocaleDateString()}
                         </Text>
                       </div>
                     </div>

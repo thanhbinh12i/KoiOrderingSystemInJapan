@@ -1,6 +1,6 @@
 import { Button, Form, Input, message, Modal } from "antd";
 import { useState } from "react";
-import { post } from "../../../utils/request";
+import { get, post } from "../../../utils/request";
 const { TextArea } = Input;
 
 function CreateService(props) {
@@ -11,6 +11,15 @@ function CreateService(props) {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
+      const allTypeDeli = await get("delivery/view-all");
+      console.log(allTypeDeli);
+      const isDuplicate = allTypeDeli.some(
+        (deli) => deli.deliveryType === values.deliveryType.trim()
+      );
+      if (isDuplicate) {
+        messageApi.error("Đã tổn tại phương thức vận chuyển.");
+        return;
+      }
       const response = await post("delivery/create", values);
       if (response) {
         form.resetFields();
