@@ -80,7 +80,7 @@ function OrderKoi() {
                                                                   width="100%"
                                                                   height={300}
                                                                   alt={koi.koiName}
-                                                        src={`https://koidayne.azurewebsites.net/uploads/koi/${koi.koiImages[0].urlImage}`}
+                                                        src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
                                                             />
                                                       ) : (
                                                             <p>No images available</p>

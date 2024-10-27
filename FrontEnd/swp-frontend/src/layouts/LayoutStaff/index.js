@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout, Menu, Avatar } from 'antd';
 import { UserOutlined, MessageOutlined, TeamOutlined, NotificationOutlined, LogoutOutlined } from '@ant-design/icons';
 import "./LayoutStaff.scss";
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 
 const { Sider, Content } = Layout;
 
@@ -48,7 +48,7 @@ function LayoutStaff() {
                                           </>
                                     )}
                                     <Menu.Item key="7" icon={<LogoutOutlined />}>
-                                          Đăng xuất
+                                          <NavLink to="/logout">Đăng xuất</NavLink>
                                     </Menu.Item>
                               </Menu>
                         </Sider>

@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
@@ -58,6 +59,27 @@ import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Variety";
 import KoiByVariety from "../pages/Variety/KoiByVariety";
+
+const AdminRoute = ({ children }) => {
+  const role = localStorage.getItem('role');
+
+  if (role !== 'Manager ') {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+const StaffRoute = ({ children }) => {
+  const role = localStorage.getItem('role');
+
+  if (!role.includes("Staff")) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
 export const routes = [
   {
     path: "/",
@@ -195,7 +217,7 @@ export const routes = [
     element: <PrivateRoutes />,
     children: [
       {
-        element: <LayoutAdmin />,
+        element: <AdminRoute><LayoutAdmin /></AdminRoute>,
         children: [
           {
             path: "admin",
@@ -277,7 +299,7 @@ export const routes = [
       },
       {
         path: "staff",
-        element: <LayoutStaff />,
+        element: <StaffRoute><LayoutStaff /></StaffRoute>,
         children: [
           {
             path: "quotation-staff",

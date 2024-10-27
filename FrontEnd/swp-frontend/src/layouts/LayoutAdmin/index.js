@@ -2,10 +2,9 @@ import { Layout } from "antd";
 import "./LayoutAdmin.scss";
 import {
   MenuUnfoldOutlined,
-  BellOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Badge, Avatar, Dropdown, Menu } from "antd";
+import { Avatar, Dropdown, Menu } from "antd";
 import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import MenuSider from "./MenuSider";
@@ -18,9 +17,6 @@ function LayoutAdmin() {
     <Menu>
       <Menu.Item key="profile">
         <Link to="/profile">Hồ sơ</Link>
-      </Menu.Item>
-      <Menu.Item key="settings">
-        <Link to="/settings">Cài đặt</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">
@@ -62,9 +58,6 @@ function LayoutAdmin() {
               >
                 Trang chủ
               </NavLink>
-              <Badge count={5} className="header__nav-notification">
-                <BellOutlined style={{ fontSize: "20px" }} />
-              </Badge>
               <Dropdown overlay={userMenu} trigger={["click"]}>
                 <Avatar
                   icon={<UserOutlined />}
