@@ -12,6 +12,7 @@ namespace Project_SWP391.Interfaces
         Task<List<Tour?>> GetByFarmIdAsync(int farmId);
         Task<List<Tour?>> GetByVarietyIdAsync(int varietyId);
         Task<List<Tour?>> GetPriceByAsync(float min, float max);
+        Task<List<Tour?>> GetByDateAsync(DateTime? start, DateTime? end);
         Task<Tour> CreateAsync(Tour tourModel);
         Task<Tour?> UpdateAsync(int tourId, UpdateTourDto tourDto);
         Task<Tour?> DeleteAsync(int tourId);
