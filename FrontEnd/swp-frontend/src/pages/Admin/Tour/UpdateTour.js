@@ -16,8 +16,8 @@ function UpdateTour() {
         const tour = await get(`tour/view-tourId/${id}`);
         const formattedTour = {
           ...tour,
-          startTime: tour.startTime ? moment(tour.startTime) : null,
-          finishTime: tour.finishTime ? moment(tour.finishTime) : null,
+          startTime: tour.startTime ? moment(tour.startTime, "DD-MM-YYYY") : null,
+          finishTime: tour.finishTime ? moment(tour.finishTime, "DD-MM-YYYY") : null,
         };
         form.setFieldsValue(formattedTour);
       } catch (error) {

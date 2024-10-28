@@ -15,17 +15,23 @@ function KoiDetailById() {
   useEffect(() => {
     const fetchAPI = async () => {
       try {
-        const koi = await get(`koi/view-by-id/${id}`);
-        const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
-        const varietyRes = await get(`koi-variable/view-by-koi-id/${id}`);
+        const koiData = await get(`koi/view-by-id/${id}`);
+
+        const [farmData, varietyData] = await Promise.all([
+          get(`koiFarm/view/${koiData.farmId}`),
+          get(`koi-variable/view-by-koi-id/${id}`)
+        ]);
+    
         const updatedKoiData = {
-          ...koi,
-          farmName: farmResponse.farmName,
-          variety: varietyRes[0].varietyName,
+          ...koiData,
+          farmName: farmData?.farmName || 'Unknown Farm',
+          variety: varietyData?.[0]?.varietyName || 'Unknown Variety',
         };
 
-        setKoi(updatedKoiData);
-        setSelectedImage(updatedKoiData.koiImages[0]?.urlImage);
+        await Promise.all([
+          setKoi(updatedKoiData),
+          setSelectedImage(updatedKoiData.koiImages?.[0]?.urlImage || null)
+        ]);
       } catch (error) {
         console.error("Error fetching Koi:", error);
       }
