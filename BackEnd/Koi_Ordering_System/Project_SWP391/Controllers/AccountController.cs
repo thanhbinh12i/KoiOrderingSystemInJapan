@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth;
+﻿using Azure.Core;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +8,10 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
 using Project_SWP391.Dtos.Account;
 using Project_SWP391.Dtos.Bills;
+using Project_SWP391.Dtos.Email;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
+using Project_SWP391.Services;
 using System;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -23,11 +26,13 @@ namespace Project_SWP391.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        private readonly IEmailService _emailService;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, IEmailService emailService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
@@ -609,6 +614,58 @@ namespace Project_SWP391.Controllers
 
             return Ok(userDtos);
         }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordEmailDto resetEmail)
+        {
+            if (resetEmail == null || string.IsNullOrWhiteSpace(resetEmail.ToEmail))
+            {
+                return BadRequest("Email address is required.");
+            }
+
+
+            var user = await _userManager.FindByEmailAsync(resetEmail.ToEmail);
+            if (user == null)
+            {
+                return NotFound("No user found with that email address.");
+            }
+
+            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword");
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return StatusCode(500, "Failed to generate password reset token.");
+            }
+
+            var resetLink = $"{Request.Scheme}://{Request.Host}/Account/ResetPassword?token={token}&email={resetEmail.ToEmail}";
+
+            if (string.IsNullOrEmpty(resetLink))
+            {
+                return StatusCode(500, "Failed to generate reset link.");
+            }
+
+            var emailModel = new EmailDTO
+            {
+                ToEmail = resetEmail.ToEmail,
+                Subject = "Password Reset",
+                Message = $"Click here to reset your password: {resetLink}",
+            };
+
+            try
+            {
+                var result = await _emailService.SendEmailAsync(emailModel);
+                if (result)
+                    return Ok("Email sent successfully.");
+                else
+                    return StatusCode(500, "Failed to send email.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
         private string FormatPhoneNumber(string phoneNumber)
         {
             if (phoneNumber.Length == 10)
