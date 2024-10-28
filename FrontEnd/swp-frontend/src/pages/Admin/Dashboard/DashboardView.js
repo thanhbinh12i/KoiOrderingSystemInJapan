@@ -25,25 +25,31 @@ const DashboardView = () => {
 
   const fetchData = async () => {
     try {
-      const usersData = await get("account/view-all-user");
-      const billsData = await get("bill/view-all");
-      const koiBillsData = await get("koi-bill/view-all");
-      const quotationsData = await get("quotation/view-all");
-      const toursData = await get("tour/view-all");
+      const [usersData, billsData, koiBillsData, quotationsData, toursData] = await Promise.all([
+        get("account/view-all-user"),
+        get("bill/view-all"),
+        get("koi-bill/view-all"),
+        get("quotation/view-all"),
+        get("tour/view-all")
+      ]);
 
-      setUsers(usersData);
-      setBills(billsData);
-      setKoiBills(koiBillsData);
-      setQuotations(quotationsData);
-      setTours(toursData);
+      await Promise.all([
+        setUsers(usersData),
+        setBills(billsData),
+        setKoiBills(koiBillsData),
+        setQuotations(quotationsData),
+        setTours(toursData)
+      ]);
 
-      // Process best kois from koiBills
-      const koiStats = processKoiSales(koiBills, bills);
-      setBestKois(koiStats);
+      const [koiStats, tourStats] = await Promise.all([
+        processKoiSales(koiBillsData, billsData),
+        processTourBookings(billsData, toursData, quotationsData)
+      ]);
 
-      // Process best tours from bills and tours data
-      const tourStats = processTourBookings(billsData, tours, quotationsData);
-      setBestTours(tourStats);
+      await Promise.all([
+        setBestKois(koiStats),
+        setBestTours(tourStats)
+      ]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -91,14 +97,15 @@ const DashboardView = () => {
     const koiSales = {};
     bills.forEach((bills) => {
       koiBillsData.forEach((bill) => {
-        const koiName = bill.koiName || "Unknown Koi";
-        console.log(!koiSales[koiName] && bills.koiPrice);
-        if (!koiSales[koiName] && bills.koiPrice) {
-          koiSales[koiName] = {
-            name: koiName,
-            sales: bill.quantity,
-            revenue: bill.finalPrice * bill.quantity,
-          };
+        if (bill.billId === bills.billId) {
+          const koiName = bill.koiName || "Unknown Koi";
+          if (bills.koiPrice !== null) {
+            koiSales[koiName] = {
+              name: koiName,
+              sales: bill.quantity,
+              revenue: bill.finalPrice * bill.quantity,
+            };
+          }
         }
       });
     });

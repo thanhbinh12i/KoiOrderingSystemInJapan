@@ -56,7 +56,7 @@ function TourList() {
       key: "price",
       render: (_, record) => (
         <strong>{record.price.toLocaleString()}</strong>
-  )
+      )
     },
     {
       title: "Ngày bắt đầu",
