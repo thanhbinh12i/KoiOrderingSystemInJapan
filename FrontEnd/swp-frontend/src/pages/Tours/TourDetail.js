@@ -85,7 +85,7 @@ function TourDetail() {
                     </Space>
                   }
                 >
-                  {tour.price}
+                  {tour.price.toLocaleString()} đ
                 </Descriptions.Item>
               </Descriptions>
 

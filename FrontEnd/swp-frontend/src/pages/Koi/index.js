@@ -17,13 +17,13 @@ function Koi() {
     const fetchAPI = async () => {
       try {
         const response = await get("koi/view-all");
-        const updatedKoiData = await Promise.all(
-          response.map(async (koi) => {
-            const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
-            return { ...koi, farmName: farmResponse.farmName };
-          })
-        );
-        setKoi(updatedKoiData);
+        // const updatedKoiData = await Promise.all(
+        //   response.map(async (koi) => {
+        //     const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
+        //     return { ...koi, farmName: farmResponse.farmName };
+        //   })
+        // );
+        setKoi(response);
       } catch (error) {
         console.error("Error fetching Koi:", error);
       }
@@ -52,22 +52,18 @@ function Koi() {
                   width={135}
                   height={200}
                   alt={koi?.koiName || "Default Alt Text"}
-                  src={
-                    koi?.koiImages?.[0]?.urlImage
-                      ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
-                      : "path/to/default/image.jpg"
-                  }
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
                   className="koi-image"
                 />
 
                 <Title level={4}>Tên cá koi: {koi.koiName}</Title>
-                <Title level={5}>Giá: {koi.price}</Title>
+                <Title level={5}>Giá: {koi.price.toLocaleString()} đ</Title>
                 <Title level={5}>Ngày sinh: {koi.yob}</Title>
                 <Title level={5}>Giới tính: {koi.gender}</Title>
                 <Title level={5}>
                   Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
                 </Title>
-                <Title level={5}>Trang trại: {koi.farmName}</Title>
+                {/* <Title level={5}>Trang trại: {koi.farmName}</Title> */}
               </Card>
             </Link>
           </Col>

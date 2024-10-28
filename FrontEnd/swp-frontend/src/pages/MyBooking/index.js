@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { get, put } from "../../utils/request";
+import { del, get, put } from "../../utils/request";
 import { Button, Modal, Table } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink } from "react-router-dom";
@@ -83,11 +83,27 @@ function MyBooking() {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
-                        if(record.status === "Chờ xác nhận"){
+                        if (record.status === "Chờ xác nhận") {
+                              const handleCancelBooking = async () => {
+                                    const response = del('quotation/delete', record.quotationId);
+                                    if (response) {
+                                          fetchApi();
+                                    }
+                              }
                               return (
-                                    <Button color="primary" danger>Hủy đặt chỗ</Button>
+                                    <>
+                                          <Button color="primary" onClick={() => showModal()} danger>Hủy đặt chỗ</Button>
+                                          <Modal
+                                                title="Xác nhận hủy đặt chỗ"
+                                                open={isModalVisible}
+                                                onOk={handleCancelBooking}
+                                                onCancel={handleCancel}
+                                          >
+                                                <p>Bạn có chắc chắn hủy đặt chỗ?</p>
+                                          </Modal>
+                                    </>
                               )
-                        }else if (record.status === "Đã xác nhận") {
+                        } else if (record.status === "Đã xác nhận") {
                               return (
                                     <>
                                           <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
@@ -126,7 +142,11 @@ function MyBooking() {
                               }
                               if (relatedBill.koiPrice > 0) {
                                     return (
-                                          <Button type="primary">Xem chi tiết đơn hàng</Button>
+                                          <Link to={`/my-orders/${relatedBill.billId}`}>
+                                                <Button type="primary">
+                                                      Xem chi tiết đơn hàng
+                                                </Button>
+                                          </Link>
                                     )
                               } else if (relatedBill) {
                                     return (

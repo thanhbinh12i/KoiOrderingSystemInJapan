@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { get, put } from "../../utils/request";
 import moment from "moment";
-
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
@@ -33,7 +32,7 @@ function MainContent() {
       const response = await get(`account/${userId}`);
       const updatedInfo = {
         ...response,
-        dateOfBirth: response.dateOfBirth ? moment(response.dateOfBirth) : null,
+        dateOfBirth: response.dateOfBirth ? moment(response.dateOfBirth, "DD-MM-YYYY") : null,
       };
       setPersonalInfo(updatedInfo);
       form.setFieldsValue(updatedInfo);
@@ -57,7 +56,7 @@ function MainContent() {
       const response = await put(`account/update/${userId}`, {
         ...values,
         dateOfBirth: values.dateOfBirth
-          ? values.dateOfBirth.format("YYYY-MM-DD")
+          ? values.dateOfBirth.format("DD-MM-YYYY")
           : null,
       });
 
@@ -93,7 +92,7 @@ function MainContent() {
               </Select>
             </Form.Item>
             <Form.Item label="Ngày sinh" name="dateOfBirth">
-              <DatePicker style={{ width: "100%" }} disabled={!isEdit} />
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Địa chỉ" name="address">
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
