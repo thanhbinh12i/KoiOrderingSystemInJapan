@@ -10,6 +10,9 @@ function UpdateTour() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const disablePastDates = (current) => {
+    return current && current < moment().startOf('day');
+  };
   useEffect(() => {
     const fetchTour = async () => {
       try {
@@ -92,7 +95,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -103,7 +106,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày kết thúc!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY"/>
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
               </Form.Item>
             </Col>
           </Row>

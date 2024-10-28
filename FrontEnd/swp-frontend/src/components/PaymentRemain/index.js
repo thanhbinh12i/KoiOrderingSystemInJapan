@@ -34,7 +34,7 @@ function PaymentRemain() {
 
                   const paymentData = {
                         orderType: "VNPAY",
-                        amount: payStatusResponse.remain,
+                        amount: payStatusResponse.remain/100,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: billData.userFullName,
                         quotationId: params.id
@@ -67,7 +67,7 @@ function PaymentRemain() {
                                     />
                                     <Divider />
                                     <div style={{ marginTop: 16, textAlign: "right" }}>
-                                          <h2>Tổng tiền: {totalPrice?.toLocaleString()} đ</h2>
+                                          <h2>Tổng tiền: {totalPrice.toLocaleString()} đ</h2>
                                     </div>
                               </Card>
 

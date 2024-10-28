@@ -43,7 +43,7 @@ namespace Project_SWP391.Controllers
             return Ok(koi);
         }
 
-        [HttpGet("view-by-name/{name})")]
+        [HttpGet("view-by-name/{name}")]
         public async Task<IActionResult> GetByName([FromRoute] string name)
         {
             var kois = await _koiRepo.GetByNameAsync(name);
@@ -58,7 +58,7 @@ namespace Project_SWP391.Controllers
             return Ok(koiDto);
         }
 
-        [HttpGet("view-by-farm/{farmName})")]
+        [HttpGet("view-by-farm/{farmName}")]
         public async Task<IActionResult> GetByFarmName([FromRoute] string farmName)
         {
             var kois = await _koiRepo.GetByFarmAsync(farmName);
@@ -86,7 +86,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiDto);
         }
-        [HttpGet("view-by-variety/{varietyName})")]
+        [HttpGet("view-by-variety/{varietyName}")]
         public async Task<IActionResult> GetByVarietyName([FromRoute] string varietyName)
         {
             var kois = await _koiRepo.GetByVarietyAsync(varietyName);
