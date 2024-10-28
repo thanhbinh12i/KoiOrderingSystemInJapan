@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import GoBack from "../../components/GoBack";
 import RatingFarm from "../../components/RatingFarm";
+import "./FarmDetail.scss";
 const { Title, Text } = Typography;
 
 function FarmDetail() {
