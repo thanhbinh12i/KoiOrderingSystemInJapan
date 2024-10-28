@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { get, post } from "../../utils/request";
 import { useNavigate } from "react-router-dom";
+import moment from "moment"
 
 const { TextArea } = Input;
 
@@ -20,6 +21,9 @@ function FormTour() {
   const [messageApi, contextHolder] = message.useMessage();
   const userId = localStorage.getItem("id");
   const navigate = useNavigate();
+  const disablePastDates = (current) => {
+    return current && current < moment().startOf('day');
+  };
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get("koiFarm/view-all");
@@ -147,7 +151,7 @@ function FormTour() {
                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -158,7 +162,7 @@ function FormTour() {
                 { required: true, message: "Vui lòng chọn ngày kết thúc!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
             </Form.Item>
           </Col>
           <Col span={0}>
