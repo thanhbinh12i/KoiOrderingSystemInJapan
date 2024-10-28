@@ -166,7 +166,7 @@ function FarmDetail() {
             />
 
             <Title level={4}>{koi.koiName}</Title>
-            <p>Price: {koi.price}</p>
+            <p>Price: {koi.price.toLocaleString()} đ</p>
             <p>Length: {koi.length} cm</p>
             <p>Year of Birth: {koi.yob}</p>
             <p>Gender: {koi.gender}</p>

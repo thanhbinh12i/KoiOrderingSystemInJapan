@@ -82,7 +82,7 @@ const PaymentSuccess = () => {
                     const payStatusResponse = await post(`payStatus/create/${paymentData.id}`, dataPayStatus);
                     if (deliveryResponse || payStatusResponse) {
                         setBill(currentBill);
-                        setPrice(paymentData.price);
+                        setPrice(paymentData.totalPrice);
                     }
                     localStorage.removeItem('pendingPaymentKoi');
                 }
