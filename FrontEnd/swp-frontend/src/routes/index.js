@@ -57,6 +57,9 @@ import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Variety";
 import KoiByVariety from "../pages/Variety/KoiByVariety";
+import PaymentRemain from "../components/PaymentRemain";
+import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
+import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -173,6 +176,10 @@ export const routes = [
                 path: "settings",
                 element: <ChangePasswordForm />,
               },
+              {
+                path: "my-orders/:id",
+                element: <MyOrderDetail />,
+              }
             ],
           },
           {
@@ -199,6 +206,10 @@ export const routes = [
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
           },
+          {
+            path: "payment-remain/:id",
+            element: <PaymentRemain />,
+          }
         ],
       },
     ],
@@ -319,6 +330,10 @@ export const routes = [
             path: "check-in",
             element: <Checkin />,
           },
+          {
+            path: "quotation-detail/:id",
+            element: <QuotationDetail />,
+          }
         ],
       },
     ],

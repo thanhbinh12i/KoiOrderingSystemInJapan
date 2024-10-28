@@ -40,6 +40,9 @@ function PayBooking() {
       //       }
       // }
       const onFinishVNPay = async (values) => {
+            if(price>20000000){
+                  price = price / 100;
+            }
             try {
                   const paymentData = {
                         orderType: "VN PAY",
