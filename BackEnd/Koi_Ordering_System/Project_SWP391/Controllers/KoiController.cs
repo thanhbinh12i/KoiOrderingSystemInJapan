@@ -29,7 +29,7 @@ namespace Project_SWP391.Controllers
 
             var koiDto = kois.Select(k => k.ToKoiDto());
 
-            return Ok(koiDto);
+            return Ok(kois);
         }
         [HttpGet("view-all/paging")]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)

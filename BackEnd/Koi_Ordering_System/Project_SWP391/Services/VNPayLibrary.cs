@@ -29,18 +29,15 @@ namespace Project_SWP391.Services
             var vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
             var vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
             var vnpSecureHash =
-                collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
+                collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value;
             var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
             long vnp_Amount = Convert.ToInt64(vnPay.GetResponseData("vnp_Amount")) / 100;
             string vnp_TransactionStatus = vnPay.GetResponseData("vnp_TransactionStatus");
             var checkSignature =
-                vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
+                vnPay.ValidateSignature(vnpSecureHash, hashSecret);
 
             if (checkSignature)
             {
-                //Cap nhat ket qua GD
-                //Yeu cau: Truy van vao CSDL cua  Merchant => lay ra duoc OrderInfo
-                //Giả sử OrderInfo lấy ra được như giả lập bên dưới
 
                 PaymentResponseModel result = new PaymentResponseModel()
                 {
@@ -55,41 +52,6 @@ namespace Project_SWP391.Services
                 };
                 if (result != null)
                 {
-                    /*if (result.Amount == vnp_Amount)
-                    {
-                        if (order.Status == "0")
-                        {
-                            if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
-                            {
-                                //Thanh toan thanh cong
-                                log.InfoFormat("Thanh toan thanh cong, OrderId={0}, VNPAY TranId={1}", orderId,
-                                    vnpayTranId);
-                                order.Status = "1";
-                            }
-                            else
-                            {
-                                //Thanh toan khong thanh cong. Ma loi: vnp_ResponseCode
-                                //  displayMsg.InnerText = "Có lỗi xảy ra trong quá trình xử lý. 
-                                Mã lỗi: " + vnp_ResponseCode;
-                                        log.InfoFormat("Thanh toan loi, OrderId={0}, VNPAY TranId={1},ResponseCode={2}",
-                                            orderId, vnpayTranId, vnp_ResponseCode);
-                                order.Status = "2";
-                            }
-
-                            //Thêm code Thực hiện cập nhật vào Database 
-                            //Update Database
-
-                            returnContent = "{\"RspCode\":\"00\",\"Message\":\"Confirm Success\"}";
-                        }
-                        else
-                        {
-                            returnContent = "{\"RspCode\":\"02\",\"Message\":\"Order already confirmed\"}";
-                        }
-                    }
-                    else
-                    {
-                        returnContent = "{\"RspCode\":\"04\",\"Message\":\"invalid amount\"}";
-                    }*/
                     Console.WriteLine("Thanh Cong");
                     return new ErrorViewModel()
                     {
@@ -101,7 +63,6 @@ namespace Project_SWP391.Services
                 {
 
                     Console.WriteLine("That bai");
-                    /*returnContent = "{\"RspCode\":\"01\",\"Message\":\"Order not found\"}";*/
                     return new ErrorViewModel()
                     {
                         RspCode = "02",
@@ -135,11 +96,11 @@ namespace Project_SWP391.Services
             var vnPayTranId = Convert.ToInt64(vnPay.GetResponseData("vnp_TransactionNo"));
             var vnpResponseCode = vnPay.GetResponseData("vnp_ResponseCode");
             var vnpSecureHash =
-                collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; //hash của dữ liệu trả về
+                collection.FirstOrDefault(k => k.Key == "vnp_SecureHash").Value; 
             var orderInfo = vnPay.GetResponseData("vnp_OrderInfo");
 
             var checkSignature =
-                vnPay.ValidateSignature(vnpSecureHash, hashSecret); //check Signature
+                vnPay.ValidateSignature(vnpSecureHash, hashSecret);
 
             if (!checkSignature)
                 return new PaymentResponseModel()
@@ -272,7 +233,6 @@ namespace Project_SWP391.Services
                 data.Append(WebUtility.UrlEncode(key) + "=" + WebUtility.UrlEncode(value) + "&");
             }
 
-            //remove last '&'
             if (data.Length > 0)
             {
                 data.Remove(data.Length - 1, 1);
