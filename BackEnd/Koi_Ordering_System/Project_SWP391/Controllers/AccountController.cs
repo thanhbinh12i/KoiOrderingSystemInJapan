@@ -3,6 +3,7 @@ using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
@@ -637,7 +638,7 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, "Failed to generate password reset token.");
             }
 
-            var resetLink = $"{Request.Scheme}://{Request.Host}/Account/ResetPassword?token={token}&email={resetEmail.ToEmail}";
+            var resetLink = $"{Request.Scheme}://{Request.Host}/api/Account/ResetPassword?token={token}&email={resetEmail.ToEmail}";
 
             if (string.IsNullOrEmpty(resetLink))
             {
@@ -665,6 +666,26 @@ namespace Project_SWP391.Controllers
             }
         }
 
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordEmailDto resetEmail)
+        {
+            var user = await _userManager.FindByEmailAsync(resetEmail.Email);
+
+            if (user == null)
+            {
+                return BadRequest("Invalid request");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, resetEmail.Token, resetEmail.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(result.Errors);
+            }
+
+            return Ok("Password has reset successfully!");
+        }
 
         private string FormatPhoneNumber(string phoneNumber)
         {
