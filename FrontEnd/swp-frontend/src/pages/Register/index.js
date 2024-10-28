@@ -14,9 +14,13 @@ function Register() {
                   messageApi.error('Mật khẩu không khớp!');
                   return;
             }
+            const data = {
+                  ...values,
+                  dateOfBirth: values.dateOfBirth.format("DD-MM-YYYY")
+            }
 
             try {
-                  const response = await post("account/register", values);
+                  const response = await post("account/register", data);
                   if (response) {
                         form.resetFields();
                         messageApi.success('Đăng ký thành công!');
