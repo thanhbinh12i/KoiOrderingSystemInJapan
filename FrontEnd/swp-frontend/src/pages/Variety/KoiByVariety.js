@@ -3,6 +3,7 @@ import { Card, Typography, Spin, Col, Row } from "antd";
 import { useParams } from "react-router-dom";
 import { get } from "../../utils/request";
 import "./KoiByVariety.scss";
+import GoBack from "../../components/GoBack";
 
 const { Title } = Typography;
 
@@ -41,6 +42,7 @@ const KoiByVariety = () => {
   return (
     <>
       <div className="koi__introduction">
+        <GoBack />
         <Row gutter={20}>
           <Col span={12}>
             <h2>{variety[0].varietyName}</h2>
@@ -55,7 +57,7 @@ const KoiByVariety = () => {
               <img
                 alt={variety[0].varietyName}
                 width={135}
-                src={`https://localhost:7087/uploads/koiVariety/${variety[0].urlImage}`}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}koiVariety/${variety[0].urlImage}`}
               />
             </Card>
           </Col>
@@ -72,7 +74,7 @@ const KoiByVariety = () => {
                   width={135}
                   height={200}
                   alt={koi.koiName}
-                  src={`https://localhost:7087/uploads/koi/${image.urlImage}`}
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${image.urlImage}`}
                   className="koi-detail-image"
                 />
               ))

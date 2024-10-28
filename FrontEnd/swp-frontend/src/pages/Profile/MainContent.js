@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { get, put } from "../../utils/request";
 import moment from "moment";
-
 const { Title } = Typography;
 const { TabPane } = Tabs;
 

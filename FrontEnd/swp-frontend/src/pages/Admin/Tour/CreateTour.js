@@ -11,13 +11,16 @@ import {
   Select,
 } from "antd";
 import { post, get } from "../../../utils/request";
+import moment from "moment";
 
 function CreateTour() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [farms, setFarms] = useState([]);
-
+  const disablePastDates = (current) => {
+    return current && current < moment().startOf('day');
+  };
   const handleFinish = async (values) => {
     try {
       setLoading(true);
@@ -114,7 +117,7 @@ function CreateTour() {
                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -125,7 +128,7 @@ function CreateTour() {
                 { required: true, message: "Vui lòng chọn ngày kết thúc!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" />
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
             </Form.Item>
           </Col>
           <Col span={12}>

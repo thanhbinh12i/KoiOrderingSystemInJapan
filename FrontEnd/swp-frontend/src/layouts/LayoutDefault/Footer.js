@@ -10,7 +10,7 @@ function Footer() {
                                     <Col xs={24} sm={8}>
                                           <h2>Liên hệ với chung tôi</h2>
                                           <p><PhoneOutlined /> Phone: 094 818 2978</p>
-                                          <p><MailOutlined /> Email: koidayne@gmail.com</p>
+                                          <p><MailOutlined /> Email: managerkoidayne@gmail.com</p>
                                           <p><EnvironmentOutlined /> Address: ĐẠI HỌC FPT</p>
                                     </Col>
 
@@ -22,7 +22,7 @@ function Footer() {
                                                 <li><a href="/farms">Trang trại</a></li>
                                                 <li><a href="/varieties">Giống cá</a></li>
                                                 <li><a href="/kois">Cá koi</a></li>
-                                                <li><a href="/about">Về chúng tôi</a></li>
+                                                <li><a href="/aboutus">Về chúng tôi</a></li>
                                                 <li><a href="/contact">Liên hệ</a></li>
                                           </ul>
                                     </Col>

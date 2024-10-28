@@ -32,7 +32,7 @@ function CheckOutKoi() {
             try {
                   const paymentData = {
                         orderType: "Thanh toán ngân hàng",
-                        amount: price,
+                        amount: price/100,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: "User",
                         quotationId: params.id
