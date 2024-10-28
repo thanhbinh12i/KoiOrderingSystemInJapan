@@ -9,21 +9,22 @@ function FeedbackList() {
 
   const fetchApi = async () => {
     const response = await get("feedback/view-all");
-    const updated = await Promise.all(
-      response.map(async (fb) => {
-        const userName = await get(`account/${fb.userId}`);
-        return { ...fb, userName: userName.userName };
-      })
-    );
-    if (updated) {
-      setFeedbacks(updated);
+    if (response) {
+      const updated = await Promise.all(
+        response.map(async (fb) => {
+          const userName = await get(`account/${fb.userId}`);
+          return { ...fb, userName: userName.userName };
+        })
+      );
+      if (updated) {
+        setFeedbacks(updated);
+      }
     }
   };
 
   useEffect(() => {
     fetchApi();
   }, []);
-
   const columns = [
     {
       title: "ID",
@@ -65,7 +66,11 @@ function FeedbackList() {
               <Text strong>Hình ảnh:</Text>
               <br />
               {record.urlImage ? (
-                <Image width={200} src={record.urlImage} alt="Feedback image" />
+                <Image
+                  width={200}
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}feedback/${record.urlImage}`}
+                  alt="Feedback image"
+                />
               ) : (
                 <Text italic>Không có hình ảnh</Text>
               )}

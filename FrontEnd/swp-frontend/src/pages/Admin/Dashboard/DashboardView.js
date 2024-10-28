@@ -15,6 +15,9 @@ const DashboardView = () => {
   const [bills, setBills] = useState([]);
   const [bestTours, setBestTours] = useState([]);
   const [bestKois, setBestKois] = useState([]);
+  const [koiBills, setKoiBills] = useState([]);
+  const [quotations, setQuotations] = useState([]);
+  const [tours, setTours] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -24,37 +27,53 @@ const DashboardView = () => {
     try {
       const usersData = await get("account/view-all-user");
       const billsData = await get("bill/view-all");
+      const koiBillsData = await get("koi-bill/view-all");
+      const quotationsData = await get("quotation/view-all");
+      const toursData = await get("tour/view-all");
 
       setUsers(usersData);
       setBills(billsData);
+      setKoiBills(koiBillsData);
+      setQuotations(quotationsData);
+      setTours(toursData);
 
-      // Process best tours
-      const tourStats = processTourBookings(billsData);
-      setBestTours(tourStats);
-
-      // Process best kois
-      const koiStats = processKoiSales(billsData);
+      // Process best kois from koiBills
+      const koiStats = processKoiSales(koiBills, bills);
       setBestKois(koiStats);
+
+      // Process best tours from bills and tours data
+      const tourStats = processTourBookings(billsData, tours, quotationsData);
+      setBestTours(tourStats);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const processTourBookings = (billsData) => {
+  const getTourNameById = (tourId, tours) => {
+    const tour = tours.find((t) => t.tourId === tourId);
+    return tour ? tour.tourName : "Unknown Tour";
+  };
+
+  const processTourBookings = (billsData, tours, quotationsData) => {
     const tourBookings = {};
 
     billsData.forEach((bill) => {
-      if (bill.tourPrice && bill.tourPrice > 0) {
-        const tourKey = bill.tourDescription || "Unknown Tour";
-        if (!tourBookings[tourKey]) {
-          tourBookings[tourKey] = {
-            name: tourKey,
-            bookings: 0,
-            revenue: 0,
-          };
+      if (bill.quotationId) {
+        const quotation = quotationsData.find(
+          (q) => q.quotationId === bill.quotationId
+        );
+        if (quotation && quotation.tourId) {
+          const tourName = getTourNameById(quotation.tourId, tours);
+          if (!tourBookings[tourName]) {
+            tourBookings[tourName] = {
+              name: tourName,
+              bookings: 0,
+              revenue: 0,
+            };
+          }
+          tourBookings[tourName].bookings += 1;
+          tourBookings[tourName].revenue += bill.tourPrice || 0;
         }
-        tourBookings[tourKey].bookings += 1;
-        tourBookings[tourKey].revenue += bill.tourPrice;
       }
     });
 
@@ -68,27 +87,25 @@ const DashboardView = () => {
       }));
   };
 
-  const processKoiSales = (billsData) => {
+  const processKoiSales = (koiBillsData, bills) => {
     const koiSales = {};
-
-    billsData.forEach((bill) => {
-      if (bill.koiPrice && bill.koiPrice > 0) {
-        const koiKey = bill.koiDescription || "Unknown Koi";
-        if (!koiSales[koiKey]) {
-          koiSales[koiKey] = {
-            name: koiKey,
-            sales: 0,
-            revenue: 0,
+    bills.forEach((bills) => {
+      koiBillsData.forEach((bill) => {
+        const koiName = bill.koiName || "Unknown Koi";
+        console.log(!koiSales[koiName] && bills.koiPrice);
+        if (!koiSales[koiName] && bills.koiPrice) {
+          koiSales[koiName] = {
+            name: koiName,
+            sales: bill.quantity,
+            revenue: bill.finalPrice * bill.quantity,
           };
         }
-        koiSales[koiKey].sales += 1;
-        koiSales[koiKey].revenue += bill.koiPrice;
-      }
+      });
     });
 
     return Object.values(koiSales)
       .sort((a, b) => b.revenue - a.revenue)
-      .slice(0, 5)
+      .slice(0, 10)
       .map((koi, index) => ({
         ...koi,
         key: index,
@@ -97,51 +114,71 @@ const DashboardView = () => {
   };
 
   const totalRevenue = bills.reduce(
-    (sum, bill) => sum + (bill.totalPrice || 0),
+    (sum, bill) => sum + (bill.koiPrice || 0) + (bill.tourPrice || 0),
     0
   );
 
   const processChartData = () => {
-    const data = [];
-    const dailyRevenue = {};
-    const dailyQuotations = {};
+    const dailyStats = {};
 
+    // Process bills for revenue
     bills.forEach((bill) => {
       if (bill.paymentDate) {
-        const date = new Date(bill.paymentDate).toLocaleDateString();
-        dailyRevenue[date] = (dailyRevenue[date] || 0) + (bill.totalPrice || 0);
-
-        if (bill.quotationId) {
-          dailyQuotations[date] = (dailyQuotations[date] || 0) + 1;
+        const date = new Date(bill.paymentDate).toLocaleDateString("vi-VN");
+        if (!dailyStats[date]) {
+          dailyStats[date] = {
+            tourRevenue: 0,
+            koiRevenue: 0,
+            quotationCount: 0,
+          };
         }
+        dailyStats[date].tourRevenue += bill.tourPrice || 0;
+        dailyStats[date].koiRevenue += bill.koiPrice || 0;
       }
     });
 
-    const allDates = [
-      ...new Set([
-        ...Object.keys(dailyRevenue),
-        ...Object.keys(dailyQuotations),
-      ]),
-    ].sort();
-
-    allDates.forEach((date) => {
-      if (dailyRevenue[date]) {
-        data.push({
-          date,
-          type: "Doanh thu",
-          value: dailyRevenue[date],
-        });
+    // Process quotations for count
+    quotations.forEach((quotation) => {
+      if (quotation.approvedDate) {
+        const date = new Date(quotation.approvedDate).toLocaleDateString(
+          "vi-VN"
+        );
+        if (!dailyStats[date]) {
+          dailyStats[date] = {
+            tourRevenue: 0,
+            koiRevenue: 0,
+            quotationCount: 0,
+          };
+        }
+        dailyStats[date].quotationCount += 1;
       }
+    });
 
-      const totalForDay = dailyRevenue[date] || 0;
-      data.push({
-        date,
-        type: "Tổng doanh thu",
-        value: totalForDay,
+    // Đảm bảo không có giá trị null
+    const chartData = [];
+    Object.entries(dailyStats)
+      .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+      .forEach(([date, stats]) => {
+        chartData.push(
+          {
+            date,
+            type: "Doanh thu Tour",
+            value: stats.tourRevenue || 0,
+          },
+          {
+            date,
+            type: "Doanh thu Koi",
+            value: stats.koiRevenue || 0,
+          },
+          {
+            date,
+            type: "Số lượng báo giá",
+            value: stats.quotationCount || 0,
+          }
+        );
       });
-    });
 
-    return data;
+    return chartData;
   };
 
   const config = {
@@ -149,6 +186,16 @@ const DashboardView = () => {
     xField: "date",
     yField: "value",
     seriesField: "type",
+    smooth: true,
+    point: {
+      size: 5,
+      shape: "circle",
+      style: {
+        fill: "white",
+        stroke: "#5B8FF9",
+        lineWidth: 2,
+      },
+    },
     yAxis: {
       label: {
         formatter: (v) =>
@@ -157,8 +204,12 @@ const DashboardView = () => {
     },
     legend: {
       position: "top",
+      itemName: {
+        style: {
+          fontSize: 14,
+        },
+      },
     },
-    smooth: true,
     animation: {
       appear: {
         animation: "path-in",
@@ -166,9 +217,19 @@ const DashboardView = () => {
       },
     },
     tooltip: {
-      showMarkers: false,
+      showMarkers: true,
       shared: true,
+      showCrosshairs: true,
+      crosshairs: {
+        type: "xy",
+      },
       formatter: (datum) => {
+        if (datum.type === "Số lượng báo giá") {
+          return {
+            name: datum.type,
+            value: datum.value.toString() + " báo giá",
+          };
+        }
         return {
           name: datum.type,
           value: new Intl.NumberFormat("vi-VN", {
@@ -179,8 +240,16 @@ const DashboardView = () => {
       },
     },
     color: ["#1979C9", "#D62A0D", "#FAA219"],
+    interactions: [
+      {
+        type: "marker-active",
+      },
+    ],
+    lineStyle: {
+      lineWidth: 3,
+    },
+    connectNulls: true,
   };
-
   const columns = {
     tours: [
       {
@@ -198,20 +267,20 @@ const DashboardView = () => {
         ),
       },
       {
-        title: "Tour",
+        title: "Tên chuyến đi",
         dataIndex: "name",
         key: "name",
         ellipsis: true,
       },
       {
-        title: "Bookings",
+        title: "Số lượng booking",
         dataIndex: "bookings",
         key: "bookings",
         width: 100,
         align: "right",
       },
       {
-        title: "Revenue",
+        title: "Doanh thu",
         dataIndex: "revenue",
         key: "revenue",
         width: 120,
@@ -239,20 +308,20 @@ const DashboardView = () => {
         ),
       },
       {
-        title: "Koi",
+        title: "Tên cá Koi",
         dataIndex: "name",
         key: "name",
         ellipsis: true,
       },
       {
-        title: "Sales",
+        title: "Số lượng bán",
         dataIndex: "sales",
         key: "sales",
         width: 80,
         align: "right",
       },
       {
-        title: "Revenue",
+        title: "Doanh thu",
         dataIndex: "revenue",
         key: "revenue",
         width: 120,
@@ -267,77 +336,75 @@ const DashboardView = () => {
   };
 
   return (
-    <>
-      <div className="dashboard">
-        <Row gutter={16} className="stats-cards">
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Tổng số người dùng"
-                value={users.length}
-                prefix={<UserOutlined />}
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Tổng số đơn hàng"
-                value={bills.length}
-                prefix={<ShoppingCartOutlined />}
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="Tổng doanh thu"
-                value={totalRevenue}
-                prefix={<DollarOutlined />}
-                formatter={(value) =>
-                  new Intl.NumberFormat("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  }).format(value)
-                }
-              />
-            </Card>
-          </Col>
-        </Row>
-        <Row gutter={16} className="charts" style={{ marginTop: "24px" }}>
-          <Col span={12}>
-            <Card title="Biểu đồ thống kê doanh thu">
-              <Line {...config} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card title="Best Koi Seller" bodyStyle={{ padding: "0 0 8px 0" }}>
-              <Table
-                dataSource={bestKois}
-                columns={columns.kois}
-                pagination={false}
-                size="small"
-                scroll={{ y: 240 }}
-              />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card
-              title="Best Tour Booking"
-              bodyStyle={{ padding: "0 0 8px 0" }}
-            >
-              <Table
-                dataSource={bestTours}
-                columns={columns.tours}
-                pagination={false}
-                size="small"
-                scroll={{ y: 240 }}
-              />
-            </Card>
-          </Col>
-        </Row>{" "}
-      </div>
-    </>
+    <div className="dashboard">
+      <Row gutter={16} className="stats-cards">
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Tổng số người dùng"
+              value={users.length}
+              prefix={<UserOutlined />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Tổng số đơn hàng"
+              value={bills.length}
+              prefix={<ShoppingCartOutlined />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card>
+            <Statistic
+              title="Tổng doanh thu"
+              value={totalRevenue}
+              prefix={<DollarOutlined />}
+              formatter={(value) =>
+                new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(value)
+              }
+            />
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={16} className="charts" style={{ marginTop: "24px" }}>
+        <Col span={24}>
+          <Card title="Biểu đồ thống kê doanh thu">
+            <Line {...config} />
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="Cá Koi Best Seller" bodyStyle={{ padding: "0 0 8px 0" }}>
+            <Table
+              dataSource={bestKois}
+              columns={columns.kois}
+              pagination={false}
+              size="small"
+              scroll={{ y: 240 }}
+            />
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card
+            title="Chuyến Đi Best Booking"
+            bodyStyle={{ padding: "0 0 8px 0" }}
+          >
+            <Table
+              dataSource={bestTours}
+              columns={columns.tours}
+              pagination={false}
+              size="small"
+              scroll={{ y: 240 }}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </div>
   );
 };
 
