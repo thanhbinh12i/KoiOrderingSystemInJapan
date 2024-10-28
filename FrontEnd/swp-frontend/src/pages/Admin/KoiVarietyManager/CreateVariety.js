@@ -11,11 +11,9 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
   const [file, setFile] = useState(null);
   const handleSubmit = async (values) => {
     const allVarieties = await get("koi-variable/view-all");
-    console.log(allVarieties[0]);
     const isDuplicate = allVarieties.some(
       (variety) => variety.varietyName === values.VarietyName.trim()
     );
-    console.log(isDuplicate);
     if (isDuplicate) {
       messageApi.error("Tên giống cá đã tồn tại. Vui lòng nhập tên khác!");
       return;
@@ -28,7 +26,7 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://localhost:7087/api/koi-variable/upload",
+        `${process.env.REACT_APP_API_URL}koi-variable/upload`,
         {
           method: "POST",
           body: formData,

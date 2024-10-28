@@ -10,6 +10,7 @@ import {
   PlusOutlined,
   ToolOutlined,
   CoffeeOutlined,
+  MoneyCollectOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 function MenuSider() {
@@ -116,6 +117,11 @@ function MenuSider() {
       label: <Link to="/feedback-manager">Quản lí feedback</Link>,
       icon: <CoffeeOutlined />,
       key: "/feedback-manager",
+    },
+    {
+      label: <Link to="/bill-manager">Quản lí Bill</Link>,
+      icon: <MoneyCollectOutlined />,
+      key: "/bill-manager",
     },
   ];
   return (

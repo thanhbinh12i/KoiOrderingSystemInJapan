@@ -5,7 +5,6 @@ import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
 import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
-import PaymentRemain from "../components/PaymentRemain";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
@@ -14,6 +13,7 @@ import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
 import AboutUs from "../pages/AboutUs";
+import AllBill from "../pages/Admin/BillManager";
 import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
 import CreateKoiFarm from "../pages/Admin/FarmManager/CreateKoiFarm";
@@ -42,7 +42,6 @@ import Login from "../pages/Login";
 import Logout from "../pages/Logout";
 import MyBooking from "../pages/MyBooking";
 import MyOrder from "../pages/MyOrder";
-import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import OrderKoi from "../pages/OrderKoi";
 import Profile from "../pages/Profile";
 import MainContent from "../pages/Profile/MainContent";
@@ -53,7 +52,6 @@ import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
-import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Variety";
@@ -120,6 +118,14 @@ export const routes = [
         element: <AboutUs />,
       },
       {
+        path: "order-koi/:id/cart",
+        element: <Cart />,
+      },
+      {
+        path: "my-orders/feedback/:userId",
+        element: <Feedback />,
+      },
+      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -145,19 +151,7 @@ export const routes = [
                 path: "settings",
                 element: <ChangePasswordForm />,
               },
-              {
-                path: "my-orders/:id",
-                element: <MyOrderDetail />,
-              }
             ],
-          },
-          {
-            path: "order-koi/:id/cart",
-            element: <Cart />,
-          },
-          {
-            path: "my-orders/feedback/:userId",
-            element: <Feedback />,
           },
           {
             path: "book-tour/:id",
@@ -182,10 +176,6 @@ export const routes = [
           {
             path: "check-out-koi/:id",
             element: <CheckOutKoi />,
-          },
-          {
-            path: "payment-remain/:id",
-            element: <PaymentRemain />,
           },
         ],
       },
@@ -273,6 +263,10 @@ export const routes = [
             path: "order-manager",
             element: <OrderManager />,
           },
+          {
+            path: "bill-manager",
+            element: <AllBill />,
+          },
         ],
       },
       {
@@ -282,10 +276,6 @@ export const routes = [
           {
             path: "quotation-staff",
             element: <Quotation />,
-          },
-          {
-            path: "quotation-detail/:id",
-            element: <QuotationDetail />,
           },
           {
             path: "koi-deal-staff",
