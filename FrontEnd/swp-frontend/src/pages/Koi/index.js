@@ -12,7 +12,6 @@ function Koi() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
-
   useEffect(() => {
     const fetchAPI = async () => {
       try {
@@ -69,18 +68,19 @@ function Koi() {
           </Col>
         ))}
       </Row>
-      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
         <Pagination
           current={currentPage}
           onChange={(page) => setCurrentPage(page)}
           total={koi.length}
           pageSize={pageSize}
           showSizeChanger={false}
-          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+          showTotal={(total, range) =>
+            `${range[0]}-${range[1]} của ${total} mục`
+          }
         />
       </div>
     </>
-
   );
 }
 
