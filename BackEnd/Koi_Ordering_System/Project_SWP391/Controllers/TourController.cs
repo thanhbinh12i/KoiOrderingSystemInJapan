@@ -65,7 +65,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
-        [HttpGet("view/{min:float}&&{max:float}")]
+        [HttpGet("view-price/{min:float}&&{max:float}")]
         public async Task<IActionResult> ViewPriceMinToMax([FromRoute] float min, float max)
         {
             var tour = await _tourRepo.GetPriceByAsync(min,max);
@@ -76,7 +76,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
-        [HttpGet("view/{startDate}&&{endDate}")]
+        [HttpGet("view-date/{startDate}&&{endDate}")]
         public async Task<IActionResult> ViewToursByDate([FromRoute] string? startDate, string? endDate)
         {
             DateTime? parsedStartDate = null;
