@@ -59,6 +59,8 @@ import KoiByVariety from "../pages/Variety/KoiByVariety";
 import PaymentRemain from "../components/PaymentRemain";
 import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
+import ForgotPassword from "../components/ForgotPassword";
+import ResetPassword from "../components/ResetPassword";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -96,6 +98,14 @@ export const routes = [
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
       },
       {
         path: "logout",
