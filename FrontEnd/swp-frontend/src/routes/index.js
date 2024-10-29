@@ -1,11 +1,10 @@
+import { Navigate } from "react-router-dom";
 import BookSuccess from "../components/BookSuccess";
 import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
 import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
-import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
-import PaymentRemain from "../components/PaymentRemain";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
@@ -14,6 +13,7 @@ import LayoutAdmin from "../layouts/LayoutAdmin";
 import LayoutDefault from "../layouts/LayoutDefault";
 import LayoutStaff from "../layouts/LayoutStaff";
 import AboutUs from "../pages/AboutUs";
+import AllBill from "../pages/Admin/BillManager";
 import Dashboard from "../pages/Admin/Dashboard";
 import FarmManager from "../pages/Admin/FarmManager";
 import CreateKoiFarm from "../pages/Admin/FarmManager/CreateKoiFarm";
@@ -52,11 +52,34 @@ import EstiminatedDate from "../pages/Staff/EstiminatedDate";
 import KoiDeal from "../pages/Staff/KoiDeal";
 import KoiDealDetail from "../pages/Staff/KoiDeal/KoiDealDetail";
 import Quotation from "../pages/Staff/Quotation";
-import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import Tour from "../pages/Tours";
 import TourDetailUser from "../pages/Tours/TourDetail";
 import Variety from "../pages/Variety";
 import KoiByVariety from "../pages/Variety/KoiByVariety";
+import PaymentRemain from "../components/PaymentRemain";
+import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
+import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
+
+const AdminRoute = ({ children }) => {
+  const role = localStorage.getItem('role');
+
+  if (role !== 'Manager') {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+const StaffRoute = ({ children }) => {
+  const role = localStorage.getItem('role');
+
+  if (!role.includes("Staff")) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
 export const routes = [
   {
     path: "/",
@@ -119,6 +142,14 @@ export const routes = [
         element: <AboutUs />,
       },
       {
+        path: "order-koi/:id/cart",
+        element: <Cart />,
+      },
+      {
+        path: "my-orders/feedback/:userId",
+        element: <Feedback />,
+      },
+      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -133,10 +164,6 @@ export const routes = [
                 element: <MainContent />,
               },
               {
-                path: "my-bills",
-                element: <MyBill />,
-              },
-              {
                 path: "my-orders",
                 element: <MyOrder />,
               },
@@ -144,15 +171,11 @@ export const routes = [
                 path: "settings",
                 element: <ChangePasswordForm />,
               },
+              {
+                path: "my-orders/:id",
+                element: <MyOrderDetail />,
+              }
             ],
-          },
-          {
-            path: "order-koi/:id/cart",
-            element: <Cart />,
-          },
-          {
-            path: "my-orders/feedback/:userId",
-            element: <Feedback />,
           },
           {
             path: "book-tour/:id",
@@ -181,7 +204,7 @@ export const routes = [
           {
             path: "payment-remain/:id",
             element: <PaymentRemain />,
-          },
+          }
         ],
       },
     ],
@@ -190,7 +213,7 @@ export const routes = [
     element: <PrivateRoutes />,
     children: [
       {
-        element: <LayoutAdmin />,
+        element: <AdminRoute><LayoutAdmin /></AdminRoute>,
         children: [
           {
             path: "admin",
@@ -268,19 +291,19 @@ export const routes = [
             path: "order-manager",
             element: <OrderManager />,
           },
+          {
+            path: "bill-manager",
+            element: <AllBill />,
+          },
         ],
       },
       {
         path: "staff",
-        element: <LayoutStaff />,
+        element: <StaffRoute><LayoutStaff /></StaffRoute>,
         children: [
           {
             path: "quotation-staff",
             element: <Quotation />,
-          },
-          {
-            path: "quotation-detail/:id",
-            element: <QuotationDetail />,
           },
           {
             path: "koi-deal-staff",
@@ -302,6 +325,10 @@ export const routes = [
             path: "check-in",
             element: <Checkin />,
           },
+          {
+            path: "quotation-detail/:id",
+            element: <QuotationDetail />,
+          }
         ],
       },
     ],

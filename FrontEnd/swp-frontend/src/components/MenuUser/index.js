@@ -1,25 +1,14 @@
 // eslint-disable-next-line
-import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
+import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar, Space, Typography } from 'antd';
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { checkLogin } from '../../actions/login';
+import { Link, NavLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { get } from '../../utils/request';
 import "./MenuUser.scss"
 function MenuUser() {
-      const dispatch = useDispatch();
-      const navigate = useNavigate();
       const userId = localStorage.getItem("id");
       const role = localStorage.getItem('role');
       const [user, setUser] = useState({});
-      const handleLogout = () => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("id");
-            localStorage.removeItem("role");
-            dispatch(checkLogin(false));
-            navigate("/");
-      };
       useEffect(() => {
             const fetchUserProfile = async () => {
                   if (userId) {
@@ -64,8 +53,8 @@ function MenuUser() {
                         <Link to="/settings">Thay đổi mật khẩu</Link>
                   </Menu.Item>
                   <Menu.Divider />
-                  <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout} className="logout-item">
-                        Đăng xuất
+                  <Menu.Item key="logout" icon={<LogoutOutlined />} className="logout-item">
+                        <NavLink to="/logout">Đăng xuất</NavLink>
                   </Menu.Item>
             </Menu>
       );

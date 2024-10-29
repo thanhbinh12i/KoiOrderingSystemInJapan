@@ -11,11 +11,9 @@ function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
   const [file, setFile] = useState(null);
   const handleSubmit = async (values) => {
     const allVarieties = await get("koi-variable/view-all");
-    console.log(allVarieties[0]);
     const isDuplicate = allVarieties.some(
       (variety) => variety.varietyName === values.VarietyName.trim()
     );
-    console.log(isDuplicate);
     if (isDuplicate) {
       messageApi.error("Tên giống cá đã tồn tại. Vui lòng nhập tên khác!");
       return;

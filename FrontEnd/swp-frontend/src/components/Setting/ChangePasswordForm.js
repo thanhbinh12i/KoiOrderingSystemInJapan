@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import "./ChangePasswordForm.scss";
 function ChangePasswordForm() {
   const [form] = Form.useForm();
-
+  const userId = localStorage.getItem("id");
   const onFinish = (values) => {
     console.log("Form submitted:", values);
   };
@@ -24,11 +24,7 @@ function ChangePasswordForm() {
           layout="vertical"
           className="change-password-form"
         >
-          <Form.Item
-            name="username"
-            initialValue="Victor"
-            className="username-field"
-          >
+          <Form.Item name="username" className="username-field">
             <Input disabled />
           </Form.Item>
 
@@ -91,9 +87,6 @@ function ChangePasswordForm() {
           </Form.Item>
 
           <div className="form-footer">
-            <a href="#" className="reset-link">
-              Create a password reset disk
-            </a>
             <Button type="default" className="cancel-button">
               Cancel
             </Button>

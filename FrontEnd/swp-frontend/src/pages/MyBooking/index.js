@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react";
-import { get, put } from "../../utils/request";
+import { del, get, put } from "../../utils/request";
 import { Button, Modal, Table } from "antd";
 import "./MyBooking.scss"
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
-      //thêm cái hủy đặt chỗ khi đang chờ xác nhận 
-      //thêm cái ko chấp nhận giá
-      //style và nhiều thông tin hơn
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
       const [isModalVisible, setIsModalVisible] = useState(false);
+      const navigate = useNavigate();
       const showModal = () => {
             setIsModalVisible(true);
       };
@@ -67,14 +65,9 @@ function MyBooking() {
                   title: 'Giá tiền',
                   dataIndex: 'priceOffer',
                   key: 'priceOffer',
-                  // render: (_, record) => {
-                  //       // if (record.status === "Đã xác nhận" || record.status === "Đã thanh toán" || record.status === "Đã check-in" || record.status === "Đang check-in") {
-                  //       //       return record.priceOffer;
-                  //       // } else {
-                  //       //       return "Chưa xác nhận";
-                  //       // }
-
-                  // }
+                  render: (_, record) => (
+                        <strong>{record.priceOffer.toLocaleString()}</strong>
+                  )
             },
             {
                   title: 'Ngày xác nhận',
@@ -85,20 +78,54 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy" , "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
+            },
+            {
+                  title: 'Chi tiết chuyến đi',
+                  key: 'tourDetail',
+                  render: (_, record) => (
+                        <Link to={`/tours/${record.tourId}`}>
+                              <Button type="primary">
+                                    Xem chi tiết
+                              </Button>
+                        </Link>
+                  )
             },
             {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
-                        if (record.status === "Đã xác nhận") {
+                        if (record.status === "Chờ xác nhận") {
+                              const handleCancelBooking = async () => {
+                                    const response = del('quotation/delete', record.quotationId);
+                                    if (response) {
+                                          fetchApi();
+                                    }
+                              }
                               return (
                                     <>
-                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
+                                          <Button color="primary" onClick={() => showModal()} danger>Hủy đặt chỗ</Button>
+                                          <Modal
+                                                title="Xác nhận hủy đặt chỗ"
+                                                open={isModalVisible}
+                                                onOk={handleCancelBooking}
+                                                onCancel={handleCancel}
+                                          >
+                                                <p>Bạn có chắc chắn hủy đặt chỗ?</p>
+                                          </Modal>
+                                    </>
+                              )
+                        } else if (record.status === "Đã xác nhận") {
+                              return (
+                                    <>
+                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }} className="pr-10">
                                                 <Button type="primary">
                                                       Thanh toán
                                                 </Button>
                                           </Link>
+                                          <Button color="default" variant="solid">
+                                                Không xác nhận giá
+                                          </Button>
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
@@ -126,16 +153,21 @@ function MyBooking() {
                                     if (response) {
                                           fetchApi();
                                           setIsModalVisible(false);
+                                          navigate(`/my-orders/feedback/${record.userId}`);
                                     }
                               }
                               if (relatedBill.koiPrice > 0) {
                                     return (
-                                          <Button type="primary">Xem chi tiết đơn hàng</Button>
+                                          <Link to={`/my-orders/${relatedBill.billId}`}>
+                                                <Button type="primary">
+                                                      Xem chi tiết đơn hàng
+                                                </Button>
+                                          </Link>
                                     )
                               } else if (relatedBill) {
                                     return (
                                           <>
-                                                <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
+                                                <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }} className="pr-10">
                                                       <Button type="primary">Mua cá nào</Button>
                                                 </NavLink>
                                                 <Button type="primary" onClick={() => showModal()}>Không mua cá</Button>
@@ -153,7 +185,8 @@ function MyBooking() {
                               }
                         } else {
                               return (
-                                    <></>
+                                    <>
+                                    </>
                               )
                         }
                   }

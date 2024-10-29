@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, DatePicker, List, Modal } from "antd";
+import moment from "moment";
 function EstiminatedDate() {
       const [deliveryList, setDeliveryList] = useState([]);
       const [modalVisible, setModalVisible] = useState(false);
       const [currentItem, setCurrentItem] = useState(null);
       const [newDate, setNewDate] = useState(null);
       const [loading, setLoading] = useState(true);
-
+      const disablePastDates = (current) => {
+            return current && current < moment().startOf('day');
+      };
       useEffect(() => {
             const fetchApi = async () => {
                   try {
@@ -67,7 +70,7 @@ function EstiminatedDate() {
                                                 <p>Địa chỉ: <strong>{item.deliveryAddress}</strong></p>
                                                 <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
                                                 <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
-                                                {item.deliveryStatusText === "Đã thanh toán" &&  (
+                                                {item.deliveryStatusText === "Đã thanh toán" && (
                                                       <Button type="primary" onClick={() => showModal(item)}>Cập nhật ngày</Button>
                                                 )}
                                           </div>
@@ -84,7 +87,7 @@ function EstiminatedDate() {
                         {currentItem && (
                               <>
                                     <p>Nhập ngày giao hàng: </p>
-                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY"/>
+                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
                               </>
                         )}
                   </Modal>

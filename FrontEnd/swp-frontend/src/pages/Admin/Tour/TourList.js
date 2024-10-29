@@ -54,6 +54,9 @@ function TourList() {
       title: "Giá (nghìn VND)",
       dataIndex: "price",
       key: "price",
+      render: (_, record) => (
+        <strong>{record.price.toLocaleString()}</strong>
+      )
     },
     {
       title: "Ngày bắt đầu",

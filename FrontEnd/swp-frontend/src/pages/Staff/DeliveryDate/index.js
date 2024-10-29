@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, List, Row, Steps } from "antd";
-import { LoadingOutlined, SmileOutlined, SolutionOutlined, UserOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
 function DeliveryDate() {
-      //thêm cái update ngày nhận hàng
-      //nút xác nhận đã nhận tiền r ms cập nhật giao hàng thành công, chuyển sang màu tích xanh
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const [receivedPayment, setReceivedPayment] = useState({});
@@ -50,28 +48,28 @@ function DeliveryDate() {
       const steps = [
             {
                   title: 'Đang chờ vận chuyển',
-                  icon: <UserOutlined />,
+                  icon: <ClockCircleOutlined />,
             },
             {
                   title: 'Đã nhận hàng',
-                  icon: <SolutionOutlined />,
+                  icon: <FileDoneOutlined />,
             },
             {
                   title: 'Đang vận chuyển',
-                  icon: <LoadingOutlined />,
+                  icon: <CarOutlined />,
             },
             {
                   title: 'Đơn hàng đã giao đến bạn',
-                  icon: <LoadingOutlined />,
+                  icon: <ShoppingOutlined />,
             },
             {
                   title: 'Giao hàng thành công',
-                  icon: <SmileOutlined />,
-            },
+                  icon: <CheckCircleOutlined />,
+            }
       ];
       const handlePaymentConfirmation = async (item) => {
             const response = await get(`payStatus/view-billId/${item.billId}`);
-            if(response.status === "Đã thanh toán"){
+            if (response.status === "Đã thanh toán") {
                   setReceivedPayment(prev => ({
                         ...prev,
                         [item.billId]: true
@@ -120,11 +118,11 @@ function DeliveryDate() {
                                                                               disabled={
                                                                                     step.title === item.deliveryStatusText ||
                                                                                     index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1 ||
-                                                                                    step.title === 'Giao hàng thành công' 
-                                                                                }
-                                                                            >
-                                                                                Cập nhật
-                                                                            </Button>
+                                                                                    step.title === 'Giao hàng thành công'
+                                                                              }
+                                                                        >
+                                                                              Cập nhật
+                                                                        </Button>
                                                                   )
                                                             }))}
                                                       />

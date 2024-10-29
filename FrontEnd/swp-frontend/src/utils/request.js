@@ -19,10 +19,6 @@ export const post = async (path, options) => {
 
     body: options !== null ? JSON.stringify(options) : undefined,
   });
-  if (!response.ok) {
-    console.log("Response Status:", response.status, await response.text());
-    throw new Error(`Error: ${response.statusText}`);
-  }
 
   const responseText = await response.text();
   if (!responseText) {

@@ -71,7 +71,8 @@ namespace Project_SWP391
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = true;
             })
-            .AddEntityFrameworkStores<ApplicationDBContext>();
+            .AddEntityFrameworkStores<ApplicationDBContext>()
+            .AddDefaultTokenProviders();
 
             // Configure JWT Authentication and Google Authentication
             builder.Services.AddAuthentication(options =>
@@ -128,6 +129,7 @@ namespace Project_SWP391
             builder.Services.AddScoped<IQuotationRepository, QuotationRepository>();
             builder.Services.AddScoped<IVNPayService, VNPayService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -135,11 +137,12 @@ namespace Project_SWP391
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectSWP391 API V1");
-                    c.RoutePrefix = String.Empty;
-                });
+                //app.UseSwaggerUI(c =>
+                //{
+                //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectSWP391 API V1");
+                //    c.RoutePrefix = String.Empty;
+                //});
+                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();

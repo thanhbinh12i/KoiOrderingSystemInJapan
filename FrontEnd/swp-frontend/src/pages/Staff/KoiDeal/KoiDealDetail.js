@@ -78,9 +78,10 @@ function KoiDealDetail() {
                               renderItem={(item) => (
                                     <List.Item>
                                           <div>
-                                                <h3>Koi {item.koiId}</h3>
-                                                <p>Giá tiền gốc: <strong>{item.originalPrice} đ</strong></p>
-                                                <p>Giá tiền chốt: <strong>{item.finalPrice} đ</strong></p>
+                                                <h3>Koi {item.koiName}</h3>
+                                                <p>Số lượng: <strong>{item.quantity}</strong></p>
+                                                <p>Giá tiền gốc: <strong>{item.originalPrice.toLocaleString()} đ</strong></p>
+                                                <p>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></p>
                                                 {
                                                       item.finalPrice === 0 && (
                                                             <Button type="primary" onClick={() => handleConfirm(item)}>Xác nhận</Button>
@@ -101,7 +102,7 @@ function KoiDealDetail() {
                         {currentKoi && (
                               <>
                                     <p>Koi: {currentKoi.koiName}</p>
-                                    <p>Giá hiện tại: {currentKoi.originalPrice} đ</p>
+                                    <p>Giá hiện tại: {currentKoi.originalPrice.toLocaleString()} đ</p>
                                     <p>Nhập giá mới: </p>
                                     <Input
                                           type="number"

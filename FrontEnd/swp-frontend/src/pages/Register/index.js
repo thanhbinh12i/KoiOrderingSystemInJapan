@@ -1,6 +1,6 @@
 import { Button, Card, Col, DatePicker, Form, Input, message, Row, Select } from "antd";
 import { useNavigate } from "react-router-dom";
-import { post } from "../../utils/request";
+import { get, post } from "../../utils/request";
 const { Option } = Select;
 
 function Register() {
@@ -14,9 +14,13 @@ function Register() {
                   messageApi.error('Mật khẩu không khớp!');
                   return;
             }
+            const data = {
+                  ...values,
+                  dateOfBirth: values.dateOfBirth.format("DD-MM-YYYY")
+            }
 
             try {
-                  const response = await post("account/register", values);
+                  const response = await post("account/register", data);
                   if (response) {
                         form.resetFields();
                         messageApi.success('Đăng ký thành công!');
@@ -47,13 +51,36 @@ function Register() {
                         <Col span={12}>
                               <Card title="Đăng ký tài khoản">
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
-                                          <Form.Item label="User Name" name="userName" rules={[{ required: true, message: 'Vui lòng nhập User Name!' }]}>
+                                          <Form.Item label="User Name" name="userName" rules={[{ required: true, message: 'Vui lòng nhập User Name!' },
+                                          {
+                                                validator: async (_, value) => {
+                                                      if (value) {
+                                                            const existingUsers = await get("account/view-all-user");
+                                                            if (existingUsers.some(user => user.userName === value)) {
+                                                                  throw new Error('Tên đăng nhập đã tồn tại!');
+                                                            }
+                                                      }
+                                                }
+                                          }
+                                          ]}>
                                                 <Input />
                                           </Form.Item>
                                           <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
                                                 <Input />
                                           </Form.Item>
-                                          <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }, { required: true, message: 'Vui lòng nhập email!' }]}>
+                                          <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }, { required: true, message: 'Vui lòng nhập email!' },
+                                          {
+                                                validator: async (_, value) => {
+                                                      if (value) {
+                                                            const existingUsers = await get("account/view-all-user");
+                                                            if (existingUsers.some(user => user.email === value)) {
+                                                                  throw new Error('Email đã tồn tại trong hệ thống!');
+                                                            }
+                                                      }
+                                                }
+                                          }
+                                          ]}
+                                          >
                                                 <Input />
                                           </Form.Item>
                                           <Form.Item label="Số điện thoại" name="phoneNumber" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}>
@@ -74,7 +101,7 @@ function Register() {
                                                 </Col>
                                                 <Col span={12}>
                                                       <Form.Item label="Ngày sinh" name="dateOfBirth" rules={[{ required: true, message: 'Vui lòng chọn ngày sinh!' }]}>
-                                                            <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
+                                                            <DatePicker format="DD-MM-YYYY" style={{ width: '100%' }} />
                                                       </Form.Item>
                                                 </Col>
                                           </Row>

@@ -32,7 +32,7 @@ function CheckOutKoi() {
             try {
                   const paymentData = {
                         orderType: "Thanh toán ngân hàng",
-                        amount: price,
+                        amount: price/100,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: "User",
                         quotationId: params.id
@@ -48,7 +48,7 @@ function CheckOutKoi() {
             }
       }
       useEffect(() => {
-            const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice, 0);
+            const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice*item.quantity, 0);
             setDeposit(itemsTotal * 0.2);
             setTotalPrice(itemsTotal);
       }, [koiBill, selectedDeliveryFee]);

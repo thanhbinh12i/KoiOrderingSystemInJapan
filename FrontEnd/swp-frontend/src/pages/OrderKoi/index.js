@@ -63,58 +63,58 @@ function OrderKoi() {
     }
   };
 
-  return (
-    <div className="order-koi-container">
-      <GoBack />
-      <div className="order-koi__cart">
-        <Link to="cart" className="order-koi__cart">
-          <Button icon={<ShoppingCartOutlined />}></Button>
-        </Link>
-      </div>
-      <div className="order-koi__item">
-        <Row gutter={20}>
-          {koiByFarm.flatMap((farm, farmIndex) =>
-            farm.kois.map((koi, koiIndex) => (
-              <Col span={6} key={`${farmIndex}-${koiIndex}`}>
-                <Card hoverable>
-                  {koi.koiImages && koi.koiImages.length > 0 ? (
-                    <img
-                      key={0}
-                      width="100%"
-                      height={300}
-                      alt={koi.koiName}
-                      src={`${process.env.REACT_APP_API_URL_UPLOAD}/koi/${koi.koiImages[0].urlImage}`}
-                    />
-                  ) : (
-                    <p>No images available</p>
-                  )}
-                  <Card.Meta
-                    title={koi.koiName}
-                    description={
-                      <>
-                        <p>Price: {koi.price}</p>
-                        <p>Length: {koi.length} cm</p>
-                        <p>Year of Birth: {koi.yob}</p>
-                        <p>Gender: {koi.gender}</p>
-                      </>
-                    }
-                  />
-                  <Button
-                    type="primary"
-                    onClick={() => handleAddToCart(koi)}
-                    style={{ width: "100%", marginTop: "10px" }}
-                    loading={loadingStates[koi.koiId]}
-                    disabled={orderedKois[koi.koiId]}
-                  >
-                    {orderedKois[koi.koiId] ? "Đã đặt hàng" : "Đặt hàng"}
-                  </Button>
-                </Card>
-              </Col>
-            ))
-          )}
-        </Row>
-      </div>
-    </div>
-  );
+      return (
+            <div className="order-koi-container">
+                  <GoBack />
+                  <div className="order-koi__cart">
+                        <Link to="cart" className="order-koi__cart">
+                              <Button icon={<ShoppingCartOutlined />}></Button>
+                        </Link>
+                  </div>
+                  <div className="order-koi__item">
+                        <Row gutter={20}>
+                              {koiByFarm.flatMap((farm, farmIndex) =>
+                                    farm.kois.map((koi, koiIndex) => (
+                                          <Col span={6} key={`${farmIndex}-${koiIndex}`}>
+                                                <Card hoverable>
+                                                      {koi.koiImages && koi.koiImages.length > 0 ? (
+                                                            <img
+                                                                  key={0}
+                                                                  width="100%"
+                                                                  height={300}
+                                                                  alt={koi.koiName}
+                                                        src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
+                                                            />
+                                                      ) : (
+                                                            <p>No images available</p>
+                                                      )}
+                                                      <Card.Meta
+                                                            title={koi.koiName}
+                                                            description={
+                                                                  <>
+                                                                        <p>Price: {koi.price}</p>
+                                                                        <p>Length: {koi.length} cm</p>
+                                                                        <p>Year of Birth: {koi.yob}</p>
+                                                                        <p>Gender: {koi.gender}</p>
+                                                                  </>
+                                                            }
+                                                      />
+                                                      <Button
+                                                            type="primary"
+                                                            onClick={() => handleAddToCart(koi)}
+                                                            style={{ width: '100%', marginTop: '10px' }}
+                                                            loading={loadingStates[koi.koiId]}
+                                                            disabled={orderedKois[koi.koiId]}
+                                                      >
+                                                            {orderedKois[koi.koiId] ? 'Đã đặt hàng' : 'Đặt hàng'}
+                                                      </Button>
+                                                </Card>
+                                          </Col>
+                                    ))
+                              )}
+                        </Row>
+                  </div>
+            </div>
+      );
 }
 export default OrderKoi;

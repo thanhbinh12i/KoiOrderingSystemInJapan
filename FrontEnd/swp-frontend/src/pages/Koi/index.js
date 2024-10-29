@@ -14,7 +14,6 @@ function Koi() {
   const [loading, setLoading] = useState(false); 
   const koiPerPage = 9;
 
-
   useEffect(() => {
     const fetchAPI = async () => {
       setLoading(true); 

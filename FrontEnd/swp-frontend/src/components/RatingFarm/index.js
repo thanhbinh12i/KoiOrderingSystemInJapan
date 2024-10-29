@@ -149,7 +149,7 @@ const RatingFarm = ({ farmId, userId, onReload }) => {
                   title="Bạn chắc chắn có muốn xóa không?"
                   onConfirm={handleDelete}
                 >
-                  <Button type="primary" danger disabled={loading}>
+                  <Button type="primary" disabled={loading}>
                     Xóa đánh giá
                   </Button>
                 </Popconfirm>
