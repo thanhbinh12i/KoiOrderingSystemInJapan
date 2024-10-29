@@ -15,6 +15,9 @@ using Project_SWP391.Model;
 using Project_SWP391.Services;
 using System;
 using System.Data;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -54,6 +57,15 @@ namespace Project_SWP391.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
+                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                    //var emailModel = new EmailDTO
+                    //{
+                    //    ToEmail = registerDto.Email,
+                    //    Subject = "Confirm your email",
+                    //    Message = $"Here is your comfirmation code: {token}",
+                    //};
+                    //await _emailService.SendEmailAsync(emailModel);
+
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
                     if (roleResult.Succeeded)
                     {
@@ -618,11 +630,12 @@ namespace Project_SWP391.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordEmailDto resetEmail)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             if (resetEmail == null || string.IsNullOrWhiteSpace(resetEmail.ToEmail))
             {
                 return BadRequest("Email address is required.");
             }
-
 
             var user = await _userManager.FindByEmailAsync(resetEmail.ToEmail);
             if (user == null)
@@ -630,25 +643,19 @@ namespace Project_SWP391.Controllers
                 return NotFound("No user found with that email address.");
             }
 
-            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             if (string.IsNullOrWhiteSpace(token))
             {
                 return StatusCode(500, "Failed to generate password reset token.");
             }
 
-            var resetLink = $"{Request.Scheme}://{Request.Host}/api/Account/ResetPassword?token={token}&email={resetEmail.ToEmail}";
-
-            if (string.IsNullOrEmpty(resetLink))
-            {
-                return StatusCode(500, "Failed to generate reset link.");
-            }
-
             var emailModel = new EmailDTO
             {
                 ToEmail = resetEmail.ToEmail,
                 Subject = "Password Reset",
-                Message = $"Click here to reset your password: {resetLink}",
+                Message = $"Here is your reset code: {token}",
             };
 
             try
@@ -685,6 +692,33 @@ namespace Project_SWP391.Controllers
 
             return Ok("Password has reset successfully!");
         }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(code))
+            {
+                return BadRequest("Invalid email confirmation request.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return Ok("Email confirmed successfully!");
+            }
+            else
+            {
+                return BadRequest("Email confirmation failed.");
+            }
+        }
+
 
         private string FormatPhoneNumber(string phoneNumber)
         {
