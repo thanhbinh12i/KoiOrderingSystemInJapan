@@ -68,12 +68,12 @@ function Sidebar() {
       <Button block icon={<GoogleOutlined />}>
         Bạn là hội viên
       </Button>
-      <Menu mode="vertical" defaultSelectedKeys={["account"]}>
+      <Menu mode="vertical">
         <Menu.Item key="account" icon={<SettingOutlined />}>
-        <Link to="/profile">Tài khoản</Link>
+          <Link to="/profile">Tài khoản</Link>
         </Menu.Item>
         <Menu.Item key="password" icon={<GoogleOutlined />}>
-          Mật khẩu & Bảo mật
+          <Link to="/settings"> Mật khẩu & Bảo mật</Link>
         </Menu.Item>
         <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>

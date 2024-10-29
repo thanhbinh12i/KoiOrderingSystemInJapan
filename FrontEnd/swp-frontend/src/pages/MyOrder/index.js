@@ -67,7 +67,7 @@ function MyOrder() {
                                     Xem chi tiết
                               </Button>
                         </Link>
-                  )          
+                  )
             },
             {
                   title: 'Hành động',
@@ -108,6 +108,7 @@ function MyOrder() {
       ]
       return (
             <>
+                  <h2>Danh sách đơn hàng</h2>
                   <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
             </>
       );

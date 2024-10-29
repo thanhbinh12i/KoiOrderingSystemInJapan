@@ -1,0 +1,91 @@
+.farm-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+
+  .farm-info-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+
+    .ant-divider-horizontal {
+      margin: 12px 0;
+    }
+
+    .ant-descriptions-item-label {
+      font-weight: 600;
+    }
+
+    .ant-space-item {
+      color: #333;
+    }
+  }
+
+  .koi-by-farm-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    .koi-detail-card {
+      flex: 1 1 200px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      .koi-detail-image {
+        border-bottom: 1px solid #f0f0f0;
+        object-fit: cover;
+      }
+
+      h4 {
+        color: #333;
+        margin: 10px 0;
+      }
+
+      p {
+        color: #777;
+        margin: 0;
+      }
+    }
+  }
+
+  .farm-ratings-container {
+    margin-top: 20px;
+
+    .ratings-card {
+      border-radius: 10px;
+      background-color: #f9f9f9;
+
+      .ant-card-grid {
+        padding: 16px;
+        border-bottom: 1px solid #e8e8e8;
+
+        .avatar-placeholder {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #ccc;
+          color: #fff;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          font-size: 16px;
+          font-weight: bold;
+        }
+
+        .ant-space-item {
+          color: #555;
+        }
+      }
+    }
+  }
+}
