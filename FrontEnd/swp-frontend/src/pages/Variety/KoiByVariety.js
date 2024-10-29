@@ -15,7 +15,7 @@ const KoiByVariety = () => {
   useEffect(() => {
     const fetchKoiByVariety = async () => {
       try {
-        const response = await get(`koi/view-by-variety/${param.name})`);
+        const response = await get(`koi/view-by-variety/${param.name}`);
         const res = await get(`koi-variable/view-by-name/${param.name}`);
         if (response && res) {
           setKoiData(response);

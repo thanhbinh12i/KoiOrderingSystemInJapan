@@ -16,7 +16,11 @@ $light-blue: #e6f7ff;
   margin: 0;
   padding: 0;
   background-color: $primary-color;
-  background-image: linear-gradient(135deg, $gradient-color 0%, $primary-color 100%);
+  background-image: linear-gradient(
+    135deg,
+    $gradient-color 0%,
+    $primary-color 100%
+  );
   color: $white;
   &-container {
     max-width: 1400px;
@@ -26,7 +30,18 @@ $light-blue: #e6f7ff;
   .section-title {
     color: $primary-color;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+  }
+
+  .section-description {
+    font-weight: bold;
+    color: $text-color;
+    text-align: center;
+    font-size: 1.2em;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
   }
   &__search {
     text-align: center;
@@ -191,9 +206,7 @@ $light-blue: #e6f7ff;
     }
     .service-card {
       height: 100%;
-      transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
 
       &:hover {
         transform: translateY(-10px);
