@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined, DownOutlined } from '@ant-design/icons';
+import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar, Space, Typography } from 'antd';
 import { Link, NavLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
