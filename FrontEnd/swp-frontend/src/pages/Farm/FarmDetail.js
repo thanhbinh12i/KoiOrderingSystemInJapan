@@ -151,7 +151,7 @@ function FarmDetail() {
           </Space>
         </Card>
 
-        <h2>Danh sách cá Koi trong trang trại</h2>
+        <h3>Danh sách cá Koi trong trang trại</h3>
       </div>
 
       <div className="koi-by-farm-container">
@@ -173,6 +173,9 @@ function FarmDetail() {
             <p>Gender: {koi.gender}</p>
           </Card>
         ))}
+      </div>
+      <div>
+        <RatingFarm farmId={params.id} userId={userId} onReload={onReload} />
       </div>
       <div className="farm-ratings-container">
         <Card title="Đánh giá từ khách hàng" className="ratings-card">
@@ -208,7 +211,6 @@ function FarmDetail() {
             ))}
         </Card>
       </div>
-      <RatingFarm farmId={params.id} userId={userId} onReload={onReload} />
     </>
   );
 }

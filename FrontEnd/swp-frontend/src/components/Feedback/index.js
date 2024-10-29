@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Button, Rate, Upload, message } from "antd";
 import { UploadOutlined, HeartFilled } from "@ant-design/icons";
 import "./Feedback.scss";
+import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -12,6 +13,7 @@ function Feedback() {
   const [messageApi, contextHolder] = message.useMessage();
 
   const userId = localStorage.getItem("id");
+  const navigate = useNavigate();
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -63,10 +65,13 @@ function Feedback() {
     const currentFile = info.file.originFileObj;
     setFile(currentFile);
   };
-
+  const backHome = () => {
+    navigate("/");
+  };
   return (
     <>
       {contextHolder}
+      <Button onClick={backHome}>Quay về trang chủ</Button>
       <div className="thank-you-header">
         <HeartFilled className="heart-icon" />
         <h1>Cảm ơn quý khách!</h1>
