@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import { get, post } from "../../utils/request";
 import { useNavigate } from "react-router-dom";
-import moment from "moment"
+import moment from "moment";
 
 const { TextArea } = Input;
 
@@ -22,7 +22,7 @@ function FormTour() {
   const userId = localStorage.getItem("id");
   const navigate = useNavigate();
   const disablePastDates = (current) => {
-    return current && current < moment().startOf('day');
+    return current && current < moment().startOf("day");
   };
   useEffect(() => {
     const fetchApi = async () => {
@@ -113,14 +113,17 @@ function FormTour() {
         <Form.Item
           label="Số điện thoại"
           name="phoneNumber"
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}
         >
           <Input placeholder="Họ và tên" />
         </Form.Item>
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
+          rules={[
+            { required: true, message: "Vui lòng nhập email!" },
+            { type: "email", message: "Vui lòng nhập email hợp lệ!" },
+          ]}
         >
           <Input placeholder="Họ và tên" />
         </Form.Item>
@@ -138,7 +141,9 @@ function FormTour() {
         <Form.Item
           label="Số lượng người đi"
           name="numberOfParticipate"
-          rules={[{ required: true, message: "Vui lòng nhập họ và tên!" }]}
+          rules={[
+            { required: true, message: "Vui lòng nhập số lượng người đi!" },
+          ]}
         >
           <Input placeholder="Họ và tên" />
         </Form.Item>
@@ -151,7 +156,11 @@ function FormTour() {
                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+              <DatePicker
+                style={{ width: "100%" }}
+                format="DD-MM-YYYY"
+                disabledDate={disablePastDates}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -162,7 +171,11 @@ function FormTour() {
                 { required: true, message: "Vui lòng chọn ngày kết thúc!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+              <DatePicker
+                style={{ width: "100%" }}
+                format="DD-MM-YYYY"
+                disabledDate={disablePastDates}
+              />
             </Form.Item>
           </Col>
           <Col span={0}>
