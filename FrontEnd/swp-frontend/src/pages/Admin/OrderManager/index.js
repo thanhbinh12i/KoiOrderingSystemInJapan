@@ -3,110 +3,116 @@ import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 
 function OrderManager() {
-      const [orderList, setOrderList] = useState([]);
-      const [loading, setLoading] = useState(false);
-      const fetchApi = async () => {
-            const response = await get("delivery-status/view-all");
-            if (response) {
-                  setOrderList(response);
-            }
+  const [orderList, setOrderList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const fetchApi = async () => {
+    const response = await get("delivery-status/view-all");
+    if (response) {
+      setOrderList(response);
+    }
+  };
+  useEffect(() => {
+    fetchApi();
+  }, []);
+  const handleCancel = async (item) => {
+    try {
+      setLoading(true);
+      const billResponse = await get(`bill/view-by-id/${item.billId}`);
+      const customerEmail = billResponse.email;
+      const cancellationTemplate = CancelOrderTemplate({ item, billResponse });
+      const data = {
+        deliveryAddress: item.deliveryAddress,
+        deliveryStatusText: "Đã hủy",
+        estimatedDate: item.estimatedDate,
       };
-      useEffect(() => {
-            fetchApi();
-      }, []);
-      const handleCancel = async (item) => {
-            try {
-                  setLoading(true);
-                  const billResponse = await get(`bill/view-by-id/${item.billId}`);
-                  const customerEmail = billResponse.email;
-                  const cancellationTemplate = CancelOrderTemplate({ item, billResponse });
-                  const data = {
-                        "deliveryAddress": item.deliveryAddress,
-                        "deliveryStatusText": "Đã hủy",
-                        "estimatedDate": item.estimatedDate
-                  }
-                  const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
+      const response = await put(
+        `delivery-status/update/${item.deliveryStatusId}`,
+        data
+      );
 
-                  if (response) {
-
-                        const emailData = {
-                              "toEmail": customerEmail,
-                              "subject": `Xác nhận hủy đơn đặt hàng- Mã đơn ${item.billId}`,
-                              "message": cancellationTemplate
-                        };
-                        const responseEmail = await fetch("https://koidayne.azurewebsites.net/api/email/send", {
-                              method: "POST",
-                              headers: {
-                                    Accept: "application/json",
-                                    "Content-Type": "application/json"
-                              },
-                              body: JSON.stringify(emailData)
-                        })
-                        if (responseEmail) {
-                              fetchApi();
-                        }
-
-                  }
-            } catch (error) {
-                  console.error('Lỗi khi gửi email:', error);
-            } finally {
-                  setLoading(false);
-            }
-
-      };
-      return (
-            <>
-                  {orderList.length > 0 ? (
-                        <>
-                              <Row gutter={[20, 20]}>
-                                    {orderList.map((item) => (
-                                          <Col span={8} key={item.deliveryId}>
-                                                <Card title={`Đơn hàng số ${item.billId}`}>
-                                                      <p>
-                                                            Địa chỉ: <strong>{item.deliveryAddress}</strong>
-                                                      </p>
-                                                      <p>
-                                                            Trạng thái: <strong>{item.deliveryStatusText}</strong>
-                                                      </p>
-                                                      <p>
-                                                            Ngày nhận hàng: <strong>{item.estimatedDate}</strong>
-                                                      </p>
-                                                      {
-                                                            item.deliveryStatusText === "Yêu cầu hủy đơn" && (
-                                                                  <>
-                                                                        <Button type="primary" onClick={() => handleCancel(item)} loading={loading}>
-                                                                              Xác nhận hủy
-                                                                        </Button>
-                                                                  </>
-                                                            )
-                                                      }
-
-                                                </Card>
-                                          </Col>
-                                    ))}
-                              </Row>
-                        </>
-                  ) : (
-                        <>
-                              <h1>Không có báo giá nào</h1>
-                        </>
+      if (response) {
+        const emailData = {
+          toEmail: customerEmail,
+          subject: `Xác nhận hủy đơn đặt hàng- Mã đơn ${item.billId}`,
+          message: cancellationTemplate,
+        };
+        const responseEmail = await fetch(
+          `${process.env.REACT_APP_API_URL}email/send`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(emailData),
+          }
+        );
+        if (responseEmail) {
+          fetchApi();
+        }
+      }
+    } catch (error) {
+      console.error("Lỗi khi gửi email:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return (
+    <>
+      {orderList.length > 0 ? (
+        <>
+          <Row gutter={[20, 20]}>
+            {orderList.map((item) => (
+              <Col span={8} key={item.deliveryId}>
+                <Card title={`Đơn hàng số ${item.billId}`}>
+                  <p>
+                    Địa chỉ: <strong>{item.deliveryAddress}</strong>
+                  </p>
+                  <p>
+                    Trạng thái: <strong>{item.deliveryStatusText}</strong>
+                  </p>
+                  <p>
+                    Ngày nhận hàng: <strong>{item.estimatedDate}</strong>
+                  </p>
+                  {item.deliveryStatusText === "Yêu cầu hủy đơn" && (
+                    <>
+                      <Button
+                        type="primary"
+                        onClick={() => handleCancel(item)}
+                        loading={loading}
+                      >
+                        Xác nhận hủy
+                      </Button>
+                    </>
                   )}
-            </>
-      )
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </>
+      ) : (
+        <>
+          <h1>Không có báo giá nào</h1>
+        </>
+      )}
+    </>
+  );
 }
 export default OrderManager;
 
 const CancelOrderTemplate = (props) => {
-      const { item, billResponse } = props;
-      const refundAmount = billResponse.koiPrice;
-      const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('vi-VN', {
-                  style: 'currency',
-                  currency: 'VND'
-            }).format(amount).replace('₫', 'đ');
-      };
+  const { item, billResponse } = props;
+  const refundAmount = billResponse.koiPrice;
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    })
+      .format(amount)
+      .replace("₫", "đ");
+  };
 
-      return `
+  return `
         <html>
             <head>
                 <meta charset="UTF-8" />
@@ -213,11 +219,15 @@ const CancelOrderTemplate = (props) => {
                         </div>
                         <div class="details-row">
                             <span class="details-label">Số tiền hoàn lại: </span>
-                            <span class="currency refund">${formatCurrency(refundAmount)}</span>
+                            <span class="currency refund">${formatCurrency(
+                              refundAmount
+                            )}</span>
                         </div>
                     </div>
 
-                    <p>Theo chính sách của chúng tôi, yêu cầu hủy đơn của Quý khách đã được chấp nhận. Quý khách sẽ được hoàn lại 100% số tiền đã thanh toán, tương đương <span class="currency refund">${formatCurrency(refundAmount)}</span>.</p>
+                    <p>Theo chính sách của chúng tôi, yêu cầu hủy đơn của Quý khách đã được chấp nhận. Quý khách sẽ được hoàn lại 100% số tiền đã thanh toán, tương đương <span class="currency refund">${formatCurrency(
+                      refundAmount
+                    )}</span>.</p>
 
                     <p>Chúng tôi thực sự tiếc rằng không thể phục vụ Quý khách trong lần này. Koi Dayne cam kết sẽ không ngừng cải thiện chất lượng sản phẩm và dịch vụ để mang đến trải nghiệm tốt nhất cho Quý khách trong những lần mua sắm tiếp theo ✨</p>
 
@@ -238,4 +248,4 @@ const CancelOrderTemplate = (props) => {
             </body>
         </html>
     `;
-}
+};

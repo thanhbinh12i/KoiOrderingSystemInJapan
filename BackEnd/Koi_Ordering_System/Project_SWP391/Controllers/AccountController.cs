@@ -461,9 +461,9 @@ namespace Project_SWP391.Controllers
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.Users
-    .Include(u => u.Feedback)
-    .Include(u => u.Bills)
-    .FirstOrDefaultAsync(u => u.Id == id);
+            .Include(u => u.Feedback)
+            .Include(u => u.Bills)
+            .FirstOrDefaultAsync(u => u.Id == id);
             if (user == null) return NotFound("No user found");
             return Ok
                 (
@@ -520,7 +520,6 @@ namespace Project_SWP391.Controllers
                 );
         }
         [HttpGet("view-all-user")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
             var users = await _userManager.Users.OfType<AppUser>().Include(u=>u.Feedback).Include(u => u.Bills).ToListAsync();

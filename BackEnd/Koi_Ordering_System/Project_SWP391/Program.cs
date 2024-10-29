@@ -104,7 +104,7 @@ namespace Project_SWP391
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin", policy =>
-                    policy.WithOrigins("*") // address of frontend
+                    policy.AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader());
             });

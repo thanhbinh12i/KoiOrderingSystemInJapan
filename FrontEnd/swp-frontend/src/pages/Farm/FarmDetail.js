@@ -157,6 +157,7 @@ function FarmDetail() {
       <div className="koi-by-farm-container">
         {koiData.map((koi) => (
           <Card key={koi.koiId} hoverable className="koi-detail-card">
+
             <img
               key={koi.koiId}
               width={135}

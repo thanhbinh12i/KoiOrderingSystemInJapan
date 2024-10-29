@@ -4,6 +4,7 @@ using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Dtos.Tours;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
+using System.Globalization;
 
 namespace Project_SWP391.Repository
 {
@@ -109,6 +110,23 @@ namespace Project_SWP391.Repository
                           where td.QuotationId == quotationId
                           select t)
                           .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Tour?>> GetByDateAsync(DateTime? start, DateTime? end)
+        {
+            var tours = await _context.Tours.ToListAsync(); // Tải toàn bộ bản ghi
+
+            return tours.Where(tour => IsDateRangeValid(tour.StartTime, tour.FinishTime, start, end)).ToList();
+        }
+
+        private bool IsDateRangeValid(string startTime, string finishTime, DateTime? start, DateTime? end)
+        {
+            if (DateTime.TryParseExact(startTime, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDate) &&
+                DateTime.TryParseExact(finishTime, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDate))
+            {
+                return startDate >= start && endDate <= end;
+            }
+            return false;
         }
     }
 }

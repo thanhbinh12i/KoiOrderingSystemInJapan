@@ -23,7 +23,7 @@ namespace Project_SWP391.Controllers
             var koiFarm = await _koiFarmRepo.GetAllAsync();
             if (koiFarm.IsNullOrEmpty()) return NotFound();
             var koiFarmDto = koiFarm.Select(v => v.ToKoiFarmDTO());
-            return Ok(koiFarm);
+            return Ok(koiFarmDto);
         }
         [HttpGet("view/{farmId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId)

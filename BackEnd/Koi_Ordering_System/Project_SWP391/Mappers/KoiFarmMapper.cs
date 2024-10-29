@@ -1,4 +1,5 @@
 ﻿using Project_SWP391.Dtos.KoiFarms;
+using Project_SWP391.Dtos.Kois;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Mappers
@@ -17,8 +18,15 @@ namespace Project_SWP391.Mappers
                 CloseHour = koiFarmModel.CloseHour,
                 Email = koiFarmModel.Email,
                 Hotline = koiFarmModel.Hotline,
-                Kois = koiFarmModel.Kois,
-                FarmImages = koiFarmModel.FarmImages
+                Kois = koiFarmModel.Kois.Select(k => new KoiIdDto
+                {
+                    KoiId = k.KoiId 
+                }).ToList(),
+                FarmImages = koiFarmModel.FarmImages.Select(f => new FarmImage
+                {
+                    FarmImageId = f.FarmImageId,
+                    UrlImage = f.UrlImage,
+                }).ToList()
             };
         }
         public static KoiFarm ToKoiFarmFromCreateDTO(this CreateKoiFarmDto koiFarmDto)
