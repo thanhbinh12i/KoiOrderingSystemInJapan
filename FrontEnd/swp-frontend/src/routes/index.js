@@ -4,7 +4,6 @@ import BookTour from "../components/BookTour";
 import Cart from "../components/Cart";
 import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
-import MyBill from "../components/MyBill";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
 import PrivateRoutes from "../components/privateRouter";
@@ -60,6 +59,8 @@ import KoiByVariety from "../pages/Variety/KoiByVariety";
 import PaymentRemain from "../components/PaymentRemain";
 import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
+import ForgotPassword from "../components/ForgotPassword";
+import ResetPassword from "../components/ResetPassword";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -97,6 +98,14 @@ export const routes = [
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
       },
       {
         path: "logout",
@@ -163,10 +172,6 @@ export const routes = [
               {
                 path: "profile",
                 element: <MainContent />,
-              },
-              {
-                path: "my-bills",
-                element: <MyBill />,
               },
               {
                 path: "my-orders",

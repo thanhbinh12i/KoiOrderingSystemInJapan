@@ -3,6 +3,7 @@ using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Dtos.Tours;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using System.Globalization;
 
 namespace Project_SWP391.Controllers
 {
@@ -64,7 +65,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
-        [HttpGet("view/{min:float}&&{max:float}")]
+        [HttpGet("view-price/{min:float}&&{max:float}")]
         public async Task<IActionResult> ViewPriceMinToMax([FromRoute] float min, float max)
         {
             var tour = await _tourRepo.GetPriceByAsync(min,max);
@@ -74,6 +75,32 @@ namespace Project_SWP391.Controllers
             }
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
+        }
+        [HttpGet("view-date/{startDate}&&{endDate}")]
+        public async Task<IActionResult> ViewToursByDate([FromRoute] string? startDate, string? endDate)
+        {
+            DateTime? parsedStartDate = null;
+            DateTime? parsedEndDate = null;
+
+            if (!string.IsNullOrEmpty(startDate))
+            {
+                if (!DateTime.TryParseExact(startDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime startDateValue))
+                {
+                    return BadRequest("Invalid format. Please use format dd-MM-yyyy.");
+                }
+                parsedStartDate = startDateValue;
+            }
+
+            if (!string.IsNullOrEmpty(endDate))
+            {
+                if (!DateTime.TryParseExact(endDate, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime endDateValue))
+                {
+                    return BadRequest("Invalid format. Please use format dd-MM-yyyy.");
+                }
+                parsedEndDate = endDateValue;
+            }
+            var tours = await _tourRepo.GetByDateAsync(parsedStartDate, parsedEndDate);
+            return Ok(tours);
         }
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateTourDto tour)

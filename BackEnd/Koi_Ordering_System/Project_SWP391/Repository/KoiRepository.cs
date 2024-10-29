@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
 using Project_SWP391.Dtos.Kois;
+using Project_SWP391.Helper;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 
@@ -36,10 +37,17 @@ namespace Project_SWP391.Repository
             return koi;
         }
 
+        public async Task<List<Koi>> GetAllAsync(QueryObject query)
+        {
+            var koi = _context.Kois.Include(k => k.KoiImages).AsQueryable();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+            return await koi.Skip(skipNumber).Take(query.PageSize).ToListAsync();
+        }
         public async Task<List<Koi>> GetAllAsync()
         {
             return await _context.Kois.Include(k => k.KoiImages).ToListAsync();
         }
+
 
         public async Task<List<Koi>?> GetByFarmAsync(string farmName)
         {
@@ -118,6 +126,10 @@ namespace Project_SWP391.Repository
             await _context.SaveChangesAsync();
 
             return koiModel;
+        }
+        public async Task<int> CountKoiAsync()
+        {
+            return await _context.Kois.CountAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Project_SWP391.Dtos.Kois;
+using Project_SWP391.Helper;
 using Project_SWP391.Model;
 
 namespace Project_SWP391.Interfaces
@@ -6,6 +7,7 @@ namespace Project_SWP391.Interfaces
     public interface IKoiRepository
     {
         Task<List<Koi>> GetAllAsync();
+        Task<List<Koi>> GetAllAsync(QueryObject query);
         Task<Koi?> GetByIdAsync(int id);
         Task<List<Koi>> GetByNameAsync(string name);
         Task<List<Koi>?> GetByVarietyAsync(string varietyName);
@@ -15,5 +17,6 @@ namespace Project_SWP391.Interfaces
         Task<Koi?> UpdateAsync(int id, UpdateKoiDto variety);
         Task<Koi?> DeleteAsync(int id);
         Task<bool> KoiExists(int id);
+        Task<int> CountKoiAsync();
     }
 }

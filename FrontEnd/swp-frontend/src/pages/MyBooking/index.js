@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { del, get, put } from "../../utils/request";
 import { Button, Modal, Table } from "antd";
 import "./MyBooking.scss"
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
 
 function MyBooking() {
@@ -10,6 +10,7 @@ function MyBooking() {
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
       const [isModalVisible, setIsModalVisible] = useState(false);
+      const navigate = useNavigate();
       const showModal = () => {
             setIsModalVisible(true);
       };
@@ -80,6 +81,17 @@ function MyBooking() {
                   render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
+                  title: 'Chi tiết chuyến đi',
+                  key: 'tourDetail',
+                  render: (_, record) => (
+                        <Link to={`/tours/${record.tourId}`}>
+                              <Button type="primary">
+                                    Xem chi tiết
+                              </Button>
+                        </Link>
+                  )
+            },
+            {
                   title: 'Hành động',
                   key: 'action',
                   render: (_, record) => {
@@ -106,11 +118,14 @@ function MyBooking() {
                         } else if (record.status === "Đã xác nhận") {
                               return (
                                     <>
-                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }}>
+                                          <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }} className="pr-10">
                                                 <Button type="primary">
                                                       Thanh toán
                                                 </Button>
                                           </Link>
+                                          <Button color="default" variant="solid">
+                                                Không xác nhận giá
+                                          </Button>
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
@@ -138,6 +153,7 @@ function MyBooking() {
                                     if (response) {
                                           fetchApi();
                                           setIsModalVisible(false);
+                                          navigate(`/my-orders/feedback/${record.userId}`);
                                     }
                               }
                               if (relatedBill.koiPrice > 0) {
@@ -151,7 +167,7 @@ function MyBooking() {
                               } else if (relatedBill) {
                                     return (
                                           <>
-                                                <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }}>
+                                                <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }} className="pr-10">
                                                       <Button type="primary">Mua cá nào</Button>
                                                 </NavLink>
                                                 <Button type="primary" onClick={() => showModal()}>Không mua cá</Button>

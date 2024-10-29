@@ -1,5 +1,6 @@
 .koi-container {
   margin-top: 20px;
+  padding-bottom: 70px; // Thêm padding dưới cùng để tránh nội dung bị che khuất bởi Pagination
 }
 
 .koi-card {
@@ -42,6 +43,7 @@
     margin-bottom: 16px;
   }
 }
+
 .koi-detail-container {
   padding: 24px;
   background-color: #f0f2f5;
@@ -118,4 +120,10 @@
   .koi-detail-container {
     padding: 16px;
   }
+}
+
+// Thêm CSS cho pagination
+.pagination {
+  display: flex;
+  justify-content: center;
 }

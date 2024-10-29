@@ -64,7 +64,7 @@ function CreateKoiFarm() {
 
     try {
       const response = await fetch(
-        `https://koidayne.azurewebsites.net/api/farmImage/upload/${farmId}`,
+        `${process.env.REACT_APP_API_URL}farmImage/upload/${farmId}`,
         {
           method: "POST",
           body: formData,

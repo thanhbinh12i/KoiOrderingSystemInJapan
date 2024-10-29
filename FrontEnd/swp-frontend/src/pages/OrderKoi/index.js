@@ -9,56 +9,59 @@ import GoBack from "../../components/GoBack";
 import "./OrderKoi.scss";
 
 function OrderKoi() {
-      const location = useLocation();
-      const params = useParams();
-      const { tourId } = location.state || params;
-      const [koiByFarm, setKoiByFarm] = useState([]);
-      const [loadingStates, setLoadingStates] = useState({});
-      const [orderedKois, setOrderedKois] = useState({}); 
-      const dispatch = useDispatch();
-      useEffect(() => {
-            const fetchApi = async () => {
-                  if (tourId) {
-                        const response = await get(`tourDestination/view-tourId/${tourId}`);
-                        if (response) {
-                              const farmIdList = response.map(dest => dest.farmId);
-                              const koiPromises = farmIdList.map(async (farmId) => {
-                                    const koiResponse = await get(`koi/view-by-farmId/${farmId}`);
-                                    return { farmId, kois: koiResponse };
-                              });
+  const location = useLocation();
+  const params = useParams();
+  const { tourId } = location.state || params;
+  const [koiByFarm, setKoiByFarm] = useState([]);
+  const [loadingStates, setLoadingStates] = useState({});
+  const [orderedKois, setOrderedKois] = useState({});
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetchApi = async () => {
+      if (tourId) {
+        const response = await get(`tourDestination/view-tourId/${tourId}`);
+        if (response) {
+          const farmIdList = response.map((dest) => dest.farmId);
+          const koiPromises = farmIdList.map(async (farmId) => {
+            const koiResponse = await get(`koi/view-by-farmId/${farmId}`);
+            return { farmId, kois: koiResponse };
+          });
 
-                              const koiData = await Promise.all(koiPromises);
-                              setKoiByFarm(koiData);
-                        }
-                  }
-            }
-            fetchApi();
-      }, [tourId]);
-      const handleAddToCart = async (koi) => {
-            if (orderedKois[koi.koiId] || loadingStates[koi.koiId]) {
-                  return;
-            }
-            try {
-                  setLoadingStates(prev => ({...prev,[koi.koiId]: true}));
-
-                  const data = {
-                        "originalPrice": koi.price,
-                        "quantity": 1,
-                        "finalPrice": 0
-                  }
-
-                  const response = await post(`koi-bill/create/${params.id}-${koi.koiId}`, data);
-
-                  if (response) {
-                        dispatch(addToCart({ ...koi, quantity: 1 }));
-                        setOrderedKois(prev => ({...prev,[koi.koiId]: true }));
-                  }
-            } catch (error) {
-                  console.error('Lỗi thêm vào giỏ hàng:', error);
-            } finally {
-                  setLoadingStates(prev => ({...prev,[koi.koiId]: false}));
-            }
+          const koiData = await Promise.all(koiPromises);
+          setKoiByFarm(koiData);
+        }
       }
+    };
+    fetchApi();
+  }, [tourId]);
+  const handleAddToCart = async (koi) => {
+    if (orderedKois[koi.koiId] || loadingStates[koi.koiId]) {
+      return;
+    }
+    try {
+      setLoadingStates((prev) => ({ ...prev, [koi.koiId]: true }));
+
+      const data = {
+        originalPrice: koi.price,
+        quantity: 1,
+        finalPrice: 0,
+      };
+
+      const response = await post(
+        `koi-bill/create/${params.id}-${koi.koiId}`,
+        data
+      );
+
+      if (response) {
+        dispatch(addToCart({ ...koi, quantity: 1 }));
+        setOrderedKois((prev) => ({ ...prev, [koi.koiId]: true }));
+      }
+    } catch (error) {
+      console.error("Lỗi thêm vào giỏ hàng:", error);
+    } finally {
+      setLoadingStates((prev) => ({ ...prev, [koi.koiId]: false }));
+    }
+  };
 
       return (
             <div className="order-koi-container">

@@ -14,7 +14,7 @@ namespace Project_SWP391.Dtos.KoiFarms
         public string CloseHour { get; set; }
         public string Email { get; set; }
         public string Hotline { get; set; }
-        public ICollection<Koi> Kois { get; set; }
+        public ICollection<KoiIdDto> Kois { get; set; }
         public ICollection<Rating> Ratings { get; set; }
 
         public ICollection<FarmImage> FarmImages { get; set; }
