@@ -1,7 +1,7 @@
 import { Button, Card, Col, Form, Input, message, Row } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import "./Login.scss";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { checkLogin } from "../../actions/login";
@@ -20,7 +20,6 @@ function Login() {
     try {
       const data = await post("account/login", { account, password });
       if (data) {
-        messageApi.success("Login successful");
         const token = data.token;
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.nameid;
@@ -39,7 +38,7 @@ function Login() {
         }
       }
     } catch (error) {
-      messageApi.error("Invalid user email or password");
+      messageApi.error("Sai tài khoản hoặc mật khẩu");
     } finally {
       setLoading(false);
     }
@@ -89,19 +88,17 @@ function Login() {
             <Col span={12}>
               <Card title="Đăng nhập" className="login__card">
                 <Form onFinish={onFinish} layout="vertical">
-                  <Form.Item label="Account" name="account">
+                  <Form.Item label="Tài khoản" name="account">
                     <Input placeholder="Nhập tên người dùng hoặc email hoặc số điện thoại" />
                   </Form.Item>
                   <Form.Item label="Mật khẩu" name="password">
                     <Input.Password placeholder="Nhập mật khẩu" />
                   </Form.Item>
+                  <div className="login__forgotPassword">
+                    <Link to="/forgot-password">Quên mật khẩu</Link>
+                  </div>
                   <Form.Item>
-                    <Button
-                      type="primary"
-                      size="large"
-                      htmlType="submit"
-                      className="login__button"
-                    >
+                    <Button type="primary" size="large" htmlType="submit" className="login__button">
                       Đăng nhập
                     </Button>
                   </Form.Item>
@@ -124,6 +121,9 @@ function Login() {
                     )}
                   />
                 </Form>
+                <div>
+                  Bạn không có tài khoản? <Link to="/register">Đăng ký</Link>
+                </div>
               </Card>
             </Col>
           </Row>
