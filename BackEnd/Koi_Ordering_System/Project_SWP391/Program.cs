@@ -137,11 +137,11 @@ namespace Project_SWP391
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                //app.UseSwaggerUI(c =>
-                //{
-                //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectSWP391 API V1");
-                //    c.RoutePrefix = String.Empty;
-                //});
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProjectSWP391 API V1");
+                    c.RoutePrefix = String.Empty;
+                });
                 app.UseSwaggerUI();
             }
 
