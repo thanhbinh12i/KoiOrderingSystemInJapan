@@ -15,6 +15,9 @@ using Project_SWP391.Model;
 using Project_SWP391.Services;
 using System;
 using System.Data;
+using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -54,6 +57,15 @@ namespace Project_SWP391.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
+                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                    //var emailModel = new EmailDTO
+                    //{
+                    //    ToEmail = registerDto.Email,
+                    //    Subject = "Confirm your email",
+                    //    Message = $"Here is your comfirmation code: {token}",
+                    //};
+                    //await _emailService.SendEmailAsync(emailModel);
+
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
                     if (roleResult.Succeeded)
                     {
@@ -215,69 +227,14 @@ namespace Project_SWP391.Controllers
                 return Unauthorized("Invalid Google token");
             }
         }
-        //[HttpPut("update")]
-        //public async Task<IActionResult> Update([FromBody] UpdateUserDTO updateUser, [FromHeader] string id)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-
-        //    var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
-        //    if (user == null) return NotFound("User not found");
-
-        //    var usernameExists = await _userManager.Users.AnyAsync(x => x.UserName == updateUser.UserName && x.Id != id);
-        //    if (usernameExists) return Conflict("Username already in use by another user");
-
-        //    var emailExists = await _userManager.Users.AnyAsync(x => x.Email == updateUser.Email && x.Id != id);
-        //    if (emailExists) return Conflict("Email already in use by another user");
-
-        //    string formattedPhoneNumber = FormatPhoneNumber(updateUser.PhoneNumber);
-        //    if (formattedPhoneNumber == null) return BadRequest("Invalid phone number format");
-
-        //    if (!string.IsNullOrEmpty(updateUser.Password))
-        //    {
-        //        var removePasswordResult = await _userManager.RemovePasswordAsync(user);
-        //        if (!removePasswordResult.Succeeded)
-        //        {
-        //            return BadRequest(removePasswordResult.Errors);
-        //        }
-
-        //        var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
-        //        if (!addPasswordResult.Succeeded)
-        //        {
-        //            return BadRequest(addPasswordResult.Errors);
-        //        }
-        //    }
-
-        //    user.UserName = updateUser.UserName;
-        //    user.Email = updateUser.Email;
-        //    user.Gender = updateUser.Gender;
-        //    user.Address = updateUser.Address;
-        //    user.FullName = updateUser.FullName;
-        //    user.PhoneNumber = formattedPhoneNumber;
-        //    user.DateOfBirth = updateUser.DateOfBirth;
-
-        //    var result = await _userManager.UpdateAsync(user);
-        //    if (!result.Succeeded)
-        //    {
-        //        return BadRequest(result.Errors);
-        //    }
-
-        //    return Ok(new UpdatedUserDTO
-        //    {
-        //        UserName = user.UserName,
-        //        Email = user.Email,
-        //        FullName = user.FullName,
-        //        PhoneNumber = user.PhoneNumber,
-        //        Gender = user.Gender,
-        //        Address = user.Address,
-        //        DateOfBirth = user.DateOfBirth,
-        //        Token = _tokenService.CreateToken(user)
-        //    });
-        //}
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) return NotFound("User not found");
@@ -420,12 +377,13 @@ namespace Project_SWP391.Controllers
         //    };
         //}
 
-        //ndepend test
-
         [HttpPut("change-password/{id}")]
         public async Task<IActionResult> ChangePassword([FromBody] UpdateUserDto updateUser, string id)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (user == null) return NotFound("User not found");
@@ -618,11 +576,15 @@ namespace Project_SWP391.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordEmailDto resetEmail)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (resetEmail == null || string.IsNullOrWhiteSpace(resetEmail.ToEmail))
             {
                 return BadRequest("Email address is required.");
             }
-
 
             var user = await _userManager.FindByEmailAsync(resetEmail.ToEmail);
             if (user == null)
@@ -630,25 +592,19 @@ namespace Project_SWP391.Controllers
                 return NotFound("No user found with that email address.");
             }
 
-            var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "ResetPassword");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             if (string.IsNullOrWhiteSpace(token))
             {
                 return StatusCode(500, "Failed to generate password reset token.");
             }
 
-            var resetLink = $"{Request.Scheme}://{Request.Host}/api/Account/ResetPassword?token={token}&email={resetEmail.ToEmail}";
-
-            if (string.IsNullOrEmpty(resetLink))
-            {
-                return StatusCode(500, "Failed to generate reset link.");
-            }
-
             var emailModel = new EmailDTO
             {
                 ToEmail = resetEmail.ToEmail,
                 Subject = "Password Reset",
-                Message = $"Click here to reset your password: {resetLink}",
+                Message = $"Here is your reset code: {token}",
             };
 
             try
@@ -668,6 +624,11 @@ namespace Project_SWP391.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordEmailDto resetEmail)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = await _userManager.FindByEmailAsync(resetEmail.Email);
 
             if (user == null)
@@ -684,6 +645,37 @@ namespace Project_SWP391.Controllers
             }
 
             return Ok("Password has reset successfully!");
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(code))
+            {
+                return BadRequest("Invalid email confirmation request.");
+            }
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            if (result.Succeeded)
+            {
+                return Ok("Email confirmed successfully!");
+            }
+            else
+            {
+                return BadRequest("Email confirmation failed.");
+            }
         }
 
         private string FormatPhoneNumber(string phoneNumber)

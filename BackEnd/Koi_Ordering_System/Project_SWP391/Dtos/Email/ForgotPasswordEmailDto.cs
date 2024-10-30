@@ -6,6 +6,6 @@ namespace Project_SWP391.Dtos.Email
     {
         [Required]
         [EmailAddress]
-        public string? ToEmail { get; set; }
+        public string? ToEmail { get; set; } = string.Empty;
     }
 }
