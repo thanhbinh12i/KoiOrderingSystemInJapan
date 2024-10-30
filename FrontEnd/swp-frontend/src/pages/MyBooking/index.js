@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { del, get, put } from "../../utils/request";
-import { Button, Modal, Table } from "antd";
+import { Button, Form, Input, Modal, Table } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
@@ -11,8 +11,10 @@ function MyBooking() {
       const userId = localStorage.getItem("id");
       const [isModalVisible, setIsModalVisible] = useState(false);
       const navigate = useNavigate();
+      const [form] = Form.useForm();
       const showModal = () => {
             setIsModalVisible(true);
+            // form.resetFields();
       };
 
       const handleCancel = () => {
@@ -57,7 +59,7 @@ function MyBooking() {
                   key: 'quotationId',
             },
             {
-                  title: 'Tour',
+                  title: 'Chuyến đi',
                   dataIndex: ['tourDetail', 'tourName'],
                   key: 'tourName',
             },
@@ -116,6 +118,19 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã xác nhận") {
+                              const handleNoConfirm = async (values) => {
+                                    const quotationData = {
+                                          "priceOffer": record.priceOffer,
+                                          "status": "Chờ xác nhận",
+                                          "approvedDate": record.approvedDate,
+                                          "description": values.description,
+                                    };
+                                    const response = await put(`quotation/update/${record.quotationId}`, quotationData);
+                                    if (response) {
+                                          fetchApi();
+                                          setIsModalVisible(false);
+                                    }
+                              }
                               return (
                                     <>
                                           <Link to={`/pay-booking/${record.quotationId}`} state={{ price: record.priceOffer }} className="pr-10">
@@ -123,9 +138,38 @@ function MyBooking() {
                                                       Thanh toán
                                                 </Button>
                                           </Link>
-                                          <Button color="default" variant="solid">
-                                                Không xác nhận giá
-                                          </Button>
+                                          {record.tourDetail.tourName === "Tour Custom" && (
+                                                <>
+                                                      <Button color="default" variant="solid" onClick={() => showModal()}>Yêu cầu giá khác</Button>
+                                                </>
+                                          )}
+                                          <Modal
+                                                title="Yêu cầu thương lượng giá chuyến đi"
+                                                open={isModalVisible}
+                                                onCancel={handleCancel}
+                                                footer={null}
+                                          >
+                                                <Form
+                                                      onFinish={handleNoConfirm}
+                                                      layout="vertical"
+                                                      form={form}
+                                                      initialValues={{
+                                                            description: "Xin chào, tôi rất quan tâm đến chuyến đi này nhưng tôi muốn thảo luận thêm về giá. Liệu có thể điều chỉnh mức giá phù hợp hơn không? Cảm ơn!"
+                                                      }}
+                                                >
+                                                      <Form.Item label="Lời nhắn" name="description">
+                                                            <Input.TextArea
+                                                                  rows={4}
+                                                                  style={{ marginBottom: '10px' }}
+                                                            />
+                                                      </Form.Item>
+                                                      <Form.Item>
+                                                            <Button type="primary" htmlType="submit">
+                                                                  Gửi yêu cầu
+                                                            </Button>
+                                                      </Form.Item>
+                                                </Form>
+                                          </Modal>
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
