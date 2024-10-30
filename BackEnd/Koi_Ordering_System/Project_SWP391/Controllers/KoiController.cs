@@ -31,6 +31,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(kois);
         }
+
         [HttpGet("view-all/paging")]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
@@ -86,6 +87,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiDto);
         }
+
         [HttpGet("view-by-farmId/{farmId}")]
         public async Task<IActionResult> GetByFarmIdName([FromRoute] int farmId)
         {
@@ -100,10 +102,26 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiDto);
         }
+
         [HttpGet("view-by-variety/{varietyName}")]
         public async Task<IActionResult> GetByVarietyName([FromRoute] string varietyName)
         {
             var kois = await _koiRepo.GetByVarietyAsync(varietyName);
+
+            if (kois == null)
+            {
+                return NotFound("No koi found!");
+            }
+
+            var koiDto = kois.Select(kois => kois.ToKoiDto());
+
+            return Ok(koiDto);
+        }
+
+        [HttpGet("view-by-price/{min}-{max}")]
+        public async Task<IActionResult> GetByPrice(float min, float max)
+        {
+            var kois = await _koiRepo.GetByPriceAsync(min, max);
 
             if (kois == null)
             {

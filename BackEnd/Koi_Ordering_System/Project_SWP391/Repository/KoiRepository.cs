@@ -131,5 +131,10 @@ namespace Project_SWP391.Repository
         {
             return await _context.Kois.CountAsync();
         }
+
+        public async Task<List<Koi>?> GetByPriceAsync(float min, float max)
+        {
+            return await _context.Kois.Where(k => k.Price >= min && k.Price <= max).ToListAsync();
+        }
     }
 }
