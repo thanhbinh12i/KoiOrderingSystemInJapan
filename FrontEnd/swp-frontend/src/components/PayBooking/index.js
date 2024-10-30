@@ -40,13 +40,14 @@ function PayBooking() {
       //       }
       // }
       const onFinishVNPay = async (values) => {
-            if(price>20000000){
-                  price = price / 100;
+            let amount = price;
+            if (amount > 20000000) {
+                  amount = amount / 10;
             }
             try {
                   const paymentData = {
                         orderType: "VN PAY",
-                        amount: price,
+                        amount: amount,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: values.userFullName,
                         quotationId: params.id
@@ -57,7 +58,7 @@ function PayBooking() {
                   const paymentResponse = await post('payment', paymentData);
 
                   if (paymentResponse) {
-                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values,tourPrice: price, quotationId: params.id, paymentDate: getTimeCurrent() }));
+                        localStorage.setItem('pendingPaymentData', JSON.stringify({ ...values, tourPrice: price, quotationId: params.id, paymentDate: getTimeCurrent() }));
                         window.location.href = paymentResponse;
                   }
             } catch (error) {
