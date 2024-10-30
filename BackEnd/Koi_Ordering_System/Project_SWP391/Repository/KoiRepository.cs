@@ -43,11 +43,11 @@ namespace Project_SWP391.Repository
             var skipNumber = (query.PageNumber - 1) * query.PageSize;
             return await koi.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
+
         public async Task<List<Koi>> GetAllAsync()
         {
             return await _context.Kois.Include(k => k.KoiImages).ToListAsync();
         }
-
 
         public async Task<List<Koi>?> GetByFarmAsync(string farmName)
         {
@@ -101,6 +101,25 @@ namespace Project_SWP391.Repository
             return kois;
         }
 
+        public async Task<List<Koi>?> GetByVarietyIdAsync(int varietyId)
+        {
+            var variety = await _context.KoiVarieties.FirstOrDefaultAsync(v => v.VarietyId == varietyId);
+
+            if (variety == null)
+            {
+                return null;
+            }
+
+            var kois = await _context.Kois.Include(k => k.KoiImages).Where(k => k.VarietyOfKois.Any(v => v.VarietyId == variety.VarietyId)).ToListAsync();
+
+            return kois;
+        }
+
+        public async Task<List<Koi>?> GetByPriceAsync(float min, float max)
+        {
+            return await _context.Kois.Where(k => k.Price >= min && k.Price <= max).ToListAsync();
+        }
+
         public Task<bool> KoiExists(int id)
         {
             return _context.Kois.AnyAsync(k => k.KoiId == id);
@@ -127,14 +146,10 @@ namespace Project_SWP391.Repository
 
             return koiModel;
         }
+
         public async Task<int> CountKoiAsync()
         {
             return await _context.Kois.CountAsync();
-        }
-
-        public async Task<List<Koi>?> GetByPriceAsync(float min, float max)
-        {
-            return await _context.Kois.Where(k => k.Price >= min && k.Price <= max).ToListAsync();
         }
     }
 }

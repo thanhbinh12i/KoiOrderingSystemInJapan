@@ -118,8 +118,23 @@ namespace Project_SWP391.Controllers
             return Ok(koiDto);
         }
 
+        [HttpGet("view-by-variety-id/{varietyId}")]
+        public async Task<IActionResult> GetByVarietyIdName([FromRoute] int varietyId)
+        {
+            var kois = await _koiRepo.GetByVarietyIdAsync(varietyId);
+
+            if (kois == null)
+            {
+                return NotFound("No koi found!");
+            }
+
+            var koiDto = kois.Select(kois => kois.ToKoiDto());
+
+            return Ok(koiDto);
+        }
+
         [HttpGet("view-by-price/{min}-{max}")]
-        public async Task<IActionResult> GetByPrice(float min, float max)
+        public async Task<IActionResult> GetByPrice([FromRoute] float min, [FromRoute] float max)
         {
             var kois = await _koiRepo.GetByPriceAsync(min, max);
 
