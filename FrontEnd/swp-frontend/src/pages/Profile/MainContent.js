@@ -103,11 +103,16 @@ function MainContent() {
             <Form.Item label="Địa chỉ" name="address">
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
-            <Form.Item label="Email" name="email">
+            <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }]}>
               <Input disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Số điện thoại" name="phoneNumber">
-              <Input placeholder="Nhập số điện thoại" disabled={!isEdit} />
+              <Input placeholder="Nhập số điện thoại" disabled={!isEdit} rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' },
+              {
+                pattern: /^0\d{9}$/,
+                message: 'Số điện thoại không hợp lệ!'
+              }
+              ]} />
             </Form.Item>
 
             {isEdit ? (

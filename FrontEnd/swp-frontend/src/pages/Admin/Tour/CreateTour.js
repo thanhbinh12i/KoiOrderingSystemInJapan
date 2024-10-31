@@ -100,7 +100,12 @@ function CreateTour() {
             <Form.Item
               label="Giá (nghìn VND)"
               name="price"
-              rules={[{ required: true, message: "Vui lòng nhập giá tour!" }]}
+              rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
+                {
+                  pattern: /^[1-9]\d*$/,
+                  message: 'Giá chuyến đi phải lớn hơn 0'
+                }
+              ]}
             >
               <InputNumber
                 min={0}
@@ -137,6 +142,10 @@ function CreateTour() {
               name="numberOfParticipate"
               rules={[
                 { required: true, message: "Vui lòng nhập số người tham gia" },
+                {
+                  pattern: /^[1-9]\d*$/,
+                  message: 'Số lượng người trong chuyến đi phải lớn hơn 0'
+                }
               ]}
             >
               <InputNumber
