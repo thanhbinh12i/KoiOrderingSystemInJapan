@@ -154,18 +154,24 @@ const DashboardView = () => {
     yField: "value",
     smooth: true,
     point: {
-      size: 5,
-      shape: "circle",
-      style: {
-        fill: "white",
-        stroke: "#5B8FF9",
-        lineWidth: 2,
+      shapeField: "circle",
+      sizeField: 4,
+    },
+    interaction: {
+      tooltip: {
+        marker: false,
       },
+    },
+    style: {
+      lineWidth: 2,
     },
     yAxis: {
       label: {
-        formatter: (v) =>
-          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+        render: (value) =>
+          new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(value),
       },
     },
     legend: false,
