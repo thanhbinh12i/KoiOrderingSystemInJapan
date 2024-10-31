@@ -117,7 +117,7 @@ function Quotation() {
                                                                   </Col>
                                                                   <Col span={12}>
                                                                         <p>Chuyến đi: <strong>{item.tourDetail.tourName}</strong></p>
-                                                                        <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
+                                                                        <p>Giá tiền: <strong>{item.priceOffer.toLocaleString()} đ</strong></p>
                                                                         <p>Trạng thái: <strong>{item.status}</strong></p>
                                                                   </Col>
                                                             </Row>

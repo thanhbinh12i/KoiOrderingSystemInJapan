@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "antd";
 import { get } from "../../utils/request";
 import image from "../../assets/home/koi-farm-tour.jpg";
@@ -15,15 +15,13 @@ function TourList() {
     };
     fetchApi();
   });
-  const filteredTours = useMemo(() => {
-    return tours.filter(
-      (tour) =>
-        tour.tourDestinations &&
-        tour.tourDestinations.some(
-          (dest) => dest.type === "default" && dest.tourId === tour.tourId
-        )
-    );
-  }, [tours]);
+  const filteredTours = tours.filter(
+    (tour) =>
+      tour.tourDestinations &&
+      tour.tourDestinations.some(
+        (dest) => dest.type === "default" && dest.tourId === tour.tourId
+      )
+  );
   return (
     <>
       <Row gutter={[16, 16]}>

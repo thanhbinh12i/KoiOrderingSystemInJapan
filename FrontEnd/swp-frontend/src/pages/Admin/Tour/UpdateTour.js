@@ -47,6 +47,7 @@ function UpdateTour() {
       const response = await put(`tour/update/${id}`, updatedValues);
       if (response) {
         messageApi.success("Cập nhật tour thành công");
+
       } else {
         messageApi.error(response?.message || "Cập nhật tour không thành công");
       }
@@ -54,7 +55,7 @@ function UpdateTour() {
       console.error("Error updating tour:", error);
       messageApi.error(
         "Lỗi khi cập nhật tour: " +
-          (error.message || "Đã xảy ra lỗi không xác định")
+        (error.message || "Đã xảy ra lỗi không xác định")
       );
     } finally {
       setLoading(false);
@@ -65,6 +66,9 @@ function UpdateTour() {
     <>
       <div>
         {contextHolder}
+        <div>
+          <GoBack />
+        </div>
         <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
           <Row gutter={16}>
             <Col span={12}>
@@ -95,7 +99,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -106,7 +110,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày kết thúc!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
               </Form.Item>
             </Col>
           </Row>
@@ -140,9 +144,6 @@ function UpdateTour() {
             </Col>
           </Row>
         </Form>
-      </div>
-      <div>
-        <GoBack />
       </div>
     </>
   );
