@@ -89,18 +89,22 @@ function PayBooking() {
                                                       <Input value={quotation.fullName} size="large" />
                                                 </Form.Item>
                                                 <Form.Item
-                                                      name="phoneNumber"
                                                       label="Số điện thoại"
-                                                      initialValue={quotation.phoneNumber}
-                                                      rules={[{ required: true, message: 'Vui lòng số điện thoại!' }]}
+                                                      name="phoneNumber"
+                                                      rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" },
+                                                      {
+                                                            pattern: /^0\d{9}$/,
+                                                            message: 'Số điện thoại không hợp lệ!'
+                                                      }
+                                                      ]}
                                                 >
-                                                      <Input value={quotation.phoneNumber} size="large" />
+                                                      <Input placeholder="Họ và tên" />
                                                 </Form.Item>
                                                 <Form.Item
                                                       name="Email"
                                                       label="email"
                                                       initialValue={quotation.email}
-                                                      rules={[{ required: true, message: 'Vui lòng email!' }]}
+                                                      rules={[{ type: 'email', message: 'Email không hợp lệ!' },{ required: true, message: 'Vui lòng email!' }]}
                                                 >
                                                       <Input value={quotation.email} size="large" />
                                                 </Form.Item>

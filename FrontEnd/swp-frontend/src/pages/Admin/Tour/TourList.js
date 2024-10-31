@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { Table, message, Spin, Button, Tooltip } from "antd";
+import React, { useEffect, useState } from "react";
+import { Table, message, Button, Tooltip, Spin } from "antd";
 import { get } from "../../../utils/request";
 import DeleteTour from "./DeleteTour";
 import { EditOutlined } from "@ant-design/icons";
@@ -10,39 +10,38 @@ import { Link } from "react-router-dom";
 
 function TourList() {
   const [tours, setTours] = useState([]);
-  const [filteredTours, setFilteredTours] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchApi = useCallback(async () => {
+  const fetchApi = async () => {
     setLoading(true);
     try {
       const response = await get("tour/view-all");
       setTours(response);
-      setFilteredTours(response);
     } catch (error) {
-      console.error("Error fetching tours:", error);
       message.error("Failed to load tours. Please try again.");
-      setTours([]);
-      setFilteredTours([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  };
 
   useEffect(() => {
     fetchApi();
-  }, [fetchApi]);
+    // eslint-disable-next-line
+  }, []);
+
+  const filteredTours = tours.filter(
+    (tour) =>
+      tour.tourDestinations?.some(
+        (dest) => dest.type === "default" && dest.tourId === tour.tourId
+      ) &&
+      tour.tourName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSearch = (value) => {
-    if (value) {
-      const filtered = tours.filter((tour) =>
-        tour.tourName.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredTours(filtered);
-    } else {
-      setFilteredTours(tours);
-    }
+    setSearchQuery(value);
   };
+
 
   const columns = [
     {
@@ -96,22 +95,27 @@ function TourList() {
 
   return (
     <>
-      <div className="tour">
-        <div className="tour__search-create">
-          <SearchByName onSearch={handleSearch} className="search-button" />
-        </div>
-        <div className="tour__table">
-          <Spin spinning={loading}>
-            <Table
-              columns={columns}
-              dataSource={filteredTours}
-              rowKey="id"
-              bordered
-              scroll={{ x: "max-content" }}
-            />
-          </Spin>
-        </div>
-      </div>
+      {loading ? (
+        <Spin tip="Loading..." />
+      ) : (
+        <>
+          <div className="tour">
+            <div className="tour__search-create">
+              <SearchByName onSearch={handleSearch} className="search-button" />
+            </div>
+            <div className="tour__table">
+              <Table
+                columns={columns}
+                dataSource={filteredTours}
+                rowKey="tourId"
+                bordered
+                scroll={{ x: "max-content" }}
+              />
+            </div>
+          </div>
+        </>
+      )}
+
     </>
   );
 }

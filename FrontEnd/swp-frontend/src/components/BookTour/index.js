@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { post } from '../../utils/request';
 import { useState } from 'react';
 
-const {TextArea} = Input;
+const { TextArea } = Input;
 
 function BookTour() {
       const location = useLocation();
@@ -38,7 +38,7 @@ function BookTour() {
                   {contextHolder}
                   <GoBack />
                   <Form layout="vertical" form={form} onFinish={onFinish}>
-                        <Row gutter={20} style={{ marginTop: 20 , marginLeft: 30}}>
+                        <Row gutter={20} style={{ marginTop: 20, marginLeft: 30 }}>
                               <Col span={8}>
                                     <Card title="Thông tin tour" style={{ maxWidth: 800, margin: 'auto' }}>
                                           <p><strong>Tên tour:</strong> {tourName}</p>
@@ -52,13 +52,21 @@ function BookTour() {
                               </Col>
                               <Col span={16}>
                                     <Card title="Thông tin của bạn" style={{ maxWidth: 800, margin: 'auto' }}>
-                                          <Form.Item label="Họ và tên" name="fullName">
+                                          <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
                                                 <Input placeholder='Nhập họ và tên của bạn' />
                                           </Form.Item>
-                                          <Form.Item label="Email" name="email">
+                                          <Form.Item label="Email" name="email" rules={[
+                                                { required: true, message: "Vui lòng nhập email!" },
+                                                { type: "email", message: "Vui lòng nhập email hợp lệ!" },
+                                          ]}>
                                                 <Input placeholder='Nhập email' />
                                           </Form.Item>
-                                          <Form.Item label="Số điện thoại" name="phoneNumber">
+                                          <Form.Item label="Số điện thoại" name="phoneNumber" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' },
+                                          {
+                                                pattern: /^0\d{9}$/,
+                                                message: 'Số điện thoại không hợp lệ!'
+                                          }
+                                          ]}>
                                                 <Input placeholder='Nhập số điện thoại' />
                                           </Form.Item>
                                           <Form.Item label="Lời nhắn" name="description" initialValue="">
