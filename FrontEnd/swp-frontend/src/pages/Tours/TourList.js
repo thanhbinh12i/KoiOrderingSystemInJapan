@@ -29,7 +29,7 @@ function TourList() {
       <Row gutter={[16, 16]}>
         {filteredTours.map((tour) => (
           <>
-            <Col span={8} key={tour.tourId}>
+            <Col span={6} key={tour.tourId}>
               <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
                 <Card.Meta
                   title={tour.tourName}

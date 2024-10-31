@@ -9,26 +9,28 @@ const { Title } = Typography;
 
 function Koi() {
   const [koi, setKoi] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false); 
-  const koiPerPage = 9;
+  const pageSize = 16;
+
+  const getCurrentPageData = () => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return koi.slice(startIndex, startIndex + pageSize);
+  };
+
 
   useEffect(() => {
     const fetchAPI = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
-        const response = await get(
-          `koi/view-all/paging?PageNumber=${currentPage}&PageSize=${koiPerPage}`
-        );
-        setTotalCount(response.totalCount);
-        const updatedKoiData = await Promise.all(
-          response.items.map(async (koi) => {
-            const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
-            return { ...koi, farmName: farmResponse.farmName };
-          })
-        );
-        setKoi(updatedKoiData);
+        const response = await get(`koi/view-all`);
+        // const updatedKoiData = await Promise.all(
+        //   response.items.map(async (koi) => {
+        //     const farmResponse = await get(`koiFarm/view/${koi.farmId}`);
+        //     return { ...koi, farmName: farmResponse.farmName };
+        //   })
+        // );
+        setKoi(response);
       } catch (error) {
         console.error("Error fetching Koi:", error);
       } finally {
@@ -46,42 +48,40 @@ function Koi() {
       ) : (
         <>
           <Row gutter={[16, 16]} className="koi-container">
-            {koi.map((koi) => (
-              <Col xs={24} sm={12} md={8} key={koi.koiId}>
+            {getCurrentPageData().map((koi) => (
+              <Col xs={24} sm={12} md={6} key={koi.koiId}>
                 <Link to={`/kois/${koi.koiId}`} className="koi-link">
                   <Card hoverable className="koi-card">
                     <img
                       width={135}
                       height={200}
                       alt={koi?.koiName || "Default Alt Text"}
-                      src={
-                        koi?.koiImages?.[0]?.urlImage
-                          ? `${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`
-                          : "path/to/default/image.jpg"
-                      }
+                      src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
                       className="koi-image"
                       loading="lazy"
                     />
-                    <Title level={4}>Tên cá koi: {koi.koiName}</Title>
+                    <Title level={5}>Tên cá koi: {koi.koiName}</Title>
                     <Title level={5}>Giá: {koi.price}</Title>
                     <Title level={5}>Ngày sinh: {koi.yob}</Title>
                     <Title level={5}>Giới tính: {koi.gender}</Title>
                     <Title level={5}>
                       Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
                     </Title>
-                    <Title level={5}>Trang trại: {koi.farmName}</Title>
                   </Card>
                 </Link>
               </Col>
             ))}
           </Row>
-          <Pagination
-            current={currentPage}
-            pageSize={koiPerPage}
-            total={totalCount} 
-            onChange={(page) => setCurrentPage(page)}
-            className="pagination"
-          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Pagination
+              current={currentPage}
+              onChange={(page) => setCurrentPage(page)}
+              total={koi.length}
+              pageSize={pageSize}
+              showSizeChanger={false}
+              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+            />
+          </div>
         </>
       )}
     </>

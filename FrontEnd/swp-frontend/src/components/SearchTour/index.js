@@ -3,6 +3,7 @@ import "./SearchTour.scss";
 import { useEffect, useState } from "react";
 import { get } from "../../utils/request";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -11,6 +12,9 @@ function SearchTour() {
   const [varieties, setVarieties] = useState([]);
   const [farms, setFarms] = useState([]);
   const navigate = useNavigate();
+  const disablePastDates = (current) => {
+    return current && current < moment().startOf('day');
+  };
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get("koi-variable/view-all");
@@ -101,7 +105,7 @@ function SearchTour() {
 
             <Col span={8}>
               <Form.Item label="Thời gian" name="time">
-                <RangePicker />
+                <RangePicker disabledDate={disablePastDates}/>
               </Form.Item>
             </Col>
           </Row>

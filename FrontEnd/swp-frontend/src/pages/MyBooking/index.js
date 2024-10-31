@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { del, get, put } from "../../utils/request";
-import { Button, Form, Input, Modal, Table } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
@@ -14,7 +14,6 @@ function MyBooking() {
       const [form] = Form.useForm();
       const showModal = () => {
             setIsModalVisible(true);
-            // form.resetFields();
       };
 
       const handleCancel = () => {
@@ -106,18 +105,20 @@ function MyBooking() {
                               }
                               return (
                                     <>
-                                          <Button color="primary" onClick={() => showModal()} danger>Hủy đặt chỗ</Button>
-                                          <Modal
-                                                title="Xác nhận hủy đặt chỗ"
-                                                open={isModalVisible}
-                                                onOk={handleCancelBooking}
-                                                onCancel={handleCancel}
-                                          >
-                                                <p>Bạn có chắc chắn hủy đặt chỗ?</p>
-                                          </Modal>
+                                          <Tooltip title="Hủy đặt chỗ chuyến đi này">
+                                                <Popconfirm title="Bạn chắc chắn có muốn hủy đặt chỗ không?" onConfirm={handleCancelBooking}>
+                                                      <Button color="primary" danger>Hủy đặt chỗ</Button>
+                                                </Popconfirm>
+                                          </Tooltip>
                                     </>
                               )
                         } else if (record.status === "Đã xác nhận") {
+                              const handleCancelBooking = async () => {
+                                    const response = del('quotation/delete', record.quotationId);
+                                    if (response) {
+                                          fetchApi();
+                                    }
+                              }
                               const handleNoConfirm = async (values) => {
                                     const quotationData = {
                                           "priceOffer": record.priceOffer,
@@ -170,6 +171,12 @@ function MyBooking() {
                                                       </Form.Item>
                                                 </Form>
                                           </Modal>
+
+                                          <Tooltip title="Hủy đặt chỗ chuyến đi này">
+                                                <Popconfirm title="Bạn chắc chắn có muốn hủy đặt chỗ không?" onConfirm={handleCancelBooking}>
+                                                      <Button color="primary" danger>Hủy đặt chỗ</Button>
+                                                </Popconfirm>
+                                          </Tooltip>
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
