@@ -41,8 +41,8 @@ const DashboardView = () => {
       setTours(toursData);
 
       const [koiStats, tourStats] = await Promise.all([
-        processKoiSales(koiBillsData, billsData),
-        processTourBookings(billsData, toursData, quotationsData),
+        processKoiSales(koiBills, bills),
+        processTourBookings(bills, tours, quotations),
       ]);
 
       setBestKois(koiStats);
@@ -57,12 +57,12 @@ const DashboardView = () => {
     return tour ? tour.tourName : "Unknown Tour";
   };
 
-  const processTourBookings = (billsData, tours, quotationsData) => {
+  const processTourBookings = (bills, tours, quotations) => {
     const tourBookings = {};
 
-    billsData.forEach((bill) => {
+    bills.forEach((bill) => {
       if (bill.quotationId) {
-        const quotation = quotationsData.find(
+        const quotation = quotations.find(
           (q) => q.quotationId === bill.quotationId
         );
         if (quotation && quotation.tourId) {
@@ -90,10 +90,10 @@ const DashboardView = () => {
       }));
   };
 
-  const processKoiSales = (koiBillsData, bills) => {
+  const processKoiSales = (koiBills, bills) => {
     const koiSales = {};
     bills.forEach((bills) => {
-      koiBillsData.forEach((bill) => {
+      koiBills.forEach((bill) => {
         if (bill.billId === bills.billId) {
           const koiName = bill.koiName || "Unknown Koi";
           if (bills.koiPrice !== null) {

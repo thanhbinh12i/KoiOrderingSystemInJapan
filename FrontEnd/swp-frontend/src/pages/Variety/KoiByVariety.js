@@ -68,16 +68,14 @@ const KoiByVariety = () => {
         {koiData.map((koi, index) => (
           <Card key={index} hoverable className="koi-detail-card">
             {koi.koiImages && koi.koiImages.length > 0 ? (
-              koi.koiImages.map((image, imgIndex) => (
-                <img
-                  key={imgIndex}
-                  width={135}
-                  height={200}
-                  alt={koi.koiName}
-                  src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
-                  className="koi-detail-image"
-                />
-              ))
+              <img
+                key={koi.koiId}
+                width={135}
+                height={200}
+                alt={koi.koiName}
+                src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
+                className="koi-detail-image"
+              />
             ) : (
               <p>No images available</p>
             )}
