@@ -11,6 +11,7 @@ namespace Project_SWP391.Interfaces
         Task<Koi?> GetByIdAsync(int id);
         Task<List<Koi>> GetByNameAsync(string name);
         Task<List<Koi>?> GetByVarietyAsync(string varietyName);
+        Task<List<Koi>?> GetByVarietyIdAsync(int varietyId);
         Task<List<Koi>?> GetByFarmAsync(string farmName);
         Task<List<Koi>?> GetByFarmIdAsync(int farmId);
         Task<List<Koi>?> GetByPriceAsync(float min, float max);
