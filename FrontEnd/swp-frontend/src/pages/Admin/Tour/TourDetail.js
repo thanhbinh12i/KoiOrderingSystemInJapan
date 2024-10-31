@@ -1,24 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { get } from "../../utils/request";
-import {
-  Card,
-  Descriptions,
-  Rate,
-  Typography,
-  Space,
-  Divider,
-  List,
-} from "antd";
+import { get } from "../../../utils/request";
+import { Card, Descriptions, Typography, Space, Divider, List } from "antd";
 import {
   ClockCircleOutlined,
   UserOutlined,
   DollarOutlined,
-  StarOutlined,
   GlobalOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
-import GoBack from "../../components/GoBack";
+import "./Tour.scss";
+import GoBack from "../../../components/GoBack";
 const { Title, Text } = Typography;
 
 function TourDetail() {
@@ -116,14 +108,6 @@ function TourDetail() {
                     </List.Item>
                   )}
                 />
-              </div>
-
-              <Divider />
-              <div className="tour-rating">
-                <StarOutlined />
-                <Text strong>Đánh giá:</Text>
-                <Rate disabled value={5} />
-                <Text type="secondary">(5)</Text>
               </div>
             </Space>
           </Card>
