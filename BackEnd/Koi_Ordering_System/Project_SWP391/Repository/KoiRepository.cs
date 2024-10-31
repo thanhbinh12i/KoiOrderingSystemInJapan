@@ -14,6 +14,7 @@ namespace Project_SWP391.Repository
         {
             _context = context;
         }
+
         public async Task<Koi> CreateAsync(Koi koi)
         {
             await _context.Kois.AddAsync(koi);

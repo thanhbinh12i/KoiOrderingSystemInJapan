@@ -38,6 +38,7 @@ namespace Project_SWP391.Controllers
             _signInManager = signInManager;
             _emailService = emailService;
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -57,14 +58,14 @@ namespace Project_SWP391.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if (createdUser.Succeeded)
                 {
-                    //var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-                    //var emailModel = new EmailDTO
-                    //{
-                    //    ToEmail = registerDto.Email,
-                    //    Subject = "Confirm your email",
-                    //    Message = $"Here is your comfirmation code: {token}",
-                    //};
-                    //await _emailService.SendEmailAsync(emailModel);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                    var emailModel = new EmailDTO
+                    {
+                        ToEmail = registerDto.Email,
+                        Subject = "Confirm your email",
+                        Message = $"Here is your comfirmation code: {token}",
+                    };
+                    await _emailService.SendEmailAsync(emailModel);
 
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
                     if (roleResult.Succeeded)
@@ -92,6 +93,7 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, e);
             }
         }
+
         [HttpPost("createStaff")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> CreateStaff([FromBody] RegisterDto registerDto, string role)
@@ -142,6 +144,7 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, e);
             }
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto loginDto)
         {
@@ -174,6 +177,7 @@ namespace Project_SWP391.Controllers
                 }
             );
         }
+
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleLogin(GoogleLoginDto googleLoginDto)
         {
@@ -377,44 +381,6 @@ namespace Project_SWP391.Controllers
         //    };
         //}
 
-        [HttpPut("change-password/{id}")]
-        public async Task<IActionResult> ChangePassword([FromBody] UpdateUserDto updateUser, string id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null) return NotFound("User not found");
-
-            if (!string.IsNullOrEmpty(updateUser.Password))
-            {
-                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
-                if (!removePasswordResult.Succeeded)
-                {
-                    return BadRequest(removePasswordResult.Errors);
-                }
-
-                var addPasswordResult = await _userManager.AddPasswordAsync(user, updateUser.Password);
-                if (!addPasswordResult.Succeeded)
-                {
-                    return BadRequest(addPasswordResult.Errors);
-                }
-            }
-
-            return Ok(new UpdatedUserDto
-            {
-                UserName = user.UserName,
-                Email = user.Email,
-                FullName = user.FullName,
-                PhoneNumber = user.PhoneNumber,
-                Gender = user.Gender,
-                Address = user.Address,
-                DateOfBirth = user.DateOfBirth,
-                Token = await _tokenService.CreateToken(user)
-            });
-        }
         [HttpGet("{id}")]
         public async Task<IActionResult> View(string id)
         {
@@ -573,6 +539,50 @@ namespace Project_SWP391.Controllers
             return Ok(userDtos);
         }
 
+        [HttpPut("change-password/{id}")]
+        public async Task<IActionResult> ChangePassword(string id, string oldPassword, string newPassword)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null) return NotFound("User not found");
+
+            if (!string.IsNullOrEmpty(oldPassword))
+            {
+                if (!await _userManager.CheckPasswordAsync(user, oldPassword))
+                {
+                    return BadRequest("Password is not incorrect!");
+                }
+
+                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+                if (!removePasswordResult.Succeeded)
+                {
+                    return BadRequest(removePasswordResult.Errors);
+                }
+
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+                if (!addPasswordResult.Succeeded)
+                {
+                    return BadRequest(addPasswordResult.Errors);
+                }
+            }
+
+            return Ok(new UpdatedUserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Gender,
+                Address = user.Address,
+                DateOfBirth = user.DateOfBirth,
+                Token = await _tokenService.CreateToken(user)
+            });
+        }
+
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordEmailDto resetEmail)
         {
@@ -667,7 +677,6 @@ namespace Project_SWP391.Controllers
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
-
             if (result.Succeeded)
             {
                 return Ok("Email confirmed successfully!");

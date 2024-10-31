@@ -121,7 +121,7 @@ function Login() {
                     )}
                   />
                 </Form>
-                <div>
+                <div className="login__register">
                   Bạn không có tài khoản? <Link to="/register">Đăng ký</Link>
                 </div>
               </Card>
