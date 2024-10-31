@@ -1,6 +1,7 @@
 import { Button, Card, Col, DatePicker, Form, Input, message, Row, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { get, post } from "../../utils/request";
+import "./Register.scss"
 const { Option } = Select;
 
 function Register() {
@@ -47,49 +48,63 @@ function Register() {
       return (
             <>
                   {contextHolder}
-                  <Row justify="center">
+                  <Row justify="center" className="registration-container">
                         <Col span={12}>
-                              <Card title="Đăng ký tài khoản">
+                              <Card title="Đăng ký tài khoản" className="registration-card">
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
-                                          <Form.Item label="User Name" name="userName" rules={[{ required: true, message: 'Vui lòng nhập User Name!' },
-                                          {
-                                                validator: async (_, value) => {
-                                                      if (value) {
-                                                            const existingUsers = await get("account/view-all-user");
-                                                            if (existingUsers.some(user => user.userName === value)) {
-                                                                  throw new Error('Tên đăng nhập đã tồn tại!');
+                                          <Form.Item 
+                                                label="User Name" 
+                                                name="userName" 
+                                                rules={[
+                                                      { required: true, message: 'Vui lòng nhập User Name!' },
+                                                      {
+                                                            validator: async (_, value) => {
+                                                                  if (value) {
+                                                                        const existingUsers = await get("account/view-all-user");
+                                                                        if (existingUsers.some(user => user.userName === value)) {
+                                                                              throw new Error('Tên đăng nhập đã tồn tại!');
+                                                                        }
+                                                                  }
                                                             }
                                                       }
-                                                }
-                                          }
-                                          ]}>
-                                                <Input />
-                                          </Form.Item>
-                                          <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
-                                                <Input />
-                                          </Form.Item>
-                                          <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }, { required: true, message: 'Vui lòng nhập email!' },
-                                          {
-                                                validator: async (_, value) => {
-                                                      if (value) {
-                                                            const existingUsers = await get("account/view-all-user");
-                                                            if (existingUsers.some(user => user.email === value)) {
-                                                                  throw new Error('Email đã tồn tại trong hệ thống!');
-                                                            }
-                                                      }
-                                                }
-                                          }
-                                          ]}
+                                                ]}
                                           >
                                                 <Input />
                                           </Form.Item>
+      
+                                          <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
+                                                <Input />
+                                          </Form.Item>
+      
+                                          <Form.Item 
+                                                label="Email" 
+                                                name="email" 
+                                                rules={[
+                                                      { type: 'email', message: 'Email không hợp lệ!' }, 
+                                                      { required: true, message: 'Vui lòng nhập email!' },
+                                                      {
+                                                            validator: async (_, value) => {
+                                                                  if (value) {
+                                                                        const existingUsers = await get("account/view-all-user");
+                                                                        if (existingUsers.some(user => user.email === value)) {
+                                                                              throw new Error('Email đã tồn tại trong hệ thống!');
+                                                                        }
+                                                                  }
+                                                            }
+                                                      }
+                                                ]}
+                                          >
+                                                <Input />
+                                          </Form.Item>
+      
                                           <Form.Item label="Số điện thoại" name="phoneNumber" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}>
                                                 <Input />
                                           </Form.Item>
+      
                                           <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
                                                 <Input />
                                           </Form.Item>
-
+      
                                           <Row gutter={16}>
                                                 <Col span={12}>
                                                       <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}>
@@ -105,7 +120,7 @@ function Register() {
                                                       </Form.Item>
                                                 </Col>
                                           </Row>
-
+      
                                           <Row gutter={16}>
                                                 <Col span={12}>
                                                       <Form.Item
@@ -139,19 +154,20 @@ function Register() {
                                                       </Form.Item>
                                                 </Col>
                                           </Row>
+      
                                           <Form.Item>
-                                                <Button type="primary" htmlType="submit">
+                                                <Button type="primary" htmlType="submit" className="submit-button">
                                                       Đăng ký
                                                 </Button>
                                           </Form.Item>
                                     </Form>
-                                    <div>
+                                    <div className="login-link">
                                           Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link>
                                     </div>
                               </Card>
                         </Col>
                   </Row>
             </>
-      )
+      );      
 }
 export default Register;
