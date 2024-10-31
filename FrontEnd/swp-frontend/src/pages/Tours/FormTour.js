@@ -113,7 +113,12 @@ function FormTour() {
         <Form.Item
           label="Số điện thoại"
           name="phoneNumber"
-          rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" },
+          {
+            pattern: /^0\d{9}$/,
+            message: 'Số điện thoại không hợp lệ!'
+          }
+          ]}
         >
           <Input placeholder="Họ và tên" />
         </Form.Item>
@@ -143,6 +148,10 @@ function FormTour() {
           name="numberOfParticipate"
           rules={[
             { required: true, message: "Vui lòng nhập số lượng người đi!" },
+            {
+              pattern: /^[1-9]\d*$/,
+              message: 'Số người đi phải lớn hơn 0'
+            }
           ]}
         >
           <Input placeholder="Họ và tên" />
