@@ -124,7 +124,7 @@ function Quotation() {
                                                             {
                                                                   item.description !== "" && (
                                                                         <>
-                                                                        <p>Lời nhắn: <strong>{item.description}</strong></p>
+                                                                              <p>Lời nhắn: <strong>{item.description}</strong></p>
                                                                         </>
                                                                   )
                                                             }
@@ -177,6 +177,24 @@ function Quotation() {
                                                                         <Button type="primary" onClick={() => sendToCustomer(item)}>
                                                                               Báo giá cho khách hàng
                                                                         </Button>
+                                                                  </>
+                                                            )}
+                                                            {item.status === "Yêu cầu thương lượng giá" && (
+                                                                  <>
+                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá mới</Button>
+                                                                        <Modal
+                                                                              title="Nhập giá tiền cho chuyến đi"
+                                                                              visible={modalVisibility[item.quotationId]}
+                                                                              onOk={() => updatePrice(item.quotationId)}
+                                                                              onCancel={() => handleCancel(item.quotationId)}
+                                                                        >
+                                                                              <Input
+                                                                                    placeholder="Nhập giá"
+                                                                                    value={prices[item.quotationId] || ''}
+                                                                                    onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                              />
+                                                                        </Modal>
+                                                                        <Button type="primary">Không chấp nhận</Button>
                                                                   </>
                                                             )}
                                                       </Col>

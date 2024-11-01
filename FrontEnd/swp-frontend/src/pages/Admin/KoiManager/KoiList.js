@@ -52,6 +52,11 @@ function KoiList() {
                   key: "gender",
             },
             {
+                  title: "Số lượng",
+                  dataIndex: "quantity",
+                  key: "quantity",
+            },
+            {
                   title: "Hành động",
                   key: "actions",
                   render: (_, record) => (

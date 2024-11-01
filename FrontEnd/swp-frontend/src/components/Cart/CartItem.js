@@ -8,10 +8,14 @@ function CartItem(props) {
       const { billId, item } = props;
       const dispatch = useDispatch();
       const [quantity, setQuantity] = useState(item.quantity);
-      const handleRemoveItem = async (id) => {
-            const response = await del(`koi-bill/delete`, `${billId}-${id}`);
+      const handleRemoveItem = async (item) => {
+            const action = "cancelOrder";
+            const response = await del(`koi-bill/delete`, `${billId}-${item.koiId}`);
             if (response) {
-                  dispatch(removeFromCart(id));
+                  await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${item.koiId}&quantityRequested=${item.quantity}&action=${action}`, {
+                        method: 'POST',
+                  });
+                  dispatch(removeFromCart(item.koiId));
             }
       };
       const handleUp = async () => {
@@ -22,8 +26,12 @@ function CartItem(props) {
                   "quantity": newQuantity,
                   "finalPrice": item.finalPrice
             }
+            const action = "addToCart";
             const response = await put(`koi-bill/update/${billId}-${item.koiId}`, dataToUpdate);
             if (response) {
+                  await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${item.koiId}&quantityRequested=${1}&action=${action}`, {
+                        method: 'POST',
+                  });
                   dispatch(updateQuantity(item.koiId, newQuantity));
             }
       }
@@ -36,8 +44,12 @@ function CartItem(props) {
                         "quantity": newQuantity,
                         "finalPrice": item.finalPrice
                   }
+                  const action = "cancelOrder";
                   const response = await put(`koi-bill/update/${billId}-${item.koiId}`, dataToUpdate);
                   if (response) {
+                        await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${item.koiId}&quantityRequested=${1}&action=${action}`, {
+                              method: 'POST',
+                        });
                         dispatch(updateQuantity(item.koiId, newQuantity));
                   }
             }
@@ -50,9 +62,9 @@ function CartItem(props) {
                                     <h3>Koi {item.koiName}</h3>
                                     {
                                           item.finalPrice > 0 ? (
-                                                <p>Giá tiền: {item.finalPrice} đ</p>
+                                                <p>Giá tiền: {item.finalPrice.toLocaleString()} đ</p>
                                           ) : (
-                                                <p>Giá tiền: {item.originalPrice} đ</p>
+                                                <p>Giá tiền: {item.originalPrice.toLocaleString()} đ</p>
                                           )
                                     }
                                     <div className="cart__quantity">
@@ -65,7 +77,7 @@ function CartItem(props) {
                                           <Button onClick={handleUp}>+</Button>
                                     </div>
 
-                                    <Button type="link" onClick={() => handleRemoveItem(item.koiId)}>
+                                    <Button type="link" onClick={() => handleRemoveItem(item)}>
                                           Xóa khỏi giỏ hàng
                                     </Button>
                               </div>

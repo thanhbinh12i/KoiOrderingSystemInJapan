@@ -122,7 +122,7 @@ function MyBooking() {
                               const handleNoConfirm = async (values) => {
                                     const quotationData = {
                                           "priceOffer": record.priceOffer,
-                                          "status": "Chờ xác nhận",
+                                          "status": "Yêu cầu thương lượng giá",
                                           "approvedDate": record.approvedDate,
                                           "description": values.description,
                                     };

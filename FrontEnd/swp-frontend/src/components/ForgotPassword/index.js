@@ -8,7 +8,7 @@ function ForgotPassword() {
       const onFinish = async (values) => {
             const response = await post("account/forgot-password", {toEmail: values.email});
             if (response) {
-                  navigate("/");
+                  navigate("/reset-password");
             }
       }
       return (
