@@ -122,7 +122,7 @@ function MyBooking() {
                               const handleNoConfirm = async (values) => {
                                     const quotationData = {
                                           "priceOffer": record.priceOffer,
-                                          "status": "Chờ xác nhận",
+                                          "status": "Yêu cầu thương lượng giá",
                                           "approvedDate": record.approvedDate,
                                           "description": values.description,
                                     };
@@ -141,7 +141,7 @@ function MyBooking() {
                                           </Link>
                                           {record.tourDetail.tourName === "Tour Custom" && (
                                                 <>
-                                                      <Button color="default" variant="solid" onClick={() => showModal()}>Yêu cầu giá khác</Button>
+                                                      <Button color="default" variant="solid" onClick={() => showModal()} className="mr-10">Yêu cầu giá khác</Button>
                                                 </>
                                           )}
                                           <Modal

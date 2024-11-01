@@ -97,7 +97,22 @@ function Quotation() {
                   fetchApi();
             }
       };
-
+      const handleNoAccept = async (item) => {
+            const getTimeCurrent = () => {
+                  return new Date().toLocaleString();
+            };
+            const quotationData = {
+                  "priceOffer": item.priceOffer,
+                  "status": "Đã xác nhận yêu cầu",
+                  "approvedDate": getTimeCurrent(),
+                  "description": "Cảm ơn Quý khách đã quan tâm đến dịch vụ của chúng tôi. Đây là mức giá cuối cùng chúng tôi có thể cung cấp cho chuyến đi lần này. Rất mong Quý khách thông cảm và hiểu cho quyết định này của chúng tôi."
+            };
+            const response = await put(`quotation/update/${item.quotationId}`, quotationData);
+            if (response) {
+                  setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
+                  fetchApi();
+            }
+      }
       return (
             <>
                   <div className="quotation-staff">
@@ -124,7 +139,7 @@ function Quotation() {
                                                             {
                                                                   item.description !== "" && (
                                                                         <>
-                                                                        <p>Lời nhắn: <strong>{item.description}</strong></p>
+                                                                              <p>Lời nhắn: <strong>{item.description}</strong></p>
                                                                         </>
                                                                   )
                                                             }
@@ -177,6 +192,24 @@ function Quotation() {
                                                                         <Button type="primary" onClick={() => sendToCustomer(item)}>
                                                                               Báo giá cho khách hàng
                                                                         </Button>
+                                                                  </>
+                                                            )}
+                                                            {item.status === "Yêu cầu thương lượng giá" && (
+                                                                  <>
+                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá mới</Button>
+                                                                        <Modal
+                                                                              title="Nhập giá tiền cho chuyến đi"
+                                                                              visible={modalVisibility[item.quotationId]}
+                                                                              onOk={() => updatePrice(item.quotationId)}
+                                                                              onCancel={() => handleCancel(item.quotationId)}
+                                                                        >
+                                                                              <Input
+                                                                                    placeholder="Nhập giá"
+                                                                                    value={prices[item.quotationId] || ''}
+                                                                                    onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
+                                                                              />
+                                                                        </Modal>
+                                                                        <Button type="primary" onClick={() => handleNoAccept(item)}>Không chấp nhận</Button>
                                                                   </>
                                                             )}
                                                       </Col>
