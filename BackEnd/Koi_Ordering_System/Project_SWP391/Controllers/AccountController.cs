@@ -583,7 +583,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("change-password/{id}")]
-        public async Task<IActionResult> ChangePassword(string id, ChangePasswordDto password)
+        public async Task<IActionResult> ChangePassword(string id, [FromBody] ChangePasswordDto password)
         {
             if (!ModelState.IsValid)
             {
