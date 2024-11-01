@@ -583,7 +583,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("change-password/{id}")]
-        public async Task<IActionResult> ChangePassword(string id, string oldPassword, string newPassword)
+        public async Task<IActionResult> ChangePassword(string id, ChangePasswordDto password)
         {
             if (!ModelState.IsValid)
             {
@@ -591,13 +591,21 @@ namespace Project_SWP391.Controllers
             }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null) return NotFound("User not found");
-
-            if (!string.IsNullOrEmpty(oldPassword))
+            if (user == null)
             {
-                if (!await _userManager.CheckPasswordAsync(user, oldPassword))
+                return NotFound("User not found");
+            }
+
+            if (!string.IsNullOrEmpty(password.OldPassword))
+            {
+                if (!await _userManager.CheckPasswordAsync(user, password.OldPassword))
                 {
                     return BadRequest("Password is not incorrect!");
+                }
+
+                if(password.NewPassword != password.ConfirmPassword)
+                {
+                    return BadRequest("Two passwords are not match!");
                 }
 
                 var removePasswordResult = await _userManager.RemovePasswordAsync(user);
@@ -606,7 +614,7 @@ namespace Project_SWP391.Controllers
                     return BadRequest(removePasswordResult.Errors);
                 }
 
-                var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, password.NewPassword);
                 if (!addPasswordResult.Succeeded)
                 {
                     return BadRequest(addPasswordResult.Errors);
