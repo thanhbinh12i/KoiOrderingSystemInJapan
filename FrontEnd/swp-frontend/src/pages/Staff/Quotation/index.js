@@ -64,36 +64,36 @@ function Quotation() {
             setPrices(prev => ({ ...prev, [id]: '' }));
       };
 
-      const sendToManager = async (quotationId, priceOffer) => {
+      const sendToManager = async (item) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
             const quotationData = {
-                  "priceOffer": priceOffer,
+                  "priceOffer": item.priceOffer,
                   "status": "Báo giá cho quản lý",
                   "approvedDate": getTimeCurrent(),
-                  "description": messages[quotationId] || ''
+                  "description": messages[item.quotationId] || ''
             };
-            const response = await put(`quotation/update/${quotationId}`, quotationData);
+            const response = await put(`quotation/update/${item.quotationId}`, quotationData);
             if (response) {
-                  setMessages(prev => ({ ...prev, [quotationId]: '' }));
+                  setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
                   fetchApi();
             }
       };
 
-      const sendToCustomer = async (quotationId, priceOffer) => {
+      const sendToCustomer = async (item) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
             const quotationData = {
-                  "priceOffer": priceOffer,
+                  "priceOffer": item.priceOffer,
                   "status": "Đã xác nhận",
                   "approvedDate": getTimeCurrent(),
-                  "description": messages[quotationId] || ''
+                  "description": messages[item.quotationId] || item.description
             };
-            const response = await put(`quotation/update/${quotationId}`, quotationData);
+            const response = await put(`quotation/update/${item.quotationId}`, quotationData);
             if (response) {
-                  setMessages(prev => ({ ...prev, [quotationId]: '' }));
+                  setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
                   fetchApi();
             }
       };
@@ -117,10 +117,17 @@ function Quotation() {
                                                                   </Col>
                                                                   <Col span={12}>
                                                                         <p>Chuyến đi: <strong>{item.tourDetail.tourName}</strong></p>
-                                                                        <p>Giá tiền: <strong>{item.priceOffer}</strong></p>
+                                                                        <p>Giá tiền: <strong>{item.priceOffer.toLocaleString()} đ</strong></p>
                                                                         <p>Trạng thái: <strong>{item.status}</strong></p>
                                                                   </Col>
                                                             </Row>
+                                                            {
+                                                                  item.description !== "" && (
+                                                                        <>
+                                                                        <p>Lời nhắn: <strong>{item.description}</strong></p>
+                                                                        </>
+                                                                  )
+                                                            }
                                                             {item.status === "Chờ xác nhận" && (
                                                                   <>
                                                                         {item.priceOffer === 0 ? (
@@ -140,7 +147,7 @@ function Quotation() {
                                                                                     </Modal>
                                                                               </>
                                                                         ) : (
-                                                                              <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>Xác nhận đặt chỗ</Button>
+                                                                              <Button type="primary" onClick={() => sendToCustomer(item)}>Xác nhận đặt chỗ</Button>
                                                                         )}
 
                                                                   </>
@@ -154,7 +161,7 @@ function Quotation() {
                                                                               style={{ marginBottom: '10px' }}
                                                                         />
 
-                                                                        <Button type="primary" onClick={() => sendToManager(item.quotationId, item.priceOffer)}>
+                                                                        <Button type="primary" onClick={() => sendToManager(item)}>
                                                                               Báo giá cho quản lí
                                                                         </Button>
                                                                   </>
@@ -167,7 +174,7 @@ function Quotation() {
                                                                               onChange={(e) => setMessages(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                               style={{ marginBottom: '10px' }}
                                                                         />
-                                                                        <Button type="primary" onClick={() => sendToCustomer(item.quotationId, item.priceOffer)}>
+                                                                        <Button type="primary" onClick={() => sendToCustomer(item)}>
                                                                               Báo giá cho khách hàng
                                                                         </Button>
                                                                   </>
