@@ -19,6 +19,7 @@ function ChangePasswordForm() {
           });
         }
       } catch (error) {
+        message.error("Không thể lấy thông tin người dùng");
         console.error("Error fetching user data:", error);
       }
     };
@@ -45,33 +46,26 @@ function ChangePasswordForm() {
   const onFinish = async (values) => {
     try {
       setLoading(true);
-      await put(`account/change-password/${userId}`, {
+      const response = await put(`account/change-password/${userId}`, {
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
-        confirmPassword: values.confirmPassword,
       });
 
-      message.success("Đổi mật khẩu thành công!");
-      form.resetFields(["oldPassword", "newPassword", "confirmPassword"]);
-    } catch (error) {
-      if (error.status === 400) {
-        if (error.data === "Password is not correct!") {
-          message.error("Mật khẩu cũ không chính xác!");
-        } else if (error.data === "Two passwords are not match!") {
-          message.error("Mật khẩu xác nhận không khớp với mật khẩu mới!");
-        } else {
-          message.error(error.data || "Đổi mật khẩu thất bại");
-        }
-      } else if (error.status === 404) {
-        message.error("Không tìm thấy thông tin người dùng");
-      } else {
-        message.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
+      if (response) {
+        message.success("Đổi mật khẩu thành công!");
+        form.resetFields(["oldPassword", "newPassword", "confirmPassword"]);
       }
+    } catch (error) {
+      message.error(
+        error.response?.data?.message ||
+          "Mật khẩu cũ không chính xác hoặc đổi mật khẩu thất bại"
+      );
       console.error("Change password error:", error);
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div className="change-password-container">
       <div className="change-password-content">
