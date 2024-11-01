@@ -71,6 +71,8 @@ namespace Project_SWP391
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = true;
 
+                //options.SignIn.RequireConfirmedEmail = true;
+
                 options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
             })
