@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../actions/cart";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
+import Swal from 'sweetalert2'
 import "./OrderKoi.scss";
 
 function OrderKoi() {
@@ -41,25 +42,32 @@ function OrderKoi() {
             }
             try {
                   setLoadingStates((prev) => ({ ...prev, [koi.koiId]: true }));
+                  if (koi.quantity > 0) {
+                        const data = {
+                              originalPrice: koi.price,
+                              quantity: 1,
+                              finalPrice: 0,
+                        };
+                        const action = "addToCart";
 
-                  const data = {
-                        originalPrice: koi.price,
-                        quantity: 1,
-                        finalPrice: 0,
-                  };
-                  const action = "addToCart";
+                        const response = await post(`koi-bill/create/${params.id}-${koi.koiId}`, data);
 
-                  const response = await post(`koi-bill/create/${params.id}-${koi.koiId}`, data);
+                        if (response) {
+                              await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${koi.koiId}&quantityRequested=${1}&action=${action}`, {
+                                    method: 'POST',
+                              });
 
-                  if (response) {
-                        await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${koi.koiId}&quantityRequested=${1}&action=${action}`, {
-                              method: 'POST',
+                              dispatch(addToCart({ ...koi, quantity: 1 }));
+                              setOrderedKois((prev) => ({ ...prev, [koi.koiId]: true }));
+                              fetchApi();
+                        }
+                  } else {
+                        Swal.fire({
+                              icon: "error",
+                              title: "Cá này đã hết!!!",
                         });
-
-                        dispatch(addToCart({ ...koi, quantity: 1 }));
-                        setOrderedKois((prev) => ({ ...prev, [koi.koiId]: true }));
-                        fetchApi();
                   }
+
             } catch (error) {
                   console.error("Lỗi thêm vào giỏ hàng:", error);
             } finally {

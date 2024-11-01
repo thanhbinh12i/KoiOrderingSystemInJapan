@@ -97,7 +97,22 @@ function Quotation() {
                   fetchApi();
             }
       };
-
+      const handleNoAccept = async (item) => {
+            const getTimeCurrent = () => {
+                  return new Date().toLocaleString();
+            };
+            const quotationData = {
+                  "priceOffer": item.priceOffer,
+                  "status": "Đã xác nhận yêu cầu",
+                  "approvedDate": getTimeCurrent(),
+                  "description": "Cảm ơn Quý khách đã quan tâm đến dịch vụ của chúng tôi. Đây là mức giá cuối cùng chúng tôi có thể cung cấp cho chuyến đi lần này. Rất mong Quý khách thông cảm và hiểu cho quyết định này của chúng tôi."
+            };
+            const response = await put(`quotation/update/${item.quotationId}`, quotationData);
+            if (response) {
+                  setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
+                  fetchApi();
+            }
+      }
       return (
             <>
                   <div className="quotation-staff">
@@ -194,7 +209,7 @@ function Quotation() {
                                                                                     onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                               />
                                                                         </Modal>
-                                                                        <Button type="primary">Không chấp nhận</Button>
+                                                                        <Button type="primary" onClick={() => handleNoAccept(item)}>Không chấp nhận</Button>
                                                                   </>
                                                             )}
                                                       </Col>
