@@ -276,6 +276,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
         {
             if (!ModelState.IsValid)
@@ -425,6 +426,7 @@ namespace Project_SWP391.Controllers
         //}
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.Users
@@ -487,6 +489,7 @@ namespace Project_SWP391.Controllers
                 );
         }
         [HttpGet("view-all-user")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
             var users = await _userManager.Users.OfType<AppUser>().Include(u=>u.Feedback).Include(u => u.Bills).ToListAsync();
@@ -583,6 +586,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("change-password/{id}")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword(string id, [FromBody] ChangePasswordDto password)
         {
             if (!ModelState.IsValid)
@@ -600,7 +604,7 @@ namespace Project_SWP391.Controllers
             {
                 if (!await _userManager.CheckPasswordAsync(user, password.OldPassword))
                 {
-                    return BadRequest("Password is not incorrect!");
+                    return BadRequest("Password is not correct!");
                 }
 
                 if(password.NewPassword != password.ConfirmPassword)
