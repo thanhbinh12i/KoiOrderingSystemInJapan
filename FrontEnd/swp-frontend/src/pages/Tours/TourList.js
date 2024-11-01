@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "antd";
 import { get } from "../../utils/request";
 import image from "../../assets/home/koi-farm-tour.jpg";
@@ -15,21 +15,27 @@ function TourList() {
     };
     fetchApi();
   });
-  const filteredTours = useMemo(() => {
-    return tours.filter(
-      (tour) =>
-        tour.tourDestinations &&
-        tour.tourDestinations.some(
-          (dest) => dest.type === "default" && dest.tourId === tour.tourId
-        )
-    );
-  }, [tours]);
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('-');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+
+  const today = new Date();
+
+  const filteredTours = tours.filter(
+    (tour) =>
+      tour.tourDestinations &&
+      tour.tourDestinations.some(
+        (dest) => dest.type === "default" && dest.tourId === tour.tourId
+      ) &&
+      parseDate(tour.startTime).getTime() > today.getTime()
+  );
   return (
     <>
       <Row gutter={[16, 16]}>
         {filteredTours.map((tour) => (
           <>
-            <Col span={8} key={tour.tourId}>
+            <Col span={6} key={tour.tourId}>
               <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
                 <Card.Meta
                   title={tour.tourName}

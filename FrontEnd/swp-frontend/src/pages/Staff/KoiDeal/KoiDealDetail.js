@@ -10,6 +10,7 @@ function KoiDealDetail() {
       const [modalVisible, setModalVisible] = useState(false);
       const [currentKoi, setCurrentKoi] = useState(null);
       const [newPrice, setNewPrice] = useState('');
+      const [error, setError] = useState('');
 
       useEffect(() => {
             const fetchApi = async () => {
@@ -68,7 +69,15 @@ function KoiDealDetail() {
                   console.error('Error updating price:', error);
             }
       }
-
+      const handleChange = (e) => {
+            const value= e.target.value;
+            if(value <= 0){
+                  setError("Giá nhập vào phải lớn hơn 0");
+            }else{
+                  setError('');
+            }
+            setNewPrice(value);
+      }
       return (
             <>
                   <GoBack />
@@ -107,9 +116,11 @@ function KoiDealDetail() {
                                     <Input
                                           type="number"
                                           value={newPrice}
-                                          onChange={(e) => setNewPrice(e.target.value)}
+                                          onChange={handleChange}
                                           placeholder="Nhập giá mới"
+                                          
                                     />
+                                    {error && <p style={{ color: 'red' }}>{error}</p>}
                               </>
                         )}
                   </Modal>

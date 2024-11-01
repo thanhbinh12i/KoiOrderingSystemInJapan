@@ -96,8 +96,12 @@ function Register() {
                                           >
                                                 <Input />
                                           </Form.Item>
-      
-                                          <Form.Item label="Số điện thoại" name="phoneNumber" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' }]}>
+                                          <Form.Item label="Số điện thoại" name="phoneNumber" rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' },
+                                          {
+                                                pattern: /^0\d{9}$/,
+                                                message: 'Số điện thoại không hợp lệ!'
+                                          }
+                                          ]}>
                                                 <Input />
                                           </Form.Item>
       
