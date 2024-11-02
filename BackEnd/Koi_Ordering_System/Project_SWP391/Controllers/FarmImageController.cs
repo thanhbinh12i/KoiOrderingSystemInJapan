@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.FarmImages;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
@@ -49,6 +50,7 @@ namespace Project_SWP391.Controllers
         //    return CreatedAtAction(nameof(GetById), new { farmId = farmImageModel.FarmId }, farmImageModel.ToFarmImageDto());
         //}
         [HttpPost("upload/{farmId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UploadImages(int farmId, [FromForm] List<IFormFile> files)
         {
             try
@@ -106,6 +108,7 @@ namespace Project_SWP391.Controllers
             }
         }
         [HttpDelete("delete/{imageId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int farmId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -123,6 +126,7 @@ namespace Project_SWP391.Controllers
         //    return Ok(farmImageModel.ToFarmImageDto());
         //}
         [HttpPut("update/{farmImageId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdateImages(int farmImageId, [FromForm] List<IFormFile> files)
         {
             try
