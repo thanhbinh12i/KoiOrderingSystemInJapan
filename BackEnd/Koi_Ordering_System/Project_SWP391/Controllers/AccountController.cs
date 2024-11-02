@@ -712,6 +712,53 @@ namespace Project_SWP391.Controllers
             return Ok("Password has reset successfully!");
         }
 
+        [HttpPost("send-confirmation-token")]
+        public async Task<IActionResult> SendConfirmationToken([FromBody] ConfirmEmailDto email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByEmailAsync(email.Email);
+            if (user == null)
+            {
+                return NotFound("No user found!");
+            }
+
+            if (user.EmailConfirmed)
+            {
+                return BadRequest("Your email is already confirmed!");
+            }
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return StatusCode(500, "Failed to generate password reset token.");
+            }
+
+            var emailModel = new EmailDTO
+            {
+                ToEmail = email.Email,
+                Subject = "Confirm Email",
+                Message = $"Here is your comfirmation code: {token}",
+            };
+
+            try
+            {
+                var result = await _emailService.SendEmailAsync(emailModel);
+                if (result)
+                    return Ok($"Email sent successfully: {token}");
+                else
+                    return StatusCode(500, "Failed to send email.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string email, string code)
         {
