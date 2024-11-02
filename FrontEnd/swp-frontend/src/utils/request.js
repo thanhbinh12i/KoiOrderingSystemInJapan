@@ -69,9 +69,17 @@ export const put = async (path, options) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: JSON.stringify(options),
   });
   const result = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(result);
+    error.status = response.status;
+    error.data = result;
+    throw error;
+  }
   return result;
 };

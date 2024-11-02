@@ -21,35 +21,32 @@ const DashboardView = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [bestKois, bestTours]);
 
   const fetchData = async () => {
     try {
-      const [usersData, billsData, koiBillsData, quotationsData, toursData] = await Promise.all([
-        get("account/view-all-user"),
-        get("bill/view-all"),
-        get("koi-bill/view-all"),
-        get("quotation/view-all"),
-        get("tour/view-all")
-      ]);
+      const [usersData, billsData, koiBillsData, quotationsData, toursData] =
+        await Promise.all([
+          get("account/view-all-user"),
+          get("bill/view-all"),
+          get("koi-bill/view-all"),
+          get("quotation/view-all"),
+          get("tour/view-all"),
+        ]);
 
-      await Promise.all([
-        setUsers(usersData),
-        setBills(billsData),
-        setKoiBills(koiBillsData),
-        setQuotations(quotationsData),
-        setTours(toursData)
-      ]);
+      setUsers(usersData);
+      setBills(billsData);
+      setKoiBills(koiBillsData);
+      setQuotations(quotationsData);
+      setTours(toursData);
 
       const [koiStats, tourStats] = await Promise.all([
-        processKoiSales(koiBillsData, billsData),
-        processTourBookings(billsData, toursData, quotationsData)
+        processKoiSales(koiBills, bills),
+        processTourBookings(bills, tours, quotations),
       ]);
 
-      await Promise.all([
-        setBestKois(koiStats),
-        setBestTours(tourStats)
-      ]);
+      setBestKois(koiStats);
+      setBestTours(tourStats);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -60,12 +57,12 @@ const DashboardView = () => {
     return tour ? tour.tourName : "Unknown Tour";
   };
 
-  const processTourBookings = (billsData, tours, quotationsData) => {
+  const processTourBookings = (bills, tours, quotations) => {
     const tourBookings = {};
 
-    billsData.forEach((bill) => {
+    bills.forEach((bill) => {
       if (bill.quotationId) {
-        const quotation = quotationsData.find(
+        const quotation = quotations.find(
           (q) => q.quotationId === bill.quotationId
         );
         if (quotation && quotation.tourId) {
@@ -93,10 +90,10 @@ const DashboardView = () => {
       }));
   };
 
-  const processKoiSales = (koiBillsData, bills) => {
+  const processKoiSales = (koiBills, bills) => {
     const koiSales = {};
     bills.forEach((bills) => {
-      koiBillsData.forEach((bill) => {
+      koiBills.forEach((bill) => {
         if (bill.billId === bills.billId) {
           const koiName = bill.koiName || "Unknown Koi";
           if (bills.koiPrice !== null) {
@@ -128,62 +125,25 @@ const DashboardView = () => {
   const processChartData = () => {
     const dailyStats = {};
 
-    // Process bills for revenue
     bills.forEach((bill) => {
       if (bill.paymentDate) {
         const date = new Date(bill.paymentDate).toLocaleDateString("vi-VN");
         if (!dailyStats[date]) {
-          dailyStats[date] = {
-            tourRevenue: 0,
-            koiRevenue: 0,
-            quotationCount: 0,
-          };
+          dailyStats[date] = { totalRevenue: 0 };
         }
-        dailyStats[date].tourRevenue += bill.tourPrice || 0;
-        dailyStats[date].koiRevenue += bill.koiPrice || 0;
+        // Add revenue only if koiPrice or tourPrice exists
+        dailyStats[date].totalRevenue +=
+          (bill.tourPrice ? bill.tourPrice : 0) +
+          (bill.koiPrice ? bill.koiPrice : 0);
       }
     });
 
-    // Process quotations for count
-    quotations.forEach((quotation) => {
-      if (quotation.approvedDate) {
-        const date = new Date(quotation.approvedDate).toLocaleDateString(
-          "vi-VN"
-        );
-        if (!dailyStats[date]) {
-          dailyStats[date] = {
-            tourRevenue: 0,
-            koiRevenue: 0,
-            quotationCount: 0,
-          };
-        }
-        dailyStats[date].quotationCount += 1;
-      }
-    });
-
-    // Đảm bảo không có giá trị null
-    const chartData = [];
-    Object.entries(dailyStats)
+    const chartData = Object.entries(dailyStats)
       .sort((a, b) => new Date(a[0]) - new Date(b[0]))
-      .forEach(([date, stats]) => {
-        chartData.push(
-          {
-            date,
-            type: "Doanh thu Tour",
-            value: stats.tourRevenue || 0,
-          },
-          {
-            date,
-            type: "Doanh thu Koi",
-            value: stats.koiRevenue || 0,
-          },
-          {
-            date,
-            type: "Số lượng báo giá",
-            value: stats.quotationCount || 0,
-          }
-        );
-      });
+      .map(([date, stats]) => ({
+        date,
+        value: stats.totalRevenue,
+      }));
 
     return chartData;
   };
@@ -192,71 +152,30 @@ const DashboardView = () => {
     data: processChartData(),
     xField: "date",
     yField: "value",
-    seriesField: "type",
     smooth: true,
     point: {
-      size: 5,
-      shape: "circle",
-      style: {
-        fill: "white",
-        stroke: "#5B8FF9",
-        lineWidth: 2,
+      shapeField: "circle",
+      sizeField: 4,
+    },
+    interaction: {
+      tooltip: {
+        marker: false,
       },
     },
-    yAxis: {
-      label: {
-        formatter: (v) =>
-          `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-      },
+    style: {
+      lineWidth: 2,
     },
-    legend: {
-      position: "top",
-      itemName: {
-        style: {
-          fontSize: 14,
-        },
-      },
-    },
+
+    legend: false,
     animation: {
       appear: {
         animation: "path-in",
         duration: 1000,
       },
     },
-    tooltip: {
-      showMarkers: true,
-      shared: true,
-      showCrosshairs: true,
-      crosshairs: {
-        type: "xy",
-      },
-      formatter: (datum) => {
-        if (datum.type === "Số lượng báo giá") {
-          return {
-            name: datum.type,
-            value: datum.value.toString() + " báo giá",
-          };
-        }
-        return {
-          name: datum.type,
-          value: new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }).format(datum.value),
-        };
-      },
-    },
-    color: ["#1979C9", "#D62A0D", "#FAA219"],
-    interactions: [
-      {
-        type: "marker-active",
-      },
-    ],
-    lineStyle: {
-      lineWidth: 3,
-    },
-    connectNulls: true,
+    color: ["#1979C9"],
   };
+
   const columns = {
     tours: [
       {
@@ -368,6 +287,7 @@ const DashboardView = () => {
             <Statistic
               title="Tổng doanh thu"
               value={totalRevenue}
+              precision={0}
               prefix={<DollarOutlined />}
               formatter={(value) =>
                 new Intl.NumberFormat("vi-VN", {
@@ -379,34 +299,27 @@ const DashboardView = () => {
           </Card>
         </Col>
       </Row>
-      <Row gutter={16} className="charts" style={{ marginTop: "24px" }}>
-        <Col span={24}>
-          <Card title="Biểu đồ thống kê doanh thu">
-            <Line {...config} />
-          </Card>
-        </Col>
+
+      <Card title="Doanh thu mỗi ngày" className="revenue-chart">
+        <Line {...config} />
+      </Card>
+
+      <Row gutter={16} className="best-selling">
         <Col span={12}>
-          <Card title="Cá Koi Best Seller" bodyStyle={{ padding: "0 0 8px 0" }}>
+          <Card title="Top 10 cá Koi bán chạy">
             <Table
-              dataSource={bestKois}
               columns={columns.kois}
+              dataSource={bestKois}
               pagination={false}
-              size="small"
-              scroll={{ y: 240 }}
             />
           </Card>
         </Col>
         <Col span={12}>
-          <Card
-            title="Chuyến Đi Best Booking"
-            bodyStyle={{ padding: "0 0 8px 0" }}
-          >
+          <Card title="Top 5 chuyến đi có doanh thu cao">
             <Table
-              dataSource={bestTours}
               columns={columns.tours}
+              dataSource={bestTours}
               pagination={false}
-              size="small"
-              scroll={{ y: 240 }}
             />
           </Card>
         </Col>

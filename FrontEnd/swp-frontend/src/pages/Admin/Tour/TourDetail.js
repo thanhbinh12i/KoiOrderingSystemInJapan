@@ -1,71 +1,119 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get } from "../../../utils/request";
+import { Card, Descriptions, Typography, Space, Divider, List } from "antd";
+import {
+  ClockCircleOutlined,
+  UserOutlined,
+  DollarOutlined,
+  GlobalOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
+import "./Tour.scss";
 import GoBack from "../../../components/GoBack";
-import { Spin, message } from "antd";
+const { Title, Text } = Typography;
 
 function TourDetail() {
-  const { id } = useParams();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const fetchApi = async () => {
-    setLoading(true);
-    try {
-      const response = await get(`tour/view-tourId/${id}`);
-      setData(response);
-    } catch (error) {
-      console.error("Error fetching tours:", error);
-      message.error("Failed to load tours. Please try again.");
-      setData(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const params = useParams();
+  const [tour, setTour] = useState(null);
+  const [farm, setFarm] = useState([]);
   useEffect(() => {
+    const fetchApi = async () => {
+      const response = await get(`tour/view-tourId/${params.id}`);
+      if (response) {
+        setTour(response);
+      }
+    };
     fetchApi();
-    // eslint-disable-next-line
-  }, []);
+  }, [params.id]);
+  useEffect(() => {
+    const fetchApi = async () => {
+      const response = await get(`tourDestination/view-tourId/${params.id}`);
+      if (response) {
+        const responseFarms = await Promise.all(
+          response.map((item) => get(`koiFarm/view/${item.farmId}`))
+        );
 
-  if (loading) {
-    return <Spin size="large" />;
-  }
-
-  if (!data) {
-    return <div>Không tìm thấy thông tin tour.</div>;
-  }
-
+        if (responseFarms) {
+          setFarm(responseFarms);
+        }
+      }
+    };
+    fetchApi();
+  }, [params.id]);
   return (
-    <div className="tour-detail">
+    <>
       <GoBack />
-      <h1>{data.tourName}</h1>
-      <div className="mb-20">
-        <strong>Giá:</strong> {data.price} VND
-      </div>
-      <div className="mb-20">
-        <strong>Thời gian bắt đầu:</strong> {data.startTime}
-      </div>
-      <div className="mb-20">
-        <strong>Thời gian kết thúc:</strong> {data.finishTime}
-      </div>
-      <div className="mb-20">
-        <strong>Số người tham gia:</strong> {data.numberOfParticipate}
-      </div>
-      <div className="mb-20">
-        <strong>Trang trại trong chuyến đi:</strong>
-        <ul>
-          {data.tourDestinations.map((destination, index) => (
-            <li key={index}>
-              <strong>Tên trang trại:</strong> {destination.farmName}
-              <br />
-              <strong>Địa chỉ:</strong> {destination.address}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+      {tour && (
+        <>
+          <Card className="tour-info-card">
+            <Title level={2}>{tour.tourName}</Title>
+            <Divider />
+            <Space direction="vertical" size="large" style={{ width: "100%" }}>
+              <Descriptions column={1} labelStyle={{ fontWeight: "bold" }}>
+                <Descriptions.Item
+                  label={
+                    <Space>
+                      <ClockCircleOutlined /> Thời gian
+                    </Space>
+                  }
+                >
+                  {tour.startTime} đến {tour.finishTime}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <Space>
+                      <UserOutlined /> Số lượng người tham gia
+                    </Space>
+                  }
+                >
+                  {tour.numberOfParticipate}
+                </Descriptions.Item>
+                <Descriptions.Item
+                  label={
+                    <Space>
+                      <DollarOutlined /> Giá
+                    </Space>
+                  }
+                >
+                  {tour.price.toLocaleString()} đ
+                </Descriptions.Item>
+              </Descriptions>
+
+              <div className="farm-section">
+                <h4>
+                  <GlobalOutlined /> Các trang trại tham quan trong chuyến đi:
+                </h4>
+                <List
+                  dataSource={farm}
+                  itemLayout="vertical"
+                  renderItem={(item) => (
+                    <List.Item key={item.farmName} className="farm-list-item">
+                      <div className="farm-container">
+                        <img
+                          src={`${process.env.REACT_APP_API_URL_UPLOAD}koiFarm/${item.farmImages[0].urlImage}`}
+                          alt={item.farmName}
+                          className="farm-image"
+                        />
+                        <div className="farm-info">
+                          <Title level={4} className="farm-name">
+                            {item.farmName}
+                          </Title>
+                          <Text className="farm-location">
+                            <EnvironmentOutlined className="location-icon" />{" "}
+                            {item.location}
+                          </Text>
+                        </div>
+                      </div>
+                    </List.Item>
+                  )}
+                />
+              </div>
+            </Space>
+          </Card>
+        </>
+      )}
+    </>
   );
 }
-
 export default TourDetail;
