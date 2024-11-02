@@ -22,7 +22,6 @@ namespace Project_SWP391.Controllers
             _environment = environment;
         }
         [HttpGet("view-all")]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -31,7 +30,6 @@ namespace Project_SWP391.Controllers
             return Ok(farmImageDto);
         }
         [HttpGet("view/{imageId:int}")]
-        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int imageId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
