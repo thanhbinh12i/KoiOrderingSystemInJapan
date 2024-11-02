@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Interfaces;
@@ -57,6 +58,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{userId}-{quotationId}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] string userId, [FromRoute] int quotationId, [FromBody] CreateBillDto createBill)
         {
 
@@ -83,6 +85,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBillDto updateBill)
         {
             var billModel = await _billRepo.UpdateAsync(id, updateBill);
@@ -96,6 +99,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var billModel = await _billRepo.DeleteAsync(id);

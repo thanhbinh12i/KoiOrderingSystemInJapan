@@ -2,10 +2,10 @@
 
 namespace Project_SWP391.Dtos.Email
 {
-    public class ForgotPasswordEmailDto
+    public class ConfirmEmailDto
     {
         [Required]
         [EmailAddress]
-        public string? ToEmail { get; set; }
+        public string? Email { get; set; }
     }
 }

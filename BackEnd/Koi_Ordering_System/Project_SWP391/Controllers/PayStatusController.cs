@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Dtos.Feedbacks;
@@ -20,6 +21,7 @@ namespace Project_SWP391.Controllers
             _payStatusRepo = payStatusRepo;
             _billRepo = billRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -29,6 +31,7 @@ namespace Project_SWP391.Controllers
             var payStatusDto = payStatus.Select(v => v.ToPayStatusDto());
             return Ok(payStatusDto);
         }
+
         [HttpGet("view-payId/{payStatusId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int payStatusId)
         {
@@ -39,6 +42,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(payStatus);
         }
+
         [HttpGet("view-billId/{billId:int}")]
         public async Task<IActionResult> ViewByBillId([FromRoute] int billId)
         {
@@ -49,7 +53,9 @@ namespace Project_SWP391.Controllers
             }
             return Ok(payStatus);
         }
+
         [HttpPost("create/{billId:int}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create(int billId, [FromBody] CreatePayStatusDto payStatus)
         {
 
@@ -70,7 +76,9 @@ namespace Project_SWP391.Controllers
             await _payStatusRepo.CreateAsync(payStatusModel);
             return Ok();
         }
+
         [HttpPut("update/{payStatusId:int}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromBody] UpdatePayStatusDto payStatus, int payStatusId)
         {
             var payStatusModel = await _payStatusRepo.UpdateAsync(payStatusId, payStatus);
@@ -82,7 +90,9 @@ namespace Project_SWP391.Controllers
 
             return Ok(payStatusModel);
         }
+
         [HttpDelete("delete/{payStatusId:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int payStatusId)
         {
             var payStatusModel = await _payStatusRepo.DeleteAsync(payStatusId);

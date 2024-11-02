@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.KoiBills;
 using Project_SWP391.Interfaces;
@@ -57,6 +58,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{billId}-{koiId}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] int billId, [FromRoute] int koiId, [FromBody] CreateKoiBillDto createKoiBill)
         {
 
@@ -88,6 +90,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{billId}-{koiId}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int billId, [FromRoute] int koiId, [FromBody] UpdateKoiBillDto updateKoiBill)
         {
             var koiBillModel = await _koiBillRepo.UpdateAsync(koiId, billId, updateKoiBill);
@@ -100,6 +103,7 @@ namespace Project_SWP391.Controllers
             return Ok(koiBillModel.ToKoiBillDtoFromKoiBill());
         }
         [HttpDelete("delete/{billId}-{koiId}")]
+        [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int billId, [FromRoute] int koiId)
         {
             var koiBillModel = await _koiBillRepo.DeleteAsync(koiId, billId);
