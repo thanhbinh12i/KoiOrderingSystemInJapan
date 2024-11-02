@@ -4,6 +4,7 @@ using System.Net;
 using Project_SWP391.Dtos.Email;
 using Project_SWP391.Services;
 using Project_SWP391.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project_SWP391.Controllers
 {
