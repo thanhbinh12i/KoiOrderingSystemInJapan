@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Data;
 using Project_SWP391.Dtos.KoiFarms;
@@ -16,6 +17,7 @@ namespace Project_SWP391.Controllers
         {
             _koiFarmRepo = koiFarmRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -25,6 +27,7 @@ namespace Project_SWP391.Controllers
             var koiFarmDto = koiFarm.Select(v => v.ToKoiFarmDTO());
             return Ok(koiFarmDto);
         }
+
         [HttpGet("view/{farmId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId)
         {
@@ -35,6 +38,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(koiFarm);
         }
+
         [HttpGet("view/{farmName}")]
         public async Task<IActionResult> ViewByName([FromRoute] string farmName)
         {
@@ -60,6 +64,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromBody] CreateKoiFarmDto koiFarm)
         {
             if (koiFarm == null)
@@ -75,7 +80,9 @@ namespace Project_SWP391.Controllers
             return CreatedAtAction(nameof(ViewById), new { farmId = koiFarmModel.FarmId }, koiFarmModel);
 
         }
+
         [HttpPut("update/{farmId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromBody] UpdateKoiFarmDto koiFarm, int farmId)
         {
             var koiFarmModel = await _koiFarmRepo.UpdateAsync(farmId, koiFarm);
@@ -87,7 +94,9 @@ namespace Project_SWP391.Controllers
 
             return Ok(koiFarmModel);
         }
+
         [HttpDelete("delete/{farmId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int farmId)
         {
             var koiFarmModel = await _koiFarmRepo.DeleteAsync(farmId);
