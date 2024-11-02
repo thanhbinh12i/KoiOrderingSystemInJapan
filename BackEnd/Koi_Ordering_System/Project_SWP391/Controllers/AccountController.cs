@@ -489,7 +489,6 @@ namespace Project_SWP391.Controllers
                 );
         }
         [HttpGet("view-all-user")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAllUser()
         {
             var users = await _userManager.Users.OfType<AppUser>().Include(u=>u.Feedback).Include(u => u.Bills).ToListAsync();
@@ -749,9 +748,9 @@ namespace Project_SWP391.Controllers
             {
                 var result = await _emailService.SendEmailAsync(emailModel);
                 if (result)
-                    return Ok($"Email sent successfully: {token}");
+                    return Ok($"Email sent successfully!");
                 else
-                    return StatusCode(500, "Failed to send email.");
+                    return StatusCode(500, "Failed to send email!");
             }
             catch (Exception ex)
             {
