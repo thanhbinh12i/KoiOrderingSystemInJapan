@@ -48,7 +48,7 @@ function FarmDetail() {
           const updated = await Promise.all(
             ratingFarm.map(async (rating) => {
               const userName = await get(`account/${rating.userId}`);
-              return { ...rating, userName: userName.fullName };
+              if (userName) return { ...rating, userName: userName.fullName };
             })
           );
           setRatingFarm(updated);
@@ -175,7 +175,9 @@ function FarmDetail() {
         ))}
       </div>
       <div>
-        <RatingFarm farmId={params.id} userId={userId} onReload={onReload} />
+        {userId ? (
+          <RatingFarm farmId={params.id} userId={userId} onReload={onReload} />
+        ) : null}
       </div>
       <div className="farm-ratings-container">
         <Card title="Đánh giá từ khách hàng" className="ratings-card">
