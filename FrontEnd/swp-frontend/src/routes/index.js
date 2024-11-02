@@ -6,6 +6,7 @@ import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
+import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
 import ChangePasswordForm from "../components/Setting/ChangePasswordForm";
 import LayoutAdmin from "../layouts/LayoutAdmin";
@@ -60,15 +61,12 @@ import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
-import KoiResult from "../components/SearchKoi/KoiResult";
 import ConfirmEmail from "../components/ConfirmEmail";
-import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetail";
-import PrivateRoutes from "../components/privateRouter";
 
 const AdminRoute = ({ children }) => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem('role');
 
-  if (role !== "Manager") {
+  if (role !== 'Manager') {
     return <Navigate to="/" />;
   }
 
@@ -76,7 +74,7 @@ const AdminRoute = ({ children }) => {
 };
 
 const StaffRoute = ({ children }) => {
-  const role = localStorage.getItem("role");
+  const role = localStorage.getItem('role');
 
   if (!role.includes("Staff")) {
     return <Navigate to="/" />;
@@ -147,10 +145,6 @@ export const routes = [
         element: <KoiDetailById />,
       },
       {
-        path: "/search-koi-results",
-        element: <KoiResult />,
-      },
-      {
         path: "varieties",
         element: <Variety />,
       },
@@ -195,7 +189,7 @@ export const routes = [
               {
                 path: "my-orders/:id",
                 element: <MyOrderDetail />,
-              },
+              }
             ],
           },
           {
@@ -225,7 +219,7 @@ export const routes = [
           {
             path: "payment-remain/:id",
             element: <PaymentRemain />,
-          },
+          }
         ],
       },
     ],
@@ -234,11 +228,7 @@ export const routes = [
     element: <PrivateRoutes />,
     children: [
       {
-        element: (
-          <AdminRoute>
-            <LayoutAdmin />
-          </AdminRoute>
-        ),
+        element: <AdminRoute><LayoutAdmin /></AdminRoute>,
         children: [
           {
             path: "admin",
@@ -301,10 +291,6 @@ export const routes = [
             element: <QuotationManager />,
           },
           {
-            path: "quotation-detail/:id",
-            element: <AdminQuotationDetail />
-          },
-          {
             path: "staff-manager",
             element: <StaffManager />,
           },
@@ -328,11 +314,7 @@ export const routes = [
       },
       {
         path: "staff",
-        element: (
-          <StaffRoute>
-            <LayoutStaff />
-          </StaffRoute>
-        ),
+        element: <StaffRoute><LayoutStaff /></StaffRoute>,
         children: [
           {
             path: "quotation-staff",
@@ -361,7 +343,7 @@ export const routes = [
           {
             path: "quotation-detail/:id",
             element: <QuotationDetail />,
-          },
+          }
         ],
       },
     ],
