@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.DeliveryStatuses;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
@@ -22,6 +23,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
+        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> GetAll()
         {
             var deliveryStatuses = await _deliveryStatusRepo.GetAllAsync();
@@ -31,6 +33,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{deliveryStatuslId}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int deliveryStatuslId)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.GetByIdAsync(deliveryStatuslId);
@@ -43,6 +46,7 @@ namespace Project_SWP391.Controllers
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
         }
         [HttpGet("view-by-user-id/{userId}")]
+        [Authorize]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {
             var deliveryStatuses = await _deliveryStatusRepo.GetByUserId(userId);
@@ -57,6 +61,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{billId}-{deliveryId}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] int billId, [FromRoute] int deliveryId, [FromBody] CreateDeliveryStatusDto createDeliveryStatus)
         {
             if (createDeliveryStatus == null)
@@ -88,6 +93,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{deliveryStatusId}")]
+        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> Update([FromRoute] int deliveryStatusId, [FromBody] UpdateDeliveryStatusDto updateDeliveryStatus)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.UpdateAsync(deliveryStatusId, updateDeliveryStatus);
@@ -100,6 +106,7 @@ namespace Project_SWP391.Controllers
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
         }
         [HttpDelete("delete/{deliveryStatusId}")]
+        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> Delete([FromRoute] int deliveryStatusId)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.DeleteAsync(deliveryStatusId);
