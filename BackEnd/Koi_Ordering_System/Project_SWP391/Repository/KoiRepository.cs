@@ -90,7 +90,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Koi>?> GetByVarietyAsync(string varietyName)
         {
-            var variety = await _context.KoiVarieties.FirstOrDefaultAsync(v => v.VarietyName.Contains(varietyName));
+            var variety = await _context.KoiVarieties.FirstOrDefaultAsync(v => v.VarietyName.Equals(varietyName));
 
             if (variety == null)
             {
