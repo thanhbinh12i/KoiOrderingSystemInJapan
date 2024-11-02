@@ -117,7 +117,7 @@ namespace Project_SWP391.Controllers
                 {
                     ToEmail = registerDto.Email,
                     Subject = "Comfirm email token",
-                    Message = $"Here is your email confirmation token: {token}"
+                    Message = $"Here is your email confirmation code: {token}"
                 };
 
                 await _emailService.SendEmailAsync(emailModel);

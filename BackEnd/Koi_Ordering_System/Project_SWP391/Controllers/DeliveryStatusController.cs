@@ -23,7 +23,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
-        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> GetAll()
         {
             var deliveryStatuses = await _deliveryStatusRepo.GetAllAsync();
@@ -33,7 +32,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{deliveryStatuslId}")]
-        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int deliveryStatuslId)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.GetByIdAsync(deliveryStatuslId);
@@ -46,7 +44,6 @@ namespace Project_SWP391.Controllers
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
         }
         [HttpGet("view-by-user-id/{userId}")]
-        [Authorize]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {
             var deliveryStatuses = await _deliveryStatusRepo.GetByUserId(userId);
