@@ -26,7 +26,7 @@ function Cart() {
       const [loading, setLoading] = useState(false);
 
       useEffect(() => {
-            const fetchCart = async () => {
+            const fetchApi = async () => {
                   try {
                         setLoading(true);
                         const response = await get(`koi-bill/view-by-billId/${billId}`);
@@ -40,7 +40,7 @@ function Cart() {
                   }
             };
 
-            fetchCart();
+            fetchApi();
       }, [dispatch, billId]);
 
       if (loading) {
@@ -60,7 +60,7 @@ function Cart() {
                               )}
                         />
                         <div style={{ marginTop: 16 }}>
-                              <strong>Tổng tiền: {totalPrice} đ</strong>
+                              <strong>Tổng tiền: {totalPrice.toLocaleString()} đ</strong>
                         </div>
                         {allItemsHaveFinalPrice ? (
                               <Link to={`/check-out-koi/${billId}`} state={{ totalPrice: totalPrice }}>

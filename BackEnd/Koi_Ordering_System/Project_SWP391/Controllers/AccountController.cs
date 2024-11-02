@@ -39,12 +39,62 @@ namespace Project_SWP391.Controllers
             _emailService = emailService;
         }
 
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid) return BadRequest(ModelState);
+        //        var appUser = new AppUser
+        //        {
+        //            UserName = registerDto.UserName,
+        //            Email = registerDto.Email,
+        //            Gender = registerDto.Gender,
+        //            Address = registerDto.Address,
+        //            FullName = registerDto.FullName,
+        //            PhoneNumber = registerDto.PhoneNumber,
+        //            DateOfBirth = registerDto.DateOfBirth
+        //        };
+        //        var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+        //        if (createdUser.Succeeded)
+        //        {
+        //            var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
+        //            if (roleResult.Succeeded)
+        //            {
+        //                return Ok(
+        //                    new NewUserDto
+        //                    {
+        //                        UserName = appUser.UserName,
+        //                        Email = appUser.Email,
+        //                        Gender = appUser.Gender,
+        //                        Address = appUser.Address,
+        //                        FullName = appUser.FullName,
+        //                        PhoneNumber = appUser.PhoneNumber,
+        //                        DateOfBirth = appUser.DateOfBirth,
+        //                        Token = await _tokenService.CreateToken(appUser)
+        //                    }
+        //                );
+        //            }
+        //            else return StatusCode(500, roleResult.Errors);
+        //        }
+        //        else return StatusCode(500, createdUser.Errors);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(500, e);
+        //    }
+        //}
+
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 var appUser = new AppUser
                 {
                     UserName = registerDto.UserName,
@@ -55,42 +105,28 @@ namespace Project_SWP391.Controllers
                     PhoneNumber = registerDto.PhoneNumber,
                     DateOfBirth = registerDto.DateOfBirth
                 };
-                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-                if (createdUser.Succeeded)
-                {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-                    var emailModel = new EmailDTO
-                    {
-                        ToEmail = registerDto.Email,
-                        Subject = "Confirm your email",
-                        Message = $"Here is your comfirmation code: {token}",
-                    };
-                    await _emailService.SendEmailAsync(emailModel);
 
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Customer");
-                    if (roleResult.Succeeded)
-                    {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
-                                Gender = appUser.Gender,
-                                Address = appUser.Address,
-                                FullName = appUser.FullName,
-                                PhoneNumber = appUser.PhoneNumber,
-                                DateOfBirth = appUser.DateOfBirth,
-                                Token = await _tokenService.CreateToken(appUser)
-                            }
-                        );
-                    }
-                    else return StatusCode(500, roleResult.Errors);
+                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+                if (!createdUser.Succeeded)
+                {
+                    return StatusCode(500, createdUser.Errors);
                 }
-                else return StatusCode(500, createdUser.Errors);
+
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+                var emailModel = new EmailDTO
+                {
+                    ToEmail = registerDto.Email,
+                    Subject = "Comfirm email token",
+                    Message = $"Here is your email confirmation token: {token}"
+                };
+
+                await _emailService.SendEmailAsync(emailModel);
+
+                return Ok("Confirm email has been seen succesfully!");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return StatusCode(500, e);
+                return StatusCode(500, ex.Message);
             }
         }
 
@@ -163,6 +199,11 @@ namespace Project_SWP391.Controllers
 
             if (!result.Succeeded) return Unauthorized("Account and/or password is invalid");
 
+            if (!user.EmailConfirmed)
+            {
+                return Unauthorized("Email not confirmed. Please check your inbox for a confirmation email.");
+            }
+
             return Ok(
                 new NewUserDto
                 {
@@ -209,6 +250,8 @@ namespace Project_SWP391.Controllers
                     {
                         return BadRequest("Failed to add user to role");
                     }
+
+                    user.EmailConfirmed = true;
                 }
                 // login user
                 await _signInManager.SignInAsync(user, isPersistent: false);
@@ -233,6 +276,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateUserDto updateUser, string id)
         {
             if (!ModelState.IsValid)
@@ -382,6 +426,7 @@ namespace Project_SWP391.Controllers
         //}
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> View(string id)
         {
             var user = await _userManager.Users
@@ -540,7 +585,8 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("change-password/{id}")]
-        public async Task<IActionResult> ChangePassword(string id, string oldPassword, string newPassword)
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(string id, [FromBody] ChangePasswordDto password)
         {
             if (!ModelState.IsValid)
             {
@@ -548,13 +594,21 @@ namespace Project_SWP391.Controllers
             }
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (user == null) return NotFound("User not found");
-
-            if (!string.IsNullOrEmpty(oldPassword))
+            if (user == null)
             {
-                if (!await _userManager.CheckPasswordAsync(user, oldPassword))
+                return NotFound("User not found");
+            }
+
+            if (!string.IsNullOrEmpty(password.OldPassword))
+            {
+                if (!await _userManager.CheckPasswordAsync(user, password.OldPassword))
                 {
-                    return BadRequest("Password is not incorrect!");
+                    return BadRequest("Password is not correct!");
+                }
+
+                if(password.NewPassword != password.ConfirmPassword)
+                {
+                    return BadRequest("Two passwords are not match!");
                 }
 
                 var removePasswordResult = await _userManager.RemovePasswordAsync(user);
@@ -563,7 +617,7 @@ namespace Project_SWP391.Controllers
                     return BadRequest(removePasswordResult.Errors);
                 }
 
-                var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, password.NewPassword);
                 if (!addPasswordResult.Succeeded)
                 {
                     return BadRequest(addPasswordResult.Errors);
@@ -673,18 +727,32 @@ namespace Project_SWP391.Controllers
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return NotFound("User not found.");
+                return NotFound("No user found!");
             }
 
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return Ok("Email confirmed successfully!");
+                return BadRequest("Email confirmation failed!");
             }
-            else
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Customer");
+            if (!roleResult.Succeeded)
             {
-                return BadRequest("Email confirmation failed.");
+                return StatusCode(500, roleResult.Errors);
             }
+
+            return Ok(new NewUserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Gender = user.Gender,
+                Address = user.Address,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                DateOfBirth = user.DateOfBirth,
+                Token = await _tokenService.CreateToken(user),
+            });
         }
 
         private string FormatPhoneNumber(string phoneNumber)

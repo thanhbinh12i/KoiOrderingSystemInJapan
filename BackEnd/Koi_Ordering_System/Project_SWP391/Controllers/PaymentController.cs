@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Model;
 using Project_SWP391.Services;
@@ -17,6 +18,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult CreatePaymentUrl([FromBody] PaymentInformationModel model)
         {
             try
@@ -34,6 +36,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("InpHandle")]
+        [Authorize]
         public IActionResult InpHandle()
         {
             try
@@ -51,6 +54,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("PaymentCallback")]
+        [Authorize]
         public IActionResult PaymentCallback()
         {
             try

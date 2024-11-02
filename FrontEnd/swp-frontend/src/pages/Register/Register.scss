@@ -1,0 +1,62 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5; 
+}
+
+.registration-container {
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  .registration-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 20px;
+
+    .ant-form-item {
+      margin-bottom: 16px;
+    }
+
+    .ant-input,
+    .ant-select-selector,
+    .ant-input-password {
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: #40a9ff;
+        box-shadow: 0 0 5px rgba(64, 169, 255, 0.5); 
+      }
+    }
+
+    .submit-button {
+      width: 100%; 
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .login-link {
+      margin-top: 16px;
+      text-align: center;
+
+      a {
+        color: #1890ff;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .registration-card {
+    padding: 15px;
+  }
+
+  .registration-container {
+    margin: 20px;
+  }
+}

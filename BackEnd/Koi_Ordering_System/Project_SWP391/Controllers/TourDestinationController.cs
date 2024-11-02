@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Dtos.KoiFarms;
 using Project_SWP391.Dtos.TourDestinations;
@@ -63,6 +64,7 @@ namespace Project_SWP391.Controllers
             return Ok(tourDestination);
         }
         [HttpPost("create/{farmId:int}&{tourId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(int farmId, int tourId, [FromBody] CreateTourDestinationDto tourDestination)
         {
 
@@ -88,6 +90,7 @@ namespace Project_SWP391.Controllers
             return Ok();
         }
         [HttpPut("update/{farmId:int}&{tourId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromBody] UpdateTourDestinationDto tourDestination, int farmId, int tourId)
         {
             var tourDestinationModel = await _tourDestinationRepo.UpdateAsync(farmId, tourId, tourDestination);
@@ -100,6 +103,7 @@ namespace Project_SWP391.Controllers
             return Ok(tourDestinationModel);
         }
         [HttpDelete("delete/{farmId:int}&{tourId:int}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int farmId, int tourId)
         {
             var tourDestinationModel = await _tourDestinationRepo.DeleteAsync(farmId,tourId);
