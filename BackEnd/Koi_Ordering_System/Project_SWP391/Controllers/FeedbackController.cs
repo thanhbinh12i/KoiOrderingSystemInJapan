@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Project_SWP391.Dtos.Feedbacks;
@@ -22,6 +23,7 @@ namespace Project_SWP391.Controllers
             _userManager = userManager;
         }
         [HttpGet("view-all")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -31,6 +33,7 @@ namespace Project_SWP391.Controllers
             return Ok(feedbackDto);
         }
         [HttpGet("view/{feedbackId:int}")]
+        [Authorize]
         public async Task<IActionResult> ViewById([FromRoute] int feedbackId)
         {
             var feedback = await _feedbackRepo.GetByIdAsync(feedbackId);
@@ -41,6 +44,7 @@ namespace Project_SWP391.Controllers
             return Ok(feedback);
         }
         [HttpGet("view/{userId}")]
+        [Authorize]
         public async Task<IActionResult> ViewByUserId([FromRoute] string userId)
         {
             var feedback = await _feedbackRepo.GetByUserIdAsync(userId);
@@ -74,6 +78,7 @@ namespace Project_SWP391.Controllers
         //}
 
         [HttpPost("create/{userId}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateFeedbackDto createFeedback, [FromRoute] string userId)
         {
             try
@@ -129,6 +134,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{feedbackId:int}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromBody] UpdateFeedbackDto feedback, int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.UpdateAsync(feedbackId, feedback);
@@ -141,6 +147,7 @@ namespace Project_SWP391.Controllers
             return Ok(feedbackModel);
         }
         [HttpDelete("delete/{feedbackId:int}")]
+        [Authorize]
         public async Task<IActionResult> Delete(int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.DeleteAsync(feedbackId);
