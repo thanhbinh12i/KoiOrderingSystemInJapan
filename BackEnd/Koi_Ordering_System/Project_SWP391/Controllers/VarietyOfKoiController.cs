@@ -23,6 +23,7 @@ namespace Project_SWP391.Controllers
             _koiRepo = koiRepo;
             _koiVarietyRepo = koiVarietyRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -32,6 +33,7 @@ namespace Project_SWP391.Controllers
             var vokDto = vok.Select(v => v.ToVOKDto());
             return Ok(vokDto);
         }
+
         [HttpGet("view/{koiId:int}&{varietyId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int koiId, int varietyId)
         {
@@ -47,6 +49,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(vokDto);
         }
+
         [HttpPost("create/{koiId:int}&{varietyId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(int koiId, int varietyId)
@@ -63,6 +66,7 @@ namespace Project_SWP391.Controllers
             await _vokRepo.CreateAsync(vokModel);
             return Ok();
         }
+
         [HttpDelete("delete/{koiId:int}&{varietyId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int koiId, int varietyId)

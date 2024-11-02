@@ -24,6 +24,7 @@ namespace Project_SWP391.Controllers
             _tourRepo = tourRepo;
             _koiFarmRepo = koiFarmRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -33,6 +34,7 @@ namespace Project_SWP391.Controllers
             var tourDestinationDto = tourDestination.Select(v => v.ToTourDestinationDto());
             return Ok(tourDestinationDto);
         }
+
         [HttpGet("view/{farmId:int}&{tourId:int}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId, int tourId)
         {
@@ -48,6 +50,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(tourDestinationDto);
         }
+
         [HttpGet("view-tourId/{tourId:int}")]
         public async Task<IActionResult> ViewByTourId([FromRoute] int tourId)
         {
@@ -63,6 +66,7 @@ namespace Project_SWP391.Controllers
             //}
             return Ok(tourDestination);
         }
+
         [HttpPost("create/{farmId:int}&{tourId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(int farmId, int tourId, [FromBody] CreateTourDestinationDto tourDestination)
@@ -89,6 +93,7 @@ namespace Project_SWP391.Controllers
             await _tourDestinationRepo.CreateAsync(tourDestinationModel);
             return Ok();
         }
+
         [HttpPut("update/{farmId:int}&{tourId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromBody] UpdateTourDestinationDto tourDestination, int farmId, int tourId)
@@ -102,6 +107,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(tourDestinationModel);
         }
+
         [HttpDelete("delete/{farmId:int}&{tourId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int farmId, int tourId)

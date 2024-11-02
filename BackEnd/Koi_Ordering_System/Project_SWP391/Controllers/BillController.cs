@@ -22,7 +22,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAll()
         {
             var bills = await _billRepo.GetAllAsync();
@@ -32,7 +31,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{id}")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var bill = await _billRepo.GetByIdAsync(id);
@@ -46,7 +44,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-user-id/{userId}")]
-        [Authorize]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {
             var bills = await _billRepo.GetByUserIdAsync(userId);
