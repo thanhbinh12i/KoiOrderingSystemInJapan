@@ -61,6 +61,7 @@ import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
+import ConfirmEmail from "../components/ConfirmEmail";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -98,6 +99,10 @@ export const routes = [
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "confirm-email",
+        element: <ConfirmEmail />
       },
       {
         path: "forgot-password",
