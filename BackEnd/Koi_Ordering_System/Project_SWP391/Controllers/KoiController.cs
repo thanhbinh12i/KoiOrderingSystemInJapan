@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Project_SWP391.Dtos.Kois;
 using Project_SWP391.Helper;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
+using System.Data;
 
 namespace Project_SWP391.Controllers
 {
@@ -13,9 +16,11 @@ namespace Project_SWP391.Controllers
     public class KoiController : ControllerBase
     {
         private readonly IKoiRepository _koiRepo;
-        public KoiController(IKoiRepository koiRepo)
+        private readonly IConfiguration _configuration;
+        public KoiController(IKoiRepository koiRepo, IConfiguration configuration)
         {
             _koiRepo = koiRepo;
+            _configuration = configuration;
         }
 
         [HttpGet("view-all")]
@@ -196,6 +201,33 @@ namespace Project_SWP391.Controllers
             }
 
             return NoContent();
+        }
+        [HttpPost("handle-quantity")]
+        public async Task<IActionResult> HandleQuantity(int KoiId, int quantityRequested, string action)
+        {
+
+            using (var connection = new SqlConnection(_configuration.GetConnectionString("MyDB")))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("HandleQuantity", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@koiId", KoiId);
+                    command.Parameters.AddWithValue("@quantityRequested", quantityRequested);
+                    command.Parameters.AddWithValue("@action", action);
+
+                    var result = await command.ExecuteScalarAsync();
+                    
+                    if ((int)result == 0)
+                    {
+                        return Ok(new { message = action == "cancelOrder" ? "Order cancelled and quantity restored." : "Action performed successfully." });
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = "Not enough stock for your request." });
+                    }
+                }
+            }
         }
     }
 }
