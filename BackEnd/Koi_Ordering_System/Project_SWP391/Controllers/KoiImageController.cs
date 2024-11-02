@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.KoiImages;
 using Project_SWP391.Interfaces;
 using Project_SWP391.Mappers;
@@ -80,6 +81,7 @@ namespace Project_SWP391.Controllers
         //    return CreatedAtAction(nameof(GetById), new { id = imageModel.ImageId }, imageModel);
         //}
         [HttpPost("upload/{koiId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UploadImages(int koiId, [FromForm] List<IFormFile> files)
         {
             try
@@ -136,7 +138,9 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
             }
         }
+
         [HttpPut("update/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateKoiImageDto updateImage)
         {
             if (updateImage == null)
@@ -155,6 +159,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var imageModel = await _imageRepo.DeleteAsync(id);

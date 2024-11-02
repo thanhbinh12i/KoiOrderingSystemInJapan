@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Dtos.Kois;
 using Project_SWP391.Helper;
@@ -149,6 +150,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{farmId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromRoute] int farmId, [FromBody] CreateKoiDto createKoi)
         {
             if (createKoi == null)
@@ -164,6 +166,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{koiId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromRoute] int koiId, [FromBody] UpdateKoiDto updateKoi)
         {
             if (updateKoi == null)
@@ -182,6 +185,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{koiId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete([FromRoute] int koiId)
         {
             var koiModel = await _koiRepo.DeleteAsync(koiId);

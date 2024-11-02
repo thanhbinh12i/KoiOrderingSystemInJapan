@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.Bills;
 using Project_SWP391.Interfaces;
@@ -21,6 +22,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetAll()
         {
             var bills = await _billRepo.GetAllAsync();
@@ -30,6 +32,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var bill = await _billRepo.GetByIdAsync(id);
@@ -43,6 +46,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-user-id/{userId}")]
+        [Authorize]
         public async Task<IActionResult> GetByUserId([FromRoute] string userId)
         {
             var bills = await _billRepo.GetByUserIdAsync(userId);
@@ -57,6 +61,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{userId}-{quotationId}")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] string userId, [FromRoute] int quotationId, [FromBody] CreateBillDto createBill)
         {
 
@@ -83,6 +88,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateBillDto updateBill)
         {
             var billModel = await _billRepo.UpdateAsync(id, updateBill);
@@ -96,6 +102,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var billModel = await _billRepo.DeleteAsync(id);

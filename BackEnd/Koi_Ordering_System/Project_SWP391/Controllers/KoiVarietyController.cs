@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_SWP391.Data;
 using Project_SWP391.Dtos.KoiVarieties;
@@ -82,6 +83,7 @@ namespace Project_SWP391.Controllers
         //}
 
         [HttpPost("upload")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateKoiVarietyDto createKoiVariety)
         {
             try
@@ -136,6 +138,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromBody] UpdateKoiVarietyDto updateVariety, int id)
         {
             if (updateVariety == null)
@@ -154,6 +157,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int id)
         {
             var varietyModel = await _koiVarietyRepo.DeleteAsync(id);

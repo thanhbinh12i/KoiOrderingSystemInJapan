@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_SWP391.Dtos.Deliveries;
 using Project_SWP391.Dtos.KoiBills;
 using Project_SWP391.Interfaces;
@@ -18,6 +19,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var deliveries = await _deliveryRepo.GetAllAsync();
@@ -27,6 +29,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{deliveryId}")]
+        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int deliveryId)
         {
             var delivery = await _deliveryRepo.GetByIdAsync(deliveryId);
@@ -40,6 +43,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromBody] CreateDeliveryDto createDelivery)
         {
 
@@ -61,6 +65,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{deliveryId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromRoute] int deliveryId, [FromBody] UpdateDeliveryDto updateDelivery)
         {
             var deliveryModel = await _deliveryRepo.UpdateAsync(deliveryId, updateDelivery);
@@ -73,6 +78,7 @@ namespace Project_SWP391.Controllers
             return Ok(deliveryModel.ToDeliveryDtoFromDelivery());
         }
         [HttpDelete("delete/{deliveryId}")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete([FromRoute] int deliveryId)
         {
             var koiBillModel = await _deliveryRepo.DeleteAsync(deliveryId);
