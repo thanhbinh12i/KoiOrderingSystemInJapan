@@ -48,11 +48,15 @@ function KoiResult() {
           }
         }
 
-        if (priceMin && priceMax && results.length > 0) {
+        const minPrice = priceMin ?? 0;
+        const maxPrice = priceMax ?? 9999999999;
+
+        if (maxPrice && results.length > 0) {
           const priceResponse = await get(
-            `koi/view-by-price/${priceMin}-${priceMax}`
+            `koi/view-by-price/${minPrice}-${maxPrice}`
           );
-          if (priceResponse) {
+
+          if (priceResponse && priceResponse.length > 0) {
             results = results.filter((item) =>
               priceResponse.some((priceItem) => priceItem.koiId === item.koiId)
             );
