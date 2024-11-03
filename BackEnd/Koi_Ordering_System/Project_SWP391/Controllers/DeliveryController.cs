@@ -19,7 +19,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var deliveries = await _deliveryRepo.GetAllAsync();
@@ -29,7 +28,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{deliveryId}")]
-        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int deliveryId)
         {
             var delivery = await _deliveryRepo.GetByIdAsync(deliveryId);

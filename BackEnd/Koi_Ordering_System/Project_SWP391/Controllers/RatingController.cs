@@ -23,6 +23,7 @@ namespace Project_SWP391.Controllers
             _koiFarmRepo = koiFarmRepo;
             _userManager = userManager;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -32,6 +33,7 @@ namespace Project_SWP391.Controllers
             var ratingDto = rating.Select(v => v.ToRatingDto());
             return Ok(ratingDto);
         }
+
         [HttpGet("view/{farmId:int}&{userId}")]
         public async Task<IActionResult> ViewById([FromRoute] int farmId, string userId)
         {
@@ -90,6 +92,7 @@ namespace Project_SWP391.Controllers
             await _ratingRepo.CreateAsync(ratingModel);
             return Ok();
         }
+
         [HttpPut("update/{farmId:int}&{userId}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromBody] UpdateRatingDto rating, int farmId, string userId)
@@ -103,6 +106,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(ratingModel);
         }
+
         [HttpDelete("delete/{farmId:int}&{userId}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Delete(int farmId, string userId)

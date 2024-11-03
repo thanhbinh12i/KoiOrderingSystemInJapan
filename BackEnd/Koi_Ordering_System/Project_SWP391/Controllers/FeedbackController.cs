@@ -23,7 +23,6 @@ namespace Project_SWP391.Controllers
             _userManager = userManager;
         }
         [HttpGet("view-all")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> ViewAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -33,7 +32,6 @@ namespace Project_SWP391.Controllers
             return Ok(feedbackDto);
         }
         [HttpGet("view/{feedbackId:int}")]
-        [Authorize]
         public async Task<IActionResult> ViewById([FromRoute] int feedbackId)
         {
             var feedback = await _feedbackRepo.GetByIdAsync(feedbackId);
@@ -44,7 +42,6 @@ namespace Project_SWP391.Controllers
             return Ok(feedback);
         }
         [HttpGet("view/{userId}")]
-        [Authorize]
         public async Task<IActionResult> ViewByUserId([FromRoute] string userId)
         {
             var feedback = await _feedbackRepo.GetByUserIdAsync(userId);

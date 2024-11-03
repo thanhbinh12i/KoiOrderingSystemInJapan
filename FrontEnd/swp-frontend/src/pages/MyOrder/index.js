@@ -3,6 +3,7 @@ import { get } from "../../utils/request";
 import { Button, Table } from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
+import RefuseOrder from "./RefuseOrder";
 
 function MyOrder() {
       const [deliveryList, setDeliveryList] = useState([]);
@@ -76,32 +77,35 @@ function MyOrder() {
                         if (record.deliveryStatusText === "Đơn hàng đã giao đến bạn") {
                               return (
                                     <>
-                                          <Link to={`/payment-remain/${record.billId}`}>
+                                          <Link to={`/payment-remain/${record.billId}`} className="pr-10">
                                                 <Button type="primary">
                                                       Đến trang thanh toán
                                                 </Button>
                                           </Link>
+                                          <Button color="primary" danger onClick={() => showModal()}>
+                                                Không nhận hàng
+                                          </Button>
+                                          
+                                          <RefuseOrder record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {
                               return (
                                     <>
-                                          <Link to={`feedback/${userId}`}>
-                                                <Button type="primary">Đánh giá</Button>
+                                          <Link to={`feedback/${userId}`} >
+                                                <Button type="primary" style={{ backgroundColor: '#52c41a', borderColor: '#52c41a', color: '#fff' }}>Đánh giá</Button>
                                           </Link>
                                     </>
                               )
-                        } else if (record.deliveryStatusText === "Đang chờ vận chuyển") {
+                        } else {
                               return (
                                     <>
                                           <Button color="primary" onClick={() => showModal()} danger>
-                                                Hủy đơn
+                                                Hủy đơn hàng
                                           </Button>
                                           <CancelOrder record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
                                     </>
                               )
-                        } else {
-
                         }
                   }
             }

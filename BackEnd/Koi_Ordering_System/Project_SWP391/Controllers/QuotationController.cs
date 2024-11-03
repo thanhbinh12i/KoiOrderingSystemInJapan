@@ -24,8 +24,8 @@ namespace Project_SWP391.Controllers
             _userManager = userManager;
             _tourRepo = tourRepo;
         }
+
         [HttpGet("view-all")]
-        [Authorize(Roles = "SalesStaff")]
         public async Task<IActionResult> ViewAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -34,8 +34,8 @@ namespace Project_SWP391.Controllers
             var quotationDto = quotation.Select(v => v.ToQuotationDto());
             return Ok(quotationDto);
         }
+
         [HttpGet("view/{userId}&{tourId}")]
-        [Authorize]
         public async Task<IActionResult> ViewById([FromRoute] string userId, int tourId)
         {
             var quotation = await _quotationRepo.GetByIdAsync(userId, tourId);
@@ -50,8 +50,8 @@ namespace Project_SWP391.Controllers
             }
             return Ok(quotationDto);
         }
+
         [HttpGet("view/{quotatonId:int}")]
-        [Authorize]
         public async Task<IActionResult> ViewByQuotationId([FromRoute] int quotatonId)
         {
             var quotation = await _quotationRepo.GetByQuotationIdAsync(quotatonId);
@@ -66,8 +66,8 @@ namespace Project_SWP391.Controllers
             }
             return Ok(quotationDto);
         }
+
         [HttpGet("view/{userId}")]
-        [Authorize]
         public async Task<IActionResult> ViewByUserId([FromRoute] string userId)
         {
             var quotation = await _quotationRepo.GetByUserIdAsync(userId);
@@ -82,6 +82,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(quotationDto);
         }
+
         [HttpPost("create/{userId}&{tourId:int}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create(string userId, int tourId, [FromBody] CreateQuotationDto quotation)
@@ -110,6 +111,7 @@ namespace Project_SWP391.Controllers
             await _quotationRepo.CreateAsync(quotationModel);
             return Ok();
         }
+
         [HttpPut("update/{quotationId:int}")]
         [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateQuotationDto quotation, int quotationId)
@@ -123,6 +125,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(quotationModel);
         }
+
         [HttpDelete("delete/{quotationId:int}")]
         [Authorize]
         public async Task<IActionResult> Delete(int quotationId)

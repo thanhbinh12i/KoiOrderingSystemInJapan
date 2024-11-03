@@ -24,7 +24,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
-        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var koiBills = await _koiBillRepo.GetAllAsync();
@@ -34,7 +33,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-by-id/{billId}-{koiId}")]
-        [Authorize]
         public async Task<IActionResult> GetById([FromRoute] int billId, [FromRoute] int koiId)
         {
             var koiBill = await _koiBillRepo.GetByIdAsync(koiId, billId);
@@ -47,7 +45,6 @@ namespace Project_SWP391.Controllers
             return Ok(koiBill.ToKoiBillDtoFromKoiBill());
         }
         [HttpGet("view-by-billId/{billId}")]
-        [Authorize]
         public async Task<IActionResult> GetByBillId([FromRoute] int billId)
         {
             var koiBill = await _koiBillRepo.GetByBillIdAsync(billId);

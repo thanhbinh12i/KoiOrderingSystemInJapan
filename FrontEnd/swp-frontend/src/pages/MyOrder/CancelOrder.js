@@ -2,23 +2,23 @@ import { Button, Form, Modal, Typography } from "antd";
 import { put } from "../../utils/request";
 const { Text, Paragraph } = Typography;
 
-function CancelOrder(props){
+function CancelOrder(props) {
       const { record, isModalVisible, handleOk, handleCancel } = props;
       const [form] = Form.useForm();
       const handleFinish = async () => {
             const data = {
                   "deliveryAddress": record.deliveryAddress,
-                  "deliveryStatusText": "Yêu cầu hủy đơn",
+                  "deliveryStatusText": "Hủy đơn hàng",
                   "estimatedDate": record.estimatedDate
             }
             const response = await put(`delivery-status/update/${record.deliveryStatusId}`, data);
-            if(response){
+            if (response) {
                   handleOk();
             }
       }
       return (
             <>
-             <Modal
+                  <Modal
                         open={isModalVisible}
                         onCancel={handleCancel}
                         title="Hủy đơn đặt cá Koi"
@@ -38,7 +38,7 @@ function CancelOrder(props){
                                     <Text strong>Địa chỉ:</Text> {record.deliveryAddress}<br />
                               </Paragraph>
                               <Paragraph type="warning">
-                                    Lưu ý: Theo chính sách của chúng tôi, quý khách sẽ được hoàn lại số tiền đã cọc.
+                                    Lưu ý: Theo chính sách của chúng tôi, quý khách sẽ mất hết tiền cọc nếu hủy đơn hàng này.
                               </Paragraph>
                               <Form.Item>
                                     <Button type="primary" htmlType="submit">
