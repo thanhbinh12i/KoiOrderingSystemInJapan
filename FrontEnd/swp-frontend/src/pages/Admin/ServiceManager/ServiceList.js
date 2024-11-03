@@ -50,9 +50,12 @@ function ServiceList() {
       key: "deliveryType",
     },
     {
-      title: "Phí vận chuyển",
+      title: "Phí vận chuyển (VNĐ)",
       dataIndex: "deliveryFee",
       key: "deliveryFee",
+      render: (_, record) => (
+        <strong>{record.deliveryFee.toLocaleString()}</strong>
+      )
     },
     {
       title: "Hành động",

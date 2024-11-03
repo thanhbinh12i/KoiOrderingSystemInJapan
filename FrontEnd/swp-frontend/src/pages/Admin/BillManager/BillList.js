@@ -54,16 +54,25 @@ function BillList() {
       title: "Chi phí chuyến đi",
       dataIndex: "tourPrice",
       key: "tourPrice",
+      render: (_, record) => (
+        <strong>{record.tourPrice.toLocaleString()}</strong>
+      )
     },
     {
       title: "Chi phí cá koi",
       dataIndex: "koiPrice",
       key: "koiPrice",
+      render: (_, record) => (
+        <strong>{record.koiPrice?.toLocaleString()}</strong>
+      )
     },
     {
       title: "Tổng phí thanh toán",
       dataIndex: "total",
       key: "total",
+      render: (_, record) => (
+        <strong>{record.total?.toLocaleString()}</strong>
+      )
     },
   ];
 

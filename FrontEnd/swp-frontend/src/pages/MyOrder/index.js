@@ -81,6 +81,9 @@ function MyOrder() {
                                                       Đến trang thanh toán
                                                 </Button>
                                           </Link>
+                                          <Button color="primary" danger>
+                                                Không nhận hàng
+                                          </Button>
                                     </>
                               )
                         } else if (record.deliveryStatusText === "Giao hàng thành công") {

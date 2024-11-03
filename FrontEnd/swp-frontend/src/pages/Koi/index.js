@@ -60,8 +60,8 @@ function Koi() {
                       className="koi-image"
                       loading="lazy"
                     />
-                    <Title level={5}>Tên cá koi: {koi.koiName}</Title>
-                    <Title level={5}>Giá: {koi.price}</Title>
+                    <Title level={5}>{koi.koiName}</Title>
+                    <Title level={5}>Giá: {koi.price.toLocaleString()} đ</Title>
                     <Title level={5}>Ngày sinh: {koi.yob}</Title>
                     <Title level={5}>Giới tính: {koi.gender}</Title>
                     <Title level={5}>
@@ -72,14 +72,14 @@ function Koi() {
               </Col>
             ))}
           </Row>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
             <Pagination
               current={currentPage}
               onChange={(page) => setCurrentPage(page)}
               total={koi.length}
               pageSize={pageSize}
               showSizeChanger={false}
-              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} cá koi`}
             />
           </div>
         </>

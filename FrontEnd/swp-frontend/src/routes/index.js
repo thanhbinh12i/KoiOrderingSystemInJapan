@@ -61,6 +61,8 @@ import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
+import ConfirmEmail from "../components/ConfirmEmail";
+import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetail";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -98,6 +100,10 @@ export const routes = [
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "confirm-email",
+        element: <ConfirmEmail />
       },
       {
         path: "forgot-password",
@@ -284,6 +290,10 @@ export const routes = [
           {
             path: "quotation-manager",
             element: <QuotationManager />,
+          },
+          {
+            path: "quotation-detail/:id",
+            element: <AdminQuotationDetail />
           },
           {
             path: "staff-manager",
