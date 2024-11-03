@@ -178,37 +178,38 @@ const DashboardView = () => {
     yField: "value",
     ...(chartType === "monthly"
       ? {
-          seriesField: undefined,
+        seriesField: undefined,
+        label: {
+          position: "top",
+          style: {
+            fill: "#000000",
+          },
+          formatter: (datum) => {
+            return new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(datum.value);
+          },
+        },
+        xAxis: {
           label: {
-            position: "top",
-            style: {
-              fill: "#000000",
-            },
-            formatter: (datum) => {
+            autoRotate: false,
+            autoHide: false,
+
+            autoEllipsis: false,
+          },
+        },
+        meta: {
+          value: {
+            formatter: (value) => {
               return new Intl.NumberFormat("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              }).format(datum.value);
+              }).format(value);
             },
           },
-          xAxis: {
-            label: {
-              autoRotate: false,
-              autoHide: false,
-              autoEllipsis: false,
-            },
-          },
-          meta: {
-            value: {
-              formatter: (value) => {
-                return new Intl.NumberFormat("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                }).format(value);
-              },
-            },
-          },
-        }
+        },
+      }
       : {}),
     interaction: {
       tooltip: {
