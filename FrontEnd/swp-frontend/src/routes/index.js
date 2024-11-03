@@ -61,11 +61,12 @@ import MyOrderDetail from "../pages/MyOrder/MyOrderDetail";
 import QuotationDetail from "../pages/Staff/Quotation/QuotationDetail";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
+import KoiResult from "../components/SearchKoi/KoiResult";
 
 const AdminRoute = ({ children }) => {
-  const role = localStorage.getItem('role');
+  const role = localStorage.getItem("role");
 
-  if (role !== 'Manager') {
+  if (role !== "Manager") {
     return <Navigate to="/" />;
   }
 
@@ -73,7 +74,7 @@ const AdminRoute = ({ children }) => {
 };
 
 const StaffRoute = ({ children }) => {
-  const role = localStorage.getItem('role');
+  const role = localStorage.getItem("role");
 
   if (!role.includes("Staff")) {
     return <Navigate to="/" />;
@@ -140,6 +141,10 @@ export const routes = [
         element: <KoiDetailById />,
       },
       {
+        path: "/search-koi-results",
+        element: <KoiResult />,
+      },
+      {
         path: "varieties",
         element: <Variety />,
       },
@@ -184,7 +189,7 @@ export const routes = [
               {
                 path: "my-orders/:id",
                 element: <MyOrderDetail />,
-              }
+              },
             ],
           },
           {
@@ -214,7 +219,7 @@ export const routes = [
           {
             path: "payment-remain/:id",
             element: <PaymentRemain />,
-          }
+          },
         ],
       },
     ],
@@ -223,7 +228,11 @@ export const routes = [
     element: <PrivateRoutes />,
     children: [
       {
-        element: <AdminRoute><LayoutAdmin /></AdminRoute>,
+        element: (
+          <AdminRoute>
+            <LayoutAdmin />
+          </AdminRoute>
+        ),
         children: [
           {
             path: "admin",
@@ -309,7 +318,11 @@ export const routes = [
       },
       {
         path: "staff",
-        element: <StaffRoute><LayoutStaff /></StaffRoute>,
+        element: (
+          <StaffRoute>
+            <LayoutStaff />
+          </StaffRoute>
+        ),
         children: [
           {
             path: "quotation-staff",
@@ -338,7 +351,7 @@ export const routes = [
           {
             path: "quotation-detail/:id",
             element: <QuotationDetail />,
-          }
+          },
         ],
       },
     ],
