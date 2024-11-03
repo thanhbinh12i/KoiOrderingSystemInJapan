@@ -23,7 +23,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-all")]
-        [Authorize]
         public async Task<IActionResult> ViewAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -34,7 +33,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-payId/{payStatusId:int}")]
-        [Authorize]
         public async Task<IActionResult> ViewById([FromRoute] int payStatusId)
         {
             var payStatus = await _payStatusRepo.GetByIdAsync(payStatusId);
@@ -46,7 +44,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("view-billId/{billId:int}")]
-        [Authorize]
         public async Task<IActionResult> ViewByBillId([FromRoute] int billId)
         {
             var payStatus = await _payStatusRepo.GetByBillIdAsync(billId);

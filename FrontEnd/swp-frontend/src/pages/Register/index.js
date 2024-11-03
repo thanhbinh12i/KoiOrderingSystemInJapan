@@ -23,9 +23,10 @@ function Register() {
             try {
                   const response = await post("account/register", data);
                   if (response) {
+                        localStorage.setItem('email',values.email);
                         form.resetFields();
                         messageApi.success('Đăng ký thành công!');
-                        navigate("/login");
+                        navigate("/confirm-email");
                   }
 
 

@@ -1,6 +1,6 @@
 .koi-container {
   margin-top: 20px;
-  padding-bottom: 70px; // Thêm padding dưới cùng để tránh nội dung bị che khuất bởi Pagination
+  padding-bottom: 70px; 
 }
 
 .koi-card {
@@ -35,6 +35,8 @@
 
 .koi-image {
   object-fit: cover;
+  width: 100%;
+  height: 100%;
   border: 1px solid #c54125;
 }
 

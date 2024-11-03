@@ -17,6 +17,7 @@ namespace Project_SWP391.Controllers
         {
             _tourRepo = tourRepo;
         }
+
         [HttpGet("view-all")]
         public async Task<IActionResult> ViewAll()
         {
@@ -24,6 +25,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
+
         [HttpGet("view-tourId/{tourId:int}")]
         public async Task<IActionResult> ViewAllId([FromRoute] int tourId)
         {
@@ -34,6 +36,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(tour);
         }
+
         [HttpGet("view-by-quotationId/{quotationId:int}")]
         public async Task<IActionResult> ViewByQuotationId([FromRoute] int quotationId)
         {
@@ -44,6 +47,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(tour);
         }
+
         [HttpGet("view-farmId/{farmId:int}")]
         public async Task<IActionResult> ViewAllFarmId([FromRoute] int farmId)
         {
@@ -55,6 +59,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
+
         [HttpGet("view-varietyId/{varietyId:int}")]
         public async Task<IActionResult> ViewAllVarietyId([FromRoute] int varietyId)
         {
@@ -66,6 +71,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
+
         [HttpGet("view-price/{min:float}&&{max:float}")]
         public async Task<IActionResult> ViewPriceMinToMax([FromRoute] float min, float max)
         {
@@ -77,6 +83,7 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
+
         [HttpGet("view-date/{startDate}&&{endDate}")]
         public async Task<IActionResult> ViewToursByDate([FromRoute] string? startDate, string? endDate)
         {
@@ -103,6 +110,7 @@ namespace Project_SWP391.Controllers
             var tours = await _tourRepo.GetByDateAsync(parsedStartDate, parsedEndDate);
             return Ok(tours);
         }
+
         [HttpPost("create")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromBody] CreateTourDto tour)
@@ -118,8 +126,8 @@ namespace Project_SWP391.Controllers
             }
             await _tourRepo.CreateAsync(tourModel);
             return CreatedAtAction(nameof(ViewAllId), new { tourId = tourModel.TourId }, tourModel);
-
         }
+
         [HttpPut("update/{tourId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Update([FromBody] UpdateTourDto tour, int tourId)
@@ -133,6 +141,7 @@ namespace Project_SWP391.Controllers
 
             return Ok(tourModel);
         }
+
         [HttpDelete("delete/{tourId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Delete(int tourId)
