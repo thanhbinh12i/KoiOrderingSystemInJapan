@@ -32,40 +32,35 @@ function KoiResult() {
         if (farm) {
           const responseFarm = await get(`koi/view-by-farmId/${farm}`);
           if (responseFarm) results = responseFarm;
+          console.log(responseFarm);
         }
 
-        if (variety && results.length > 0) {
+        if (variety) {
           const responseVariety = await get(
             `koi/view-by-variety-id/${variety}`
           );
           console.log(responseVariety);
-          if (responseVariety) {
+          if (results) {
             results = results.filter((item) =>
               responseVariety.some((koi) => koi.koiId === item.koiId)
             );
-          } else {
-            results = [];
-          }
+          } else results = responseVariety;
         }
-
-        if (priceMin && priceMax && results.length > 0) {
+        if (priceMin && priceMax) {
           const priceResponse = await get(
             `koi/view-by-price/${priceMin}-${priceMax}`
           );
-          if (priceResponse) {
+          if (results.length > 0) {
             results = results.filter((item) =>
               priceResponse.some((priceItem) => priceItem.koiId === item.koiId)
             );
           } else {
-            results = [];
+            results = priceResponse;
           }
         }
 
-        const uniqueResults = Array.from(
-          new Set(results.map((koi) => koi.koiId))
-        ).map((id) => results.find((koi) => koi.koiId === id));
 
-        setSearchResults(uniqueResults);
+        setSearchResults(results);
       } catch (error) {
         console.error("Error fetching search results:", error);
       } finally {
@@ -98,6 +93,7 @@ function KoiResult() {
                         className="koi-image"
                         loading="lazy"
                       />
+
                       <Title level={5}>{koi.koiName}</Title>
                       <Title level={5}>Giá: {koi.price}</Title>
                       <Title level={5}>Ngày sinh: {koi.yob}</Title>
