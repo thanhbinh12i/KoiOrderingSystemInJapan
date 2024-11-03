@@ -13,8 +13,8 @@ function ResetPassword() {
             }
             const response = await post('account/reset-password', data);
             if(response){
-                  navigate('/');
                   localStorage.removeItem('email');
+                  navigate('/');
             }
       }
       const validatePassword = (_, value) => {

@@ -29,27 +29,31 @@ function Variety() {
 
   return (
     <>
-      <Row gutter={[16, 16]} className="variety-container">
-        {varieties.map((variety) => (
-          <Col xs={24} sm={12} md={8} key={variety.varietyId}>
-            <Card
-              hoverable
-              className="variety-card"
-              onClick={() => handleCardClick(variety.varietyName)}
-            >
-              <img
-                width={135}
-                height={200}
-                alt={variety.varietyName}
-                src={`${process.env.REACT_APP_API_URL_UPLOAD}koiVariety/${variety.urlImage}`}
-                className="variety-image"
-              />
-              <Title level={4}>{variety.varietyName}</Title>
-              <Paragraph>{variety.description}</Paragraph>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+      <div className="variety">
+        <Row gutter={[16, 16]} className="variety__container">
+          {varieties.map((variety) => (
+            <Col xs={24} sm={12} md={8} key={variety.varietyId}>
+              <Card
+                hoverable
+                className="variety__card"
+                onClick={() => handleCardClick(variety.varietyName)}
+              >
+                <img
+                  width={135}
+                  height={200}
+                  alt={variety.varietyName}
+                  src={`${process.env.REACT_APP_API_URL_UPLOAD}koiVariety/${variety.urlImage}`}
+                  className="variety__image"
+                />
+                <div className="variety__content">
+                  <Title level={4}>{variety.varietyName}</Title>
+                  <Paragraph >{variety.description}</Paragraph>
+                </div>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      </div>
     </>
   );
 }

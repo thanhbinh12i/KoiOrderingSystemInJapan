@@ -1,6 +1,7 @@
-import { Badge, Button, Card, Col, Input, Modal, Row } from "antd";
+import { Badge, Button, Card, Col, Input, Modal, Pagination, Row } from "antd";
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
+import { Link } from "react-router-dom";
 
 function QuotationManager() {
   const [quotation, setQuotation] = useState([]);
@@ -8,17 +9,38 @@ function QuotationManager() {
   const [loading, setLoading] = useState(false);
   const [modalVisibility, setModalVisibility] = useState({});
   const [prices, setPrices] = useState({});
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 6;
+
+  const getCurrentPageData = () => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return quotation.slice(startIndex, startIndex + pageSize);
+  };
+
   const fetchApi = async () => {
     const response = await get("quotation/view-all");
     if (response) {
-      setQuotation(response.reverse());
+      const quotationsWithTours = await Promise.all(
+        response.map(async (quotation) => {
+          const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
+          return {
+            ...quotation,
+            tourDetail: tourResponse
+          };
+        })
+      );
+      setQuotation(quotationsWithTours.reverse());
     }
   };
   useEffect(() => {
     fetchApi();
   }, []);
   const showModal = (id) => {
-    setModalVisibility((prev) => ({ ...prev, [id]: true }));
+    setModalVisibility((prev) => ({
+      ...prev,
+      [id]: true,
+    }));
   };
 
   const updatePrice = async (id) => {
@@ -33,15 +55,27 @@ function QuotationManager() {
     };
     const response = await put(`quotation/update/${id}`, quotationData);
     if (response) {
-      setModalVisibility((prev) => ({ ...prev, [id]: false }));
-      setPrices((prev) => ({ ...prev, [id]: "" }));
+      setModalVisibility((prev) => ({
+        ...prev,
+        [id]: false,
+      }));
+      setPrices((prev) => ({
+        ...prev,
+        [id]: "",
+      }));
       fetchApi();
     }
   };
 
   const handleCancel = (id) => {
-    setModalVisibility((prev) => ({ ...prev, [id]: false }));
-    setPrices((prev) => ({ ...prev, [id]: "" }));
+    setModalVisibility((prev) => ({
+      ...prev,
+      [id]: false,
+    }));
+    setPrices((prev) => ({
+      ...prev,
+      [id]: "",
+    }));
   };
   const handleSuccess = async (quotationId, priceOffer) => {
     const getTimeCurrent = () => {
@@ -53,10 +87,7 @@ function QuotationManager() {
       approvedDate: getTimeCurrent(),
       description: messages[quotationId] || "",
     };
-    const response = await put(
-      `quotation/update/${quotationId}`,
-      quotationData
-    );
+    const response = await put(`quotation/update/${quotationId}`, quotationData);
     if (response) {
       fetchApi();
     }
@@ -85,8 +116,7 @@ function QuotationManager() {
           subject: `Xác nhận hủy đơn đặt chỗ - Mã đơn ${item.quotationId}`,
           message: cancellationTemplate,
         };
-        const responseEmail = await fetch(
-          `${process.env.REACT_APP_API_URL}email/send`,
+        const responseEmail = await fetch(`${process.env.REACT_APP_API_URL}email/send`,
           {
             method: "POST",
             headers: {
@@ -108,43 +138,49 @@ function QuotationManager() {
   };
   return (
     <>
+
       {quotation.length > 0 ? (
         <>
           <Row gutter={[20, 20]}>
-            {quotation.map((item) => (
+
+            {getCurrentPageData().map((item) => (
               <Col span={8} key={item.quotationId}>
                 <Card
                   title={
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
+                    <div style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
                     >
-                      <span>Xác nhận báo giá</span>
-                      <Button type="primary">Xem chi tiết</Button>
+                      <span> Xác nhận báo giá </span>
+                      <Link to={`/quotation-detail/${item.tourId}`}>
+                        <Button type="primary">
+                          Xem chi tiết
+                        </Button>
+                      </Link>
                     </div>
                   }
                 >
                   <p>
-                    Họ và tên: <strong>{item.fullName}</strong>
+                    Họ và tên: <strong> {item.fullName} </strong>
                   </p>
                   <p>
-                    Email: <strong>{item.email}</strong>
+                    Email: <strong> {item.email} </strong>
                   </p>
                   <p>
-                    Số điện thoại: <strong>{item.phoneNumber}</strong>
+                    Số điện thoại: <strong> {item.phoneNumber} </strong>
                   </p>
                   <p>
-                    TourId: <strong>{item.tourId}</strong>
+                    Chuyến đi: <strong> {item.tourDetail.tourName} </strong>
                   </p>
                   <p>
-                    Giá tiền: <strong>{item.priceOffer}</strong>
+                    Giá tiền:
+                    <strong> {item.priceOffer.toLocaleString()}đ </strong>
                   </p>
                   {item.description !== "" && (
                     <p>
-                      Lời nhắn: <strong>{item.description}</strong>
+                      Lời nhắn: <strong> {item.description} </strong>
                     </p>
                   )}
                   <p>
@@ -161,20 +197,11 @@ function QuotationManager() {
                             [item.quotationId]: e.target.value,
                           }))
                         }
-                        style={{ marginBottom: "10px" }}
-                      />
-                      <Button
-                        type="primary"
-                        onClick={() =>
-                          handleSuccess(item.quotationId, item.priceOffer)
-                        }
-                      >
+                        style={{ marginBottom: "10px", }} />
+                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)} className="pr-10">
                         Xác nhận
                       </Button>
-                      <Button
-                        type="primary"
-                        onClick={() => showModal(item.quotationId)}
-                      >
+                      <Button type="primary" onClick={() => showModal(item.quotationId)}>
                         Nhập lại giá
                       </Button>
                       <Modal
@@ -197,11 +224,7 @@ function QuotationManager() {
                     </>
                   )}
                   {item.status === "Yêu cầu hủy đặt chỗ" && (
-                    <Button
-                      type="primary"
-                      onClick={() => handleCancelBooking(item)}
-                      loading={loading}
-                    >
+                    <Button type="primary" onClick={() => handleCancelBooking(item)} loading={loading}>
                       Xác nhận hủy
                     </Button>
                   )}
@@ -209,10 +232,20 @@ function QuotationManager() {
               </Col>
             ))}
           </Row>
+          <div style={{ marginTop: '20px', textAlign: 'right' }}>
+            <Pagination
+              current={currentPage}
+              onChange={(page) => setCurrentPage(page)}
+              total={quotation.length}
+              pageSize={pageSize}
+              showSizeChanger={false}
+              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+            />
+          </div>
         </>
       ) : (
         <>
-          <h1>Không có báo giá nào</h1>
+          <h1> Không có báo giá nào </h1>
         </>
       )}
     </>
@@ -325,9 +358,8 @@ const CancelTemplate = (props) => {
 
               <p><span class="greeting">Kính gửi Quý khách,</span></p>
 
-              <p>Chúng tôi xác nhận đã nhận được yêu cầu hủy đơn đặt chỗ của Quý khách với mã đơn <span class="order-id">${
-                item.quotationId
-              }</span></p>
+              <p>Chúng tôi xác nhận đã nhận được yêu cầu hủy đơn đặt chỗ của Quý khách với mã đơn <span class="order-id">${item.quotationId
+    }</span></p>
 
               <div class="order-details">
                   <h3>🗒️ Chi tiết đơn hàng</h3>
@@ -338,20 +370,20 @@ const CancelTemplate = (props) => {
                   <div class="details-row">
                       <span class="details-label">Giá tiền: </span>
                       <span class="currency">${formatCurrency(
-                        item.priceOffer
-                      )}</span>
+      item.priceOffer
+    )}</span>
                   </div>
                   <div class="details-row">
                       <span class="details-label">Số tiền hoàn lại (50%): </span>
                       <span class="currency refund">${formatCurrency(
-                        refundAmount
-                      )}</span>
+      refundAmount
+    )}</span>
                   </div>
               </div>
 
               <p>Theo chính sách của chúng tôi, yêu cầu hủy đơn của Quý khách đã được chấp nhận. Quý khách sẽ được hoàn lại 50% số tiền đã thanh toán, tương đương <span class="currency refund">${formatCurrency(
-                refundAmount
-              )}</span>.</p>
+      refundAmount
+    )}</span>.</p>
 
               <p>Chúng tôi rất tiếc vì sự bất tiện này và hy vọng sẽ có cơ hội phục vụ Quý khách trong tương lai.</p>
 
