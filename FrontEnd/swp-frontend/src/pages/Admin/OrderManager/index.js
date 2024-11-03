@@ -18,11 +18,11 @@ function OrderManager() {
     try {
       setLoading(true);
       const billResponse = await get(`bill/view-by-id/${item.billId}`);
-      const customerEmail = billResponse.email;
-      const cancellationTemplate = CancelOrderTemplate({ item, billResponse });
+      // const customerEmail = billResponse.email;
+      // const cancellationTemplate = CancelOrderTemplate({ item, billResponse });
       const data = {
         deliveryAddress: item.deliveryAddress,
-        deliveryStatusText: "Đã hủy",
+        deliveryStatusText: "Đã hủy đơn hàng",
         estimatedDate: item.estimatedDate,
       };
       const response = await put(
@@ -31,25 +31,26 @@ function OrderManager() {
       );
 
       if (response) {
-        const emailData = {
-          toEmail: customerEmail,
-          subject: `Xác nhận hủy đơn đặt hàng- Mã đơn ${item.billId}`,
-          message: cancellationTemplate,
-        };
-        const responseEmail = await fetch(
-          `${process.env.REACT_APP_API_URL}email/send`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(emailData),
-          }
-        );
-        if (responseEmail) {
-          fetchApi();
-        }
+        fetchApi();
+        // const emailData = {
+        //   toEmail: customerEmail,
+        //   subject: `Xác nhận hủy đơn đặt hàng- Mã đơn ${item.billId}`,
+        //   message: cancellationTemplate,
+        // };
+        // const responseEmail = await fetch(
+        //   `${process.env.REACT_APP_API_URL}email/send`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       Accept: "application/json",
+        //       "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(emailData),
+        //   }
+        // );
+        // if (responseEmail) {
+        //   fetchApi();
+        // }
       }
     } catch (error) {
       console.error("Lỗi khi gửi email:", error);
@@ -220,14 +221,14 @@ const CancelOrderTemplate = (props) => {
                         <div class="details-row">
                             <span class="details-label">Số tiền hoàn lại: </span>
                             <span class="currency refund">${formatCurrency(
-                              refundAmount
-                            )}</span>
+    refundAmount
+  )}</span>
                         </div>
                     </div>
 
                     <p>Theo chính sách của chúng tôi, yêu cầu hủy đơn của Quý khách đã được chấp nhận. Quý khách sẽ được hoàn lại 100% số tiền đã thanh toán, tương đương <span class="currency refund">${formatCurrency(
-                      refundAmount
-                    )}</span>.</p>
+    refundAmount
+  )}</span>.</p>
 
                     <p>Chúng tôi thực sự tiếc rằng không thể phục vụ Quý khách trong lần này. Koi Dayne cam kết sẽ không ngừng cải thiện chất lượng sản phẩm và dịch vụ để mang đến trải nghiệm tốt nhất cho Quý khách trong những lần mua sắm tiếp theo ✨</p>
 
