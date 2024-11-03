@@ -64,7 +64,6 @@ function KoiResult() {
             results = [];
           }
         }
-
         const uniqueResults = Array.from(
           new Set(results.map((koi) => koi.koiId))
         ).map((id) => results.find((koi) => koi.koiId === id));

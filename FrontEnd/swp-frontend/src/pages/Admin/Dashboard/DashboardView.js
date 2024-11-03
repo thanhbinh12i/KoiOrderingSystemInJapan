@@ -367,7 +367,9 @@ const DashboardView = () => {
         }
       >
         {chartType === "monthly" ? (
-          <Column {...config} />
+          <div className="Column-chart">
+            <Column {...config} />
+          </div>
         ) : (
           <Line {...config} />
         )}
