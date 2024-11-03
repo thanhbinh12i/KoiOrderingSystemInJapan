@@ -4,6 +4,7 @@ import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import SearchKoi from "../../components/SearchKoi";
 
 const { Title } = Typography;
 
@@ -17,7 +18,6 @@ function Koi() {
     const startIndex = (currentPage - 1) * pageSize;
     return koi.slice(startIndex, startIndex + pageSize);
   };
-
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -43,6 +43,7 @@ function Koi() {
 
   return (
     <>
+      <SearchKoi />
       {loading ? (
         <Spin tip="Loading..." />
       ) : (
