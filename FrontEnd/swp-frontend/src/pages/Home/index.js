@@ -16,6 +16,7 @@ import banner4 from "../../assets/home/banner-4.jpg";
 import deliver from "../../assets/home/deliver-home.jpg";
 import koiorder from "../../assets/home/koi-order.jpg";
 import koifarmtour from "../../assets/home/koi-farm-tour.jpg";
+import FeedbackCustomer from "../FeedbackCustomer/FeedbackCustomer";
 
 const { Title, Paragraph } = Typography;
 function Home() {
@@ -206,6 +207,11 @@ function Home() {
             </Col>
           </Row>
         </div>
+      </div>
+      <div>
+        <Card>
+          <FeedbackCustomer />
+        </Card>
       </div>
     </div>
   );

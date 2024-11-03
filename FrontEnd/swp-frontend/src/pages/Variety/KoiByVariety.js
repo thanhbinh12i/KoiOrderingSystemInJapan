@@ -46,8 +46,10 @@ const KoiByVariety = () => {
         <Row gutter={20}>
           <Col span={3}></Col>
           <Col span={9}>
-            <h2>{variety[0].varietyName}</h2>
-            <p>{variety[0].description}</p>
+            <Card>
+              <h2>{variety[0].varietyName}</h2>
+              <p>{variety[0].description}</p>
+            </Card>
           </Col>
           <Col span={9}>
             <Card
