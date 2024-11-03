@@ -4,7 +4,8 @@ import { UploadOutlined } from "@ant-design/icons";
 import { get } from "../../../utils/request";
 
 const { TextArea } = Input;
-function CreateVariety({ isModalVisible, handleOk, handleCancel }) {
+function CreateVariety(props) {
+  const { isModalVisible, handleOk, handleCancel } = props;
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
