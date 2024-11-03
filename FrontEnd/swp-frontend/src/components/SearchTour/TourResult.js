@@ -5,7 +5,7 @@ import { Button, Card, Col, Row } from "antd";
 import FormTour from "../../pages/Tours/FormTour";
 import GoBack from "../GoBack";
 import image from "../../assets/home/koi-farm-tour.jpg";
-
+import "./TourResult.scss";
 function TourResult() {
   const [searchResults, setSearchResults] = useState([]);
   const location = useLocation();
@@ -84,37 +84,41 @@ function TourResult() {
       <Row gutter={[16, 16]}>
         {filteredTours.map((tour) => (
           <Col span={8} key={tour.tourId}>
-            <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
-              <Card.Meta
-                title={tour.tourName}
-                description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`}
-              />
-              <div className="price">{tour.price.toLocaleString()}đ</div>
-              <div className="participants">
-                Số người tham gia: {tour.numberOfParticipate}
-              </div>
-              <Link to={`/tours/${tour.tourId}`}>
-                <Button type="primary" className="details-button">
-                  Xem chi tiết
-                </Button>
-              </Link>
-              <Link
-                to={`/book-tour/${tour.tourId}`}
-                state={{
-                  tourName: tour.tourName,
-                  startTime: tour.startTime,
-                  finishTime: tour.finishTime,
-                  numberOfParticipate: tour.numberOfParticipate,
-                  price: tour.price,
-                }}
-              >
-                <Button>Đặt tour</Button>
-              </Link>
-            </Card>
+            <div className="Card">
+              <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
+                <Card.Meta
+                  title={tour.tourName}
+                  description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`}
+                />
+                <div className="price">{tour.price.toLocaleString()}đ</div>
+                <div className="participants">
+                  Số người tham gia: {tour.numberOfParticipate}
+                </div>
+                <Link to={`/tours/${tour.tourId}`}>
+                  <Button type="primary" className="details-button">
+                    Xem chi tiết
+                  </Button>
+                </Link>
+                <Link
+                  to={`/book-tour/${tour.tourId}`}
+                  state={{
+                    tourName: tour.tourName,
+                    startTime: tour.startTime,
+                    finishTime: tour.finishTime,
+                    numberOfParticipate: tour.numberOfParticipate,
+                    price: tour.price,
+                  }}
+                >
+                  <Button>Đặt tour</Button>
+                </Link>
+              </Card>
+            </div>
           </Col>
         ))}
       </Row>
-      <FormTour />
+      <div className="formTour">
+        <FormTour />
+      </div>
     </>
   );
 }
