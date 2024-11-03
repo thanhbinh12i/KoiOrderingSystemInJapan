@@ -113,7 +113,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{quotationId:int}")]
-        [Authorize]
         public async Task<IActionResult> Update([FromBody] UpdateQuotationDto quotation, int quotationId)
         {
             var quotationModel = await _quotationRepo.UpdateAsync(quotationId, quotation);

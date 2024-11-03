@@ -90,7 +90,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{deliveryStatusId}")]
-        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> Update([FromRoute] int deliveryStatusId, [FromBody] UpdateDeliveryStatusDto updateDeliveryStatus)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.UpdateAsync(deliveryStatusId, updateDeliveryStatus);
