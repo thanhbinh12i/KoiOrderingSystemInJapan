@@ -1,9 +1,10 @@
-import { Card, Col, Row } from "antd";
+import { Button, Card, Col, Row } from "antd";
 import { useEffect, useState } from "react";
-import { get } from "../../../utils/request";
+import { get, put } from "../../../utils/request";
 
 function OrderManager() {
   const [orderList, setOrderList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const fetchApi = async () => {
     const response = await get("delivery-status/view-all");
     if (response) {
@@ -13,6 +14,25 @@ function OrderManager() {
   useEffect(() => {
     fetchApi();
   }, []);
+  const handleCancel = async (item) => {
+    try {
+      setLoading(true);
+      const data = {
+        deliveryAddress: item.deliveryAddress,
+        deliveryStatusText: "Đã hủy đơn hàng",
+        estimatedDate: item.estimatedDate,
+      };
+      const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
+
+      if (response) {
+        fetchApi();
+      }
+    } catch (error) {
+      console.error("Lỗi khi gửi email:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {orderList.length > 0 ? (
@@ -30,6 +50,13 @@ function OrderManager() {
                   <p>
                     Ngày nhận hàng: <strong>{item.estimatedDate}</strong>
                   </p>
+                  {item.deliveryStatusText === "Yêu cầu hủy đơn" && (
+                    <>
+                      <Button type="primary" onClick={() => handleCancel(item)} loading={loading}>
+                        Xác nhận hủy
+                      </Button>
+                    </>
+                  )}
                 </Card>
               </Col>
             ))}
@@ -37,7 +64,7 @@ function OrderManager() {
         </>
       ) : (
         <>
-          <h1>Không có đơn hàng nào</h1>
+          <h1>Không có báo giá nào</h1>
         </>
       )}
     </>
