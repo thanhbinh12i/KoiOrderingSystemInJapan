@@ -4,6 +4,7 @@ import "./Koi.scss";
 import { get } from "../../utils/request";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import SearchKoi from "../../components/SearchKoi";
 
 const { Title } = Typography;
 
@@ -17,7 +18,6 @@ function Koi() {
     const startIndex = (currentPage - 1) * pageSize;
     return koi.slice(startIndex, startIndex + pageSize);
   };
-
 
   useEffect(() => {
     const fetchAPI = async () => {
@@ -43,6 +43,7 @@ function Koi() {
 
   return (
     <>
+      <SearchKoi />
       {loading ? (
         <Spin tip="Loading..." />
       ) : (
@@ -60,7 +61,7 @@ function Koi() {
                       className="koi-image"
                       loading="lazy"
                     />
-                    <Title level={5}>Tên cá koi: {koi.koiName}</Title>
+                    <Title level={5}>{koi.koiName}</Title>
                     <Title level={5}>Giá: {koi.price}</Title>
                     <Title level={5}>Ngày sinh: {koi.yob}</Title>
                     <Title level={5}>Giới tính: {koi.gender}</Title>
@@ -72,14 +73,16 @@ function Koi() {
               </Col>
             ))}
           </Row>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <Pagination
               current={currentPage}
               onChange={(page) => setCurrentPage(page)}
               total={koi.length}
               pageSize={pageSize}
               showSizeChanger={false}
-              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+              showTotal={(total, range) =>
+                `${range[0]}-${range[1]} của ${total} mục`
+              }
             />
           </div>
         </>
