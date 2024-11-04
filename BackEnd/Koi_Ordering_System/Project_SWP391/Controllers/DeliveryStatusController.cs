@@ -58,7 +58,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{billId}-{deliveryId}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromRoute] int billId, [FromRoute] int deliveryId, [FromBody] CreateDeliveryStatusDto createDeliveryStatus)
         {
             if (createDeliveryStatus == null)
@@ -90,7 +89,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{deliveryStatusId}")]
-        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> Update([FromRoute] int deliveryStatusId, [FromBody] UpdateDeliveryStatusDto updateDeliveryStatus)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.UpdateAsync(deliveryStatusId, updateDeliveryStatus);
@@ -103,7 +101,6 @@ namespace Project_SWP391.Controllers
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
         }
         [HttpDelete("delete/{deliveryStatusId}")]
-        [Authorize(Roles = "DeliveringStaff")]
         public async Task<IActionResult> Delete([FromRoute] int deliveryStatusId)
         {
             var deliveryStatusModel = await _deliveryStatusRepo.DeleteAsync(deliveryStatusId);
