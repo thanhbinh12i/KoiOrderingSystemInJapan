@@ -18,7 +18,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult CreatePaymentUrl([FromBody] PaymentInformationModel model)
         {
             try
@@ -36,7 +35,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("InpHandle")]
-        [Authorize]
         public IActionResult InpHandle()
         {
             try
@@ -54,7 +52,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpGet("PaymentCallback")]
-        [Authorize]
         public IActionResult PaymentCallback()
         {
             try

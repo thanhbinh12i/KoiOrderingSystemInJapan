@@ -68,7 +68,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{farmId:int}&{tourId:int}")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create(int farmId, int tourId, [FromBody] CreateTourDestinationDto tourDestination)
         {
 
