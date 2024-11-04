@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, List, Row, Steps } from "antd";
-import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 function DeliveryDate() {
       const [deliveryList, setDeliveryList] = useState([]);
@@ -64,9 +64,27 @@ function DeliveryDate() {
             },
             {
                   title: 'Giao hàng thành công',
-                  icon: <CheckCircleOutlined />,
+                  icon: <CheckCircleOutlined />
             }
       ];
+      const getCurrentStep = (status) => {
+            if (status.includes('Từ chối nhận hàng') || status === 'Đã hoàn tiền cọc') return 4;
+            return steps.findIndex(step => step.title === status);
+      };
+
+      const getStepStatus = (currentStatus, stepIndex) => {
+            const currentStep = getCurrentStep(currentStatus);
+            if (stepIndex === currentStep) return 'process';
+            if (stepIndex < currentStep) return 'finish';
+            return 'wait';
+      };
+      const isCompleted = (status) => {
+            return status === 'Giao hàng thành công' ||
+                  status.includes('Từ chối nhận hàng') ||
+                  status === 'Đã hoàn tiền cọc';
+      };
+
+
       const handlePaymentConfirmation = async (item) => {
             const response = await get(`payStatus/view-billId/${item.billId}`);
             if (response.status === "Đã thanh toán") {
@@ -76,12 +94,6 @@ function DeliveryDate() {
                   }));
                   handleUpdate(item, 'Giao hàng thành công');
             }
-      };
-      const getStepStatus = (item, stepIndex) => {
-            const currentStepIndex = steps.findIndex(step => step.title === item.deliveryStatusText);
-            if (stepIndex === currentStepIndex) return 'process';
-            if (stepIndex < currentStepIndex) return 'finish';
-            return 'wait';
       };
       const handleDepositRefund = async (item) => {
             try {
@@ -151,16 +163,20 @@ function DeliveryDate() {
                                                 <Col span={24}>
                                                       <Steps
                                                             items={steps.map((step, index) => ({
-                                                                  ...step,
-                                                                  status: getStepStatus(item, index),
-                                                                  description: (
+                                                                  title: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
+                                                                        ? 'Từ chối nhận hàng'
+                                                                        : step.title,
+                                                                  icon: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
+                                                                        ? <CloseCircleOutlined />
+                                                                        : step.icon,
+                                                                  status: getStepStatus(item.deliveryStatusText, index),
+                                                                  description: !isCompleted(item.deliveryStatusText) && (
                                                                         <Button
                                                                               type="primary"
                                                                               onClick={() => handleUpdate(item, step.title)}
                                                                               disabled={
-                                                                                    step.title === item.deliveryStatusText ||
-                                                                                    index !== steps.findIndex(s => s.title === item.deliveryStatusText) + 1 ||
-                                                                                    step.title === 'Giao hàng thành công'
+                                                                                    index !== getCurrentStep(item.deliveryStatusText) + 1 ||
+                                                                                    isCompleted(item.deliveryStatusText)
                                                                               }
                                                                         >
                                                                               Cập nhật
