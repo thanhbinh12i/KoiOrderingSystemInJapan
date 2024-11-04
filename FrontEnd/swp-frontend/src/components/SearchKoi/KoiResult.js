@@ -25,8 +25,8 @@ function KoiResult() {
         const queryParams = new URLSearchParams(location.search);
         const farm = queryParams.get("farm");
         const variety = queryParams.get("variety");
-        const priceMin = queryParams.get("priceMin");
-        const priceMax = queryParams.get("priceMax");
+        var priceMin = queryParams.get("priceMin");
+        var priceMax = queryParams.get("priceMax");
         let results = [];
 
         if (farm) {
@@ -44,7 +44,21 @@ function KoiResult() {
             );
           } else results = responseVariety;
         }
+        if (priceMin && priceMax == null) {
+          priceMax = 9999999999;
+          const priceResponse = await get(
+            `koi/view-by-price/${priceMin}-${priceMax}`
+          );
+          if (results.length > 0) {
+            results = results.filter((item) =>
+              priceResponse.some((priceItem) => priceItem.koiId === item.koiId)
+            );
+          } else {
+            results = priceResponse;
+          }
+        }
         if (priceMin && priceMax) {
+          priceMin = 0;
           const priceResponse = await get(
             `koi/view-by-price/${priceMin}-${priceMax}`
           );

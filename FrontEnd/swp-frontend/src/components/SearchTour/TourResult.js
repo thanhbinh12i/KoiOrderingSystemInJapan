@@ -15,8 +15,8 @@ function TourResult() {
       const queryParams = new URLSearchParams(location.search);
       const farm = queryParams.get("farm");
       const variety = queryParams.get("variety");
-      const priceMin = queryParams.get("priceMin");
-      const priceMax = queryParams.get("priceMax");
+      var priceMin = queryParams.get("priceMin");
+      var priceMax = queryParams.get("priceMax");
       const startDate = queryParams.get("startDate");
       const endDate = queryParams.get("endDate");
       let results = [];
@@ -31,6 +31,20 @@ function TourResult() {
         if (responseVariety) results = [...results, ...responseVariety];
       }
 
+      if (priceMin == null && priceMax) {
+        priceMin = 0;
+        const priceResponse = await get(
+          `tour/view-price/${priceMin}&&${priceMax}`
+        );
+        if (priceResponse) results = [...results, ...priceResponse];
+      }
+      if (priceMin && priceMax == null) {
+        priceMax = 9999999999;
+        const priceResponse = await get(
+          `tour/view-price/${priceMin}&&${priceMax}`
+        );
+        if (priceResponse) results = [...results, ...priceResponse];
+      }
       if (priceMin && priceMax) {
         const priceResponse = await get(
           `tour/view-price/${priceMin}&&${priceMax}`
