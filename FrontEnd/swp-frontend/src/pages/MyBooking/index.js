@@ -86,7 +86,7 @@ function MyBooking() {
                   key: 'tourDetail',
                   render: (_, record) => (
                         <Link to={`/tours/${record.tourId}`}>
-                              <Button type="primary">
+                              <Button color="primary">
                                     Xem chi tiết
                               </Button>
                         </Link>
@@ -182,8 +182,8 @@ function MyBooking() {
                         } else if (record.status === "Đã thanh toán") {
                               return (
                                     <>
-                                          <Button type="primary" onClick={() => showModal()}>
-                                                Hủy
+                                          <Button color="primary" danger onClick={() => showModal()}>
+                                                Hủy chuyến đi
                                           </Button>
                                           <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
                                     </>

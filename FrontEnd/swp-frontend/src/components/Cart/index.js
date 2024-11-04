@@ -3,7 +3,7 @@ import { Card, List, Button, Spin } from 'antd';
 import GoBack from '../GoBack';
 import { get } from '../../utils/request';
 import { Link, useParams } from 'react-router-dom';
-import { fetchCartItems } from '../../actions/cart';
+import { fetchCartItems } from '../../redux/actions/cart';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
 

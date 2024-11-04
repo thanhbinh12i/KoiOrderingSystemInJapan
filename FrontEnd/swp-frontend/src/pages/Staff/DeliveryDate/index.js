@@ -84,7 +84,6 @@ function DeliveryDate() {
                   status === 'Đã hoàn tiền cọc';
       };
 
-
       const handlePaymentConfirmation = async (item) => {
             const response = await get(`payStatus/view-billId/${item.billId}`);
             if (response.status === "Đã thanh toán") {

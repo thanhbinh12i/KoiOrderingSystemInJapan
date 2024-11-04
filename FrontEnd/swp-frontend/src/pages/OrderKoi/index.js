@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { get, post } from "../../utils/request";
 import { Button, Card, Col, Row } from "antd";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../actions/cart";
+import { addToCart } from "../../redux/actions/cart";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
 import Swal from 'sweetalert2'
