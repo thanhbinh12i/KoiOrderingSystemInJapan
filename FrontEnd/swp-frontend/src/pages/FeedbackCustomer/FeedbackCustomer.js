@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Rate, Avatar, Typography, Carousel } from "antd";
+import { Card, Rate, Avatar, Typography, Carousel, Row, Col } from "antd";
 import { LeftOutlined, RightOutlined, UserOutlined } from "@ant-design/icons";
 import { get } from "../../utils/request";
 import Title from "antd/es/typography/Title";
@@ -12,29 +12,23 @@ function FeedbackCustomer() {
   const fetchApi = async () => {
     const response = await get("feedback/view-all");
     if (response) {
+      const userResponse = await get(`account/view-all-user`);
       const uniqueFeedbacks = response.reverse().reduce((acc, current) => {
         const existingFeedback = acc.find(
           (item) => item.userId === current.userId
-        ).revẻ;
+        );
         if (!existingFeedback) {
-          return [...acc, current];
+          const user = userResponse.find(
+            (item) => item.userId === current.userId
+          );
+          acc.push({
+            ...current,
+            fullName: user.fullName,
+          });
         }
         return acc;
       }, []);
-
-      const updated = await Promise.all(
-        uniqueFeedbacks.map(async (fb) => {
-          const fullName = await get(`account/${fb.userId}`);
-          return { ...fb, fullName: fullName.fullName };
-        })
-      );
-
-      if (updated) {
-        const sortedFeedbacks = updated
-          .sort((a, b) => b.rating - a.rating)
-          .slice(0, 6);
-        setFeedbacks(sortedFeedbacks);
-      }
+      setFeedbacks(uniqueFeedbacks);
     }
   };
 
@@ -71,28 +65,34 @@ function FeedbackCustomer() {
           },
         ]}
       >
-        {feedbacks.map((feedback) => (
+        {feedbacks.slice(0, 3).map((feedback) => (
           <div key={feedback.feedbackId}>
             <Card className="feedback-card">
-              <div className="feedback-user">
-                <Avatar size={64} icon={<UserOutlined />} />
-                <div className="feedback-user-info">
-                  <Text strong>{feedback.fullName}</Text>
-                  <Rate disabled defaultValue={feedback.rating} />
-                </div>
-              </div>
-              <Paragraph className="feedback-content">
-                {feedback.content}
-              </Paragraph>
-              {feedback.urlImage && (
-                <div className="feedback-image">
-                  <img
-                    style={{ width: "100px", height: "100px" }}
-                    src={`${process.env.REACT_APP_API_URL_UPLOAD}feedback/${feedback.urlImage}`}
-                    alt="Feedback"
-                  />
-                </div>
-              )}
+              <Row gutter={16}>
+                <Col span={12}>
+                  <div className="feedback-user">
+                    <Avatar size={64} icon={<UserOutlined />} />
+                    <div className="feedback-user-info">
+                      <Text strong>{feedback.fullName}</Text>
+                      <Rate disabled defaultValue={feedback.rating} />
+                    </div>
+                  </div>
+                  <Paragraph className="feedback-content">
+                    {feedback.content}
+                  </Paragraph>
+                </Col>
+                <Col span={12}>
+                  {feedback.urlImage && (
+                    <div className="feedback-image">
+                      <img
+                        style={{ width: "300px", height: "150px" }}
+                        src={`${process.env.REACT_APP_API_URL_UPLOAD}feedback/${feedback.urlImage}`}
+                        alt="Feedback"
+                      />
+                    </div>
+                  )}
+                </Col>
+              </Row>
             </Card>
           </div>
         ))}
