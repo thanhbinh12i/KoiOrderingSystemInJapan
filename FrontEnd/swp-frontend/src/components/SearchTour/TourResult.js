@@ -45,19 +45,12 @@ function TourResult() {
         );
         if (priceResponse) results = [...results, ...priceResponse];
       }
-      if (priceMin && priceMax) {
-        const priceResponse = await get(
-          `tour/view-price/${priceMin}&&${priceMax}`
-        );
-        if (priceResponse) results = [...results, ...priceResponse];
-      }
       if (startDate && endDate) {
         const dateResponse = await get(
           `tour/view-date/${startDate}&&${endDate}`
         );
         if (dateResponse) results = [...results, ...dateResponse];
       }
-      console.log(results);
 
       const uniqueResults = Array.from(
         new Set(results.map((a) => a.tourId))
