@@ -78,7 +78,7 @@ function ProfileStaff() {
         if (roleId === "DeliveringStaff") {
             return avaDivery;
         }
-        else if (roleId === "SaleStaff") {
+        else if (roleId === "SalesStaff") {
             return avaSale;
         } else if (roleId === "ConsultingStaff") {
             return avaConsult;
