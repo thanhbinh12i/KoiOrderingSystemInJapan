@@ -4,7 +4,7 @@ import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { checkLogin } from "../../actions/login";
+import { checkLogin } from "../../redux/actions/login";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { post } from "../../utils/request";

@@ -6,7 +6,6 @@ import CheckOutKoi from "../components/CheckOutKoi";
 import Feedback from "../components/Feedback";
 import PayBooking from "../components/PayBooking";
 import PaymentSuccess from "../components/PaySuccess";
-import PrivateRoutes from "../components/privateRouter";
 import TourResult from "../components/SearchTour/TourResult";
 import ChangePasswordForm from "../components/Setting/ChangePasswordForm";
 import LayoutAdmin from "../layouts/LayoutAdmin";
@@ -64,6 +63,7 @@ import ResetPassword from "../components/ResetPassword";
 import KoiResult from "../components/SearchKoi/KoiResult";
 import ConfirmEmail from "../components/ConfirmEmail";
 import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetail";
+import PrivateRoutes from "../components/privateRouter";
 
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem("role");
