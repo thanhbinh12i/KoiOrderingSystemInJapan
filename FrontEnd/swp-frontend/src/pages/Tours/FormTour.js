@@ -157,7 +157,7 @@ function FormTour() {
           <Input placeholder="Họ và tên" />
         </Form.Item>
         <Row>
-          <Col span={12}>
+          <Col span={12} className="pr-10">
             <Form.Item
               label="Ngày bắt đầu"
               name="startTime"
