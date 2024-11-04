@@ -12,10 +12,10 @@ function FeedbackCustomer() {
   const fetchApi = async () => {
     const response = await get("feedback/view-all");
     if (response) {
-      const uniqueFeedbacks = response.reduce((acc, current) => {
+      const uniqueFeedbacks = response.reverse().reduce((acc, current) => {
         const existingFeedback = acc.find(
           (item) => item.userId === current.userId
-        );
+        ).revẻ;
         if (!existingFeedback) {
           return [...acc, current];
         }
