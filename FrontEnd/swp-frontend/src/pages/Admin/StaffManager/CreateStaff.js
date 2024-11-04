@@ -40,6 +40,19 @@ function CreateStaff() {
   const handleReload = () => {
     setReload(!reload);
   };
+  const validatePassword = (_, value) => {
+    if (!value) {
+      return Promise.reject("Vui lòng nhập mật khẩu!");
+    }
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+    if (!regex.test(value)) {
+      return Promise.reject(
+        "Mật khẩu phải chứa ít nhất 12 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt!"
+      );
+    }
+    return Promise.resolve();
+  };
   return (
     <>
       <Form form={form} onFinish={onFinish}>
@@ -108,6 +121,10 @@ function CreateStaff() {
               name="phoneNumber"
               rules={[
                 { required: true, message: "Vui lòng nhập số điện thoại" },
+                {
+                  pattern: /^0\d{9}$/,
+                  message: "Số điện thoại không hợp lệ!",
+                },
               ]}
             >
               <Input />
@@ -135,7 +152,10 @@ function CreateStaff() {
               label="Mật khẩu mặc định"
               name="password"
               initialValue="123456789Aa!"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập mật khẩu" },
+                { validator: validatePassword },
+              ]}
             >
               <Input.Password />
             </FormItem>
@@ -164,7 +184,7 @@ function CreateStaff() {
                 loading={loading}
                 onClick={handleReload}
               >
-                Tạo nhân viên
+                Tạo tài khoản nhân viên
               </Button>
             </FormItem>
           </Col>

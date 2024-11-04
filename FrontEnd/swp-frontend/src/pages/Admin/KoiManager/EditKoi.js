@@ -1,7 +1,8 @@
-import { Button, Col, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
+import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
 import { get, put } from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { EditOutlined } from "@ant-design/icons"
+import moment from "moment";
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -12,6 +13,9 @@ function EditKoi(props) {
       const [farm, setFarm] = useState([]);
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [mess, contextHolder] = message.useMessage();
+      const disableFutureDates = (current) => {
+            return current && current > moment().endOf("year");
+      };
       const showModal = () => {
             setIsModalOpen(true);
       }
@@ -79,27 +83,51 @@ function EditKoi(props) {
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
-                                                <Form.Item label="Độ dài" name="length" rules={[{ required: true, message: 'Vui lòng nhập độ dài!' }]}>
+                                                <Form.Item label="Độ dài" name="length" rules={[
+                                                      { required: true, message: "Vui lòng nhập độ dài!" },
+                                                      {
+                                                            required: true,
+                                                            pattern: /^[1-9]\d*$/,
+                                                            message: "Độ dài cá koi lớn hơn 0 và là chữ số",
+                                                      },
+                                                ]}>
                                                       <Input />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
-                                                <Form.Item label="Giá" name="price" rules={[{ required: true, message: 'Vui lòng nhập giá tiền!' }]}>
-                                                      <Input addonAfter="đ" />
+                                                <Form.Item label="Giá" name="price" rules={[
+                                                      { required: true, message: "Vui lòng nhập giá tiền!" },
+                                                      {
+                                                            required: true,
+                                                            pattern: /^[1-9]\d*$/,
+                                                            message: "Giá cá koi phải lớn hơn 0",
+                                                      },
+                                                ]}>
+                                                      <Input addonAfter="đ" type="number" />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
                                                 <Form.Item label="Năm" name="yob" rules={[{ required: true, message: 'Vui lòng nhập năm sinh!' }]}>
-                                                      <Input />
+                                                      <DatePicker
+                                                            picker="year"
+                                                            style={{ width: "100%" }}
+                                                            placeholder="Chọn năm"
+                                                            disabledDate={disableFutureDates}
+                                                      />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
                                                 <Form.Item
                                                       label="Số lượng"
                                                       name="quantity"
-                                                      rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
+                                                      rules={[{ required: true, message: "Vui lòng nhập số lượng" },
+                                                      {
+                                                            required: true,
+                                                            pattern: /^[1-9]\d*$/,
+                                                            message: 'Số lượng cá phải lớn hơn 0'
+                                                      }]}
                                                 >
-                                                      <Input />
+                                                      <Input type="number" />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>

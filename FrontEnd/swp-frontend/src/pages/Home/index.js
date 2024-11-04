@@ -207,12 +207,13 @@ function Home() {
             </Col>
           </Row>
         </div>
+        <div className="home__feedback">
+          <Card>
+            <FeedbackCustomer />
+          </Card>
+        </div>
       </div>
-      <div>
-        <Card>
-          <FeedbackCustomer />
-        </Card>
-      </div>
+
     </div>
   );
 }
