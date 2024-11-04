@@ -12,29 +12,19 @@ function FeedbackCustomer() {
   const fetchApi = async () => {
     const response = await get("feedback/view-all");
     if (response) {
+      const userResponse = await get(`account/view-all-user`);
       const uniqueFeedbacks = response.reverse().reduce((acc, current) => {
-        const existingFeedback = acc.find(
-          (item) => item.userId === current.userId
-        ).revẻ;
+        const existingFeedback = acc.find((item) => item.userId === current.userId);
         if (!existingFeedback) {
-          return [...acc, current];
+          const user = userResponse.find((item) => item.userId === current.userId)
+          acc.push({
+            ...current,
+            fullName: user.fullName
+          });
         }
         return acc;
       }, []);
-
-      const updated = await Promise.all(
-        uniqueFeedbacks.map(async (fb) => {
-          const fullName = await get(`account/${fb.userId}`);
-          return { ...fb, fullName: fullName.fullName };
-        })
-      );
-
-      if (updated) {
-        const sortedFeedbacks = updated
-          .sort((a, b) => b.rating - a.rating)
-          .slice(0, 6);
-        setFeedbacks(sortedFeedbacks);
-      }
+      setFeedbacks(uniqueFeedbacks);
     }
   };
 
