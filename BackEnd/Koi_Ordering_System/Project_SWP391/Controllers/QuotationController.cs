@@ -84,7 +84,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create/{userId}&{tourId:int}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create(string userId, int tourId, [FromBody] CreateQuotationDto quotation)
         {
 
@@ -126,7 +125,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpDelete("delete/{quotationId:int}")]
-        [Authorize]
         public async Task<IActionResult> Delete(int quotationId)
         {
             var quotationModel = await _quotationRepo.DeleteAsync(quotationId);
