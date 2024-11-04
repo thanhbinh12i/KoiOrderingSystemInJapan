@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Rate, Avatar, Typography, Row, Col, Carousel } from "antd";
+import { Card, Rate, Avatar, Typography, Carousel } from "antd";
 import { LeftOutlined, RightOutlined, UserOutlined } from "@ant-design/icons";
 import { get } from "../../utils/request";
 import Title from "antd/es/typography/Title";
@@ -12,29 +12,19 @@ function FeedbackCustomer() {
   const fetchApi = async () => {
     const response = await get("feedback/view-all");
     if (response) {
-      const uniqueFeedbacks = response.reduce((acc, current) => {
-        const existingFeedback = acc.find(
-          (item) => item.userId === current.userId
-        );
+      const userResponse = await get(`account/view-all-user`);
+      const uniqueFeedbacks = response.reverse().reduce((acc, current) => {
+        const existingFeedback = acc.find((item) => item.userId === current.userId);
         if (!existingFeedback) {
-          return [...acc, current];
+          const user = userResponse.find((item) => item.userId === current.userId)
+          acc.push({
+            ...current,
+            fullName: user.fullName
+          });
         }
         return acc;
       }, []);
-
-      const updated = await Promise.all(
-        uniqueFeedbacks.map(async (fb) => {
-          const userName = await get(`account/${fb.userId}`);
-          return { ...fb, userName: userName.userName };
-        })
-      );
-
-      if (updated) {
-        const sortedFeedbacks = updated
-          .sort((a, b) => b.rating - a.rating)
-          .slice(0, 6);
-        setFeedbacks(sortedFeedbacks);
-      }
+      setFeedbacks(uniqueFeedbacks);
     }
   };
 
@@ -77,7 +67,7 @@ function FeedbackCustomer() {
               <div className="feedback-user">
                 <Avatar size={64} icon={<UserOutlined />} />
                 <div className="feedback-user-info">
-                  <Text strong>{feedback.userName}</Text>
+                  <Text strong>{feedback.fullName}</Text>
                   <Rate disabled defaultValue={feedback.rating} />
                 </div>
               </div>
