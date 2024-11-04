@@ -2,23 +2,23 @@ import { Button, Form, Modal, Typography } from "antd";
 import { put } from "../../utils/request";
 const { Text, Paragraph } = Typography;
 
-function CancelOrder(props){
+function CancelOrder(props) {
       const { record, isModalVisible, handleOk, handleCancel } = props;
       const [form] = Form.useForm();
       const handleFinish = async () => {
             const data = {
                   "deliveryAddress": record.deliveryAddress,
-                  "deliveryStatusText": "Yêu cầu hủy đơn",
+                  "deliveryStatusText": "Hủy đơn hàng",
                   "estimatedDate": record.estimatedDate
             }
             const response = await put(`delivery-status/update/${record.deliveryStatusId}`, data);
-            if(response){
+            if (response) {
                   handleOk();
             }
       }
       return (
             <>
-             <Modal
+                  <Modal
                         open={isModalVisible}
                         onCancel={handleCancel}
                         title="Hủy đơn đặt cá Koi"

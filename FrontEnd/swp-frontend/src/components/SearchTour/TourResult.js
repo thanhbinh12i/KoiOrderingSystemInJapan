@@ -43,6 +43,7 @@ function TourResult() {
         );
         if (dateResponse) results = [...results, ...dateResponse];
       }
+      console.log(results);
 
       const uniqueResults = Array.from(
         new Set(results.map((a) => a.tourId))

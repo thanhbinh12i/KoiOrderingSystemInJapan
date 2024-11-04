@@ -24,7 +24,6 @@ function SearchTour() {
           value: item.varietyId,
         }));
         setVarieties(formattedVarieties);
-        console.log(varieties);
       }
     };
     fetchApi();
