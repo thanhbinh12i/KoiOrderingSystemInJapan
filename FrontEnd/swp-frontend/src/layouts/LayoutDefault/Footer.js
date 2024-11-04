@@ -8,10 +8,10 @@ function Footer() {
                         <div className="container">
                               <Row gutter={[16, 16]}>
                                     <Col xs={24} sm={8}>
-                                          <h2>Liên hệ với chung tôi</h2>
+                                          <h2>Liên hệ với chúng tôi</h2>
                                           <p><PhoneOutlined /> Phone: 094 818 2978</p>
                                           <p><MailOutlined /> Email: managerkoidayne@gmail.com</p>
-                                          <p><EnvironmentOutlined /> Address: ĐẠI HỌC FPT</p>
+                                          <p><EnvironmentOutlined /> Address: ĐẠI HỌC FPT HCM</p>
                                     </Col>
 
                                     <Col xs={24} sm={8}>

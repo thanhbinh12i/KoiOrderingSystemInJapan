@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { del, get, put } from "../../utils/request";
-import { removeFromCart, updateQuantity } from "../../actions/cart";
+import { removeFromCart, updateQuantity } from "../../redux/actions/cart";
 import { useDispatch } from "react-redux";
 import { Button, Input } from "antd";
 import Swal from "sweetalert2";

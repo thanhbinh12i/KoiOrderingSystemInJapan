@@ -91,7 +91,7 @@ function TourResult() {
       <h1>Kết quả tìm kiếm</h1>
       <Row gutter={[16, 16]}>
         {filteredTours.map((tour) => (
-          <Col span={8} key={tour.tourId}>
+          <Col span={6} key={tour.tourId}>
             <div className="Card">
               <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
                 <Card.Meta
