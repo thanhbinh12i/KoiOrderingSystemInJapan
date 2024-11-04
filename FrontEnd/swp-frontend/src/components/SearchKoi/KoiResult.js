@@ -32,15 +32,13 @@ function KoiResult() {
         if (farm) {
           const responseFarm = await get(`koi/view-by-farmId/${farm}`);
           if (responseFarm) results = responseFarm;
-          console.log(responseFarm);
         }
 
         if (variety) {
           const responseVariety = await get(
             `koi/view-by-variety-id/${variety}`
           );
-          console.log(responseVariety);
-          if (results) {
+          if (results.length) {
             results = results.filter((item) =>
               responseVariety.some((koi) => koi.koiId === item.koiId)
             );
@@ -58,8 +56,6 @@ function KoiResult() {
             results = priceResponse;
           }
         }
-
-
         setSearchResults(results);
       } catch (error) {
         console.error("Error fetching search results:", error);
