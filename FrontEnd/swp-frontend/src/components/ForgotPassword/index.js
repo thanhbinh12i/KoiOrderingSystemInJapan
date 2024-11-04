@@ -18,7 +18,8 @@ function ForgotPassword() {
                         <Col span={12}>
                               <Card title="Quên mật khẩu" className="">
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
-                                          <Form.Item label="Nhập email của bạn" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }, { required: true, message: 'Vui lòng nhập email!' },
+                                          <Form.Item label="Nhập email của bạn" name="email" rules={[{ required: true, message: 'Vui lòng nhập email!' },
+                                          { type: 'email', message: 'Email không hợp lệ!' },
                                           {
                                                 validator: async (_, value) => {
                                                       if (value) {
@@ -30,7 +31,7 @@ function ForgotPassword() {
                                                 }
                                           }
                                           ]}>
-                                                <Input />
+                                                <Input/>
                                           </Form.Item>
                                           <Form.Item>
                                                 <Button type="primary" size="large" htmlType="submit" className="">

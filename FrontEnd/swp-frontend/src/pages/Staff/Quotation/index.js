@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, Col, Input, Modal, Pagination, Row } from "antd";
+import { Button, Card, Col, Form, Input, InputNumber, Modal, Pagination, Row } from "antd";
 import { Link } from "react-router-dom";
 
 
 function Quotation() {
       const [quotation, setQuotation] = useState([]);
       const [modalVisibility, setModalVisibility] = useState({});
-      const [prices, setPrices] = useState({});
+      const [form] = Form.useForm();
       const [messages, setMessages] = useState({});
       const [currentPage, setCurrentPage] = useState(1);
       const pageSize = 3;
@@ -41,12 +41,12 @@ function Quotation() {
             setModalVisibility(prev => ({ ...prev, [id]: true }));
       };
 
-      const updatePrice = async (id) => {
+      const updatePrice = async (values,id) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
             const quotationData = {
-                  "priceOffer": prices[id],
+                  "priceOffer": values.priceOffer,
                   "status": "Đã nhập giá chuyến đi",
                   "approvedDate": getTimeCurrent(),
                   "description": ""
@@ -54,14 +54,12 @@ function Quotation() {
             const response = await put(`quotation/update/${id}`, quotationData);
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
-                  setPrices(prev => ({ ...prev, [id]: '' }));
                   fetchApi();
             }
       };
 
       const handleCancel = (id) => {
             setModalVisibility(prev => ({ ...prev, [id]: false }));
-            setPrices(prev => ({ ...prev, [id]: '' }));
       };
 
       const sendToManager = async (item) => {
@@ -97,12 +95,12 @@ function Quotation() {
                   fetchApi();
             }
       };
-      const updatePrice2th = async (id) => {
+      const updatePrice2th = async (values, id) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
             const quotationData = {
-                  "priceOffer": prices[id],
+                  "priceOffer": values.priceOffer,
                   "status": "Xác nhận yêu cầu",
                   "approvedDate": getTimeCurrent(),
                   "description": ""
@@ -110,7 +108,6 @@ function Quotation() {
             const response = await put(`quotation/update/${id}`, quotationData);
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
-                  setPrices(prev => ({ ...prev, [id]: '' }));
                   fetchApi();
             }
       };
@@ -168,14 +165,37 @@ function Quotation() {
                                                                                     <Modal
                                                                                           title="Nhập giá tiền cho chuyến đi"
                                                                                           visible={modalVisibility[item.quotationId]}
-                                                                                          onOk={() => updatePrice(item.quotationId)}
                                                                                           onCancel={() => handleCancel(item.quotationId)}
+                                                                                          footer={null}
                                                                                     >
-                                                                                          <Input
-                                                                                                placeholder="Nhập giá"
-                                                                                                value={prices[item.quotationId] || ''}
-                                                                                                onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                                          />
+                                                                                          <Form
+                                                                                                onFinish={(values) => updatePrice(values, item.quotationId)}
+                                                                                                layout="vertical"
+                                                                                                form={form}
+                                                                                          >
+
+                                                                                                <Form.Item
+                                                                                                      name="priceOffer"
+                                                                                                      label="Nhập giá tiền"
+                                                                                                      rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
+                                                                                                      {
+                                                                                                            pattern: /^[1-9]\d*$/,
+                                                                                                            message: 'Giá chuyến đi phải lớn hơn 0'
+                                                                                                      }
+                                                                                                      ]}
+                                                                                                >
+                                                                                                      <InputNumber
+                                                                                                            min={0}
+                                                                                                            style={{ width: "100%" }}
+                                                                                                            placeholder="Nhập giá tour"
+                                                                                                      />
+                                                                                                </Form.Item>
+                                                                                                <Form.Item>
+                                                                                                      <Button type="primary" htmlType="submit">
+                                                                                                            Nhập giá
+                                                                                                      </Button>
+                                                                                                </Form.Item>
+                                                                                          </Form>
                                                                                     </Modal>
                                                                               </>
                                                                         ) : (
@@ -217,15 +237,37 @@ function Quotation() {
                                                                         <Modal
                                                                               title="Nhập giá tiền cho chuyến đi"
                                                                               visible={modalVisibility[item.quotationId]}
-                                                                              onOk={() => updatePrice2th(item.quotationId)}
                                                                               onCancel={() => handleCancel(item.quotationId)}
+                                                                              footer={null}
                                                                         >
                                                                               <p>Theo quy định của công ty, giá mới không được giảm quá 5% giá cũ</p>
-                                                                              <Input
-                                                                                    placeholder="Nhập giá mới"
-                                                                                    value={prices[item.quotationId] || ''}
-                                                                                    onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
-                                                                              />
+                                                                              <Form
+                                                                                    onFinish={(values) => updatePrice2th(values, item.quotationId)}
+                                                                                    layout="vertical"
+                                                                                    form={form}
+                                                                              >
+                                                                                    <Form.Item
+                                                                                          name="priceOffer"
+                                                                                          label="Nhập giá tiền"
+                                                                                          rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
+                                                                                          {
+                                                                                                pattern: /^[1-9]\d*$/,
+                                                                                                message: 'Giá chuyến đi phải lớn hơn 0'
+                                                                                          }
+                                                                                          ]}
+                                                                                    >
+                                                                                          <InputNumber
+                                                                                                min={0}
+                                                                                                style={{ width: "100%" }}
+                                                                                                placeholder="Nhập giá tour"
+                                                                                          />
+                                                                                    </Form.Item>
+                                                                                    <Form.Item>
+                                                                                          <Button type="primary" htmlType="submit">
+                                                                                                Nhập giá
+                                                                                          </Button>
+                                                                                    </Form.Item>
+                                                                              </Form>
                                                                         </Modal>
                                                                         <Button color="primary" danger onClick={() => handleNoAccept(item)}>Không chấp nhận</Button>
                                                                   </>

@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Input, Modal, Pagination, Row } from "antd";
+import { Badge, Button, Card, Col, Form, Input, InputNumber, Modal, Pagination, Row } from "antd";
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Link } from "react-router-dom";
@@ -8,7 +8,7 @@ function QuotationManager() {
   const [messages, setMessages] = useState({});
   const [loading, setLoading] = useState(false);
   const [modalVisibility, setModalVisibility] = useState({});
-  const [prices, setPrices] = useState({});
+  const [form] = Form.useForm();
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 6;
@@ -37,45 +37,28 @@ function QuotationManager() {
     fetchApi();
   }, []);
   const showModal = (id) => {
-    setModalVisibility((prev) => ({
-      ...prev,
-      [id]: true,
-    }));
+    setModalVisibility((prev) => ({ ...prev, [id]: true, }));
   };
 
-  const updatePrice = async (id) => {
+  const updatePrice = async (values, id) => {
     const getTimeCurrent = () => {
       return new Date().toLocaleString();
     };
     const quotationData = {
-      priceOffer: prices[id],
+      priceOffer: values.priceOffer,
       status: "Báo giá cho quản lý",
       approvedDate: getTimeCurrent(),
       description: "",
     };
     const response = await put(`quotation/update/${id}`, quotationData);
     if (response) {
-      setModalVisibility((prev) => ({
-        ...prev,
-        [id]: false,
-      }));
-      setPrices((prev) => ({
-        ...prev,
-        [id]: "",
-      }));
+      setModalVisibility((prev) => ({ ...prev, [id]: false, }));
       fetchApi();
     }
   };
 
   const handleCancel = (id) => {
-    setModalVisibility((prev) => ({
-      ...prev,
-      [id]: false,
-    }));
-    setPrices((prev) => ({
-      ...prev,
-      [id]: "",
-    }));
+    setModalVisibility((prev) => ({ ...prev, [id]: false, }));
   };
   const handleSuccess = async (quotationId, priceOffer) => {
     const getTimeCurrent = () => {
@@ -105,7 +88,7 @@ function QuotationManager() {
         approvedDate: getTimeCurrent(),
         description: item.description,
       };
-      const response = await put(`quotation/update/${item.quotationId}`,quotationData);
+      const response = await put(`quotation/update/${item.quotationId}`, quotationData);
       if (response) {
         fetchApi();
         const emailData = {
@@ -204,19 +187,35 @@ function QuotationManager() {
                       <Modal
                         title="Nhập giá tiền cho chuyến đi"
                         visible={modalVisibility[item.quotationId]}
-                        onOk={() => updatePrice(item.quotationId)}
                         onCancel={() => handleCancel(item.quotationId)}
                       >
-                        <Input
-                          placeholder="Nhập giá"
-                          value={prices[item.quotationId] || ""}
-                          onChange={(e) =>
-                            setPrices((prev) => ({
-                              ...prev,
-                              [item.quotationId]: e.target.value,
-                            }))
-                          }
-                        />
+                        <Form
+                          onFinish={(values) => updatePrice(values, item.quotationId)}
+                          layout="vertical"
+                          form={form}
+                        >
+                          <Form.Item
+                            name="priceOffer"
+                            label="Nhập giá tiền"
+                            rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
+                            {
+                              pattern: /^[1-9]\d*$/,
+                              message: 'Giá chuyến đi phải lớn hơn 0'
+                            }
+                            ]}
+                          >
+                            <InputNumber
+                              min={0}
+                              style={{ width: "100%" }}
+                              placeholder="Nhập giá tour"
+                            />
+                          </Form.Item>
+                          <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                              Nhập giá
+                            </Button>
+                          </Form.Item>
+                        </Form>
                       </Modal>
                     </>
                   )}
