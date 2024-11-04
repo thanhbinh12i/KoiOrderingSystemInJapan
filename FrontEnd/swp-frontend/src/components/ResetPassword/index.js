@@ -1,8 +1,21 @@
 import { Button, Card, Col, Form, Input, Row } from "antd";
+import { post } from "../../utils/request";
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
+      const navigate = useNavigate();
       const [form] = Form.useForm();
       const onFinish = async (values) => {
+            const email = localStorage.getItem('email');
+            const data = {
+                  ...values,
+                  "email": email
+            }
+            const response = await post('account/reset-password', data);
+            if(response){
+                  navigate('/');
+                  localStorage.removeItem('email');
+            }
       }
       const validatePassword = (_, value) => {
             if (!value) {
@@ -21,7 +34,11 @@ function ResetPassword() {
                   <Row justify="center">
                         <Col span={12}>
                               <Card title="Đặt lại mật khẩu" className="">
+                                    <h4>Vui lòng xem mã OTP đã gửi qua mail của bạn.</h4>
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
+                                          <Form.Item label="Mã OTP" name="token">
+                                                <Input />
+                                          </Form.Item>
                                           <Form.Item label="Mật khẩu" name="password" rules={[{ validator: validatePassword }]}>
                                                 <Input.Password />
                                           </Form.Item>
