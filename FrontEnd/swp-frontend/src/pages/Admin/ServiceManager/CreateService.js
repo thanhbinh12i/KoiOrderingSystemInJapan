@@ -57,7 +57,11 @@ function CreateService(props) {
           <Form.Item
             label="Phí vận chuyển"
             name="deliveryFee"
-            rules={[{ required: true, message: "Vui lòng nhập giá tiền!" }]}
+            rules={[{ required: true, message: "Vui lòng nhập giá tiền!" }, {
+              required: true,
+              pattern: /^[1-9]\d*$/,
+              message: 'Giá vận chuyển phải lớn hơn 0'
+            }]}
           >
             <Input placeholder="Nhập giá tiền" />
           </Form.Item>
