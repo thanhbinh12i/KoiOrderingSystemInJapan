@@ -105,7 +105,7 @@ function QuotationManager() {
         approvedDate: getTimeCurrent(),
         description: item.description,
       };
-      const response = await put(`quotation/update/${item.quotationId}`,quotationData);
+      const response = await put(`quotation/update/${item.quotationId}`, quotationData);
       if (response) {
         fetchApi();
         const emailData = {
