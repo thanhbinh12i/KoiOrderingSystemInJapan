@@ -105,10 +105,7 @@ function QuotationManager() {
         approvedDate: getTimeCurrent(),
         description: item.description,
       };
-      const response = await put(
-        `quotation/update/${item.quotationId}`,
-        quotationData
-      );
+      const response = await put(`quotation/update/${item.quotationId}`,quotationData);
       if (response) {
         fetchApi();
         const emailData = {
@@ -176,7 +173,7 @@ function QuotationManager() {
                   </p>
                   <p>
                     Giá tiền:
-                    <strong> {item.priceOffer.toLocaleString()}đ </strong>
+                    <strong> {item.priceOffer.toLocaleString()} đ </strong>
                   </p>
                   {item.description !== "" && (
                     <p>
@@ -239,7 +236,7 @@ function QuotationManager() {
               total={quotation.length}
               pageSize={pageSize}
               showSizeChanger={false}
-              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+              showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} đặt chỗ`}
             />
           </div>
         </>
