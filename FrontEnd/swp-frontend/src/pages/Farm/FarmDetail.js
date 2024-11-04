@@ -38,16 +38,15 @@ function FarmDetail() {
       setFarm(response);
       const fetchKoiByFarm = async () => {
         const res = await get(`koi/view-by-farm/${response.farmName}`);
-        const ratingFarm = await get(
-          `rating/view-by-farm-name/${response.farmName}`
-        );
+        const ratingFarm = await get(`rating/view-by-farm-name/${response.farmName}`);
+        const userResponse = await get(`account/view-all-user`);
         if (res) {
           setKoiData(res);
         }
         if (ratingFarm) {
           const updated = await Promise.all(
             ratingFarm.map(async (rating) => {
-              const userName = await get(`account/${rating.userId}`);
+              const userName = userResponse.find((item) => item.userId === rating.userId)
               if (userName) return { ...rating, userName: userName.fullName };
             })
           );
