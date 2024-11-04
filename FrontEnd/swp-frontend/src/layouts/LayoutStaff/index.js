@@ -16,9 +16,9 @@ function LayoutStaff() {
                                     <Avatar icon={<UserOutlined />} />
                                     <p>{role}</p>
                               </div>
-                              <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                              <Menu theme="dark" mode="inline">
                                     <Menu.Item key="1" icon={<TeamOutlined />}>
-                                          Thông tin nhân viên
+                                          <Link to="/staff/profile">Thông tin nhân viên</Link>
                                     </Menu.Item>
                                     {role === "SalesStaff" && (
                                           <>
