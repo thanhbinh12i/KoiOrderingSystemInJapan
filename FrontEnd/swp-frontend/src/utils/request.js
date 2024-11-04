@@ -40,6 +40,7 @@ export const post = async (path, options) => {
 export const del = async (path, id) => {
   const response = await fetch(`${API_DOMAIN}${path}/${id}`, {
     method: "DELETE",
+    headers: { Authorization: "Bearer " + localStorage.getItem("token") },
   });
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -57,6 +58,7 @@ export const patch = async (path, options) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("token")
     },
     body: JSON.stringify(options),
   });
