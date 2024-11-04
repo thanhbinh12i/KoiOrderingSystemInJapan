@@ -94,7 +94,7 @@ function DeliveryDate() {
                         deliveryStatusText: "Đã hoàn tiền cọc",
                         estimatedDate: item.estimatedDate,
                   };
-                  const response = await put(`delivery-status/update/${item.deliveryStatusId}`,data);
+                  const response = await put(`delivery-status/update/${item.deliveryStatusId}`, data);
 
                   if (response) {
                         fetchApi();
@@ -143,7 +143,7 @@ function DeliveryDate() {
                                                       <Button type="primary" onClick={() => handlePaymentConfirmation(item)}>
                                                             Xác nhận đã nhận tiền
                                                       </Button>
-                                                )) || (item.deliveryStatusTex.contains('Từ chối nhận hàng') && (
+                                                )) || (item.deliveryStatusText.includes('Từ chối nhận hàng') && (
                                                       <Button type="primary" onClick={() => handleDepositRefund(item)}>
                                                             Xác nhận hoàn tiền cọc
                                                       </Button>
