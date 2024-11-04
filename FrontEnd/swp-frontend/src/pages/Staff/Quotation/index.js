@@ -97,13 +97,30 @@ function Quotation() {
                   fetchApi();
             }
       };
+      const updatePrice2th = async (id) => {
+            const getTimeCurrent = () => {
+                  return new Date().toLocaleString();
+            };
+            const quotationData = {
+                  "priceOffer": prices[id],
+                  "status": "Xác nhận yêu cầu",
+                  "approvedDate": getTimeCurrent(),
+                  "description": ""
+            };
+            const response = await put(`quotation/update/${id}`, quotationData);
+            if (response) {
+                  setModalVisibility(prev => ({ ...prev, [id]: false }));
+                  setPrices(prev => ({ ...prev, [id]: '' }));
+                  fetchApi();
+            }
+      };
       const handleNoAccept = async (item) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
             const quotationData = {
                   "priceOffer": item.priceOffer,
-                  "status": "Đã xác nhận yêu cầu",
+                  "status": "Không chấp nhận yêu cầu",
                   "approvedDate": getTimeCurrent(),
                   "description": "Cảm ơn Quý khách đã quan tâm đến dịch vụ của chúng tôi. Đây là mức giá cuối cùng chúng tôi có thể cung cấp cho chuyến đi lần này. Rất mong Quý khách thông cảm và hiểu cho quyết định này của chúng tôi."
             };
@@ -196,20 +213,21 @@ function Quotation() {
                                                             )}
                                                             {item.status === "Yêu cầu thương lượng giá" && (
                                                                   <>
-                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)}>Nhập giá mới</Button>
+                                                                        <Button type="primary" onClick={() => showModal(item.quotationId)} className="mr-10">Nhập giá mới</Button>
                                                                         <Modal
                                                                               title="Nhập giá tiền cho chuyến đi"
                                                                               visible={modalVisibility[item.quotationId]}
-                                                                              onOk={() => updatePrice(item.quotationId)}
+                                                                              onOk={() => updatePrice2th(item.quotationId)}
                                                                               onCancel={() => handleCancel(item.quotationId)}
                                                                         >
+                                                                              <p>Theo quy định của công ty, giá mới không được giảm quá 5% giá cũ</p>
                                                                               <Input
-                                                                                    placeholder="Nhập giá"
+                                                                                    placeholder="Nhập giá mới"
                                                                                     value={prices[item.quotationId] || ''}
                                                                                     onChange={(e) => setPrices(prev => ({ ...prev, [item.quotationId]: e.target.value }))}
                                                                               />
                                                                         </Modal>
-                                                                        <Button type="primary" onClick={() => handleNoAccept(item)}>Không chấp nhận</Button>
+                                                                        <Button color="primary" danger onClick={() => handleNoAccept(item)}>Không chấp nhận</Button>
                                                                   </>
                                                             )}
                                                       </Col>
