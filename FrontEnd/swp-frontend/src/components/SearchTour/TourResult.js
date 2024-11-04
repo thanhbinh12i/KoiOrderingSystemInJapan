@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { get } from "../../utils/request";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "antd";
 import FormTour from "../../pages/Tours/FormTour";
 import GoBack from "../GoBack";
@@ -53,15 +53,30 @@ function TourResult() {
 
     fetchSearchResults();
   }, [location.search]);
-  const filteredTours = useMemo(() => {
-    return searchResults.filter(
-      (tour) =>
-        !tour.tourDestinations.length ||
-        tour.tourDestinations.some(
-          (dest) => dest.type === "default" && dest.tourId === tour.tourId
-        )
-    );
-  }, [searchResults]);
+  // const filteredTours = useMemo(() => {
+  //   return searchResults.filter(
+  //     (tour) =>
+  //       !tour.tourDestinations.length ||
+  //       tour.tourDestinations.some(
+  //         (dest) => dest.type === "default" && dest.tourId === tour.tourId
+  //       )
+  //   );
+  // }, [searchResults]);
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('-');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+
+  const today = new Date();
+
+  const filteredTours = searchResults.filter(
+    (tour) =>
+      tour.tourDestinations &&
+      tour.tourDestinations.some(
+        (dest) => dest.type === "default" && dest.tourId === tour.tourId
+      ) &&
+      parseDate(tour.startTime).getTime() > today.getTime()
+  );
   return (
     <>
       <GoBack />
