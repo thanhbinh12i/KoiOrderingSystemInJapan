@@ -14,6 +14,7 @@ function LayoutStaff() {
                         <Sider width={200} className="app-sider">
                               <div className="logo">
                                     <Avatar icon={<UserOutlined />} />
+                                    <p></p>
                                     <p>{role}</p>
                               </div>
                               <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
