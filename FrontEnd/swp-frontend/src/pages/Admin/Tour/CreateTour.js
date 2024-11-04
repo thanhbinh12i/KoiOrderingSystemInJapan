@@ -85,7 +85,7 @@ function CreateTour() {
     <>
       {contextHolder}
       <h1>Thêm tour mới</h1>
-      <Form form={form} layout="vertical" onFinish={handleFinish}>
+      <Form form={form} layout="vertical" onFinish={handleFinish} >
         <Row gutter={20}>
           <Col span={24}>
             <Form.Item
@@ -101,10 +101,11 @@ function CreateTour() {
               label="Giá (nghìn VND)"
               name="price"
               rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
-                {
-                  pattern: /^[1-9]\d*$/,
-                  message: 'Giá chuyến đi phải lớn hơn 0'
-                }
+              {
+                required: true,
+                pattern: /^[1-9]\d*$/,
+                message: 'Giá chuyến đi phải lớn hơn 0'
+              }
               ]}
             >
               <InputNumber
@@ -122,7 +123,7 @@ function CreateTour() {
                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
             </Form.Item>
           </Col>
           <Col span={12}>

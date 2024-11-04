@@ -70,7 +70,11 @@ function UpdateService(props) {
               label="Phí vận chuyển"
               name="deliveryFee"
               rules={[
-                { required: true, message: "Vui lòng nhập phí vận chuyển!" },
+                { required: true, message: "Vui lòng nhập phí vận chuyển!" }, {
+                  required: true,
+                  pattern: /^[1-9]\d*$/,
+                  message: 'Giá vận chuyển phải lớn hơn 0'
+                }
               ]}
             >
               <Input />
