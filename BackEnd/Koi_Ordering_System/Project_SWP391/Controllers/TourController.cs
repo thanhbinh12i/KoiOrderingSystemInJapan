@@ -112,7 +112,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromBody] CreateTourDto tour)
         {
             if (tour == null)
