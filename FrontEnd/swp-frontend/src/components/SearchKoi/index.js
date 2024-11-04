@@ -82,14 +82,20 @@ function SearchKoi() {
             <Col span={12}>
               <Form.Item label="Khoảng giá (VNĐ)">
                 <Input.Group compact>
-                  <Form.Item name="priceMin" noStyle>
+                  <Form.Item name="priceMin" noStyle rules={[{
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Chỉ nhập số lớn hơn 0",
+                  }]}>
                     <Input
                       style={{ width: "50%" }}
                       placeholder="Giá thấp nhất"
                       type="number"
                     />
                   </Form.Item>
-                  <Form.Item name="priceMax" noStyle>
+                  <Form.Item name="priceMax" noStyle rules={[{
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Chỉ nhập số lớn hơn 0",
+                  }]}>
                     <Input
                       style={{ width: "50%" }}
                       placeholder="Giá cao nhất"
