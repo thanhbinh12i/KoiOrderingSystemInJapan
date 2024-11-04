@@ -25,28 +25,27 @@ function KoiResult() {
         const queryParams = new URLSearchParams(location.search);
         const farm = queryParams.get("farm");
         const variety = queryParams.get("variety");
-        const priceMin = queryParams.get("priceMin");
-        const priceMax = queryParams.get("priceMax");
+        var priceMin = queryParams.get("priceMin");
+        var priceMax = queryParams.get("priceMax");
         let results = [];
 
         if (farm) {
           const responseFarm = await get(`koi/view-by-farmId/${farm}`);
           if (responseFarm) results = responseFarm;
-          console.log(responseFarm);
         }
 
         if (variety) {
           const responseVariety = await get(
             `koi/view-by-variety-id/${variety}`
           );
-          console.log(responseVariety);
-          if (results) {
+          if (results.length) {
             results = results.filter((item) =>
               responseVariety.some((koi) => koi.koiId === item.koiId)
             );
           } else results = responseVariety;
         }
-        if (priceMin && priceMax) {
+        if (priceMin && priceMax == null) {
+          priceMax = 9999999999;
           const priceResponse = await get(
             `koi/view-by-price/${priceMin}-${priceMax}`
           );
@@ -58,8 +57,19 @@ function KoiResult() {
             results = priceResponse;
           }
         }
-
-
+        if (priceMin && priceMax) {
+          priceMin = 0;
+          const priceResponse = await get(
+            `koi/view-by-price/${priceMin}-${priceMax}`
+          );
+          if (results.length > 0) {
+            results = results.filter((item) =>
+              priceResponse.some((priceItem) => priceItem.koiId === item.koiId)
+            );
+          } else {
+            results = priceResponse;
+          }
+        }
         setSearchResults(results);
       } catch (error) {
         console.error("Error fetching search results:", error);
