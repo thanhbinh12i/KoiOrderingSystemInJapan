@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Statistic, Table } from "antd";
+import { Card, Row, Col, Statistic, Table, Select } from "antd";
 import {
   UserOutlined,
   ShoppingCartOutlined,
   DollarOutlined,
   TrophyOutlined,
 } from "@ant-design/icons";
-import { Line } from "@ant-design/plots";
+import { Line, Column } from "@ant-design/plots";
 import "./Dashboard.scss";
 import { get } from "../../../utils/request.js";
 
@@ -18,6 +18,7 @@ const DashboardView = () => {
   const [koiBills, setKoiBills] = useState([]);
   const [quotations, setQuotations] = useState([]);
   const [tours, setTours] = useState([]);
+  const [chartType, setChartType] = useState("daily");
 
   useEffect(() => {
     fetchData();
@@ -124,39 +125,96 @@ const DashboardView = () => {
 
   const processChartData = () => {
     const dailyStats = {};
+    const monthlyStats = {};
 
     bills.forEach((bill) => {
       if (bill.paymentDate) {
+        // Danh thu theo ngày
         const date = new Date(bill.paymentDate).toLocaleDateString("vi-VN");
         if (!dailyStats[date]) {
           dailyStats[date] = { totalRevenue: 0 };
         }
-        // Add revenue only if koiPrice or tourPrice exists
         dailyStats[date].totalRevenue +=
+          (bill.tourPrice ? bill.tourPrice : 0) +
+          (bill.koiPrice ? bill.koiPrice : 0);
+
+        // Danh thu theo tháng
+        const monthKey = new Date(bill.paymentDate).toLocaleDateString(
+          "vi-VN",
+          {
+            year: "numeric",
+            month: "long",
+          }
+        );
+        if (!monthlyStats[monthKey]) {
+          monthlyStats[monthKey] = { totalRevenue: 0 };
+        }
+        monthlyStats[monthKey].totalRevenue +=
           (bill.tourPrice ? bill.tourPrice : 0) +
           (bill.koiPrice ? bill.koiPrice : 0);
       }
     });
 
-    const chartData = Object.entries(dailyStats)
-      .sort((a, b) => new Date(a[0]) - new Date(b[0]))
-      .map(([date, stats]) => ({
-        date,
-        value: stats.totalRevenue,
-      }));
-
-    return chartData;
+    if (chartType === "monthly") {
+      return Object.entries(monthlyStats)
+        .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+        .map(([date, stats]) => ({
+          date,
+          value: stats.totalRevenue,
+        }));
+    } else {
+      return Object.entries(dailyStats)
+        .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+        .map(([date, stats]) => ({
+          date,
+          value: stats.totalRevenue,
+        }));
+    }
   };
 
   const config = {
     data: processChartData(),
     xField: "date",
     yField: "value",
-    smooth: true,
-    point: {
-      shapeField: "circle",
-      sizeField: 4,
-    },
+    ...(chartType === "monthly"
+      ? {
+        seriesField: undefined,
+        label: {
+          position: "top",
+          style: {
+            fill: "#000000",
+          },
+          formatter: (datum) => {
+            return datum.value === null || isNaN(datum.value)
+              ? ""
+              : new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(datum.value);
+          },
+        },
+        xAxis: {
+          label: {
+            autoRotate: false,
+            autoHide: false,
+
+            autoEllipsis: false,
+          },
+        },
+        meta: {
+          value: {
+            formatter: (value) => {
+              return value === null || isNaN(value)
+                ? ""
+                : new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(value);
+            },
+          },
+        },
+      }
+      : {}),
     interaction: {
       tooltip: {
         marker: false,
@@ -165,7 +223,6 @@ const DashboardView = () => {
     style: {
       lineWidth: 2,
     },
-
     legend: false,
     animation: {
       appear: {
@@ -175,11 +232,10 @@ const DashboardView = () => {
     },
     color: ["#1979C9"],
   };
-
   const columns = {
     tours: [
       {
-        title: "Rank",
+        title: "No",
         dataIndex: "rank",
         key: "rank",
         width: 60,
@@ -220,7 +276,7 @@ const DashboardView = () => {
     ],
     kois: [
       {
-        title: "Rank",
+        title: "No",
         dataIndex: "rank",
         key: "rank",
         width: 60,
@@ -300,8 +356,28 @@ const DashboardView = () => {
         </Col>
       </Row>
 
-      <Card title="Doanh thu mỗi ngày" className="revenue-chart">
-        <Line {...config} />
+      <Card
+        title="Biểu đồ doanh thu"
+        className="revenue-chart"
+        extra={
+          <Select
+            defaultValue="daily"
+            style={{ width: 120 }}
+            onChange={setChartType}
+            options={[
+              { value: "daily", label: "Theo ngày" },
+              { value: "monthly", label: "Theo tháng" },
+            ]}
+          />
+        }
+      >
+        {chartType === "monthly" ? (
+          <div className="Column-chart">
+            <Column {...config} />
+          </div>
+        ) : (
+          <Line {...config} />
+        )}
       </Card>
 
       <Row gutter={16} className="best-selling">
