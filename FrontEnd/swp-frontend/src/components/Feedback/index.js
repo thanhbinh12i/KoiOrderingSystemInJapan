@@ -18,13 +18,11 @@ function Feedback() {
   const onFinish = async (values) => {
     setLoading(true);
     const formData = new FormData();
-
     if (!file) {
       messageApi.error("Vui lòng chọn ảnh trước khi gửi");
       setLoading(false);
       return;
     }
-
     formData.append("files", file);
     formData.append("Rating", values.Rating.toString());
     formData.append("Content", values.Content);
@@ -47,15 +45,14 @@ function Feedback() {
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
           const errorData = await response.json();
-          throw new Error(errorData.message || "Lỗi khi gửi feedback");
+          throw new Error(errorData);
         } else {
           const textError = await response.text();
-          throw new Error(textError || "Lỗi khi gửi feedback");
+          throw new Error(textError);
         }
       }
     } catch (error) {
-      messageApi.error(error.message || "Có lỗi xảy ra, vui lòng thử lại");
-      console.error("Error submitting feedback:", error);
+      messageApi.error("Có lỗi xảy ra, vui lòng thử lại");
     } finally {
       setLoading(false);
     }
