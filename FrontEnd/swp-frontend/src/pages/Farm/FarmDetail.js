@@ -68,7 +68,7 @@ function FarmDetail() {
   const onReload = () => {
     fetchApi();
   };
-  if (!farm.farmName || koiData.length === 0) {
+  if (!farm.farmName) {
     return <Spin>Loading...</Spin>;
   }
   return (

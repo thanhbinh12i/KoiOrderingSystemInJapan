@@ -21,7 +21,7 @@ const DashboardView = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [bestKois, bestTours]);
 
   const fetchData = async () => {
     try {
@@ -165,15 +165,7 @@ const DashboardView = () => {
     style: {
       lineWidth: 2,
     },
-    yAxis: {
-      label: {
-        render: (value) =>
-          new Intl.NumberFormat("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }).format(value),
-      },
-    },
+
     legend: false,
     animation: {
       appear: {
