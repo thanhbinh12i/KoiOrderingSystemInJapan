@@ -101,6 +101,16 @@ function Register() {
                                           {
                                                 pattern: /^0\d{9}$/,
                                                 message: 'Số điện thoại không hợp lệ!'
+                                          },
+                                          {
+                                                validator: async (_, value) => {
+                                                      if (value) {
+                                                            const existingUsers = await get("account/view-all-user");
+                                                            if (existingUsers.some(user => user.phoneNumber === value)) {
+                                                                  throw new Error('Số điện thoại đã tồn tại trong hệ thống!');
+                                                            }
+                                                      }
+                                                }
                                           }
                                           ]}>
                                                 <Input />

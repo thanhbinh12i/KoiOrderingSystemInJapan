@@ -36,7 +36,7 @@ function ResetPassword() {
                               <Card title="Đặt lại mật khẩu" className="">
                                     <h4>Vui lòng xem mã OTP đã gửi qua mail của bạn.</h4>
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
-                                          <Form.Item label="Mã OTP" name="token">
+                                          <Form.Item label="Mã OTP" name="token" rules={[{ required: true, message: "Vui lòng nhập mã OTP!" }]}>
                                                 <Input />
                                           </Form.Item>
                                           <Form.Item label="Mật khẩu" name="password" rules={[{ validator: validatePassword }]}>

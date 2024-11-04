@@ -130,7 +130,7 @@ function FormTour() {
             { type: "email", message: "Vui lòng nhập email hợp lệ!" },
           ]}
         >
-          <Input placeholder="Họ và tên" />
+          <Input placeholder="Nhập email của bạn" />
         </Form.Item>
         <Form.Item
           label="Chọn trang trại muốn đi"
