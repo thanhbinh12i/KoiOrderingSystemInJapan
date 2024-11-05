@@ -1,7 +1,18 @@
-import { Button, Col, Form, Input, message, Row, Select, Upload } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  message,
+  Row,
+  Select,
+  Upload,
+} from "antd";
 import { useEffect, useState } from "react";
 import { get, post } from "../../../utils/request";
 import { UploadOutlined } from "@ant-design/icons";
+import moment from "moment";
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -12,6 +23,9 @@ function CreateKoi() {
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState([]);
   const [messageApi, contextHolder] = message.useMessage();
+  const disableFutureDates = (current) => {
+    return current && current > moment().endOf("year");
+  };
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get("koi-variable/view-all");
@@ -138,18 +152,32 @@ function CreateKoi() {
             <Form.Item
               label="Độ dài (cm)"
               name="length"
-              rules={[{ required: true, message: "Vui lòng nhập độ dài!" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập độ dài!" },
+                {
+                  required: true,
+                  pattern: /^[1-9]\d*$/,
+                  message: "Độ dài cá koi lớn hơn 0 và là chữ số",
+                },
+              ]}
             >
-              <Input />
+              <Input type="number" />
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item
               label="Giá"
               name="price"
-              rules={[{ required: true, message: "Vui lòng nhập giá tiền!" }]}
+              rules={[
+                { required: true, message: "Vui lòng nhập giá tiền!" },
+                {
+                  required: true,
+                  pattern: /^[1-9]\d*$/,
+                  message: "Giá cá koi phải lớn hơn 0",
+                },
+              ]}
             >
-              <Input addonAfter="đ" />
+              <Input addonAfter="đ" type="number" />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -158,7 +186,12 @@ function CreateKoi() {
               name="yob"
               rules={[{ required: true, message: "Vui lòng nhập năm sinh!" }]}
             >
-              <Input />
+              <DatePicker
+                picker="year"
+                style={{ width: "100%" }}
+                placeholder="Chọn năm"
+                disabledDate={disableFutureDates}
+              />
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -195,13 +228,18 @@ function CreateKoi() {
             <Form.Item
               label="Số lượng"
               name="quantity"
-              rules={[{ required: true, message: "Vui lòng nhập số lượng" }]}
+              rules={[{ required: true, message: "Vui lòng nhập số lượng" },
+              {
+                required: true,
+                pattern: /^[1-9]\d*$/,
+                message: 'Số lượng cá phải lớn hơn 0'
+              }]}
             >
-              <Input />
+              <Input type="number" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item label="Hình ảnh" name="images">
+            <Form.Item label="Hình ảnh" name="images" rules={[{ required: true, message: "Vui lòng chọn ảnh" }]}>
               <Upload
                 listType="picture-card"
                 fileList={fileList}

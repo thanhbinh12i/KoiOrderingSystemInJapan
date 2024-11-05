@@ -207,11 +207,11 @@ function Home() {
             </Col>
           </Row>
         </div>
-      </div>
-      <div>
-        <Card>
-          <FeedbackCustomer />
-        </Card>
+        <div className="home__feedback">
+          <Card>
+            <FeedbackCustomer />
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -75,7 +75,6 @@ namespace Project_SWP391.Controllers
         //}
 
         [HttpPost("create/{userId}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateFeedbackDto createFeedback, [FromRoute] string userId)
         {
             try
@@ -131,7 +130,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{feedbackId:int}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromBody] UpdateFeedbackDto feedback, int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.UpdateAsync(feedbackId, feedback);
@@ -144,7 +142,6 @@ namespace Project_SWP391.Controllers
             return Ok(feedbackModel);
         }
         [HttpDelete("delete/{feedbackId:int}")]
-        [Authorize]
         public async Task<IActionResult> Delete(int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.DeleteAsync(feedbackId);

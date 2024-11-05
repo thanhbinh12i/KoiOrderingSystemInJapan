@@ -77,7 +77,12 @@ function UpdateTour() {
               <Form.Item
                 label="Giá (nghìn VND)"
                 name="price"
-                rules={[{ required: true, message: "Vui lòng nhập giá tour!" }]}
+                rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
+                {
+                  required: true,
+                  pattern: /^[1-9]\d*$/,
+                  message: 'Giá chuyến đi phải lớn hơn 0'
+                }]}
               >
                 <Input type="number" />
               </Form.Item>
@@ -117,9 +122,15 @@ function UpdateTour() {
                     required: true,
                     message: "Vui lòng chọn số lượng người có thể tham gia!",
                   },
+                  {
+                    required: true,
+                    pattern: /^[1-9]\d*$/,
+                    message: 'Giá chuyến đi phải lớn hơn 0'
+                  },
                 ]}
               >
                 <Input
+                  type="number"
                   min={0}
                   style={{ width: "100%" }}
                   placeholder="Nhập số người tham gia"

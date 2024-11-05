@@ -97,7 +97,7 @@ function CreateTour() {
     <>
       {contextHolder}
       <h1>Thêm tour mới</h1>
-      <Form form={form} layout="vertical" onFinish={handleFinish}>
+      <Form form={form} layout="vertical" onFinish={handleFinish} >
         <Row gutter={20}>
           <Col span={24}>
             <Form.Item
@@ -114,6 +114,7 @@ function CreateTour() {
               name="price"
               rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
               {
+                required: true,
                 pattern: /^[1-9]\d*$/,
                 message: 'Giá chuyến đi phải lớn hơn 0'
               }
