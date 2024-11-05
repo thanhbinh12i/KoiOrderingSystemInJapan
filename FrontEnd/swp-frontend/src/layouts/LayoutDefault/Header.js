@@ -12,7 +12,7 @@ import {
 import logo from "../../assets/logo.jpg";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkLogin } from "../../actions/login";
+import { checkLogin } from "../../redux/actions/login";
 import MenuUser from "../../components/MenuUser";
 
 function Header() {

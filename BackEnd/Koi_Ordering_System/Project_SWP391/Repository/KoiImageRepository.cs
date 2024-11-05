@@ -51,19 +51,34 @@ namespace Project_SWP391.Repository
             return await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiId == id);
         }
 
-        public async Task<KoiImage?> UpdateAsync(int id, UpdateKoiImageDto updateImage)
-        {
-            var imageModel = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
+        //public async Task<KoiImage?> UpdateAsync(int id, UpdateKoiImageDto updateImage)
+        //{
+        //    var imageModel = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == id);
 
-            if (imageModel == null)
+        //    if (imageModel == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    imageModel.UrlImage = updateImage.Url;
+        //    imageModel.KoiId = updateImage.KoiId;
+
+        //    return imageModel;
+        //}
+
+        public async Task<KoiImage?> UpdateAsync(UpdateKoiImageDto updateKoiImage)
+        {
+            var imageExist = await _context.KoiImages.FirstOrDefaultAsync(i => i.KoiImageId == updateKoiImage.KoiImageId);
+
+            if (imageExist == null)
             {
                 return null;
             }
 
-            imageModel.UrlImage = updateImage.Url;
-            imageModel.KoiId = updateImage.KoiId;
+            imageExist.UrlImage = updateKoiImage.Url;
+            await _context.SaveChangesAsync();
 
-            return imageModel;
+            return imageExist;
         }
     }
 }

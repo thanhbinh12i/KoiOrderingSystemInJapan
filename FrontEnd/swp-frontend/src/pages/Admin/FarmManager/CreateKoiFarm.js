@@ -166,7 +166,10 @@ function CreateKoiFarm() {
               label="Số điện thoại"
               name="hotline"
               rules={[
-                { required: true, message: "Vui lòng nhập số điện thoại!" },
+                { required: true, message: "Vui lòng nhập số điện thoại!" }, {
+                  pattern: /^0\d{9}$/,
+                  message: 'Số điện thoại không hợp lệ!'
+                }
               ]}
             >
               <Input placeholder="Nhập số điện thoại" />

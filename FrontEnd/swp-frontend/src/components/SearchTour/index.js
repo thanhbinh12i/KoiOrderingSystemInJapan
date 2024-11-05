@@ -10,6 +10,7 @@ const { Option } = Select;
 
 function SearchTour() {
   const [varieties, setVarieties] = useState([]);
+  const [form] = Form.useForm();
   const [farms, setFarms] = useState([]);
   const navigate = useNavigate();
   const disablePastDates = (current) => {
@@ -58,7 +59,7 @@ function SearchTour() {
     <>
       <div className="search-form-container">
         <h1>Tìm kiếm Tour</h1>
-        <Form className="search-form" layout="vertical" onFinish={handleSearch}>
+        <Form className="search-form" form={form} layout="vertical" onFinish={handleSearch}>
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item label="Trang trại" name="farm">
@@ -87,13 +88,19 @@ function SearchTour() {
             <Col span={8}>
               <Form.Item label="Khoảng giá (VNĐ)">
                 <Input.Group compact>
-                  <Form.Item name="priceMin" noStyle>
+                  <Form.Item name="priceMin" noStyle rules={[{
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Chỉ nhập số lớn hơn hoặc bẳng 0",
+                  }]}>
                     <Input
                       style={{ width: "50%" }}
                       placeholder="Giá thấp nhất"
                     />
                   </Form.Item>
-                  <Form.Item name="priceMax" noStyle>
+                  <Form.Item name="priceMax" noStyle rules={[{
+                    pattern: /^(0|[1-9][0-9]*)$/,
+                    message: "Chỉ nhập số lớn hơn 0",
+                  }]}>
                     <Input
                       style={{ width: "50%" }}
                       placeholder="Giá cao nhất"
@@ -105,7 +112,7 @@ function SearchTour() {
 
             <Col span={8}>
               <Form.Item label="Thời gian" name="time">
-                <RangePicker disabledDate={disablePastDates} />
+                <RangePicker disabledDate={disablePastDates} format="DD-MM-YYYY"/>
               </Form.Item>
             </Col>
           </Row>
@@ -115,8 +122,8 @@ function SearchTour() {
               Tìm kiếm
             </Button>
           </Form.Item>
-        </Form>
-      </div>
+        </Form >
+      </div >
     </>
   );
 }

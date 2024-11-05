@@ -51,6 +51,15 @@ function MyBooking() {
             }
             fetchApi();
       }, [userId])
+
+      const parseDate = (dateStr) => {
+            const [day, month, year] = dateStr.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      }
+
+      const today = new Date();
+
+
       const columns = [
             {
                   title: 'Id',
@@ -79,14 +88,14 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Chi tiết chuyến đi',
                   key: 'tourDetail',
                   render: (_, record) => (
                         <Link to={`/tours/${record.tourId}`}>
-                              <Button type="primary">
+                              <Button color="primary">
                                     Xem chi tiết
                               </Button>
                         </Link>
@@ -103,6 +112,7 @@ function MyBooking() {
                                           fetchApi();
                                     }
                               }
+
                               return (
                                     <>
                                           <Tooltip title="Hủy đặt chỗ chuyến đi này">
@@ -112,7 +122,17 @@ function MyBooking() {
                                           </Tooltip>
                                     </>
                               )
-                        } else if (record.status === "Đã xác nhận") {
+                        } else if (record.status === "Đã xác nhận" || record.status === "Xác nhận yêu cầu" || record.status === "Không chấp nhận yêu cầu") {
+                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+
+
+                              if (isWithin24Hours) {
+                                    return (
+                                          <>Quá hạn thanh toán</>
+                                    )
+                                    
+                              }
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
@@ -139,7 +159,7 @@ function MyBooking() {
                                                       Thanh toán
                                                 </Button>
                                           </Link>
-                                          {record.tourDetail.tourName === "Tour Custom" && (
+                                          {(record.tourDetail.tourName === "Tour Custom" && record.status === "Đã xác nhận") && (
                                                 <>
                                                       <Button color="default" variant="solid" onClick={() => showModal()} className="mr-10">Yêu cầu giá khác</Button>
                                                 </>
@@ -180,10 +200,15 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
+                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+                              if (isWithin24Hours) {
+                                    return <></>
+                              }
                               return (
                                     <>
-                                          <Button type="primary" onClick={() => showModal()}>
-                                                Hủy
+                                          <Button color="primary" danger onClick={() => showModal()}>
+                                                Hủy chuyến đi
                                           </Button>
                                           <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
                                     </>

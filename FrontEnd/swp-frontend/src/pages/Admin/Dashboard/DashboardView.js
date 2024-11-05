@@ -185,10 +185,12 @@ const DashboardView = () => {
             fill: "#000000",
           },
           formatter: (datum) => {
-            return new Intl.NumberFormat("vi-VN", {
-              style: "currency",
-              currency: "VND",
-            }).format(datum.value);
+            return datum.value === null || isNaN(datum.value)
+              ? ""
+              : new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(datum.value);
           },
         },
         xAxis: {
@@ -202,10 +204,12 @@ const DashboardView = () => {
         meta: {
           value: {
             formatter: (value) => {
-              return new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-              }).format(value);
+              return value === null || isNaN(value)
+                ? ""
+                : new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(value);
             },
           },
         },
@@ -231,7 +235,7 @@ const DashboardView = () => {
   const columns = {
     tours: [
       {
-        title: "Rank",
+        title: "No",
         dataIndex: "rank",
         key: "rank",
         width: 60,
@@ -272,7 +276,7 @@ const DashboardView = () => {
     ],
     kois: [
       {
-        title: "Rank",
+        title: "No",
         dataIndex: "rank",
         key: "rank",
         width: 60,

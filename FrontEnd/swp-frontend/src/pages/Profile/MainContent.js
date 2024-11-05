@@ -16,13 +16,7 @@ const { TabPane } = Tabs;
 
 function MainContent() {
   const [isEdit, setIsEdit] = useState(false);
-  const [personalInfo, setPersonalInfo] = useState({
-    fullName: "",
-    gender: "",
-    dateOfBirth: null,
-    province: "",
-    city: "",
-  });
+  const [personalInfo, setPersonalInfo] = useState({});
   const userId = localStorage.getItem("id");
 
   const [form] = Form.useForm();
@@ -84,7 +78,7 @@ function MainContent() {
           <Form form={form} layout="vertical" initialValues={personalInfo}>
             <Title level={4}>Dữ liệu cá nhân</Title>
             <Form.Item label="Tên đầy đủ" name="fullName">
-              <Input placeholder="Full Name" disabled={!isEdit} />
+              <Input placeholder="Full Name" disabled={!isEdit} rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}/>
             </Form.Item>
             <Form.Item label="Giới tính" name="gender">
               <Select placeholder="Chọn giới tính" disabled={!isEdit}>
@@ -104,15 +98,20 @@ function MainContent() {
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }]}>
-              <Input disabled={!isEdit} />
+              <Input disabled />
             </Form.Item>
             <Form.Item label="Số điện thoại" name="phoneNumber">
-              <Input placeholder="Nhập số điện thoại" disabled={!isEdit} rules={[{ required: true, message: 'Vui lòng nhập số điện thoại!' },
-              {
-                pattern: /^0\d{9}$/,
-                message: 'Số điện thoại không hợp lệ!'
-              }
-              ]} />
+              <Input
+                placeholder="Nhập số điện thoại"
+                disabled={!isEdit}
+                rules={[
+                  { required: true, message: "Vui lòng nhập số điện thoại!" },
+                  {
+                    pattern: /^0\d{9}$/,
+                    message: "Số điện thoại không hợp lệ!",
+                  },
+                ]}
+              />
             </Form.Item>
 
             {isEdit ? (

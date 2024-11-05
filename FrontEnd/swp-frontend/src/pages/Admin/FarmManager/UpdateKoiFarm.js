@@ -57,10 +57,9 @@ function UpdateKoiFarm({ reload, record }) {
         );
       }
     } catch (error) {
-      console.error("Error updating koi farm:", error);
       messageApi.error(
         "Lỗi khi cập nhật trang trại cá Koi: " +
-          (error.message || "Đã xảy ra lỗi không xác định")
+        (error.message || "Đã xảy ra lỗi không xác định")
       );
     } finally {
       setLoading(false);
@@ -136,7 +135,10 @@ function UpdateKoiFarm({ reload, record }) {
             label="Số điện thoại"
             name="hotline"
             rules={[
-              { required: true, message: "Vui lòng nhập số điện thoại!" },
+              { required: true, message: "Vui lòng nhập số điện thoại!" }, {
+                pattern: /^0\d{9}$/,
+                message: 'Số điện thoại không hợp lệ!'
+              }
             ]}
           >
             <Input />
@@ -147,7 +149,7 @@ function UpdateKoiFarm({ reload, record }) {
               maxCount={1}
               fileList={fileList}
               onChange={handleFileChange}
-              beforeUpload={() => false} // Không tự upload
+              beforeUpload={() => false}
             >
               <Button icon={<UploadOutlined />}>Tải lên hình ảnh</Button>
             </Upload>

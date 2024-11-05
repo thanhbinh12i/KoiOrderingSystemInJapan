@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { get } from "../../utils/request";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "antd";
 import FormTour from "../../pages/Tours/FormTour";
 import GoBack from "../GoBack";
@@ -9,7 +9,11 @@ import "./TourResult.scss";
 function TourResult() {
   const [searchResults, setSearchResults] = useState([]);
   const location = useLocation();
-
+  const getIntersection = (arr1, arr2) => {
+    if (!arr1 || arr1.length === 0) return arr2;
+    if (!arr2 || arr2.length === 0) return arr1;
+    return arr1.filter(item => arr2.some(item2 => item2.tourId === item.tourId));
+  };
   useEffect(() => {
     const fetchSearchResults = async () => {
       const queryParams = new URLSearchParams(location.search);
@@ -23,98 +27,94 @@ function TourResult() {
 
       if (farm) {
         const responseFarm = await get(`tour/view-farmId/${farm}`);
-        if (responseFarm) results = [...results, ...responseFarm];
+        results = getIntersection(results, responseFarm);
       }
 
       if (variety) {
         const responseVariety = await get(`tour/view-farmId/${variety}`);
-        if (responseVariety) results = [...results, ...responseVariety];
+        results = getIntersection(results, responseVariety);
       }
 
       if (priceMin == null && priceMax) {
-        priceMin = 0;
-        const priceResponse = await get(
-          `tour/view-price/${priceMin}&&${priceMax}`
-        );
-        if (priceResponse) results = [...results, ...priceResponse];
+        const priceResponse = await get(`tour/view-price/0&&${priceMax}`);
+        results = getIntersection(results, priceResponse);
       }
+
       if (priceMin && priceMax == null) {
-        priceMax = 9999999999;
-        const priceResponse = await get(
-          `tour/view-price/${priceMin}&&${priceMax}`
-        );
-        if (priceResponse) results = [...results, ...priceResponse];
+        const priceResponse = await get(`tour/view-price/${priceMin}&&9999999999`);
+        results = getIntersection(results, priceResponse);
       }
       if (priceMin && priceMax) {
-        const priceResponse = await get(
-          `tour/view-price/${priceMin}&&${priceMax}`
-        );
-        if (priceResponse) results = [...results, ...priceResponse];
+        const priceResponse = await get(`tour/view-price/${priceMin}&&${priceMax}`);
+        results = getIntersection(results, priceResponse);
       }
-      if (startDate && endDate) {
-        const dateResponse = await get(
-          `tour/view-date/${startDate}&&${endDate}`
-        );
-        if (dateResponse) results = [...results, ...dateResponse];
-      }
-      console.log(results);
 
-      const uniqueResults = Array.from(
-        new Set(results.map((a) => a.tourId))
-      ).map((id) => results.find((a) => a.tourId === id));
-      setSearchResults(uniqueResults);
+      if (startDate && endDate) {
+        const dateResponse = await get(`tour/view-date/${startDate}&&${endDate}`);
+        results = getIntersection(results, dateResponse);
+      }
+      setSearchResults(results);
     };
 
     fetchSearchResults();
   }, [location.search]);
-  const filteredTours = useMemo(() => {
-    return searchResults.filter(
-      (tour) =>
-        !tour.tourDestinations.length ||
-        tour.tourDestinations.some(
-          (dest) => dest.type === "default" && dest.tourId === tour.tourId
-        )
-    );
-  }, [searchResults]);
+  console.log(searchResults);
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('-');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+
+  const today = new Date();
+  const fourDaysLater = new Date(today);
+  fourDaysLater.setDate(today.getDate() + 4);
+
+  const filteredTours = searchResults.filter(
+    (tour) =>
+      tour.tourDestinations &&
+      tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId) &&
+      parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
+  );
   return (
     <>
       <GoBack />
       <h1>Kết quả tìm kiếm</h1>
-      <Row gutter={[16, 16]}>
-        {filteredTours.map((tour) => (
-          <Col span={8} key={tour.tourId}>
-            <div className="Card">
-              <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
-                <Card.Meta
-                  title={tour.tourName}
-                  description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`}
-                />
-                <div className="price">{tour.price.toLocaleString()}đ</div>
-                <div className="participants">
-                  Số người tham gia: {tour.numberOfParticipate}
-                </div>
-                <Link to={`/tours/${tour.tourId}`}>
-                  <Button type="primary" className="details-button">
-                    Xem chi tiết
-                  </Button>
-                </Link>
-                <Link
-                  to={`/book-tour/${tour.tourId}`}
-                  state={{
-                    tourName: tour.tourName,
-                    startTime: tour.startTime,
-                    finishTime: tour.finishTime,
-                    numberOfParticipate: tour.numberOfParticipate,
-                    price: tour.price,
-                  }}
-                >
-                  <Button>Đặt tour</Button>
-                </Link>
-              </Card>
-            </div>
-          </Col>
-        ))}
-      </Row>
+      <div className="tour-result">
+        <Row gutter={[16, 16]}>
+          {filteredTours.map((tour) => (
+            <Col span={6} key={tour.tourId}>
+              <div className="tour-result__card">
+                <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
+                  <Card.Meta
+                    title={tour.tourName}
+                    description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`}
+                  />
+                  <div className="tour-result__price">{tour.price.toLocaleString()}đ</div>
+                  <div className="tour-result__participants">
+                    Số người tham gia: {tour.numberOfParticipate}
+                  </div>
+                  <Link to={`/tours/${tour.tourId}`}>
+                    <Button type="primary" className="tour-result__details-button">
+                      Xem chi tiết
+                    </Button>
+                  </Link>
+                  <Link
+                    to={`/book-tour/${tour.tourId}`}
+                    state={{
+                      tourName: tour.tourName,
+                      startTime: tour.startTime,
+                      finishTime: tour.finishTime,
+                      numberOfParticipate: tour.numberOfParticipate,
+                      price: tour.price,
+                    }}
+                  >
+                    <Button className="tour-result__book-button">Đặt tour</Button>
+                  </Link>
+                </Card>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
       <div className="formTour">
         <FormTour />
       </div>

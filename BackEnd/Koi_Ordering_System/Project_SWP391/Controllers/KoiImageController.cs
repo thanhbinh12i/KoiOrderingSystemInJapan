@@ -139,23 +139,94 @@ namespace Project_SWP391.Controllers
             }
         }
 
-        [HttpPut("update/{id}")]
+        //[HttpPut("update/{id}")]
+        //[Authorize(Roles = "Manager")]
+        //public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateKoiImageDto updateImage)
+        //{
+        //    if (updateImage == null)
+        //    {
+        //        return BadRequest("Koi image data is missing");
+        //    }
+
+        //    var imageModel = await _imageRepo.UpdateAsync(id, updateImage);
+
+        //    if (imageModel == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(imageModel);
+        //}
+
+        [HttpPut("update/{koiImageId}")]
         [Authorize(Roles = "Manager")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateKoiImageDto updateImage)
+        public async Task<IActionResult> UpdateImages(int koiImageId, [FromForm] List<IFormFile> files)
         {
-            if (updateImage == null)
+            try
             {
-                return BadRequest("Koi image data is missing");
+                var koiImage = await _imageRepo.GetByIdAsync(koiImageId);
+                if (koiImage == null)
+                {
+                    return BadRequest("No koi image found!");
+                }
+
+                if (files == null || !files.Any())
+                {
+                    return BadRequest("No files uploaded.");
+                }
+
+                var uploadedFiles = new List<string>();
+
+                string webRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+                var uploadPath = Path.Combine(webRootPath, "uploads", "koi");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                if (!string.IsNullOrEmpty(koiImage.UrlImage))
+                {
+                    var oldFilePath = Path.Combine(uploadPath, koiImage.UrlImage);
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                foreach (var file in files)
+                {
+                    if (file.Length > 0)
+                    {
+                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                        var filePath = Path.Combine(uploadPath, fileName);
+
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(fileStream);
+                        }
+
+                        var relativePath = $"/uploads/koi/{fileName}";
+                        uploadedFiles.Add(relativePath);
+
+                        koiImage.UrlImage = fileName;
+
+                        var updateImageDto = new UpdateKoiImageDto
+                        {
+                            KoiImageId = koiImageId,
+                            Url = koiImage.UrlImage,
+                        };
+
+                        await _imageRepo.UpdateAsync(updateImageDto);
+                    }
+                }
+
+                return Ok(new { message = "Images updated successfully", urls = uploadedFiles });
             }
-
-            var imageModel = await _imageRepo.UpdateAsync(id, updateImage);
-
-            if (imageModel == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(500, $"An error occurred while updating images: {ex.Message}");
             }
-
-            return Ok(imageModel);
         }
 
         [HttpDelete("delete/{id}")]
