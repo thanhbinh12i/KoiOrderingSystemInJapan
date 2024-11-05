@@ -213,7 +213,6 @@ function Home() {
           </Card>
         </div>
       </div>
-
     </div>
   );
 }

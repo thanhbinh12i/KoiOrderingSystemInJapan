@@ -9,7 +9,7 @@ namespace Project_SWP391.Interfaces
         Task<KoiImage?> GetByIdAsync(int id);
         Task<KoiImage?> GetByKoiIdAsync(int id);
         Task<KoiImage?> CreateAsync(KoiImage koiImage);
-        Task<KoiImage?> UpdateAsync(int id, UpdateKoiImageDto updateImage);
+        Task<KoiImage?> UpdateAsync(UpdateKoiImageDto updateKoiImage);
         Task<KoiImage?> DeleteAsync(int id);
     }
 }
