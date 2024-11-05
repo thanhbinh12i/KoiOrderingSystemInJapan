@@ -4,7 +4,7 @@ import DeleteKoi from "./DeleteKoi";
 import { useEffect, useState } from "react";
 import { get } from "../../../utils/request";
 import { EyeOutlined } from "@ant-design/icons";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 function KoiList() {
       const [koi, setKoi] = useState([]);
@@ -32,9 +32,12 @@ function KoiList() {
                   key: "koiName",
             },
             {
-                  title: "Giá tiền",
+                  title: "Giá tiền (VNĐ)",
                   dataIndex: "price",
                   key: "price",
+                  render: (_, record) => (
+                        <strong>{record.price.toLocaleString()}</strong>
+                  )
             },
             {
                   title: "Độ dài",

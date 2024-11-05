@@ -14,7 +14,7 @@ function ServiceDetail(props) {
           </div>
           <div className="mb-20">
             <p>
-              Phí vận chuyển: <strong>{record.deliveryFee}</strong>
+              Phí vận chuyển: <strong>{record.deliveryFee.toLocaleString()}</strong>
             </p>
           </div>
           <div className="mb-20">

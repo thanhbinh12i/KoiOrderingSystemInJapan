@@ -12,7 +12,7 @@ function Tour() {
                   <div className='tour-list'>
                         <TourList />
                   </div>
-                  <Divider />
+                  <Divider style={{ borderTop: '3px solid black', width: '80%' }}/>
                   <div className='form-container'>
                         <FormTour />
                   </div>

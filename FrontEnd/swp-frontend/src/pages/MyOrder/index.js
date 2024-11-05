@@ -38,6 +38,11 @@ function MyOrder() {
             handleCancel();
             fetchApi();
       };
+      const isCompleted = (status) => {
+            return status === 'Giao hàng thành công' ||
+                  status.includes('Từ chối nhận hàng') ||
+                  status === 'Đã hoàn tiền cọc';
+      };
       const columns = [
             {
                   title: 'Đơn hàng',
@@ -85,11 +90,11 @@ function MyOrder() {
                                           <Button color="primary" danger onClick={() => showModal()}>
                                                 Không nhận hàng
                                           </Button>
-                                          
-                                          <RefuseOrder record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel}/>
+
+                                          <RefuseOrder record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
                                     </>
                               )
-                        } else if (record.deliveryStatusText === "Giao hàng thành công") {
+                        } else if (isCompleted(record.deliveryStatusText)) {
                               return (
                                     <>
                                           <Link to={`feedback/${userId}`} >
