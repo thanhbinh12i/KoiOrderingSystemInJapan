@@ -58,20 +58,21 @@ function TourResult() {
 
     fetchSearchResults();
   }, [location.search]);
+  console.log(searchResults);
   const parseDate = (dateStr) => {
     const [day, month, year] = dateStr.split('-');
     return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
   }
 
   const today = new Date();
+  const fourDaysLater = new Date(today);
+  fourDaysLater.setDate(today.getDate() + 4);
 
   const filteredTours = searchResults.filter(
     (tour) =>
       tour.tourDestinations &&
-      tour.tourDestinations.some(
-        (dest) => dest.type === "default" && dest.tourId === tour.tourId
-      ) &&
-      parseDate(tour.startTime).getTime() > today.getTime()
+      tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId) &&
+      parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
   );
   return (
     <>

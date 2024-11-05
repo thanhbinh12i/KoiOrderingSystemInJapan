@@ -21,6 +21,8 @@ function TourList() {
   }
 
   const today = new Date();
+  const fourDaysLater = new Date(today);
+  fourDaysLater.setDate(today.getDate() + 4);
 
   const filteredTours = tours.filter(
     (tour) =>
@@ -28,7 +30,7 @@ function TourList() {
       tour.tourDestinations.some(
         (dest) => dest.type === "default" && dest.tourId === tour.tourId
       ) &&
-      parseDate(tour.startTime).getTime() > today.getTime()
+      parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
   );
   return (
     <>

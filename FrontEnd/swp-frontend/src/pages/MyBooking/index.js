@@ -51,6 +51,15 @@ function MyBooking() {
             }
             fetchApi();
       }, [userId])
+
+      const parseDate = (dateStr) => {
+            const [day, month, year] = dateStr.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      }
+
+      const today = new Date();
+
+
       const columns = [
             {
                   title: 'Id',
@@ -103,6 +112,7 @@ function MyBooking() {
                                           fetchApi();
                                     }
                               }
+
                               return (
                                     <>
                                           <Tooltip title="Hủy đặt chỗ chuyến đi này">
@@ -113,6 +123,16 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã xác nhận" || record.status === "Xác nhận yêu cầu" || record.status === "Không chấp nhận yêu cầu") {
+                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+
+
+                              if (isWithin24Hours) {
+                                    return (
+                                          <>Quá hạn thanh toán</>
+                                    )
+                                    
+                              }
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
@@ -139,7 +159,7 @@ function MyBooking() {
                                                       Thanh toán
                                                 </Button>
                                           </Link>
-                                          {(record.tourDetail.tourName === "Tour Custom" && record.status === "Đã xác nhận")  && (
+                                          {(record.tourDetail.tourName === "Tour Custom" && record.status === "Đã xác nhận") && (
                                                 <>
                                                       <Button color="default" variant="solid" onClick={() => showModal()} className="mr-10">Yêu cầu giá khác</Button>
                                                 </>
@@ -180,6 +200,11 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
+                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+                              if (isWithin24Hours) {
+                                    return <></>
+                              }
                               return (
                                     <>
                                           <Button color="primary" danger onClick={() => showModal()}>

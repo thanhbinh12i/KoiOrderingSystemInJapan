@@ -112,7 +112,7 @@ function SearchTour() {
 
             <Col span={8}>
               <Form.Item label="Thời gian" name="time">
-                <RangePicker disabledDate={disablePastDates} />
+                <RangePicker disabledDate={disablePastDates} format="DD-MM-YYYY"/>
               </Form.Item>
             </Col>
           </Row>
