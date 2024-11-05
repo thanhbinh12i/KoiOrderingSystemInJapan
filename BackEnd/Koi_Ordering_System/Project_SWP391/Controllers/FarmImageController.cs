@@ -194,7 +194,5 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, $"An error occurred while updating images: {ex.Message}");
             }
         }
-
-
     }
 }

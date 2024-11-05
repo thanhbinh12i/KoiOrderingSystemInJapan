@@ -63,6 +63,7 @@ import ResetPassword from "../components/ResetPassword";
 import KoiResult from "../components/SearchKoi/KoiResult";
 import ConfirmEmail from "../components/ConfirmEmail";
 import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetail";
+import ProfileStaff from "../pages/Staff/ProfileStaff/ProfileStaff";
 import PrivateRoutes from "../components/privateRouter";
 
 const AdminRoute = ({ children }) => {
@@ -334,6 +335,10 @@ export const routes = [
           </StaffRoute>
         ),
         children: [
+          {
+            path: "profile",
+            element: <ProfileStaff />,
+          },
           {
             path: "quotation-staff",
             element: <Quotation />,

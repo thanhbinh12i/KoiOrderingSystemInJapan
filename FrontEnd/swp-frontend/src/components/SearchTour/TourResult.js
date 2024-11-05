@@ -115,7 +115,6 @@ function TourResult() {
           ))}
         </Row>
       </div>
-
       <div className="formTour">
         <FormTour />
       </div>
