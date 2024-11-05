@@ -3,7 +3,7 @@ import TourList from "./TourList";
 function TourManager() {
   return (
     <>
-      <h1>Danh sách Tour</h1>
+      <h1>Danh sách chuyến đi hiện tại</h1>
       <TourList />
     </>
   );

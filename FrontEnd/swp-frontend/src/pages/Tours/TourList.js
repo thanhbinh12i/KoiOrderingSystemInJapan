@@ -26,10 +26,7 @@ function TourList() {
 
   const filteredTours = tours.filter(
     (tour) =>
-      tour.tourDestinations &&
-      tour.tourDestinations.some(
-        (dest) => dest.type === "default" && dest.tourId === tour.tourId
-      ) &&
+      tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId) &&
       parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
   );
   return (
