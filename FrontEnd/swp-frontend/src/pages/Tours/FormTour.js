@@ -21,9 +21,23 @@ function FormTour() {
   const [messageApi, contextHolder] = message.useMessage();
   const userId = localStorage.getItem("id");
   const navigate = useNavigate();
-  const disablePastDates = (current) => {
-    return current && current < moment().startOf("day");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState(null);
+  const disableStartDates = (current) => {
+    return current && current < moment().add(3, 'days').startOf("day");
   };
+  const disableEndDate = (current) => {
+    if (!startDate) return true;
+    const threeDaysLater = moment().add(3, 'days').startOf("day");
+    return current && (current <= threeDaysLater || current.valueOf() <= startDate.valueOf());
+  };
+
+  useEffect(() => {
+    if (startDate) {
+      form.setFieldValue('finishTime', null);
+      setEndDate(null);
+    }
+  }, [startDate]);
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get("koiFarm/view-all");
@@ -168,7 +182,8 @@ function FormTour() {
               <DatePicker
                 style={{ width: "100%" }}
                 format="DD-MM-YYYY"
-                disabledDate={disablePastDates}
+                disabledDate={disableStartDates}
+                onChange={(date) => setStartDate(date)}
               />
             </Form.Item>
           </Col>
@@ -183,7 +198,8 @@ function FormTour() {
               <DatePicker
                 style={{ width: "100%" }}
                 format="DD-MM-YYYY"
-                disabledDate={disablePastDates}
+                disabledDate={disableEndDate}
+                onChange={(date) => setEndDate(date)}
               />
             </Form.Item>
           </Col>
