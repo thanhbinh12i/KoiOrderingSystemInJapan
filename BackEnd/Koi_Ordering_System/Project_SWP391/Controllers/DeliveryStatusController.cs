@@ -83,8 +83,6 @@ namespace Project_SWP391.Controllers
             }
 
             await _deliveryStatusRepo.CreateAsync(deliveryStatusModel);
-
-            //return CreatedAtAction(nameof(GetById), new { id = deliveryStatusModel.DeliveryStatusId }, deliveryStatusModel);
             return Ok(deliveryStatusModel.ToDeliveryStatusDtoFromDeliveryStatus());
         }
 

@@ -114,7 +114,7 @@ namespace Project_SWP391.Repository
 
         public async Task<List<Tour?>> GetByDateAsync(DateTime? start, DateTime? end)
         {
-            var tours = await _context.Tours.ToListAsync(); // Tải toàn bộ bản ghi
+            var tours = await _context.Tours.Include(x=>x.TourDestinations).ToListAsync(); // Tải toàn bộ bản ghi
 
             return tours.Where(tour => IsDateRangeValid(tour.StartTime, tour.FinishTime, start, end)).ToList();
         }

@@ -14,7 +14,6 @@ namespace Project_SWP391.Model
         public string CloseHour { get; set; }
         public string Email { get; set; } = string.Empty;
         public string Hotline { get; set; } = string.Empty;
-        // Navigation properties
         public ICollection<Koi> Kois { get; set; }
         public ICollection<Rating> Ratings { get; set; }
 
