@@ -10,9 +10,6 @@ function UpdateTour() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-  const disablePastDates = (current) => {
-    return current && current < moment().startOf('day');
-  };
   useEffect(() => {
     const fetchTour = async () => {
       try {
@@ -36,12 +33,8 @@ function UpdateTour() {
       setLoading(true);
       const updatedValues = {
         ...values,
-        startTime: values.startTime
-          ? values.startTime.format("DD-MM-YYYY")
-          : "",
-        finishTime: values.finishTime
-          ? values.finishTime.format("DD-MM-YYYY")
-          : "",
+        startTime: values.startTime ? values.startTime.format("DD-MM-YYYY") : "",
+        finishTime: values.finishTime ? values.finishTime.format("DD-MM-YYYY") : "",
       };
 
       const response = await put(`tour/update/${id}`, updatedValues);
@@ -104,7 +97,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabled />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -115,7 +108,7 @@ function UpdateTour() {
                   { required: true, message: "Vui lòng chọn ngày kết thúc!" },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+                <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabled />
               </Form.Item>
             </Col>
           </Row>
@@ -141,6 +134,7 @@ function UpdateTour() {
                   min={0}
                   style={{ width: "100%" }}
                   placeholder="Nhập số người tham gia"
+                  disabled
                 />
               </Form.Item>
             </Col>

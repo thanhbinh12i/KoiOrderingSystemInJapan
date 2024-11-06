@@ -20,7 +20,7 @@ function LayoutAdmin() {
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">
-        <Link to="/logout">Đăng xuất</Link>
+        <NavLink to="/logout">Đăng xuất</NavLink>
       </Menu.Item>
     </Menu>
   );

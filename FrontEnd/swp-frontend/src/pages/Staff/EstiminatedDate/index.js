@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, DatePicker, List, Modal } from "antd";
+import { Button, Card, DatePicker, List, Modal, Pagination } from "antd";
 import moment from "moment";
 function EstiminatedDate() {
       const [deliveryList, setDeliveryList] = useState([]);
@@ -8,8 +8,16 @@ function EstiminatedDate() {
       const [currentItem, setCurrentItem] = useState(null);
       const [newDate, setNewDate] = useState(null);
       const [loading, setLoading] = useState(true);
+      const [currentPage, setCurrentPage] = useState(1);
+      const pageSize = 4;
+
       const disablePastDates = (current) => {
             return current && current < moment().startOf('day');
+      };
+
+      const getCurrentPageData = () => {
+            const startIndex = (currentPage - 1) * pageSize;
+            return deliveryList.slice(startIndex, startIndex + pageSize);
       };
       useEffect(() => {
             const fetchApi = async () => {
@@ -41,10 +49,9 @@ function EstiminatedDate() {
                   const response = await put(`delivery-status/update/${currentItem.deliveryStatusId}`, data);
                   if (response) {
                         setDeliveryList(prevList =>
-                              prevList.map(item =>
-                                    item.billId === currentItem.billId
-                                          ? { ...item, deliveryStatusText: "Đang chờ vận chuyển", estimatedDate: newDate.format('DD-MM-YYYY') }
-                                          : item
+                              prevList.map(item => item.billId === currentItem.billId
+                                    ? { ...item, deliveryStatusText: "Đang chờ vận chuyển", estimatedDate: newDate.format('DD-MM-YYYY') }
+                                    : item
                               )
                         );
                   }
@@ -62,7 +69,7 @@ function EstiminatedDate() {
                   <Card>
                         <List
                               loading={loading}
-                              dataSource={deliveryList}
+                              dataSource={getCurrentPageData()}
                               renderItem={(item) => (
                                     <List.Item>
                                           <div>
@@ -77,6 +84,16 @@ function EstiminatedDate() {
                                     </List.Item>
                               )}
                         />
+                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                              <Pagination
+                                    current={currentPage}
+                                    onChange={(page) => setCurrentPage(page)}
+                                    total={deliveryList.length}
+                                    pageSize={pageSize}
+                                    showSizeChanger={false}
+                                    showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                              />
+                        </div>
                   </Card>
                   <Modal
                         title="Cập nhật ngày giao hàng"
@@ -87,7 +104,7 @@ function EstiminatedDate() {
                         {currentItem && (
                               <>
                                     <p>Nhập ngày giao hàng: </p>
-                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
+                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates} />
                               </>
                         )}
                   </Modal>

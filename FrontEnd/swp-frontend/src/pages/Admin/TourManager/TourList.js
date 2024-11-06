@@ -17,7 +17,7 @@ function TourList() {
     setLoading(true);
     try {
       const response = await get("tour/view-all");
-      setTours(response);
+      setTours(response.reverse());
     } catch (error) {
       message.error("Failed to load tours. Please try again.");
     } finally {
@@ -30,12 +30,19 @@ function TourList() {
     // eslint-disable-next-line
   }, []);
 
+  const parseDate = (dateStr) => {
+    const [day, month, year] = dateStr.split('-');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+
+  const today = new Date();
+  const fourDaysLater = new Date(today);
+  fourDaysLater.setDate(today.getDate() + 4);
+
   const filteredTours = tours.filter(
     (tour) =>
-      tour.tourDestinations?.some(
-        (dest) => dest.type === "default" && dest.tourId === tour.tourId
-      ) &&
-      tour.tourName.toLowerCase().includes(searchQuery.toLowerCase())
+      tour.tourDestinations &&
+      tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId)
   );
 
   const handleSearch = (value) => {
@@ -78,16 +85,23 @@ function TourList() {
       render: (_, record) => (
         <>
           <Link to={`/tour-detail/${record.tourId}`}>
-            <Tooltip title="Xem chi tiết">
+            <Tooltip title="Xem chi tiết chuyến đi">
               <Button icon={<EyeOutlined />}></Button>
             </Tooltip>
           </Link>
-          <DeleteTour record={record} handleReload={fetchApi} />
-          <Link to={`/tour-update/${record.tourId}`}>
-            <Tooltip title="Update tour">
-              <Button icon={<EditOutlined />}></Button>
-            </Tooltip>
-          </Link>
+          {
+            parseDate(record.startTime).getTime() > fourDaysLater.getTime() && (
+              <>
+                <DeleteTour record={record} handleReload={fetchApi} />
+                <Link to={`/tour-update/${record.tourId}`}>
+                  <Tooltip title="Cập nhật chuyến đi">
+                    <Button icon={<EditOutlined />}></Button>
+                  </Tooltip>
+                </Link>
+              </>
+            )
+          }
+
         </>
       ),
     },
