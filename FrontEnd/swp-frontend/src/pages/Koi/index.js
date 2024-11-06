@@ -12,7 +12,7 @@ function Koi() {
   const [koi, setKoi] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 16;
+  const pageSize = 24;
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * pageSize;
@@ -48,35 +48,45 @@ function Koi() {
         <Spin tip="Loading..." />
       ) : (
         <>
-          <Row gutter={[16, 16]} className="koi-container">
-            {getCurrentPageData().map((koi) => (
-              <Col xs={24} sm={12} md={6} key={koi.koiId}>
-                <Link to={`/kois/${koi.koiId}`} className="koi-link">
-                  <Card hoverable className="koi-card">
-                    <img
-                      width={135}
-                      height={200}
-                      alt={koi?.koiName || "Default Alt Text"}
-                      src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
-                      className="koi-image"
-                      loading="lazy"
-                    />
-                    <Title level={5}>{koi.koiName}</Title>
-                    <Title level={5}>Giá: {koi.price.toLocaleString()} đ</Title>
-                    <Title level={5}>Ngày sinh: {koi.yob}</Title>
-                    <Title level={5}>Giới tính: {koi.gender}</Title>
-                    <Title level={5}>
-                      Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
-                    </Title>
-                  </Card>
-                </Link>
-              </Col>
-            ))}
-          </Row>
+          <div className="koi">
+            <Row gutter={[16, 16]} className="koi__container">
+              {getCurrentPageData().map((koi) => (
+                <Col xs={24} sm={12} md={6} key={koi.koiId}>
+                  <Link to={`/kois/${koi.koiId}`} className="koi__link">
+                    <Card hoverable className="koi__card">
+                      <img
+                        width={135}
+                        height={200}
+                        alt={koi?.koiName || "Default Alt Text"}
+                        src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
+                        className="koi__card-image"
+                        loading="lazy"
+                      />
+                      <Title level={3} className="koi__card-title">{koi.koiName}</Title>
+                      <div className="koi__card-info">
+                        <Title level={4}><strong>{koi.price.toLocaleString()} đ</strong></Title>
+                        <Title level={5}>Ngày sinh: {koi.yob}</Title>
+                        <Title level={5}>Giới tính: {koi.gender}</Title>
+                        <Title level={5}>
+                          Ngày đăng: {dayjs(koi.updateDate).format("DD-MM-YYYY")}
+                        </Title>
+                      </div>
+                    </Card>
+                  </Link>
+                </Col>
+              ))}
+            </Row>
+          </div>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
             <Pagination
               current={currentPage}
-              onChange={(page) => setCurrentPage(page)}
+              onChange={(page) => {
+                setCurrentPage(page);
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }}
               total={koi.length}
               pageSize={pageSize}
               showSizeChanger={false}

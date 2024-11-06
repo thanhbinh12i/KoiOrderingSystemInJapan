@@ -21,11 +21,11 @@ function CreateTour() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const disableStartDates = (current) => {
-    return current && current < moment().add(7, 'days').startOf("day");
+    return current && current < moment().add(10, 'days').startOf("day");
   };
   const disableEndDate = (current) => {
     if (!startDate) return true;
-    const sevenDaysLater = moment().add(7, 'days').startOf("day");
+    const sevenDaysLater = moment().add(10, 'days').startOf("day");
     return current && (current <= sevenDaysLater || current.valueOf() <= startDate.valueOf());
   };
 
@@ -34,15 +34,13 @@ function CreateTour() {
       form.setFieldValue('finishTime', null);
       setEndDate(null);
     }
-  }, [startDate]);
+  }, [form, startDate]);
   const handleFinish = async (values) => {
     try {
       setLoading(true);
 
       const allTour = await get("tour/view-all");
-      const isDuplicate = allTour.some(
-        (tour) => values.tourName.trim() === tour.tourName
-      );
+      const isDuplicate = allTour.some((tour) => values.tourName.trim() === tour.tourName);
       if (isDuplicate) {
         messageApi.error("Đã tồn tại tour. Yêu cập nhập lại tên mới.");
         return;
