@@ -1,110 +1,99 @@
 .tour-list {
   padding: 24px;
-  background-color: #f0f2f5;
+  &__card {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    transition: transform 0.3s ease;
 
-  .ant-row {
-    margin-bottom: 24px;
-  }
-
-  .ant-col {
-    margin-bottom: 24px;
+    &:hover {
+      transform: scale(1.05);
+    }
   }
 
   .ant-card {
-    height: 100%;
-    transition: all 0.3s ease;
+    border: 1px solid black;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    .ant-card-meta {
+      margin-bottom: 12px;
+
+      .ant-card-meta-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+      }
+
+      .ant-card-meta-description {
+        color: #666;
+        font-size: 14px;
+      }
+    }
+  }
+  &__card-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  &__card-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f5222d;
+    text-align: right;
+  }
+
+  &__card-participants {
+    color: #666;
+    font-size: 16px;
+  }
+
+  &__card-details-button {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #1890ff;
+    background: transparent;
+    color: #1890ff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      background: #1890ff;
+      color: white;
     }
+  }
 
-    .ant-card-cover {
-      height: 200px;
-      overflow: hidden;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.3s ease;
-
-        &:hover {
-          transform: scale(1.05);
-        }
-      }
-    }
-
-    .ant-card-body {
-      padding: 16px;
-    }
-
-    .ant-card-meta-title {
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: #1a1a1a;
-    }
-
-    .ant-card-meta-description {
-      color: #666;
-      margin-bottom: 12px;
-    }
-
-    .price {
-      font-size: 20px;
-      font-weight: bold;
-      color: #f5222d;
-      margin-bottom: 8px;
-    }
-
-    .participants {
-      font-size: 14px;
-      color: #888;
-      margin-bottom: 16px;
-    }
-
-    .details-button {
-      background-color: transparent;
-      border: 1px solid #1890ff;
-      color: #1890ff;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-right: 8px;
-
-      &:hover {
-        background-color: #1890ff;
-        color: white;
-      }
-    }
+  &__card-book-button {
+    display: block;
 
     .ant-btn {
-      background-color: #1a2bc4;
-      border-color: #1a2bc4;
+      width: 100%;
+      height: 36px;
+      background: #1890ff;
       color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
 
       &:hover {
-        background-color: #1a2bc4;
-        border-color: #1a2bc4;
+        background: #096dd9;
+        transform: translateY(-2px);
+        border: 1px solid #1890ff;
       }
     }
   }
 }
 .tour-info-card {
   margin-top: 20px;
-  background-color: #e4e4e4;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  }
-
   .ant-card-body {
     padding: 32px;
   }

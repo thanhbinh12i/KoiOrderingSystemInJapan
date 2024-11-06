@@ -66,6 +66,19 @@ import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetai
 import ProfileStaff from "../pages/Staff/ProfileStaff/ProfileStaff";
 import PrivateRoutes from "../components/privateRouter";
 
+const DefaultRoute = ({ children }) => {
+  const role = localStorage.getItem("role");
+
+  if (role === "Manager") {
+    return <Navigate to="/admin" />;
+  } else if (role?.includes("Staff")) {
+    return <Navigate to="/staff" />;
+  }
+
+  return children;
+};
+
+
 const AdminRoute = ({ children }) => {
   const role = localStorage.getItem("role");
 
@@ -88,8 +101,12 @@ const StaffRoute = ({ children }) => {
 
 export const routes = [
   {
+    path: "logout",
+    element: <Logout />,
+  },
+  {
     path: "/",
-    element: <LayoutDefault />,
+    element: <DefaultRoute><LayoutDefault /></DefaultRoute>,
     children: [
       {
         index: true,
@@ -114,10 +131,6 @@ export const routes = [
       {
         path: "reset-password",
         element: <ResetPassword />,
-      },
-      {
-        path: "logout",
-        element: <Logout />,
       },
       {
         path: "tours",
@@ -164,14 +177,6 @@ export const routes = [
         element: <AboutUs />,
       },
       {
-        path: "order-koi/:id/cart",
-        element: <Cart />,
-      },
-      {
-        path: "my-orders/feedback/:userId",
-        element: <Feedback />,
-      },
-      {
         element: <PrivateRoutes />,
         children: [
           {
@@ -196,8 +201,16 @@ export const routes = [
               {
                 path: "my-orders/:id",
                 element: <MyOrderDetail />,
-              },
+              }
             ],
+          },
+          {
+            path: "order-koi/:id/cart",
+            element: <Cart />,
+          },
+          {
+            path: "my-orders/feedback/:userId",
+            element: <Feedback />,
           },
           {
             path: "book-tour/:id",
