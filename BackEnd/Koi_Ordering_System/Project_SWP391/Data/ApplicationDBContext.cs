@@ -10,8 +10,6 @@ namespace Project_SWP391.Data
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
         }
-
-        // DbSet cho các entity
         public DbSet<Koi> Kois { get; set; }
         public DbSet<KoiBill> KoiBills { get; set; }
         public DbSet<KoiFarm> KoiFarms { get; set; }
@@ -101,7 +99,7 @@ namespace Project_SWP391.Data
                 .HasOne(b => b.Quotation)
                 .WithOne(q => q.Bill)
                 .HasForeignKey<Bill>(b => b.QuotationId)
-                .OnDelete(DeleteBehavior.Restrict); // Hạn chế xóa liên quan, tránh gây chu kỳ
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed roles
             var roles = new List<IdentityRole>

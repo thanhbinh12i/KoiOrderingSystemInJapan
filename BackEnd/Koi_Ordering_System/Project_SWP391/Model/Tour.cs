@@ -12,7 +12,6 @@ namespace Project_SWP391.Model
         public string FinishTime { get; set; }
         public string NumberOfParticipate { get; set; }
 
-        // Navigation properties
         public ICollection<TourDestination> TourDestinations { get; set; } = new List<TourDestination>();
         public ICollection<Quotation> Quotations { get; set; } = new List<Quotation>();
 

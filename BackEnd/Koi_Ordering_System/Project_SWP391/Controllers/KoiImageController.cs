@@ -60,26 +60,6 @@ namespace Project_SWP391.Controllers
             return Ok(koiImageDto);
         }
 
-
-        //[HttpPost("create/{koiId}")]
-        //public async Task<IActionResult> Create([FromBody] CreateKoiImageDto createImage, [FromRoute] int koiId)
-        //{
-        //    if (!await _koiRepo.KoiExists(koiId))
-        //    {
-        //        return BadRequest("Koi does not exist");
-        //    }
-
-        //    if (createImage == null)
-        //    {
-        //        return BadRequest("Koi image data is missing.");
-        //    }
-
-        //    var imageModel = createImage.ToKoiImageFromCreateDto(koiId);
-
-        //    await _imageRepo.CreateAsync(imageModel);
-
-        //    return CreatedAtAction(nameof(GetById), new { id = imageModel.ImageId }, imageModel);
-        //}
         [HttpPost("upload/{koiId}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UploadImages(int koiId, [FromForm] List<IFormFile> files)
@@ -138,25 +118,6 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, $"An error occurred while uploading images: {ex.Message}");
             }
         }
-
-        //[HttpPut("update/{id}")]
-        //[Authorize(Roles = "Manager")]
-        //public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateKoiImageDto updateImage)
-        //{
-        //    if (updateImage == null)
-        //    {
-        //        return BadRequest("Koi image data is missing");
-        //    }
-
-        //    var imageModel = await _imageRepo.UpdateAsync(id, updateImage);
-
-        //    if (imageModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(imageModel);
-        //}
 
         [HttpPut("update/{koiImageId}")]
         [Authorize(Roles = "Manager")]

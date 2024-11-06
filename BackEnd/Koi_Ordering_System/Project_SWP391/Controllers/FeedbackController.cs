@@ -51,29 +51,7 @@ namespace Project_SWP391.Controllers
             }
             return Ok(feedback);
         }
-        //[HttpPost("create/{userId}")]
-        //public async Task<IActionResult> Create(string userId, [FromBody] CreateFeedbackDto feedback)
-        //{
-
-        //    if (feedback == null)
-        //    {
-        //        return BadRequest("Missing data");
-        //    }
-        //    var user = await _userManager.FindByIdAsync(userId);
-        //    if (user == null)
-        //    {
-        //        return BadRequest("User does not exist");
-        //    }
-
-        //    var feedbackModel = feedback.ToCreateFeedbackDto(userId);
-        //    if (feedbackModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    await _feedbackRepo.CreateAsync(feedbackModel);
-        //    return Ok();
-        //}
-
+     
         [HttpPost("create/{userId}")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateFeedbackDto createFeedback, [FromRoute] string userId)
         {
