@@ -59,11 +59,6 @@ namespace Project_SWP391.Controllers
             {
                 return NotFound($"No TourDestination found for TourId {tourId}");
             }
-            //var tourDestinationDto = tourDestination.ToTourDestinationDto();
-            //if (tourDestinationDto == null)
-            //{
-            //    return NotFound();
-            //}
             return Ok(tourDestination);
         }
 

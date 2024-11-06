@@ -62,26 +62,6 @@ namespace Project_SWP391.Controllers
             return Ok(variety);
         }
 
-        //[HttpPost("create")]
-        //public async Task<IActionResult> Create([FromBody] CreateKoiVarietyDto createVariety)
-        //{
-        //    if (createVariety == null)
-        //    {
-        //        return BadRequest("Koi variety data is missing.");
-        //    }
-
-        //    var varietyModel = createVariety.ToKoiVarietyFromToCreateDto();
-
-        //    if (varietyModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    await _koiVarietyRepo.CreateAsync(varietyModel);
-
-        //    return CreatedAtAction(nameof(GetById), new { id = varietyModel.VarietyId }, varietyModel);
-        //}
-
         [HttpPost("upload")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateKoiVarietyDto createKoiVariety)
