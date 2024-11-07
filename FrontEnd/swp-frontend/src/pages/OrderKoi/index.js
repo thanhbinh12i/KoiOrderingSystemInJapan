@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/actions/cart";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import "./OrderKoi.scss";
 
 function OrderKoi() {
@@ -50,12 +50,19 @@ function OrderKoi() {
                         };
                         const action = "addToCart";
 
-                        const response = await post(`koi-bill/create/${params.id}-${koi.koiId}`, data);
+                        const response = await post(
+                              `koi-bill/create/${params.id}-${koi.koiId}`,
+                              data
+                        );
 
                         if (response) {
-                              await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${koi.koiId}&quantityRequested=${1}&action=${action}`, {
-                                    method: 'POST',
-                              });
+                              await fetch(
+                                    `${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${koi.koiId
+                                    }&quantityRequested=${1}&action=${action}`,
+                                    {
+                                          method: "POST",
+                                    }
+                              );
 
                               dispatch(addToCart({ ...koi, quantity: 1 }));
                               setOrderedKois((prev) => ({ ...prev, [koi.koiId]: true }));
@@ -67,7 +74,6 @@ function OrderKoi() {
                               title: "Cá này đã hết!!!",
                         });
                   }
-
             } catch (error) {
                   console.error("Lỗi thêm vào giỏ hàng:", error);
             } finally {
@@ -115,11 +121,11 @@ function OrderKoi() {
                                                       <Button
                                                             type="primary"
                                                             onClick={() => handleAddToCart(koi)}
-                                                            style={{ width: '100%', marginTop: '10px' }}
+                                                            style={{ width: "100%", marginTop: "10px" }}
                                                             loading={loadingStates[koi.koiId]}
                                                             disabled={orderedKois[koi.koiId]}
                                                       >
-                                                            {orderedKois[koi.koiId] ? 'Đã đặt hàng' : 'Đặt hàng'}
+                                                            {orderedKois[koi.koiId] ? "Đã đặt hàng" : "Đặt hàng"}
                                                       </Button>
                                                 </Card>
                                           </Col>

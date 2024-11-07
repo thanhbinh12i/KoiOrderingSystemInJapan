@@ -11,7 +11,7 @@ function KoiDeal() {
                   const billResponse = await get("bill/view-all");
                   if (billResponse) {
                         const [tours, quotations] = await Promise.all([
-                              Promise.all(billResponse.map(bill => get(`tour/view-tourId/${bill.quotationId}`))),
+                              Promise.all(billResponse.map(bill => get(`tour/view-by-quotationId/${bill.quotationId}`))),
                               Promise.all(billResponse.map(bill => get(`quotation/view/${bill.quotationId}`)))
                         ]);
 
