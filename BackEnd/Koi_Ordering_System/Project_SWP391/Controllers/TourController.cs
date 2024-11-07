@@ -71,6 +71,17 @@ namespace Project_SWP391.Controllers
             var tourDto = tour.Select(v => v.ToTourDto());
             return Ok(tour);
         }
+        [HttpGet("view-billId/{billId:int}")]
+        public async Task<IActionResult> ViewAllBillId([FromRoute] int billId)
+        {
+            var tour = await _tourRepo.GetByBillIdAsync(billId);
+            if (tour == null)
+            {
+                return NotFound();
+            }
+            var tourDto = tour.Select(v => v.ToTourDto());
+            return Ok(tour);
+        }
 
         [HttpGet("view-price/{min:float}&&{max:float}")]
         public async Task<IActionResult> ViewPriceMinToMax([FromRoute] float min, float max)
