@@ -1,0 +1,72 @@
+.main-content {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  h2,
+  h4 {
+    color: #3d3d3d;
+  }
+
+  .ant-form {
+    .ant-form-item-label > label {
+      color: #3d3d3d;
+      font-weight: bold;
+    }
+
+    .ant-input,
+    .ant-select-selector,
+    .ant-picker {
+      background-color: #f9f9f9;
+      border-radius: 6px;
+      border: 1px solid #d9d9d9;
+      color: #333;
+
+      &:disabled {
+        background-color: #e6e6e6;
+        color: #999;
+      }
+    }
+
+    .ant-input:focus,
+    .ant-select-focused .ant-select-selector,
+    .ant-picker-focused .ant-picker {
+      border-color: #1890ff;
+      box-shadow: 0 0 5px rgba(24, 144, 255, 0.3);
+    }
+
+    .ant-btn-primary {
+      background-color: #1890ff;
+      border-color: #1890ff;
+      &:hover,
+      &:focus {
+        background-color: #40a9ff;
+        border-color: #40a9ff;
+      }
+    }
+
+    .ant-btn {
+      border-radius: 6px;
+      margin: 4px 0;
+
+      &:not(.ant-btn-primary) {
+        color: #1890ff;
+        border-color: #1890ff;
+
+        &:hover {
+          color: #40a9ff;
+          border-color: #40a9ff;
+        }
+      }
+    }
+  }
+
+  .ant-typography {
+    color: #1890ff;
+  }
+
+  .ant-form-item-explain-error {
+    color: #ff4d4f; // Red for validation errors
+  }
+}

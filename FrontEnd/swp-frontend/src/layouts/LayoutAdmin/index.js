@@ -16,7 +16,7 @@ function LayoutAdmin() {
   const userMenu = (
     <Menu>
       <Menu.Item key="profile">
-        <Link to="/profile">Hồ sơ</Link>
+        <Link to="/profileAdmin">Hồ sơ</Link>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item key="logout">
