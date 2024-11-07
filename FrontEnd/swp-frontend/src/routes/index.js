@@ -65,6 +65,7 @@ import ConfirmEmail from "../components/ConfirmEmail";
 import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetail";
 import ProfileStaff from "../pages/Staff/ProfileStaff/ProfileStaff";
 import PrivateRoutes from "../components/privateRouter";
+import ProfileAdmin from "../pages/Admin/ProfileAdmin";
 
 const DefaultRoute = ({ children }) => {
   const role = localStorage.getItem("role");
@@ -254,6 +255,10 @@ export const routes = [
           </AdminRoute>
         ),
         children: [
+          {
+            path: "profileAdmin",
+            element: <ProfileAdmin />,
+          },
           {
             path: "admin",
             element: <Dashboard />,
