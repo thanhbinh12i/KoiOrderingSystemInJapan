@@ -6,6 +6,7 @@ import { Link, useParams } from 'react-router-dom';
 import { fetchCartItems } from '../../redux/actions/cart';
 import { useEffect, useState } from 'react';
 import CartItem from './CartItem';
+import './Cart.scss';
 
 
 function Cart() {
@@ -50,30 +51,30 @@ function Cart() {
       return (
             <>
                   <GoBack />
-                  <Card title="Giỏ hàng của tôi">
+                  <Card
+                        title="Giỏ hàng của tôi"
+                        className="card-container"
+                        headStyle={{ className: "card-title" }}
+                  >
                         <List
                               dataSource={cartItems}
                               renderItem={(item) => (
-                                    <List.Item>
+                                    <List.Item className="list-item">
                                           <CartItem item={item} billId={billId} />
                                     </List.Item>
                               )}
                         />
-                        <div style={{ marginTop: 16 }}>
-                              <strong>Tổng tiền: {totalPrice.toLocaleString()} đ</strong>
+                        <div className="total-price">
+                              Tổng tiền: {totalPrice.toLocaleString()} đ
                         </div>
                         {allItemsHaveFinalPrice ? (
                               <Link to={`/check-out-koi/${billId}`} state={{ totalPrice: totalPrice }}>
-                                    <Button type="primary" style={{ marginTop: 16 }} block>
+                                    <Button type="primary" className="checkout-button">
                                           Thanh toán
                                     </Button>
                               </Link>
                         ) : (
-                              <Button
-                                    type="primary"
-                                    style={{ marginTop: 16, background: '#52c41a' }}
-                                    block
-                              >
+                              <Button type="primary" className="contact-button">
                                     Liên hệ deal Koi với nhân viên
                               </Button>
                         )}
