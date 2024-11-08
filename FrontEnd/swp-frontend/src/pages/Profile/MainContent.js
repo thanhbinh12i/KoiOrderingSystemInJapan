@@ -77,8 +77,8 @@ function MainContent() {
         <TabPane tab="Thông tin tài khoản" key="1">
           <Form form={form} layout="vertical" initialValues={personalInfo}>
             <Title level={4}>Dữ liệu cá nhân</Title>
-            <Form.Item label="Tên đầy đủ" name="fullName">
-              <Input placeholder="Full Name" disabled={!isEdit} rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}/>
+            <Form.Item label="Tên đầy đủ" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
+              <Input placeholder="Full Name" disabled={!isEdit}/>
             </Form.Item>
             <Form.Item label="Giới tính" name="gender">
               <Select placeholder="Chọn giới tính" disabled={!isEdit}>
@@ -94,23 +94,22 @@ function MainContent() {
                 format="DD-MM-YYYY"
               />
             </Form.Item>
-            <Form.Item label="Địa chỉ" name="address">
+            <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
             <Form.Item label="Email" name="email" rules={[{ type: 'email', message: 'Email không hợp lệ!' }]}>
               <Input disabled />
             </Form.Item>
-            <Form.Item label="Số điện thoại" name="phoneNumber">
-              <Input
-                placeholder="Nhập số điện thoại"
-                disabled={!isEdit}
-                rules={[
+            <Form.Item label="Số điện thoại" name="phoneNumber" rules={[
                   { required: true, message: "Vui lòng nhập số điện thoại!" },
                   {
                     pattern: /^0\d{9}$/,
                     message: "Số điện thoại không hợp lệ!",
                   },
-                ]}
+                ]}>
+              <Input
+                placeholder="Nhập số điện thoại"
+                disabled={!isEdit}
               />
             </Form.Item>
 
