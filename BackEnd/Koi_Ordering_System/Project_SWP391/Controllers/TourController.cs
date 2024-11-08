@@ -139,7 +139,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{tourId:int}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,SalesStaff")]
         public async Task<IActionResult> Update([FromBody] UpdateTourDto tour, int tourId)
         {
             var tourModel = await _tourRepo.UpdateAsync(tourId, tour);
