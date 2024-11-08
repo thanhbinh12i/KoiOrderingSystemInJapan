@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, Col, Form, Input, InputNumber, Modal, Pagination, Row } from "antd";
+import { Button, Card, Col, Form, Input, Modal, Pagination, Row } from "antd";
 import { Link } from "react-router-dom";
 
 
@@ -41,7 +41,7 @@ function Quotation() {
             setModalVisibility(prev => ({ ...prev, [id]: true }));
       };
 
-      const updatePrice = async (values,id) => {
+      const updatePrice = async (values, id) => {
             const getTimeCurrent = () => {
                   return new Date().toLocaleString();
             };
@@ -179,16 +179,12 @@ function Quotation() {
                                                                                                       label="Nhập giá tiền"
                                                                                                       rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
                                                                                                       {
+                                                                                                            required: true,
                                                                                                             pattern: /^[1-9]\d*$/,
-                                                                                                            message: 'Giá chuyến đi phải lớn hơn 0'
-                                                                                                      }
-                                                                                                      ]}
+                                                                                                            message: 'Vui lòng nhập số lớn hơn 0 và không chứa ký tự đặc biệt'
+                                                                                                      }]}
                                                                                                 >
-                                                                                                      <InputNumber
-                                                                                                            min={0}
-                                                                                                            style={{ width: "100%" }}
-                                                                                                            placeholder="Nhập giá tour"
-                                                                                                      />
+                                                                                                      <Input style={{ width: "100%" }} placeholder="Nhập giá tour" />
                                                                                                 </Form.Item>
                                                                                                 <Form.Item>
                                                                                                       <Button type="primary" htmlType="submit">
@@ -251,13 +247,21 @@ function Quotation() {
                                                                                           label="Nhập giá tiền"
                                                                                           rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
                                                                                           {
+                                                                                                required: true,
                                                                                                 pattern: /^[1-9]\d*$/,
-                                                                                                message: 'Giá chuyến đi phải lớn hơn 0'
+                                                                                                message: 'Vui lòng nhập số lớn hơn 0 và không chứa ký tự đặc biệt'
+                                                                                          },
+                                                                                          {
+                                                                                                validator: async (_, value) => {
+                                                                                                      const minPrice = item.priceOffer * 0.95;
+                                                                                                      if (value < minPrice) {
+                                                                                                            throw new Error(`Giá mới không được thấp hơn ${minPrice.toLocaleString()} (95% giá hiện tại)`);
+                                                                                                      }
+                                                                                                }
                                                                                           }
                                                                                           ]}
                                                                                     >
-                                                                                          <InputNumber
-                                                                                                min={0}
+                                                                                          <Input
                                                                                                 style={{ width: "100%" }}
                                                                                                 placeholder="Nhập giá tour"
                                                                                           />

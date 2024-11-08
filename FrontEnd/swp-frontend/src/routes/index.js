@@ -73,7 +73,7 @@ const DefaultRoute = ({ children }) => {
   if (role === "Manager") {
     return <Navigate to="/admin" />;
   } else if (role?.includes("Staff")) {
-    return <Navigate to="/staff" />;
+    return <Navigate to="/staff/profile" />;
   }
 
   return children;
