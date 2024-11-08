@@ -23,7 +23,7 @@ function Register() {
             try {
                   const response = await post("account/register", data);
                   if (response) {
-                        localStorage.setItem('email',values.email);
+                        localStorage.setItem('email', values.email);
                         form.resetFields();
                         messageApi.success('Đăng ký thành công!');
                         navigate("/confirm-email");
@@ -53,9 +53,9 @@ function Register() {
                         <Col span={12}>
                               <Card title="Đăng ký tài khoản" className="registration-card">
                                     <Form onFinish={onFinish} layout="vertical" form={form}>
-                                          <Form.Item 
-                                                label="User Name" 
-                                                name="userName" 
+                                          <Form.Item
+                                                label="User Name"
+                                                name="userName"
                                                 rules={[
                                                       { required: true, message: 'Vui lòng nhập User Name!' },
                                                       {
@@ -72,16 +72,16 @@ function Register() {
                                           >
                                                 <Input />
                                           </Form.Item>
-      
+
                                           <Form.Item label="Họ và tên" name="fullName" rules={[{ required: true, message: 'Vui lòng nhập họ và tên!' }]}>
                                                 <Input />
                                           </Form.Item>
-      
-                                          <Form.Item 
-                                                label="Email" 
-                                                name="email" 
+
+                                          <Form.Item
+                                                label="Email"
+                                                name="email"
                                                 rules={[
-                                                      { type: 'email', message: 'Email không hợp lệ!' }, 
+                                                      { type: 'email', message: 'Email không hợp lệ!' },
                                                       { required: true, message: 'Vui lòng nhập email!' },
                                                       {
                                                             validator: async (_, value) => {
@@ -104,9 +104,11 @@ function Register() {
                                           },
                                           {
                                                 validator: async (_, value) => {
+                                                      const normalizedPhone = value.replace(/\D/g, ''); 
+                                                      const formattedPhone = `${normalizedPhone.slice(0, 4)}.${normalizedPhone.slice(4, 7)}.${normalizedPhone.slice(7, 10)}`;
                                                       if (value) {
                                                             const existingUsers = await get("account/view-all-user");
-                                                            if (existingUsers.some(user => user.phoneNumber === value)) {
+                                                            if (existingUsers.some(user => user.phoneNumber === formattedPhone)) {
                                                                   throw new Error('Số điện thoại đã tồn tại trong hệ thống!');
                                                             }
                                                       }
@@ -115,11 +117,11 @@ function Register() {
                                           ]}>
                                                 <Input />
                                           </Form.Item>
-      
+
                                           <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
                                                 <Input />
                                           </Form.Item>
-      
+
                                           <Row gutter={16}>
                                                 <Col span={12}>
                                                       <Form.Item label="Giới tính" name="gender" rules={[{ required: true, message: 'Vui lòng chọn giới tính!' }]}>
@@ -135,7 +137,7 @@ function Register() {
                                                       </Form.Item>
                                                 </Col>
                                           </Row>
-      
+
                                           <Row gutter={16}>
                                                 <Col span={12}>
                                                       <Form.Item
@@ -169,7 +171,7 @@ function Register() {
                                                       </Form.Item>
                                                 </Col>
                                           </Row>
-      
+
                                           <Form.Item>
                                                 <Button type="primary" htmlType="submit" className="submit-button">
                                                       Đăng ký
@@ -183,6 +185,6 @@ function Register() {
                         </Col>
                   </Row>
             </>
-      );      
+      );
 }
 export default Register;

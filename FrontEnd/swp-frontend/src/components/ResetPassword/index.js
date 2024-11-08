@@ -12,9 +12,11 @@ function ResetPassword() {
                   "email": email
             }
             const response = await post('account/reset-password', data);
-            if(response){
+            if (response === "Password has reset successfully!") {
                   localStorage.removeItem('email');
                   navigate('/');
+            } else {
+                  alert("Sai mã OTP");
             }
       }
       const validatePassword = (_, value) => {
