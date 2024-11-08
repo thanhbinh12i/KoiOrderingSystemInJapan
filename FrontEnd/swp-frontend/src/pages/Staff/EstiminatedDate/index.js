@@ -34,7 +34,7 @@ function EstiminatedDate() {
                                           }
                                     })
                               )
-                              setDeliveryList(tourResponses);
+                              setDeliveryList(tourResponses.reverse());
                         }
                   } catch (error) {
                         console.error('Không thể tải danh sách giao hàng');
