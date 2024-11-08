@@ -88,17 +88,34 @@ function Login() {
             <Col span={12}>
               <Card title="Đăng nhập" className="login__card">
                 <Form onFinish={onFinish} layout="vertical">
-                  <Form.Item label="Tài khoản" name="account" rules={[{ required: true, message: "Vui lòng nhập tài khoản!" }]}>
+                  <Form.Item
+                    label="Tài khoản"
+                    name="account"
+                    rules={[
+                      { required: true, message: "Vui lòng nhập tài khoản!" },
+                    ]}
+                  >
                     <Input placeholder="Nhập tên người dùng hoặc email hoặc số điện thoại" />
                   </Form.Item>
-                  <Form.Item label="Mật khẩu" name="password" rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}>
+                  <Form.Item
+                    label="Mật khẩu"
+                    name="password"
+                    rules={[
+                      { required: true, message: "Vui lòng nhập mật khẩu!" },
+                    ]}
+                  >
                     <Input.Password placeholder="Nhập mật khẩu" />
                   </Form.Item>
                   <div className="login__forgotPassword">
                     <Link to="/forgot-password">Quên mật khẩu</Link>
                   </div>
                   <Form.Item>
-                    <Button type="primary" size="large" htmlType="submit" className="login__button">
+                    <Button
+                      type="primary"
+                      size="large"
+                      htmlType="submit"
+                      className="login__button"
+                    >
                       Đăng nhập
                     </Button>
                   </Form.Item>
