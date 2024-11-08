@@ -153,11 +153,6 @@ namespace Project_SWP391.Controllers
 
             if (!result.Succeeded) return Unauthorized("Account and/or password is invalid");
 
-            if (!user.EmailConfirmed)
-            {
-                return Unauthorized("Email not confirmed. Please check your inbox for a confirmation email.");
-            }
-
             return Ok(
                 new NewUserDto
                 {
@@ -205,7 +200,8 @@ namespace Project_SWP391.Controllers
                         return BadRequest("Failed to add user to role");
                     }
 
-                    user.EmailConfirmed = true;
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    await _userManager.ConfirmEmailAsync(user, token);
                 }
                 // login user
                 await _signInManager.SignInAsync(user, isPersistent: false);
