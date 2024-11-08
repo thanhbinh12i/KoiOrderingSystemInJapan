@@ -11,10 +11,6 @@ function EstiminatedDate() {
       const [currentPage, setCurrentPage] = useState(1);
       const pageSize = 4;
 
-      const disablePastDates = (current) => {
-            return current && current < moment(deliveryList.tourDetail.finishTime).startOf('day');
-      };
-
       const getCurrentPageData = () => {
             const startIndex = (currentPage - 1) * pageSize;
             return deliveryList.slice(startIndex, startIndex + pageSize);
@@ -44,6 +40,10 @@ function EstiminatedDate() {
             }
             fetchApi();
       }, [])
+      const disablePastDates = (current) => {
+            return current && current <= moment(currentItem.tourDetail[0].finishTime, "DD-MM-YYYY").startOf('day');
+      };
+
       const showModal = (item) => {
             setCurrentItem(item);
             setModalVisible(true);
