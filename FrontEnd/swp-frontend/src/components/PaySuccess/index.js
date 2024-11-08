@@ -8,7 +8,6 @@ import { get, post, put } from '../../utils/request';
 const { Title } = Typography;
 
 const PaymentSuccess = () => {
-    //làm lại paysucess đẹp hơn
     const [bill, setBill] = useState();
     const params = useParams();
     const date = new Date().toLocaleString();
@@ -82,7 +81,7 @@ const PaymentSuccess = () => {
                     const payStatusResponse = await post(`payStatus/create/${paymentData.id}`, dataPayStatus);
                     if (deliveryResponse || payStatusResponse) {
                         setBill(currentBill);
-                        setPrice(paymentData.deposit);
+                        setPrice(paymentData.price);
                     }
                     localStorage.removeItem('pendingPaymentKoi');
                 }
@@ -123,13 +122,11 @@ const PaymentSuccess = () => {
                                     <Descriptions title="Chi tiết thanh toán" bordered column={{ xs: 1, sm: 2 }}>
                                         <Descriptions.Item label="Mã giao dịch">{params.id}</Descriptions.Item>
                                         <Descriptions.Item label="Ngày thanh toán">{date}</Descriptions.Item>
-                                        <Descriptions.Item label="Phương thức">Thẻ ngân hàng</Descriptions.Item>
+                                        <Descriptions.Item label="Phương thức">VN PAY</Descriptions.Item>
                                         <Descriptions.Item label="Khách hàng">{bill.userFullName}</Descriptions.Item>
                                         <Descriptions.Item label="Số điện thoại">{bill.phoneNumber}</Descriptions.Item>
                                         <Descriptions.Item label="Email">{bill.email}</Descriptions.Item>
                                     </Descriptions>
-
-
                                 </div>
                             </>
                         )}

@@ -1,0 +1,79 @@
+.check-in {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      h1 {
+            text-align: center;
+            color: #333;
+      }
+
+      .ant-card {
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+
+            &:hover {
+                  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            }
+
+            .ant-card-title {
+                  font-size: 1.5rem;
+                  color: #007bff;
+            }
+
+            p {
+                  font-size: 1rem;
+                  color: #555;
+
+                  strong {
+                        color: #333;
+                  }
+            }
+
+            .ant-btn-primary {
+                  background-color: #007bff;
+                  border-color: #007bff;
+
+                  &:hover {
+                        background-color: darken(#007bff, 10%);
+                        border-color: darken(#007bff, 10%);
+                  }
+            }
+      }
+
+      .ant-pagination {
+            margin-top: 20px;
+
+            .ant-pagination-item {
+                  border-radius: 4px;
+
+                  &:hover {
+                        background-color: #e6f7ff;
+                  }
+
+                  &.ant-pagination-item-active {
+                        color: #fff;
+                  }
+            }
+      }
+
+      @media (max-width: 768px) {
+            .ant-card {
+                  margin-bottom: 15px;
+            }
+
+            p {
+                  font-size: 0.9rem;
+            }
+
+            .ant-card-title {
+                  font-size: 1.25rem;
+            }
+
+            .ant-pagination {
+                  font-size: 0.8rem;
+            }
+      }
+}

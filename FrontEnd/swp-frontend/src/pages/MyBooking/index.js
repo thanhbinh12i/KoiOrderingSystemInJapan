@@ -61,6 +61,29 @@ function MyBooking() {
             fetchApi();
       }, [userId])
 
+      useEffect(() => {
+            const fetchApi = async () => {
+                  for (const item of quotation) {
+                        if (item.status === "Đã xác nhận" || item.status === "Xác nhận yêu cầu") {
+                              const today = new Date();
+                              const oneDayBeforeStart = parseDate(item.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+
+
+                              if (isWithin24Hours) {
+                                    const quotationData = {
+                                          "priceOffer": item.priceOffer,
+                                          "status": "Quá hạn thanh toán",
+                                          "approvedDate": item.approvedDate,
+                                          "description": item.description,
+                                    };
+                                    await put(`quotation/update/${item.quotationId}`, quotationData);
+                              }
+                        }
+                  }
+            }
+            fetchApi();
+      }, [quotation])
       const parseDate = (dateStr) => {
             const [day, month, year] = dateStr.split('-');
             return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
@@ -97,7 +120,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu", "Quá hạn thanh toán"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Chi tiết chuyến đi',
@@ -132,16 +155,6 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã xác nhận" || record.status === "Xác nhận yêu cầu" || record.status === "Không chấp nhận yêu cầu") {
-                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
-                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
-
-
-                              if (isWithin24Hours) {
-                                    return (
-                                          <>Quá hạn thanh toán</>
-                                    )
-
-                              }
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {

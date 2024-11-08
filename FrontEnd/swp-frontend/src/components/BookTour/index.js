@@ -45,7 +45,7 @@ function BookTour() {
                                           <p><strong>Khởi hành:</strong> {startTime}</p>
                                           <p><strong>Kết thúc:</strong> {finishTime}</p>
                                           <p><strong>Số người tham gia:</strong> {numberOfParticipate}</p>
-                                          <p><strong>Giá tour:</strong> {price}đ</p>
+                                          <p><strong>Giá tour:</strong> {price.toLocaleString()}đ</p>
 
                                     </Card>
 

@@ -127,6 +127,11 @@ function QuotationDetail() {
                                                       renderItem={(item) => (
                                                             <List.Item key={item.farmName} className="farm-list-item">
                                                                   <div className="farm-container">
+                                                                        <img
+                                                                              src={`${process.env.REACT_APP_API_URL_UPLOAD}koiFarm/${item.farmImages[0].urlImage}`}
+                                                                              alt={item.farmName}
+                                                                              className="farm-image"
+                                                                        />
                                                                         <div className="farm-info">
                                                                               <Title level={4} className="farm-name">
                                                                                     {item.farmName}
