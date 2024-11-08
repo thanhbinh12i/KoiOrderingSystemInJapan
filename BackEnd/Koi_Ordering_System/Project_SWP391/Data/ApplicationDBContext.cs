@@ -112,7 +112,7 @@ namespace Project_SWP391.Data
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
 
-            base.OnModelCreating(modelBuilder); // Gọi base ở cuối
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
