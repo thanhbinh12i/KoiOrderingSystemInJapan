@@ -32,6 +32,9 @@ function MenuUser() {
                                     <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
                                           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
                                     </Menu.Item>
+                                    <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
+                                          <Link to="/my-orders">Đơn hàng của tôi</Link>
+                                    </Menu.Item>
                               </>
                         )
                   }

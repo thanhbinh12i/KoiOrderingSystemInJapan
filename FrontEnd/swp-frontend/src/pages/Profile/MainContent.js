@@ -77,6 +77,7 @@ function MainContent() {
         <TabPane tab="Thông tin tài khoản" key="1">
           <Form form={form} layout="vertical" initialValues={personalInfo}>
             <Title level={4}>Dữ liệu cá nhân</Title>
+
             <Form.Item label="Tên đầy đủ" name="fullName">
               <Input
                 placeholder="Full Name"
@@ -100,7 +101,7 @@ function MainContent() {
                 format="DD-MM-YYYY"
               />
             </Form.Item>
-            <Form.Item label="Địa chỉ" name="address">
+            <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
               <Input placeholder="Nhập thành phố" disabled={!isEdit} />
             </Form.Item>
             <Form.Item
@@ -110,17 +111,16 @@ function MainContent() {
             >
               <Input disabled />
             </Form.Item>
-            <Form.Item label="Số điện thoại" name="phoneNumber">
-              <Input
-                placeholder="Nhập số điện thoại"
-                disabled={!isEdit}
-                rules={[
+            <Form.Item label="Số điện thoại" name="phoneNumber" rules={[
                   { required: true, message: "Vui lòng nhập số điện thoại!" },
                   {
                     pattern: /^0\d{9}$/,
                     message: "Số điện thoại không hợp lệ!",
                   },
-                ]}
+                ]}>
+              <Input
+                placeholder="Nhập số điện thoại"
+                disabled={!isEdit}
               />
             </Form.Item>
 
