@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-      Card,
-      Descriptions,
-      Typography,
-      Space,
-      Divider,
-      List,
-} from "antd";
-import {
-      ClockCircleOutlined,
-      UserOutlined,
-      GlobalOutlined,
-      EnvironmentOutlined,
-} from "@ant-design/icons";
-import { get } from "../../../utils/request";
+import { Card, Descriptions, Typography, Space, Divider, List, Button, Modal, DatePicker } from "antd";
+import { ClockCircleOutlined, UserOutlined, GlobalOutlined, EnvironmentOutlined, } from "@ant-design/icons";
+import { get, put } from "../../../utils/request";
 import GoBack from "../../../components/GoBack";
+import moment from "moment";
 const { Title, Text } = Typography;
 
 function QuotationDetail() {
       const params = useParams();
       const [tour, setTour] = useState(null);
       const [farm, setFarm] = useState([]);
+      const [modalVisible, setModalVisible] = useState(false);
+      const [newDate, setNewDate] = useState(null);
+      const disablePastDates = (current) => {
+            return current && current <= moment(tour.startTime).startOf('day');
+      };
+      const showModal = () => {
+            setModalVisible(true);
+      };
+
+      const handleCancel = () => {
+            setModalVisible(false);
+      };
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`tour/view-tourId/${params.id}`);
@@ -46,24 +47,63 @@ function QuotationDetail() {
             };
             fetchApi();
       }, [params.id]);
+      const handleOk = async () => {
+            if (newDate) {
+                  const data = {
+                        ...tour,
+                        "finishTime": newDate.format('DD-MM-YYYY')
+                  }
+                  const response = await put(`tour/update/${params.id}`, data);
+                  if (response) {
+                        setTour(data);
+                        setModalVisible(false);
+                        setNewDate(null);
+                  }
+            }
+      }
       return (
             <>
                   <GoBack />
                   {tour && (
                         <>
                               <Card className="tour-info-card">
-                                    <Title level={2}>{tour.tourName}</Title>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                          <Title level={2}>{tour.tourName}</Title>
+                                          {tour.price === 0 && (
+                                                <Button type="primary" onClick={() => showModal()}>Cập nhật ngày trở về</Button>
+                                          )}
+                                          <Modal
+                                                title="Cập nhật ngày giao hàng"
+                                                visible={modalVisible}
+                                                onOk={handleOk}
+                                                onCancel={handleCancel}
+                                          >
+                                                <>
+                                                      <p>Nhập ngày kết thúc: </p>
+                                                      <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+                                                </>
+                                          </Modal>
+                                    </div>
+
                                     <Divider />
                                     <Space direction="vertical" size="large" style={{ width: "100%" }}>
                                           <Descriptions column={1} labelStyle={{ fontWeight: "bold" }}>
                                                 <Descriptions.Item
                                                       label={
                                                             <Space>
-                                                                  <ClockCircleOutlined /> Thời gian
+                                                                  <ClockCircleOutlined /> Ngày đi
                                                             </Space>
                                                       }
                                                 >
-                                                      {tour.startTime} đến{" "}
+                                                      {tour.startTime}
+                                                </Descriptions.Item>
+                                                <Descriptions.Item
+                                                      label={
+                                                            <Space>
+                                                                  <ClockCircleOutlined /> Ngày về
+                                                            </Space>
+                                                      }
+                                                >
                                                       {tour.finishTime}
                                                 </Descriptions.Item>
                                                 <Descriptions.Item
@@ -106,7 +146,7 @@ function QuotationDetail() {
                                     </Space>
                               </Card>
                         </>
-                  )} 
+                  )}
             </>
       )
 }

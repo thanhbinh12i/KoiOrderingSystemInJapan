@@ -182,13 +182,9 @@ function Quotation() {
                                                                                                             required: true,
                                                                                                             pattern: /^[1-9]\d*$/,
                                                                                                             message: 'Vui lòng nhập số lớn hơn 0 và không chứa ký tự đặc biệt'
-                                                                                                      }
-                                                                                                      ]}
+                                                                                                      }]}
                                                                                                 >
-                                                                                                      <Input
-                                                                                                            style={{ width: "100%" }}
-                                                                                                            placeholder="Nhập giá tour"
-                                                                                                      />
+                                                                                                      <Input style={{ width: "100%" }} placeholder="Nhập giá tour" />
                                                                                                 </Form.Item>
                                                                                                 <Form.Item>
                                                                                                       <Button type="primary" htmlType="submit">

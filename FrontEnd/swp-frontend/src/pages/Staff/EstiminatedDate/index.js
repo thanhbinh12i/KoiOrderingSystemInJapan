@@ -12,7 +12,7 @@ function EstiminatedDate() {
       const pageSize = 4;
 
       const disablePastDates = (current) => {
-            return current && current < moment().startOf('day');
+            return current && current < moment(deliveryList.tourDetail.finishTime).startOf('day');
       };
 
       const getCurrentPageData = () => {
@@ -25,7 +25,16 @@ function EstiminatedDate() {
                         setLoading(true);
                         const response = await get("delivery-status/view-all");
                         if (response) {
-                              setDeliveryList(response);
+                              const tourResponses = await Promise.all(
+                                    response.map(async (item) => {
+                                          const tourResponse = await get(`tour/view-billId/${item.billId}`);
+                                          return {
+                                                ...item,
+                                                tourDetail: tourResponse
+                                          }
+                                    })
+                              )
+                              setDeliveryList(tourResponses);
                         }
                   } catch (error) {
                         console.error('Không thể tải danh sách giao hàng');
