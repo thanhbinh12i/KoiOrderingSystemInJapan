@@ -32,7 +32,7 @@ function Login() {
         if (role === "Manager") {
           navigate("/admin");
         } else if (role.includes("Staff")) {
-          navigate("/staff");
+          navigate("/staff/profile");
         } else {
           navigate("/");
         }
@@ -61,7 +61,7 @@ function Login() {
       if (role === "Manager") {
         navigate("/admin");
       } else if (role.includes("Staff")) {
-        navigate("/staff");
+        navigate("/staff/profile");
       } else {
         navigate("/");
       }

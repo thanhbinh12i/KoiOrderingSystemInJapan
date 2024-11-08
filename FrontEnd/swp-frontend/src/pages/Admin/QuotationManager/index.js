@@ -1,4 +1,4 @@
-import { Badge, Button, Card, Col, Form, Input, InputNumber, Modal, Pagination, Row } from "antd";
+import { Badge, Button, Card, Col, Form, Input, Modal, Pagination, Row } from "antd";
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Link } from "react-router-dom";
@@ -199,13 +199,13 @@ function QuotationManager() {
                             label="Nhập giá tiền"
                             rules={[{ required: true, message: "Vui lòng nhập giá tour!" },
                             {
+                              required: true,
                               pattern: /^[1-9]\d*$/,
-                              message: 'Giá chuyến đi phải lớn hơn 0'
+                              message: 'Vui lòng nhập số lớn hơn 0 và không chứa ký tự đặc biệt'
                             }
                             ]}
                           >
-                            <InputNumber
-                              min={0}
+                            <Input
                               style={{ width: "100%" }}
                               placeholder="Nhập giá tour"
                             />
