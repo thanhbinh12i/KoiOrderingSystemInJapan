@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import GoBack from "../../components/GoBack";
 import { useEffect, useState } from "react";
-import { Card, Typography, List } from 'antd';
+import { Card, Typography, Divider, Space, Table } from 'antd';
 import { get } from "../../utils/request";
-
-const { Title, Text } = Typography;
+import "./MyOrderDetail.scss"
+const { Title } = Typography;
 
 function MyOrderDetail() {
       const params = useParams();
@@ -23,26 +23,62 @@ function MyOrderDetail() {
             const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice * item.quantity, 0);
             setTotalPrice(itemsTotal);
       }, [koiBill]);
+      const columns = [
+            {
+                  title: 'Tên Cá Koi',
+                  dataIndex: 'koiName',
+                  key: 'koiName',
+            },
+            {
+                  title: 'Số lượng',
+                  dataIndex: 'quantity',
+                  key: 'quantity',
+            },
+            {
+                  title: 'Đơn giá',
+                  dataIndex: 'finalPrice',
+                  key: 'finalPrice',
+                  render: (price) => `${price.toLocaleString()}đ`
+            },
+            {
+                  title: 'Tổng',
+                  key: 'total',
+                  render: (record) => `${(record.quantity * record.finalPrice).toLocaleString()}đ`
+            }
+      ];
+
       return (
             <>
-                  <GoBack />
+                  <div className="bill-container" >
+                        <div className="bill-wrapper">
+                              <GoBack />
 
-                  <Title level={3} style={{paddingLeft: '30px'}}>Chi tiết đơn hàng số {params.id}</Title>
-                  <Card>
-                        <List
-                              dataSource={koiBill}
-                              renderItem={(item) => (
-                                    <List.Item>
-                                          <Text strong>{item.koiName}</Text>
-                                          <Text>Số lượng: <strong>{item.quantity}</strong></Text>
-                                          <Text>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></Text>
-                                    </List.Item>
-                              )}
-                        />
-                  </Card>
-                  <Title level={4} style={{ marginTop: '20px', textAlign: 'right', paddingRight: '30px' }}>
-                        Tổng tiền: {totalPrice?.toLocaleString()} đ
-                  </Title>
+                              <Card className="bill-content">
+                                    <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                                          <div className="bill-header">
+                                                <Title level={2}>KOI DAY NE WEBSITE</Title>
+                                                <Title level={4}>Đơn hàng #{params.id}</Title>
+                                          </div>
+
+                                          <Divider />
+
+                                          <Table
+                                                columns={columns}
+                                                dataSource={koiBill}
+                                                pagination={false}
+                                          />
+
+                                          <Divider />
+
+                                          <div className="bill-footer">
+                                                <Title level={3}>
+                                                      Tổng tiền: {totalPrice?.toLocaleString()}đ
+                                                </Title>
+                                          </div>
+                                    </Space>
+                              </Card>
+                        </div>
+                  </div>
             </>
       )
 }
