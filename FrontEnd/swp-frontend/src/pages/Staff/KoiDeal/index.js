@@ -5,31 +5,25 @@ import { Link } from "react-router-dom";
 
 function KoiDeal() {
       const [bill, setBill] = useState([]);
-      const [quotations, setQuotations] = useState({});
-      const [tours, setTours] = useState({});
 
       useEffect(() => {
             const fetchApi = async () => {
                   const billResponse = await get("bill/view-all");
                   if (billResponse) {
-                        setBill(billResponse);
+                        const [tours, quotations] = await Promise.all([
+                              Promise.all(billResponse.map(bill => get(`tour/view-by-quotationId/${bill.quotationId}`))),
+                              Promise.all(billResponse.map(bill => get(`quotation/view/${bill.quotationId}`)))
+                        ]);
 
-                        const quotationData = {};
-                        for (let item of billResponse) {
-                              const quotationResponse = await get(`quotation/view/${item.quotationId}`);
-                              if (quotationResponse) {
-                                    quotationData[item.quotationId] = quotationResponse;
+                        const bill = billResponse.map((bill, index) => ({
+                              ...bill,
+                              tour: tours[index],
+                              quotation: quotations[index]
+                        }))
+                              .filter(bill => bill.quotation?.status === "Đã check-in") 
+                              .reverse();
 
-                                    const tourResponse = await get(`tour/view-tourId/${quotationResponse.tourId}`);
-                                    if (tourResponse) {
-                                          setTours(prev => ({
-                                                ...prev,
-                                                [quotationResponse.tourId]: tourResponse
-                                          }));
-                                    }
-                              }
-                        }
-                        setQuotations(quotationData);
+                        setBill(bill);
                   }
             }
             fetchApi();
@@ -48,20 +42,12 @@ function KoiDeal() {
             {
                   title: 'Tên tour',
                   key: 'tourName',
-                  render: (record) => {
-                        const quotation = quotations[record.quotationId];
-                        const tour = quotation ? tours[quotation.tourId] : null;
-                        return tour ? tour.tourName : 'N/A';
-                  }
+                  render: (_, record) => record.tour?.tourName
             },
             {
                   title: 'Ngày khởi hành',
                   key: 'startDate',
-                  render: (record) => {
-                        const quotation = quotations[record.quotationId];
-                        const tour = quotation ? tours[quotation.tourId] : null;
-                        return tour ? tour.startTime : 'N/A';
-                  }
+                  render: (_, record) => record.tour?.startTime
             },
             {
                   title: 'Hành động',
@@ -69,7 +55,7 @@ function KoiDeal() {
                   render: (_, record) => (
                         <>
                               <Link to={`${record.billId}`}>
-                                    <Button>Xem chi tiết</Button>
+                                    <Button type="primary">Xem chi tiết đơn hàng</Button>
                               </Link>
                         </>
 

@@ -58,7 +58,7 @@ function SearchTour() {
   return (
     <>
       <div className="search-form-container">
-        <h1>Tìm kiếm Tour</h1>
+        <h1>Tìm kiếm chuyến đi</h1>
         <Form className="search-form" form={form} layout="vertical" onFinish={handleSearch}>
           <Row gutter={16}>
             <Col span={24}>
@@ -112,7 +112,7 @@ function SearchTour() {
 
             <Col span={8}>
               <Form.Item label="Thời gian" name="time">
-                <RangePicker disabledDate={disablePastDates} />
+                <RangePicker disabledDate={disablePastDates} format="DD-MM-YYYY"/>
               </Form.Item>
             </Col>
           </Row>

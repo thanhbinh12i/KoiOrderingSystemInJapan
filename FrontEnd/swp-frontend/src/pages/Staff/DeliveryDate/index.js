@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, Col, List, Row, Steps } from "antd";
+import { Button, Card, Col, List, Pagination, Row, Steps } from "antd";
 import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 function DeliveryDate() {
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const [receivedPayment, setReceivedPayment] = useState({});
+      const [currentPage, setCurrentPage] = useState(1);
+      const pageSize = 4;
+
+      const getCurrentPageData = () => {
+            const startIndex = (currentPage - 1) * pageSize;
+            return deliveryList.slice(startIndex, startIndex + pageSize);
+      };
       const fetchApi = async () => {
             try {
                   setLoading(true);
@@ -140,7 +147,7 @@ function DeliveryDate() {
                   <Card>
                         <List
                               loading={loading}
-                              dataSource={deliveryList}
+                              dataSource={getCurrentPageData()}
                               renderItem={(item) => (
                                     <List.Item>
                                           <Row gutter={20}>
@@ -186,9 +193,21 @@ function DeliveryDate() {
                                                 </Col>
                                           </Row>
                                     </List.Item>
+
                               )}
                         />
+                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                              <Pagination
+                                    current={currentPage}
+                                    onChange={(page) => setCurrentPage(page)}
+                                    total={deliveryList.length}
+                                    pageSize={pageSize}
+                                    showSizeChanger={false}
+                                    showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} đặt chỗ`}
+                              />
+                        </div>
                   </Card>
+
             </>
       )
 }

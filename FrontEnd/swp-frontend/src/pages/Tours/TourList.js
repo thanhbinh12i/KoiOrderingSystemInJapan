@@ -21,52 +21,56 @@ function TourList() {
   }
 
   const today = new Date();
+  const fourDaysLater = new Date(today);
+  fourDaysLater.setDate(today.getDate() + 4);
 
   const filteredTours = tours.filter(
     (tour) =>
-      tour.tourDestinations &&
-      tour.tourDestinations.some(
-        (dest) => dest.type === "default" && dest.tourId === tour.tourId
-      ) &&
-      parseDate(tour.startTime).getTime() > today.getTime()
+      tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId) &&
+      parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
   );
   return (
     <>
-      <Row gutter={[16, 16]}>
-        {filteredTours.map((tour) => (
-          <>
-            <Col span={6} key={tour.tourId}>
-              <Card hoverable cover={<img alt={tour.tourName} src={image} />}>
-                <Card.Meta
-                  title={tour.tourName}
-                  description={`Khởi hành: ${tour.startTime}
-                  - Kết thúc: ${tour.finishTime}`}
-                />
-                <div className="price">{tour.price.toLocaleString()}đ</div>
-                <div className="participants">
-                  Số người tham gia: {tour.numberOfParticipate}
-                </div>
-                <Link to={`/tours/${tour.tourId}`}>
-                  <button className="details-button">Xem chi tiết</button>
-                </Link>
+      <h1>Các chuyến đi có sẵn của chúng tôi</h1>
+      <div className="tour-list">
+        <Row gutter={[16, 16]} className="tour-list__container">
+          {filteredTours.map((tour) => (
+            <>
+              <Col span={6} key={tour.tourId}>
+                <Card hoverable cover={<img alt={tour.tourName} src={image} className="tour-list__card" />}>
+                  <Card.Meta
+                    title={tour.tourName}
+                    description={`Khởi hành: ${tour.startTime} - Kết thúc: ${tour.finishTime}`}
+                  />
+                  <div className="tour-list__card-flex">
+                    <div className="tour-list__card-participants">
+                      Số người tham gia: {tour.numberOfParticipate}
+                    </div>
+                    <div className="tour-list__card-price">{tour.price.toLocaleString()} đ</div>
+                  </div>
+                  <Link to={`/tours/${tour.tourId}`}>
+                    <button className="tour-list__card-details-button">Xem chi tiết</button>
+                  </Link>
 
-                <Link
-                  to={`/book-tour/${tour.tourId}`}
-                  state={{
-                    tourName: tour.tourName,
-                    startTime: tour.startTime,
-                    finishTime: tour.finishTime,
-                    numberOfParticipate: tour.numberOfParticipate,
-                    price: tour.price,
-                  }}
-                >
-                  <Button>Đặt tour</Button>
-                </Link>
-              </Card>
-            </Col>
-          </>
-        ))}
-      </Row>
+                  <Link
+                    to={`/book-tour/${tour.tourId}`}
+                    state={{
+                      tourName: tour.tourName,
+                      startTime: tour.startTime,
+                      finishTime: tour.finishTime,
+                      numberOfParticipate: tour.numberOfParticipate,
+                      price: tour.price,
+                    }}
+                    className="tour-list__card-book-button"
+                  >
+                    <Button>Đặt tour</Button>
+                  </Link>
+                </Card>
+              </Col>
+            </>
+          ))}
+        </Row>
+      </div>
     </>
   );
 }

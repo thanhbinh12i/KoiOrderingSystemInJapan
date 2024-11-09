@@ -9,15 +9,24 @@ function MyBooking() {
       const [quotation, setQuotation] = useState([]);
       const [bill, setBill] = useState([]);
       const userId = localStorage.getItem("id");
-      const [isModalVisible, setIsModalVisible] = useState(false);
+      const [modalState, setModalState] = useState({
+            isVisible: false,
+            type: null
+      });
       const navigate = useNavigate();
       const [form] = Form.useForm();
-      const showModal = () => {
-            setIsModalVisible(true);
+      const showModal = (type, record = null) => {
+            setModalState({
+                  isVisible: true,
+                  type: type
+            });
       };
 
       const handleCancel = () => {
-            setIsModalVisible(false);
+            setModalState({
+                  isVisible: false,
+                  type: null
+            });
       };
       const handleOk = async () => {
             handleCancel();
@@ -51,6 +60,38 @@ function MyBooking() {
             }
             fetchApi();
       }, [userId])
+
+      useEffect(() => {
+            const fetchApi = async () => {
+                  for (const item of quotation) {
+                        if (item.status === "Đã xác nhận" || item.status === "Xác nhận yêu cầu") {
+                              const today = new Date();
+                              const oneDayBeforeStart = parseDate(item.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+
+
+                              if (isWithin24Hours) {
+                                    const quotationData = {
+                                          "priceOffer": item.priceOffer,
+                                          "status": "Quá hạn thanh toán",
+                                          "approvedDate": item.approvedDate,
+                                          "description": item.description,
+                                    };
+                                    await put(`quotation/update/${item.quotationId}`, quotationData);
+                              }
+                        }
+                  }
+            }
+            fetchApi();
+      }, [quotation])
+      const parseDate = (dateStr) => {
+            const [day, month, year] = dateStr.split('-');
+            return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+      }
+
+      const today = new Date();
+
+
       const columns = [
             {
                   title: 'Id',
@@ -79,7 +120,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu", "Quá hạn thanh toán"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Chi tiết chuyến đi',
@@ -103,6 +144,7 @@ function MyBooking() {
                                           fetchApi();
                                     }
                               }
+
                               return (
                                     <>
                                           <Tooltip title="Hủy đặt chỗ chuyến đi này">
@@ -129,7 +171,7 @@ function MyBooking() {
                                     const response = await put(`quotation/update/${record.quotationId}`, quotationData);
                                     if (response) {
                                           fetchApi();
-                                          setIsModalVisible(false);
+                                          handleOk();
                                     }
                               }
                               return (
@@ -139,38 +181,41 @@ function MyBooking() {
                                                       Thanh toán
                                                 </Button>
                                           </Link>
-                                          {(record.tourDetail.tourName === "Tour Custom" && record.status === "Đã xác nhận")  && (
+                                          {(record.tourDetail.tourName === "Tour Custom" && record.status === "Đã xác nhận") && (
                                                 <>
-                                                      <Button color="default" variant="solid" onClick={() => showModal()} className="mr-10">Yêu cầu giá khác</Button>
+                                                      <Button color="default" variant="solid" onClick={() => showModal("noconfirm")} className="mr-10">Yêu cầu giá khác</Button>
                                                 </>
                                           )}
-                                          <Modal
-                                                title="Yêu cầu thương lượng giá chuyến đi"
-                                                open={isModalVisible}
-                                                onCancel={handleCancel}
-                                                footer={null}
-                                          >
-                                                <Form
-                                                      onFinish={handleNoConfirm}
-                                                      layout="vertical"
-                                                      form={form}
-                                                      initialValues={{
-                                                            description: "Xin chào, tôi rất quan tâm đến chuyến đi này nhưng tôi muốn thảo luận thêm về giá. Liệu có thể điều chỉnh mức giá phù hợp hơn không? Cảm ơn!"
-                                                      }}
+                                          {modalState.isVisible && modalState.type === "noconfirm" && (
+                                                <Modal
+                                                      title="Yêu cầu thương lượng giá chuyến đi"
+                                                      open={modalState.isVisible}
+                                                      onCancel={handleCancel}
+                                                      footer={null}
                                                 >
-                                                      <Form.Item label="Lời nhắn" name="description">
-                                                            <Input.TextArea
-                                                                  rows={4}
-                                                                  style={{ marginBottom: '10px' }}
-                                                            />
-                                                      </Form.Item>
-                                                      <Form.Item>
-                                                            <Button type="primary" htmlType="submit">
-                                                                  Gửi yêu cầu
-                                                            </Button>
-                                                      </Form.Item>
-                                                </Form>
-                                          </Modal>
+                                                      <Form
+                                                            onFinish={handleNoConfirm}
+                                                            layout="vertical"
+                                                            form={form}
+                                                            initialValues={{
+                                                                  description: "Xin chào, tôi rất quan tâm đến chuyến đi này nhưng tôi muốn thảo luận thêm về giá. Liệu có thể điều chỉnh mức giá phù hợp hơn không? Cảm ơn!"
+                                                            }}
+                                                      >
+                                                            <Form.Item label="Lời nhắn" name="description">
+                                                                  <Input.TextArea
+                                                                        rows={4}
+                                                                        style={{ marginBottom: '10px' }}
+                                                                  />
+                                                            </Form.Item>
+                                                            <Form.Item>
+                                                                  <Button type="primary" htmlType="submit">
+                                                                        Gửi yêu cầu
+                                                                  </Button>
+                                                            </Form.Item>
+                                                      </Form>
+                                                </Modal>
+                                          )}
+
 
                                           <Tooltip title="Hủy đặt chỗ chuyến đi này">
                                                 <Popconfirm title="Bạn chắc chắn có muốn hủy đặt chỗ không?" onConfirm={handleCancelBooking}>
@@ -180,12 +225,20 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã thanh toán") {
+                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+                              if (isWithin24Hours) {
+                                    return <></>
+                              }
                               return (
                                     <>
-                                          <Button color="primary" danger onClick={() => showModal()}>
+                                          <Button color="primary" danger onClick={() => showModal("cancelbooking")}>
                                                 Hủy chuyến đi
                                           </Button>
-                                          <CancelBooking record={record} isModalVisible={isModalVisible} handleOk={handleOk} handleCancel={handleCancel} />
+                                          {modalState.isVisible && modalState.type === "cancelbooking" && (
+                                                <CancelBooking record={record} isModalVisible={modalState.isVisible} handleOk={handleOk} handleCancel={handleCancel} />
+
+                                          )}
                                     </>
                               )
                         } else if (record.status === "Đã check-in") {
@@ -203,7 +256,7 @@ function MyBooking() {
                                     const response = await put(`quotation/update/${record.quotationId}`, quotationData);
                                     if (response) {
                                           fetchApi();
-                                          setIsModalVisible(false);
+                                          handleOk();
                                           navigate(`/my-orders/feedback/${record.userId}`);
                                     }
                               }
@@ -221,15 +274,17 @@ function MyBooking() {
                                                 <NavLink to={`/order-koi/${relatedBill.billId}`} state={{ tourId: record.tourId }} className="pr-10">
                                                       <Button type="primary">Mua cá nào</Button>
                                                 </NavLink>
-                                                <Button type="primary" onClick={() => showModal()}>Không mua cá</Button>
-                                                <Modal
-                                                      title="Xác nhận không mua cá"
-                                                      open={isModalVisible}
-                                                      onOk={handleNoBuy}
-                                                      onCancel={handleCancel}
-                                                >
-                                                      <p>Bạn có chắc chắn không mua cá?</p>
-                                                </Modal>
+                                                <Button type="primary" onClick={() => showModal("nobuy")}>Không mua cá</Button>
+                                                {modalState.isVisible && modalState.type === "nobuy" && (
+                                                      <Modal
+                                                            title="Xác nhận không mua cá"
+                                                            open={modalState.isVisible}
+                                                            onOk={handleNoBuy}
+                                                            onCancel={handleCancel}
+                                                      >
+                                                            <p>Bạn có chắc chắn không mua cá?</p>
+                                                      </Modal>
+                                                )}
                                           </>
 
                                     );

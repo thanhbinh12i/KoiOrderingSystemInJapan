@@ -9,7 +9,6 @@ namespace Project_SWP391.Model
         public int FarmImageId { get; set; }
         public string UrlImage{ get; set; } =string.Empty;
 
-        // Foreign key
         public int FarmId { get; set; }
         [ForeignKey(nameof(FarmId))]
         public KoiFarm KoiFarm { get; set; }

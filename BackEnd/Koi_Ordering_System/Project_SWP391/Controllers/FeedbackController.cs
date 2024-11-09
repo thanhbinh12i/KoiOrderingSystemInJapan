@@ -51,31 +51,8 @@ namespace Project_SWP391.Controllers
             }
             return Ok(feedback);
         }
-        //[HttpPost("create/{userId}")]
-        //public async Task<IActionResult> Create(string userId, [FromBody] CreateFeedbackDto feedback)
-        //{
-
-        //    if (feedback == null)
-        //    {
-        //        return BadRequest("Missing data");
-        //    }
-        //    var user = await _userManager.FindByIdAsync(userId);
-        //    if (user == null)
-        //    {
-        //        return BadRequest("User does not exist");
-        //    }
-
-        //    var feedbackModel = feedback.ToCreateFeedbackDto(userId);
-        //    if (feedbackModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    await _feedbackRepo.CreateAsync(feedbackModel);
-        //    return Ok();
-        //}
-
+     
         [HttpPost("create/{userId}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Create([FromForm] List<IFormFile> files, [FromForm] CreateFeedbackDto createFeedback, [FromRoute] string userId)
         {
             try
@@ -131,7 +108,6 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{feedbackId:int}")]
-        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Update([FromBody] UpdateFeedbackDto feedback, int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.UpdateAsync(feedbackId, feedback);
@@ -144,7 +120,6 @@ namespace Project_SWP391.Controllers
             return Ok(feedbackModel);
         }
         [HttpDelete("delete/{feedbackId:int}")]
-        [Authorize]
         public async Task<IActionResult> Delete(int feedbackId)
         {
             var feedbackModel = await _feedbackRepo.DeleteAsync(feedbackId);

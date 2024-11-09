@@ -16,3 +16,27 @@
 .pr-10{
   padding-right: 10px;
 }
+/* CSS cho các phần tử không thuộc Ant Design */
+body {
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+body.dark {
+  background-color: #141414;
+  color: white;
+}
+
+/* Override một số style mặc định của Ant Design nếu cần */
+.ant-layout {
+  background: transparent;
+}
+
+.ant-layout-header {
+  background: transparent;
+  padding: 0 24px;
+}
+
+.ant-layout-footer {
+  background: transparent;
+}

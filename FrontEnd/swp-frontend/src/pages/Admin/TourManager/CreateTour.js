@@ -18,17 +18,29 @@ function CreateTour() {
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [farms, setFarms] = useState([]);
-  const disablePastDates = (current) => {
-    return current && current < moment().startOf('day');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const disableStartDates = (current) => {
+    return current && current < moment().add(10, 'days').startOf("day");
   };
+  const disableEndDate = (current) => {
+    if (!startDate) return true;
+    const sevenDaysLater = moment().add(10, 'days').startOf("day");
+    return current && (current <= sevenDaysLater || current.valueOf() <= startDate.valueOf());
+  };
+
+  useEffect(() => {
+    if (startDate) {
+      form.setFieldValue('finishTime', null);
+      setEndDate(null);
+    }
+  }, [form, startDate]);
   const handleFinish = async (values) => {
     try {
       setLoading(true);
 
       const allTour = await get("tour/view-all");
-      const isDuplicate = allTour.some(
-        (tour) => values.tourName.trim() === tour.tourName
-      );
+      const isDuplicate = allTour.some((tour) => values.tourName.trim() === tour.tourName);
       if (isDuplicate) {
         messageApi.error("Đã tồn tại tour. Yêu cập nhập lại tên mới.");
         return;
@@ -123,7 +135,12 @@ function CreateTour() {
                 { required: true, message: "Vui lòng chọn ngày bắt đầu!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+              <DatePicker
+                style={{ width: "100%" }}
+                format="DD-MM-YYYY"
+                disabledDate={disableStartDates}
+                onChange={(date) => setStartDate(date)}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -134,7 +151,12 @@ function CreateTour() {
                 { required: true, message: "Vui lòng chọn ngày kết thúc!" },
               ]}
             >
-              <DatePicker style={{ width: "100%" }} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+              <DatePicker
+                style={{ width: "100%" }}
+                format="DD-MM-YYYY"
+                disabledDate={disableEndDate}
+                onChange={(date) => setEndDate(date)}
+              />
             </Form.Item>
           </Col>
           <Col span={12}>

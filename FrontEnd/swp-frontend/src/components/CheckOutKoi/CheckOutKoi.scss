@@ -1,0 +1,82 @@
+.shopping-cart-container {
+    padding: 24px;
+}
+
+.shopping-cart-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cart-container {
+    margin-left: 2%;
+}
+
+.shopping-cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.item-details {
+    flex: 2;
+    font-size: 16px;
+}
+
+.item-quantity {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+}
+
+.item-price {
+    flex: 1;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.total-price {
+    margin-top: 16px;
+    text-align: right;
+
+    h2 {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}
+
+.payment-info {
+    margin-left: 50px;
+}
+
+.payment-title {
+    margin-bottom: 16px;
+}
+
+.payment-form {
+    padding: 24px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shipping-fee,
+.deposit-fee {
+    margin-bottom: 16px;
+    padding: 8px 0;
+    font-size: 16px;
+}
+
+.final-total {
+    margin-bottom: 16px;
+    padding: 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.pay-button {
+    font-size: 16px;
+    padding: 12px 0;
+}

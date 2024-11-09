@@ -40,15 +40,6 @@ namespace Project_SWP391.Controllers
             }
             return Ok(farmImage.ToFarmImageDto());
         }
-        //[HttpPost("Create/{farmId:int}")]
-        //public async Task<IActionResult> Create(int farmId, CreateFarmImageDto farmImageDto)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    if (!await _koiFarmRepo.ExistKoiFarm(farmId)) return BadRequest("Farm does not exist!!!!");
-        //    var farmImageModel = farmImageDto.ToCreateFarmImageDto(farmId);
-        //    await _farmImageRepo.CreateAsync(farmImageModel);
-        //    return CreatedAtAction(nameof(GetById), new { farmId = farmImageModel.FarmId }, farmImageModel.ToFarmImageDto());
-        //}
         [HttpPost("upload/{farmId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UploadImages(int farmId, [FromForm] List<IFormFile> files)
@@ -116,15 +107,6 @@ namespace Project_SWP391.Controllers
             if (farmImageModel == null) return NotFound("Farm image not found!!!");
             return NoContent();
         }
-        //[HttpPut("update/{imageId:int}")]
-        //public async Task<IActionResult> Update(int imageId, [FromBody] UpdateFarmImageDto farmImageDto)
-        //{
-        //    if (!ModelState.IsValid) return BadRequest(ModelState);
-        //    var farmImageModel = await _farmImageRepo.UpdateAsync(imageId, farmImageDto);
-        //    if (farmImageModel == null) return NotFound("Farm image not found!!!");
-
-        //    return Ok(farmImageModel.ToFarmImageDto());
-        //}
         [HttpPut("update/{farmImageId:int}")]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> UpdateImages(int farmImageId, [FromForm] List<IFormFile> files)
@@ -194,7 +176,5 @@ namespace Project_SWP391.Controllers
                 return StatusCode(500, $"An error occurred while updating images: {ex.Message}");
             }
         }
-
-
     }
 }

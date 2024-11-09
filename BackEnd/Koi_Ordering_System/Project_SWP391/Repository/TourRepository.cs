@@ -81,8 +81,8 @@ namespace Project_SWP391.Repository
         {
             return await _context.TourDestinations
                                   .Where(td => td.FarmId == farmId)
-                                  .Include(td => td.Tour) 
-                                  .ThenInclude(t => t.TourDestinations) 
+                                  .Include(td => td.Tour)
+                                  .ThenInclude(t => t.TourDestinations)
                                   .Select(td => td.Tour)
                                   .Distinct()
                                   .ToListAsync();
@@ -98,23 +98,23 @@ namespace Project_SWP391.Repository
                           join kv in _context.KoiVarieties on vok.VarietyId equals kv.VarietyId
                           where kv.VarietyId == varietyId
                           select t)
-          .Distinct()
-          .Include(t => t.TourDestinations)
-          .ToListAsync();
+                          .Distinct()
+                          .Include(t => t.TourDestinations)
+                          .ToListAsync();
         }
 
         public async Task<Tour> GetByQuotationIdAsync(int quotationId)
         {
             return await (from t in _context.Tours
-                          join td in _context.Quotations on t.TourId equals td.TourId
-                          where td.QuotationId == quotationId
+                          join q in _context.Quotations on t.TourId equals q.TourId
+                          where q.QuotationId == quotationId
                           select t)
                           .FirstOrDefaultAsync();
         }
 
         public async Task<List<Tour?>> GetByDateAsync(DateTime? start, DateTime? end)
         {
-            var tours = await _context.Tours.ToListAsync(); // Tải toàn bộ bản ghi
+            var tours = await _context.Tours.Include(x => x.TourDestinations).ToListAsync(); // Tải toàn bộ bản ghi
 
             return tours.Where(tour => IsDateRangeValid(tour.StartTime, tour.FinishTime, start, end)).ToList();
         }
@@ -127,6 +127,18 @@ namespace Project_SWP391.Repository
                 return startDate >= start && endDate <= end;
             }
             return false;
+        }
+
+        public async Task<List<Tour?>> GetByBillIdAsync(int billId)
+        {
+            return await (from t in _context.Tours
+                          join q in _context.Quotations on t.TourId equals q.TourId
+                          join b in _context.Bills on q.QuotationId equals b.QuotationId
+                          where b.BillId == billId
+                          select t)
+                         .Distinct()
+                         .Include(t => t.TourDestinations)
+                         .ToListAsync();
         }
     }
 }

@@ -59,11 +59,6 @@ namespace Project_SWP391.Controllers
             {
                 return NotFound($"No TourDestination found for TourId {tourId}");
             }
-            //var tourDestinationDto = tourDestination.ToTourDestinationDto();
-            //if (tourDestinationDto == null)
-            //{
-            //    return NotFound();
-            //}
             return Ok(tourDestination);
         }
 
@@ -94,7 +89,7 @@ namespace Project_SWP391.Controllers
         }
 
         [HttpPut("update/{farmId:int}&{tourId:int}")]
-        [Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager,SalesStaff")]
         public async Task<IActionResult> Update([FromBody] UpdateTourDestinationDto tourDestination, int farmId, int tourId)
         {
             var tourDestinationModel = await _tourDestinationRepo.UpdateAsync(farmId, tourId, tourDestination);

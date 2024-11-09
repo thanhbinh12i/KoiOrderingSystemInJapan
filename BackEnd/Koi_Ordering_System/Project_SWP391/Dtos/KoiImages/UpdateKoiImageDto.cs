@@ -3,6 +3,6 @@
     public class UpdateKoiImageDto
     {
         public string Url { get; set; }
-        public int KoiId { get; set; }
+        public int KoiImageId { get; set; }
     }
 }

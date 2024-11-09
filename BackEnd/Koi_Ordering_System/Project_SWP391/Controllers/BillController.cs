@@ -79,8 +79,6 @@ namespace Project_SWP391.Controllers
                 return NotFound();
             }
             await _billRepo.CreateAsync(billModel);
-
-            //return CreatedAtAction(nameof(GetById), new { id = billModel.BillId }, billModel);
             return Ok(billModel.ToBillDtoFromBill());
         }
 

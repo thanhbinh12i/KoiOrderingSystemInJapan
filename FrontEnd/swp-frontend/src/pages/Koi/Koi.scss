@@ -1,51 +1,69 @@
-.koi-container {
-  margin-top: 20px;
-  padding-bottom: 70px; 
-}
-
-.koi-card {
-  height: 100%;
+.koi {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
 
-  .ant-card-cover {
-    flex: 0 0 auto;
+  &__container {
+    max-width: 1300px;
+    margin: 0 auto;
   }
 
-  .ant-card-body {
-    flex: 1 1 auto;
-    display: flex;
-    flex-direction: column;
+  &__link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    height: 100%;
   }
 
-  .ant-typography {
-    &.ant-typography-h4 {
-      margin-bottom: 8px;
+  &__card {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    height: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-5px);
     }
-    &.ant-typography-h5 {
-      margin-bottom: 4px;
+
+    &-image {
+      width: 100%;
+      height: 420px; 
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
+
+    &-title {
+      height: 40px;
+      margin: 16px 0 8px !important;
+      font-size: 18px !important;
+      color: #333;
+    }
+
+    &-info {
+      margin-top: 20px;
+      h4{
+        color: #f5222d;
+      }
+      h5 {
+        margin: 8px 0 !important;
+        font-size: 16px !important;
+        color: #666;
+      }
     }
   }
+}
 
-  .ant-typography-paragraph {
-    flex: 1 1 auto;
-    margin-bottom: 0;
+@media (max-width: 768px) {
+  .koi-detail-container {
+    padding: 16px;
   }
 }
 
-.koi-image {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  border: 1px solid #c54125;
+.pagination {
+  display: flex;
+  justify-content: center;
 }
-
-@media (max-width: 576px) {
-  .ant-col {
-    margin-bottom: 16px;
-  }
-}
-
 .koi-detail-container {
   padding: 24px;
   background-color: #f0f2f5;
@@ -116,16 +134,4 @@
       }
     }
   }
-}
-
-@media (max-width: 768px) {
-  .koi-detail-container {
-    padding: 16px;
-  }
-}
-
-// Thêm CSS cho pagination
-.pagination {
-  display: flex;
-  justify-content: center;
 }
