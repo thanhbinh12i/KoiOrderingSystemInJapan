@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, Col, List, Pagination, Row, Steps } from "antd";
+import { Button, Card, Col, DatePicker, List, Modal, Pagination, Row, Steps } from "antd";
 import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import "./Delivery.scss";
 
 function DeliveryDate() {
       const [deliveryList, setDeliveryList] = useState([]);
       const [loading, setLoading] = useState(true);
       const [receivedPayment, setReceivedPayment] = useState({});
+      const [currentItem, setCurrentItem] = useState(null);
+      const [modalVisible, setModalVisible] = useState(false);
+      const [newDate, setNewDate] = useState(null);
       const [currentPage, setCurrentPage] = useState(1);
       const pageSize = 4;
 
@@ -20,7 +24,7 @@ function DeliveryDate() {
                   const response = await get("delivery-status/view-all");
                   if (response) {
                         const filteredList = response.filter(item => item.estimatedDate);
-                        setDeliveryList(filteredList);
+                        setDeliveryList(filteredList.reverse());
                         const paymentState = {};
                         response.forEach(item => {
                               paymentState[item.billId] = false;
@@ -142,72 +146,126 @@ function DeliveryDate() {
             }
 
       }
+      const showModal = (item) => {
+            setCurrentItem(item);
+            setModalVisible(true);
+      };
+      const handleUpdateDeliveryDate = async () => {
+            if (currentItem && newDate) {
+                  const data = {
+                        "deliveryAddress": currentItem.deliveryAddress,
+                        "deliveryStatusText": "Đang chờ vận chuyển",
+                        "estimatedDate": newDate.format('DD-MM-YYYY')
+                  }
+                  const response = await put(`delivery-status/update/${currentItem.deliveryStatusId}`, data);
+                  if (response) {
+                        setDeliveryList(prevList =>
+                              prevList.map(item => item.billId === currentItem.billId
+                                    ? { ...item, deliveryStatusText: currentItem.deliveryStatusText, estimatedDate: newDate.format('DD-MM-YYYY') }
+                                    : item
+                              )
+                        );
+                  }
+            }
+            setModalVisible(false);
+            setNewDate(null);
+      }
+      const handleCancel = () => {
+            setModalVisible(false);
+      };
+
       return (
             <>
-                  <Card>
-                        <List
-                              loading={loading}
-                              dataSource={getCurrentPageData()}
-                              renderItem={(item) => (
-                                    <List.Item>
-                                          <Row gutter={20}>
-                                                <Col span={24}>
-                                                      <p>Đơn hàng số <strong>{item.billId}</strong></p>
-                                                      <p>Địa chỉ: <strong>{item.deliveryAddress}</strong></p>
-                                                      <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
-                                                      <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
-                                                </Col>
-                                                {(item.deliveryStatusText === 'Đơn hàng đã giao đến bạn' && !receivedPayment[item.billId] && (
-                                                      <Button type="primary" onClick={() => handlePaymentConfirmation(item)}>
-                                                            Xác nhận đã nhận tiền
-                                                      </Button>
-                                                )) || (item.deliveryStatusText.includes('Từ chối nhận hàng') && (
-                                                      <Button type="primary" onClick={() => handleDepositRefund(item)}>
-                                                            Xác nhận hoàn tiền cọc
-                                                      </Button>
-                                                ))}
-                                                <Col span={24}>
-                                                      <Steps
-                                                            items={steps.map((step, index) => ({
-                                                                  title: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
-                                                                        ? 'Từ chối nhận hàng'
-                                                                        : step.title,
-                                                                  icon: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
-                                                                        ? <CloseCircleOutlined />
-                                                                        : step.icon,
-                                                                  status: getStepStatus(item.deliveryStatusText, index),
-                                                                  description: !isCompleted(item.deliveryStatusText) && (
-                                                                        <Button
-                                                                              type="primary"
-                                                                              onClick={() => handleUpdate(item, step.title)}
-                                                                              disabled={
-                                                                                    index !== getCurrentStep(item.deliveryStatusText) + 1 ||
-                                                                                    isCompleted(item.deliveryStatusText)
-                                                                              }
-                                                                        >
-                                                                              Cập nhật
+                  <div className="delivery">
+                        <Card className="delivery__list">
+                              <List
+                                    loading={loading}
+                                    dataSource={getCurrentPageData()}
+                                    renderItem={(item) => (
+                                          <List.Item>
+                                                <Row gutter={20} >
+                                                      <Col span={12} className="delivery__info">
+                                                            <p>Đơn hàng số <strong>{item.billId}</strong></p>
+                                                            <p>Địa chỉ: <strong>{item.deliveryAddress}</strong></p>
+                                                            <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
+                                                            <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
+                                                      </Col>
+                                                      <Col span={12} className="delivery__actions">
+                                                            <Button className="delivery__detail">Xem chi tiết đơn hàng</Button>
+                                                            <div className="delivery__status">
+                                                                  {(item.deliveryStatusText === 'Đơn hàng đã giao đến bạn' && !receivedPayment[item.billId] && (
+                                                                        <Button type="primary" onClick={() => handlePaymentConfirmation(item)}>
+                                                                              Xác nhận đã nhận tiền
                                                                         </Button>
-                                                                  )
-                                                            }))}
-                                                      />
-                                                </Col>
-                                          </Row>
-                                    </List.Item>
+                                                                  )) || (item.deliveryStatusText.includes('Từ chối nhận hàng') && (
+                                                                        <Button type="primary" onClick={() => handleDepositRefund(item)}>
+                                                                              Xác nhận hoàn tiền cọc
+                                                                        </Button>
+                                                                  )) || (['Đang chờ vận chuyển', 'Đã nhận hàng', 'Đang vận chuyển'].includes(item.deliveryStatusText) && (
 
-                              )}
-                        />
-                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-                              <Pagination
-                                    current={currentPage}
-                                    onChange={(page) => setCurrentPage(page)}
-                                    total={deliveryList.length}
-                                    pageSize={pageSize}
-                                    showSizeChanger={false}
-                                    showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} đặt chỗ`}
+                                                                        <>
+                                                                              <Button type="primary" onClick={() => showModal(item)}>
+                                                                                    Cập nhật ngày giao hàng
+                                                                              </Button>
+                                                                              <Modal
+                                                                                    title="Cập nhật ngày giao hàng"
+                                                                                    visible={modalVisible}
+                                                                                    onOk={handleUpdateDeliveryDate}
+                                                                                    onCancel={handleCancel}
+                                                                              >
+                                                                                    {currentItem && (
+                                                                                          <>
+                                                                                                <p>Nhập ngày giao hàng: </p>
+                                                                                                <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" />
+                                                                                          </>
+                                                                                    )}
+                                                                              </Modal></>
+                                                                  ))}
+                                                            </div>
+
+                                                      </Col>
+                                                      <Col span={24} className="delivery__step">
+                                                            <Steps
+                                                                  items={steps.map((step, index) => ({
+                                                                        title: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
+                                                                              ? 'Từ chối nhận hàng'
+                                                                              : step.title,
+                                                                        icon: (item.deliveryStatusText.includes('Từ chối nhận hàng') || item.deliveryStatusText === 'Đã hoàn tiền cọc') && index === 4
+                                                                              ? <CloseCircleOutlined />
+                                                                              : step.icon,
+                                                                        status: getStepStatus(item.deliveryStatusText, index),
+                                                                        description: !isCompleted(item.deliveryStatusText) && (
+                                                                              <Button
+                                                                                    type="primary"
+                                                                                    onClick={() => handleUpdate(item, step.title)}
+                                                                                    disabled={
+                                                                                          index !== getCurrentStep(item.deliveryStatusText) + 1 ||
+                                                                                          isCompleted(item.deliveryStatusText)
+                                                                                    }
+                                                                              >
+                                                                                    Cập nhật
+                                                                              </Button>
+                                                                        )
+                                                                  }))}
+                                                            />
+                                                      </Col>
+                                                </Row>
+                                          </List.Item>
+
+                                    )}
                               />
-                        </div>
-                  </Card>
-
+                              <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                    <Pagination
+                                          current={currentPage}
+                                          onChange={(page) => setCurrentPage(page)}
+                                          total={deliveryList.length}
+                                          pageSize={pageSize}
+                                          showSizeChanger={false}
+                                          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} đặt chỗ`}
+                                    />
+                              </div>
+                        </Card>
+                  </div>
             </>
       )
 }
