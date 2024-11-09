@@ -119,8 +119,8 @@ function CreateKoi() {
           headers: { Authorization: "Bearer " + localStorage.getItem("token") },
         }
       );
-
-      if (!response.ok) {
+      console.log(response);
+      if (!response) {
         throw new Error("Lỗi tải lên hình ảnh");
       }
 
@@ -182,17 +182,16 @@ function CreateKoi() {
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item
-              label="Năm"
-              name="yob"
-              rules={[{ required: true, message: "Vui lòng nhập năm sinh!" }]}
-            >
-              <DatePicker
-                picker="year"
-                style={{ width: "100%" }}
-                placeholder="Chọn năm"
-                disabledDate={disableFutureDates}
-              />
+            <Form.Item label="Năm" name="yob" rules={[{ required: true, message: 'Vui lòng nhập năm sinh!' }, {
+              validator: (_, value) => {
+                const currentYear = new Date().getFullYear();
+                if (value && value > 2000 && value <= currentYear) {
+                  return Promise.resolve();
+                }
+                return Promise.reject('Năm sinh phải lớn hơn 2000 và nhỏ hơn hoặc bằng năm hiện tại');
+              },
+            },]}>
+              <Input type="number" />
             </Form.Item>
           </Col>
           <Col span={8}>
