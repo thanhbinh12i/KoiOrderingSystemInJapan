@@ -1,0 +1,25 @@
+.payment-error-page {
+      min-height: 80vh;
+      background: #1070d0;
+      padding: 40px 20px;
+
+      .error-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+
+            &:hover {
+                  transform: translateY(-5px);
+                  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            }
+      }
+
+      .error-icon {
+            font-size: 72px;
+            color: red;
+      }
+}

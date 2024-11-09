@@ -1,7 +1,7 @@
 import React from "react";
 import { Menu, Typography, Avatar, Button } from "antd";
 import {
-  CalendarOutlined,
+  DropboxOutlined,
   HistoryOutlined,
   SettingOutlined,
   GoogleOutlined,
@@ -72,13 +72,13 @@ function Sidebar() {
         <Menu.Item key="account" icon={<SettingOutlined />}>
           <Link to="/profile">Tài khoản</Link>
         </Menu.Item>
-        <Menu.Item key="password" icon={<GoogleOutlined />}>
+        <Menu.Item key="password" icon={<SettingOutlined />}>
           <Link to="/settings"> Mật khẩu & Bảo mật</Link>
         </Menu.Item>
-        <Menu.Item key="my-bookings" icon={<CalendarOutlined />}>
+        <Menu.Item key="my-bookings" icon={<HistoryOutlined />}>
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
-        <Menu.Item key="my-bills" icon={<HistoryOutlined />}>
+        <Menu.Item key="my-bills" icon={<DropboxOutlined  />}>
           <Link to="/my-orders">Đơn hàng của tôi </Link>
         </Menu.Item>
       </Menu>
