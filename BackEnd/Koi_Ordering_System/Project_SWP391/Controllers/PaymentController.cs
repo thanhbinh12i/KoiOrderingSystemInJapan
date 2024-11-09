@@ -58,9 +58,16 @@ namespace Project_SWP391.Controllers
             {
                 var response = _vnPayService.PaymentExecute(Request.Query);
                 var quotationId = response.PaymentId;
+                if (Request.Query["vnp_ResponseCode"] == "00")
+                {
+                    return Redirect($"https://koidaynevn.vercel.app/pay-success/{quotationId}");
+                }
+                else
+                {
+                    return Redirect("https://koidaynevn.vercel.app/pay-cancel");
+                }
 
-                // Redirect to the specified URL
-                return Redirect($"https://koidaynevn.vercel.app/pay-success/{quotationId}");
+                
             }
             catch (Exception ex)
             {
