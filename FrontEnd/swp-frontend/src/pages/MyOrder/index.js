@@ -120,7 +120,7 @@ function MyOrder() {
             <>
                   <div className="my-order">
                         <h2>Danh sách đơn hàng</h2>
-                        <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
+                        <Table dataSource={deliveryList} columns={columns} loading={loading} bordered/>
                   </div>
             </>
       );

@@ -13,7 +13,6 @@ import {
 import {
   ClockCircleOutlined,
   UserOutlined,
-  DollarOutlined,
   StarOutlined,
   GlobalOutlined,
   EnvironmentOutlined,
@@ -77,15 +76,6 @@ function TourDetail() {
                   }
                 >
                   {tour.numberOfParticipate}
-                </Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <Space>
-                      <DollarOutlined /> Giá
-                    </Space>
-                  }
-                >
-                  {tour.price.toLocaleString()} đ
                 </Descriptions.Item>
               </Descriptions>
 
