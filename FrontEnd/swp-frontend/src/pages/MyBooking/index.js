@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { del, get, put } from "../../utils/request";
-import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip, Typography } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
+
+const { Text } = Typography;
 
 function MyBooking() {
       const [quotation, setQuotation] = useState([]);
@@ -302,7 +304,15 @@ function MyBooking() {
             <>
                   <div className="booking-list-container">
                         <h2>Danh sách đặt chỗ</h2>
-                        <Table columns={columns} dataSource={quotation} pagination={false} bordered />
+                        <Table columns={columns} dataSource={quotation} rowKey="quotationId" bordered
+                              expandable={{
+                                    expandedRowRender: (record) => (
+                                          <div style={{ margin: 0 }}>
+                                                <Text strong>Lời nhắn: <strong>{record.description}</strong></Text>
+                                          </div>
+                                    ),
+                              }}
+                        />
                   </div>
 
             </>

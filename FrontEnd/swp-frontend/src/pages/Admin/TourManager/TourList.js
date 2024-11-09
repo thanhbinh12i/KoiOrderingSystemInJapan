@@ -90,7 +90,7 @@ function TourList() {
             </Tooltip>
           </Link>
           {
-            parseDate(record.startTime).getTime() > fourDaysLater.getTime() && (
+            (parseDate(record.startTime).getTime() >= fourDaysLater.getTime()) && (
               <>
                 <DeleteTour record={record} handleReload={fetchApi} />
                 <Link to={`/tour-update/${record.tourId}`}>
