@@ -41,7 +41,7 @@ function CheckOutKoi() {
 
                   if (paymentResponse) {
                         const data = {
-                              price: price, 
+                              deliveryFee: selectedDeliveryFee, 
                               totalPrice: totalPrice, 
                               deposit: deposit, 
                               id: params.id, 

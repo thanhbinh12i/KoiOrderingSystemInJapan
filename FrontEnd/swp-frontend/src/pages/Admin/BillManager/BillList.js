@@ -8,11 +8,7 @@ function BillList() {
     try {
       const response = await get("bill/view-all");
       if (response) {
-        const updatedData = response.map((bill) => ({
-          ...bill,
-          total: (bill.tourPrice || 0) + (bill.koiPrice || 0),
-        }));
-        setBillData(updatedData);
+        setBillData(response);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -25,6 +21,11 @@ function BillList() {
   }, []);
 
   const columns = [
+    {
+      title: "Đơn hàng",
+      dataIndex: "billId",
+      key: "billId",
+    },
     {
       title: "User ID",
       dataIndex: "userId",
@@ -68,11 +69,16 @@ function BillList() {
     },
     {
       title: "Tổng phí thanh toán",
-      dataIndex: "total",
-      key: "total",
-      render: (_, record) => (
-        <strong>{record.total?.toLocaleString()}</strong>
-      )
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      render: (_, record) => {
+        if(record.koiPrice > 0){
+          return <strong>{record.totalPrice?.toLocaleString()}</strong>
+        }else{
+          const totalPrice = record.tourPrice;
+          return <strong>{totalPrice?.toLocaleString()}</strong>
+        }
+      }
     },
   ];
 

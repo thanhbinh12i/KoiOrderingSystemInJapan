@@ -61,7 +61,7 @@ const PaymentSuccess = () => {
                 const koiPrice = paymentData.totalPrice;
                 const dataToUpdate = {
                     "koiPrice": koiPrice,
-                    "totalPrice": currentBill.tourPrice + koiPrice,
+                    "totalPrice": currentBill.tourPrice + koiPrice + paymentData.deliveryFee,
                     "paymentDate": getTimeCurrent()
                 }
                 const response = await put(`bill/update/${paymentData.id}`, dataToUpdate);
@@ -81,7 +81,7 @@ const PaymentSuccess = () => {
                     const payStatusResponse = await post(`payStatus/create/${paymentData.id}`, dataPayStatus);
                     if (deliveryResponse || payStatusResponse) {
                         setBill(currentBill);
-                        setPrice(paymentData.price);
+                        setPrice(paymentData.deposit + paymentData.deliveryFee);
                     }
                     localStorage.removeItem('pendingPaymentKoi');
                 }
