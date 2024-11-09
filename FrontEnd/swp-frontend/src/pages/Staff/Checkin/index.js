@@ -18,7 +18,7 @@ function Checkin() {
             const response = await get("quotation/view-all");
             if (response) {
                   const quotationsWithTours = await Promise.all(
-                        response.filter(quotation => quotation.status === "Đã thanh toán" || quotation.status === "Đã check-in")
+                        response.filter(quotation => quotation.status === "Đã thanh toán" || quotation.status === "Đã check-in" || quotation.status === "Đã gửi vé máy bay")
                               .map(async (quotation) => {
                                     const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
                                     return {
@@ -55,7 +55,7 @@ function Checkin() {
             };
             const quotationData = {
                   "priceOffer": item.priceOffer,
-                  "status": "Đã check-in",
+                  "status": "Đã gửi vé máy bay",
                   "approvedDate": getTimeCurrent(),
                   "description": "Chúng tôi đã gửi vé máy bay qua email của bạn. Vui lòng xem kĩ lại thông tin vé và chuẩn bị.",
             };
@@ -130,7 +130,7 @@ function Checkin() {
 export default Checkin;
 
 const TemplateTicket = (props) => {
-      const { response, tour } = props;
+      const { item, tour } = props;
       return `
   <html>
   <head>
@@ -144,7 +144,7 @@ const TemplateTicket = (props) => {
           }
   
           .container {
-              width: 600px;
+              width: 800px;
               margin: 0 auto;
               padding: 20px;
           }
@@ -255,7 +255,7 @@ const TemplateTicket = (props) => {
   
               <tr>
                   <td class="greeting">
-                      Kính gửi quý khách ${response.userFullName},<br>
+                      Kính gửi quý khách ${item.fullName},<br>
                       Yêu cầu đặt chỗ của quý khách đã được xác nhận thành công. Quý khách vui lòng xem vé điện tử trong tập tin đính kèm.
                   </td>
               </tr>
