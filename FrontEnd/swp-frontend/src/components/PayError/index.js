@@ -1,5 +1,10 @@
 import { useEffect } from "react";
+import { Col, Result, Row, Card, Typography, Button } from "antd";
+import { CloseOutlined, HomeFilled } from '@ant-design/icons';
+import { Link } from "react-router-dom";
 import './PayError.scss';
+
+const { Title } = Typography;
 
 function PayError() {
       useEffect(() => {
@@ -24,9 +29,16 @@ function PayError() {
                               <Col xs={24} sm={22} md={20} lg={18} xl={16}>
                                     <Card className="error-card">
                                           <Result
-                                                icon={<CheckCircleFilled className="error-icon" />}
-                                                title={<Title level={2}>Thanh toán thành công!</Title>}
+                                                icon={<CloseOutlined className="error-icon" />}
+                                                title={<Title level={2}>Hủy thanh toán!</Title>}
                                           />
+                                          <div className="action-buttons">
+                                                <Link to="/">
+                                                      <Button icon={<HomeFilled />} size="large">
+                                                            Về trang chủ
+                                                      </Button>
+                                                </Link>
+                                          </div>
                                     </Card>
                               </Col>
                         </Row>

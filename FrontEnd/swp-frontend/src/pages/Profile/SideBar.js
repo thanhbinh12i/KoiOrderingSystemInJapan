@@ -4,7 +4,7 @@ import {
   DropboxOutlined,
   HistoryOutlined,
   SettingOutlined,
-  GoogleOutlined,
+  GoogleOutlined, 
 } from "@ant-design/icons";
 import { get } from "../../utils/request";
 import { useState, useEffect } from "react";
@@ -78,7 +78,7 @@ function Sidebar() {
         <Menu.Item key="my-bookings" icon={<HistoryOutlined />}>
           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
         </Menu.Item>
-        <Menu.Item key="my-bills" icon={<DropboxOutlined  />}>
+        <Menu.Item key="my-bills" icon={<DropboxOutlined />}>
           <Link to="/my-orders">Đơn hàng của tôi </Link>
         </Menu.Item>
       </Menu>
