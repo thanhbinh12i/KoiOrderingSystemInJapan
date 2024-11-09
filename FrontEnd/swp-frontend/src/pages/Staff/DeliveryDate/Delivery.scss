@@ -1,0 +1,121 @@
+.delivery {
+      &__list {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+
+            .ant-list-item {
+                  padding: 20px;
+                  transition: all 0.3s ease;
+                  border-bottom: 2px solid black !important;
+
+                  &:last-child {
+                        border-bottom: none !important;
+                  }
+
+                  &:hover {
+                        background-color: #f8f9ff;
+                  }
+
+                  .ant-row {
+                        width: 100%;
+                        align-items: flex-start;
+                  }
+            }
+      }
+
+      &__info {
+            p {
+                  margin-bottom: 12px;
+                  color: #666;
+                  font-size: 14px;
+                  line-height: 1.5;
+
+                  strong {
+                        color: #1a1a1a;
+                        margin-left: 4px;
+                        font-weight: 600;
+                  }
+            }
+      }
+
+      &__actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px; 
+            align-items: flex-end;
+      }
+
+      &__detail {
+            background: #f5f5f5;
+            color: #1890ff;
+            border: 1px solid #1890ff;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            width: fit-content;
+
+            &:hover {
+                  background: #1890ff;
+                  color: white;
+                  transform: translateY(-1px);
+                  box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+            }
+      }
+
+      &__status {
+            .ant-btn-primary {
+                  background: #1890ff;
+                  border-color: #1890ff;
+                  padding: 8px 16px;
+                  border-radius: 6px;
+                  transition: all 0.3s ease;
+
+                  &:hover {
+                        background: #40a9ff;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+                  }
+            }
+      }
+
+      &__step {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e8e8;
+
+            .ant-steps {
+                  width: 100%;
+
+                  .ant-steps-item {
+                        flex: 1;
+
+                        &-title {
+                              font-size: 14px;
+                              color: #666;
+                        }
+
+                        &-icon {
+                              color: #1890ff;
+                        }
+
+                        &-tail {
+                              padding: 0 8px;
+                              &::after {
+                                    height: 2px;
+                              }
+                        }
+
+                        button {
+                              padding: 4px 12px;
+                              font-size: 12px;
+                              border-radius: 4px;
+
+                              &:disabled {
+                                    opacity: 0.6;
+                              }
+                        }
+                  }
+            }
+      }
+}
