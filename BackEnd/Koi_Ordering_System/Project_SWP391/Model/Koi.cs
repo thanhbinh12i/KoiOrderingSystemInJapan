@@ -17,12 +17,10 @@ namespace Project_SWP391.Model
         public string Gender { get; set; } = string.Empty;
         public string? UpdateDate { get; set; }
 
-        // Foreign keys
         public int FarmId { get; set; }
         [ForeignKey(nameof(FarmId))]
         public KoiFarm KoiFarm { get; set; }
 
-        // Navigation properties
         public ICollection<KoiImage> KoiImages { get; set; } = new List<KoiImage>();
         public ICollection<KoiBill> KoiBills { get; set; } = new List<KoiBill>();
         public ICollection<VarietyOfKoi> VarietyOfKois { get; set; } = new List<VarietyOfKoi>();

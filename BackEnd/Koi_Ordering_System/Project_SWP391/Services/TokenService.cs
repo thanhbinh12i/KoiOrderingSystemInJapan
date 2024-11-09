@@ -12,7 +12,7 @@ namespace Project_SWP391.Services
     {
         private readonly IConfiguration _config;
         private readonly SymmetricSecurityKey _key;
-        private readonly UserManager<AppUser> _userManager;  // Inject UserManager
+        private readonly UserManager<AppUser> _userManager;
         public TokenService(IConfiguration config, UserManager<AppUser> userManager)
         {
             _config = config;
@@ -21,7 +21,6 @@ namespace Project_SWP391.Services
         }
         public async Task<string> CreateToken(AppUser user)
         {
-            // Basic claims
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
@@ -32,7 +31,6 @@ namespace Project_SWP391.Services
                 new Claim(JwtRegisteredClaimNames.Birthdate, user.DateOfBirth.ToString())
             };
 
-            // Retrieve roles from UserManager
             var roles = await _userManager.GetRolesAsync(user);
 
             // Add role claims

@@ -114,4 +114,30 @@
       }
     }
   }
+  .ant-back-top {
+    left: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: white !important;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #0056b3;
+    font-size: 24px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3 !important;
+      color: white;
+      transform: scale(1.1);
+    }
+
+    &.ant-back-top-content {
+      display: flex;
+    }
+  }
 }

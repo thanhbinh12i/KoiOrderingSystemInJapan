@@ -11,7 +11,6 @@ namespace Project_SWP391.Model
         public string UrlImage { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty ;
 
-        // Foreign key
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }

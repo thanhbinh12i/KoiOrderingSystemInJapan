@@ -24,17 +24,20 @@ function FormTour() {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState(null);
   const disableStartDates = (current) => {
-    return current && current < moment().add(3, 'days').startOf("day");
+    return current && current < moment().add(3, "days").startOf("day");
   };
   const disableEndDate = (current) => {
     if (!startDate) return true;
-    const threeDaysLater = moment().add(3, 'days').startOf("day");
-    return current && (current <= threeDaysLater || current.valueOf() <= startDate.valueOf());
+    const threeDaysLater = moment().add(3, "days").startOf("day");
+    return (
+      current &&
+      (current <= threeDaysLater || current.valueOf() <= startDate.valueOf())
+    );
   };
 
   useEffect(() => {
     if (startDate) {
-      form.setFieldValue('finishTime', null);
+      form.setFieldValue("finishTime", null);
       setEndDate(null);
     }
   }, [startDate]);
@@ -127,14 +130,15 @@ function FormTour() {
         <Form.Item
           label="Số điện thoại"
           name="phoneNumber"
-          rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" },
-          {
-            pattern: /^0\d{9}$/,
-            message: 'Số điện thoại không hợp lệ!'
-          }
+          rules={[
+            { required: true, message: "Vui lòng nhập số điện thoại!" },
+            {
+              pattern: /^0\d{9}$/,
+              message: "Số điện thoại không hợp lệ!",
+            },
           ]}
         >
-          <Input placeholder="Họ và tên" />
+          <Input placeholder="Số điện thoại" />
         </Form.Item>
         <Form.Item
           label="Email"
@@ -164,11 +168,11 @@ function FormTour() {
             { required: true, message: "Vui lòng nhập số lượng người đi!" },
             {
               pattern: /^[1-9]\d*$/,
-              message: 'Số người đi phải lớn hơn 0'
-            }
+              message: "Số người đi phải lớn hơn 0",
+            },
           ]}
         >
-          <Input placeholder="Họ và tên" />
+          <Input placeholder="Số lượng người đi" />
         </Form.Item>
         <Row>
           <Col span={12} className="pr-10">

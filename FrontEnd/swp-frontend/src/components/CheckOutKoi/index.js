@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { Card, Col, List, Row, Typography, Button, Divider, Select, Input, Form } from "antd";
 import GoBack from "../GoBack";
 import { get, post } from "../../utils/request";
+import './CheckOutKoi.scss';
 
 const { Title, Text } = Typography;
 
@@ -32,7 +33,7 @@ function CheckOutKoi() {
             try {
                   const paymentData = {
                         orderType: "Thanh toán ngân hàng",
-                        amount: price/100,
+                        amount: price / 100,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: "User",
                         quotationId: params.id
@@ -56,7 +57,7 @@ function CheckOutKoi() {
             }
       }
       useEffect(() => {
-            const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice*item.quantity, 0);
+            const itemsTotal = koiBill.reduce((sum, item) => sum + item.finalPrice * item.quantity, 0);
             setDeposit(itemsTotal * 0.2);
             setTotalPrice(itemsTotal);
       }, [koiBill, selectedDeliveryFee]);
@@ -76,39 +77,52 @@ function CheckOutKoi() {
       return (
             <>
                   <GoBack />
-                  <Row>
-                        <Col span={12}>
-                              <Card title="Giỏ hàng">
+                  <Row gutter={24} className="shopping-cart-container">
+                        <Col span={12} className="cart-container">
+                        <Title level={3} className="payment-title">Giỏ hàng</Title>
+                              <Card title="Danh sách koi đã đặt" className="shopping-cart-card">
                                     <List
                                           dataSource={koiBill}
                                           renderItem={(item) => (
-                                                <List.Item>
-                                                      <h3>Koi {item.koiName}</h3>
-                                                      <p>{item.quantity}</p>
-                                                      <p><strong>{item.finalPrice.toLocaleString()} đ</strong></p>
+                                                <List.Item className="shopping-cart-item">
+                                                      <div className="item-details">Koi {item.koiName}</div>
+                                                      <div className="item-quantity">Số lượng: {item.quantity}</div>
+                                                      <div className="item-price">{item.finalPrice.toLocaleString()} đ</div>
                                                 </List.Item>
                                           )}
                                     />
+
                                     <Divider />
-                                    <div style={{ marginTop: 16, textAlign: "right" }}>
+                                    <div className="total-price">
                                           <h2>Tổng tiền: {totalPrice.toLocaleString()} đ</h2>
                                     </div>
                               </Card>
-
                         </Col>
-                        <Col span={10} style={{ marginLeft: 50 }}>
-                              <Title level={3}>Thông tin thanh toán</Title>
 
-                              <Form form={form} layout="vertical" onFinish={handlePay}> 
+                        <Col span={10} className="payment-info">
+                              <Title level={3} className="payment-title">Thông tin thanh toán</Title>
+
+                              <Form
+                                    form={form}
+                                    layout="vertical"
+                                    onFinish={handlePay}
+                                    className="payment-form"
+                              >
                                     <Form.Item
                                           name="address"
                                           label="Địa chỉ"
                                           rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                                     >
-                                          <Input />
+                                          <Input placeholder="Nhập địa chỉ của bạn" />
                                     </Form.Item>
-                                    <Form.Item label="Chọn dịch vụ giao hàng">
-                                          <Select onChange={handleChange} style={{ width: '100%' }}>
+
+                                    <Form.Item
+                                          label="Chọn dịch vụ giao hàng"
+                                          name="deliveryService"
+                                          rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' }]}
+                                          className="required-field"
+                                    >
+                                          <Select onChange={handleChange} style={{ width: '100%' }} placeholder="Chọn dịch vụ">
                                                 {delivery.map((item) => (
                                                       <Option key={item.deliveryId} value={item.deliveryFee}>
                                                             {item.deliveryType} - {item.deliveryFee.toLocaleString()} đ
@@ -116,27 +130,32 @@ function CheckOutKoi() {
                                                 ))}
                                           </Select>
                                     </Form.Item>
-                                    <div style={{ marginBottom: 16 }}>
+
+
+                                    <div className="shipping-fee">
                                           <Text strong>Phí vận chuyển: </Text>
                                           <Text>{selectedDeliveryFee.toLocaleString()} đ</Text>
                                     </div>
-                                    <div style={{ marginBottom: 16 }}>
+
+                                    <div className="deposit-fee">
                                           <Text strong>Tiền đặt cọc (20%): </Text>
                                           <Text>{deposit.toLocaleString()} VND</Text>
                                     </div>
+
                                     <Divider />
-                                    <div style={{ marginBottom: 16 }}>
+
+                                    <div className="final-total">
                                           <Text strong>Tổng tiền thanh toán: </Text>
                                           <Text>{(deposit + selectedDeliveryFee).toLocaleString()} VND</Text>
                                     </div>
-                                    <Button type="primary" htmlType="submit">
+
+                                    <Button type="primary" htmlType="submit" block className="pay-button">
                                           Thanh toán ngay
                                     </Button>
                               </Form>
                         </Col>
                   </Row>
-
             </>
-      )
+      );
 }
 export default CheckOutKoi;
