@@ -98,10 +98,7 @@ function ProfileStaff() {
                     }}
                 />
             </div>
-            <Title
-                level={2}
-                style={{ justifyContent: "center", textAlign: "center" }}
-            >
+            <Title level={2} style={{ justifyContent: "center", textAlign: "center" }}>
                 Thông tin nhân viên
             </Title>
 
