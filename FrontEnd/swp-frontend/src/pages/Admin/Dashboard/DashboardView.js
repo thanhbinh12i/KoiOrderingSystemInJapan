@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Statistic, Table, Select } from "antd";
+import { Card, Row, Col, Statistic, Table, Select, Divider } from "antd";
 import {
   UserOutlined,
   ShoppingCartOutlined,
@@ -258,7 +258,7 @@ const DashboardView = () => {
         title: "Số lượng booking",
         dataIndex: "bookings",
         key: "bookings",
-        width: 100,
+        width: 150,
         align: "right",
       },
       {
@@ -299,7 +299,7 @@ const DashboardView = () => {
         title: "Số lượng bán",
         dataIndex: "sales",
         key: "sales",
-        width: 80,
+        width: 130,
         align: "right",
       },
       {
@@ -321,7 +321,8 @@ const DashboardView = () => {
     <div className="dashboard">
       <Row gutter={16} className="stats-cards">
         <Col span={8}>
-          <Card>
+          <Card style={{ backgroundColor: "#57b0ea" }}>
+
             <Statistic
               title="Tổng số người dùng"
               value={users.length}
@@ -330,7 +331,8 @@ const DashboardView = () => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card>
+          <Card style={{ backgroundColor: "#ff7f07" }}>
+
             <Statistic
               title="Tổng số đơn hàng"
               value={bills.length}
@@ -339,7 +341,7 @@ const DashboardView = () => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card>
+          <Card style={{ backgroundColor: "#4ae84d" }} >
             <Statistic
               title="Tổng doanh thu"
               value={totalRevenue}
@@ -379,7 +381,7 @@ const DashboardView = () => {
           <Line {...config} />
         )}
       </Card>
-
+      <Divider />
       <Row gutter={16} className="best-selling">
         <Col span={12}>
           <Card title="Top 10 cá Koi bán chạy">

@@ -108,6 +108,9 @@ function ChangePasswordForm() {
             <Input.Password
               prefix={<LockOutlined />}
               placeholder="Nhập mật khẩu cũ"
+              style={{
+                height: 50
+              }}
             />
           </Form.Item>
 
@@ -119,6 +122,9 @@ function ChangePasswordForm() {
             <Input.Password
               placeholder="Nhập mật khẩu mới"
               prefix={<LockOutlined />}
+              style={{
+                height: 50
+              }}
             />
           </Form.Item>
 
@@ -143,6 +149,9 @@ function ChangePasswordForm() {
             <Input.Password
               placeholder="Xác nhận mật khẩu mới"
               prefix={<LockOutlined />}
+              style={{
+                height: 50
+              }}
             />
           </Form.Item>
 
