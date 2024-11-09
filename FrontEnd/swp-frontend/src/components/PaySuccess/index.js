@@ -311,7 +311,7 @@ const TemplateTicket = (props) => {
                                             <td width="200" style="padding-right: 20px; vertical-align: top;">
                                                 <div class="pnr-section">
                                                     <div class="pnr-label">Mã đặt vé (PNR):</div>
-                                                    <div class="pnr-code">PTF8RR</div>
+                                                    <div class="pnr-code">SWP391</div>
                                                 </div>
 
                                                 <table cellpadding="0" cellspacing="0">
@@ -319,7 +319,7 @@ const TemplateTicket = (props) => {
                                                         <td style="padding-right: 10px;">✈</td>
                                                         <td>
                                                             <div class="airline-name">VietJet Air</div>
-                                                            <div class="flight-number">VJ-262</div>
+                                                            <div class="flight-number">VJ-391</div>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -344,6 +344,75 @@ const TemplateTicket = (props) => {
                                                             <div>
                                                                 <div class="time">13:00</div>
                                                                 <div class="city">Haneda (HND)</div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            <div style="margin-bottom: 30px;"></div>
+             <tr>
+                <td>
+                    <div class="ticket-container">
+                        <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="header">
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td>CHUYẾN BAY VỀ</td>
+                                            <td align="right">TOKYO - HO CHI MINH CITY</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td width="200" style="padding-right: 20px; vertical-align: top;">
+                                                <div class="pnr-section">
+                                                    <div class="pnr-label">Mã đặt vé (PNR):</div>
+                                                    <div class="pnr-code">SWP391</div>
+                                                </div>
+
+                                                <table cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td style="padding-right: 10px;">✈</td>
+                                                        <td>
+                                                            <div class="airline-name">VietJet Air</div>
+                                                            <div class="flight-number">VJ-391</div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+
+                                            <td style="border-left: 1px solid #e0e0e0; padding-left: 20px; vertical-align: top;">
+                                                <div class="flight-date">${tour.finishTime}</div>
+                                                <div class="flight-duration">02:30 - 7:20 (6h 50m, Bay thẳng)</div>
+
+                                                <table width="100%" cellpadding="0" cellspacing="0">
+                                                    <tr>
+                                                        <td width="20">
+                                                            <div class="dot"></div>
+                                                            <div class="vertical-line" style="height: 70px;"></div>
+                                                            <div class="dot"></div>
+                                                        </td>
+                                                        <td style="vertical-align: top;">
+                                                            <div style="margin-bottom: 30px;">
+                                                                <div class="time">2:30</div>
+                                                                <div class="city">Haneda (HND)</div>
+                                                            </div>
+                                                            <div>
+                                                                <div class="time">07:20</div>
+                                                                <div class="city">Ho Chi Minh City (SGN)</div>
                                                             </div>
                                                         </td>
                                                     </tr>
