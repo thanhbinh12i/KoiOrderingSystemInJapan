@@ -21,7 +21,6 @@ namespace Project_SWP391
             var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
             var googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
 
-            // Add services to the container.
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -29,7 +28,6 @@ namespace Project_SWP391
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
 
-            // Configure Swagger
             builder.Services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
@@ -58,7 +56,6 @@ namespace Project_SWP391
                 });
             });
 
-            // Configure Database and Identity
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MyDB"));
@@ -79,7 +76,6 @@ namespace Project_SWP391
             .AddEntityFrameworkStores<ApplicationDBContext>()
             .AddDefaultTokenProviders();
 
-            // Configure JWT Authentication and Google Authentication
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -105,7 +101,6 @@ namespace Project_SWP391
                 options.ClientSecret = googleClientSecret;
             });
 
-            // Configure CORS
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin", policy =>
@@ -114,7 +109,6 @@ namespace Project_SWP391
                           .AllowAnyHeader());
             });
 
-            // Add custom services and repositories
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IKoiVarietyRepository, KoiVarietyRepository>();
             builder.Services.AddScoped<IKoiFarmRepository, KoiFarmRepository>();
@@ -137,7 +131,6 @@ namespace Project_SWP391
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
