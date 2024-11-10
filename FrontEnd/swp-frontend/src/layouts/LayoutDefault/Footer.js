@@ -23,7 +23,6 @@ function Footer() {
                                                 <li><a href="/varieties">Giống cá</a></li>
                                                 <li><a href="/kois">Cá koi</a></li>
                                                 <li><a href="/aboutus">Về chúng tôi</a></li>
-                                                <li><a href="/contact">Liên hệ</a></li>
                                           </ul>
                                     </Col>
 

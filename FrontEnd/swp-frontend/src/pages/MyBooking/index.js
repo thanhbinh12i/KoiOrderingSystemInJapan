@@ -47,7 +47,7 @@ function MyBooking() {
                               };
                         })
                   );
-                  setQuotation(quotationsWithTours);
+                  setQuotation(quotationsWithTours.reverse());
             }
       }
       useEffect(() => {

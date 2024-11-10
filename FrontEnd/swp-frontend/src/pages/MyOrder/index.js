@@ -15,7 +15,7 @@ function MyOrder() {
                   setLoading(true);
                   const response = await get(`delivery-status/view-by-user-id/${userId}`);
                   if (response) {
-                        setDeliveryList(response);
+                        setDeliveryList(response.reverse());
                   }
             } catch (error) {
                   console.error("Không thể tải danh sách giao hàng");
