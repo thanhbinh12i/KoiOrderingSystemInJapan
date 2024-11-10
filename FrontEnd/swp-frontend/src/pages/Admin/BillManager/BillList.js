@@ -72,9 +72,9 @@ function BillList() {
       dataIndex: "totalPrice",
       key: "totalPrice",
       render: (_, record) => {
-        if(record.koiPrice > 0){
+        if (record.koiPrice > 0) {
           return <strong>{record.totalPrice?.toLocaleString()}</strong>
-        }else{
+        } else {
           const totalPrice = record.tourPrice;
           return <strong>{totalPrice?.toLocaleString()}</strong>
         }

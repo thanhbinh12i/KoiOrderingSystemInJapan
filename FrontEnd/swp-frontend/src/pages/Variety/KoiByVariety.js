@@ -75,7 +75,6 @@ const KoiByVariety = () => {
               <img
                 key={koi.koiId}
                 width={135}
-                height={200}
                 alt={koi.koiName}
                 src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${koi.koiImages[0].urlImage}`}
                 className="koi-detail-image"
