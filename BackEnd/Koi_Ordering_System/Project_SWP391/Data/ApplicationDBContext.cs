@@ -28,7 +28,6 @@ namespace Project_SWP391.Data
         public DbSet<Delivery> Deliveries { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Config for table N-N TourDestination
             modelBuilder.Entity<TourDestination>()
                 .HasKey(td => new { td.FarmId, td.TourId });
 
@@ -42,7 +41,6 @@ namespace Project_SWP391.Data
                 .WithMany(t => t.TourDestinations)
                 .HasForeignKey(td => td.TourId);
 
-            // Config for table N-N Rating
             modelBuilder.Entity<Rating>()
                 .HasKey(r => new { r.FarmId, r.UserId });
 
@@ -56,7 +54,6 @@ namespace Project_SWP391.Data
                 .WithMany(u => u.Ratings)
                 .HasForeignKey(r => r.UserId);
 
-            // Config for table N-N VarietyOfKoi
             modelBuilder.Entity<VarietyOfKoi>()
                 .HasKey(vok => new { vok.KoiId, vok.VarietyId });
 
@@ -69,7 +66,6 @@ namespace Project_SWP391.Data
                 .HasOne(vof => vof.Koi)
                 .WithMany(k => k.VarietyOfKois)
                 .HasForeignKey(vof => vof.KoiId);
-            // Config for table N-N KoiBill
             modelBuilder.Entity<KoiBill>()
                 .HasKey(kb => new { kb.KoiId, kb.BillId });
 
@@ -82,7 +78,6 @@ namespace Project_SWP391.Data
                 .HasOne(kb => kb.Bill)
                 .WithMany(b => b.KoiBills)
                 .HasForeignKey(kb => kb.BillId);
-            // Config for table Quotation
             modelBuilder.Entity<Quotation>()
                 .HasKey(q => q.QuotationId);
 
@@ -101,7 +96,6 @@ namespace Project_SWP391.Data
                 .HasForeignKey<Bill>(b => b.QuotationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed roles
             var roles = new List<IdentityRole>
             {
                 new IdentityRole { Name = "Customer", NormalizedName = "CUSTOMER" },
