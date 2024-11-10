@@ -251,7 +251,7 @@ export default QuotationManager;
 
 const CancelTemplate = (props) => {
   const { item } = props;
-  const refundAmount = item.priceOffer * 0.5;
+  const refundAmount = item.priceOffer - 10000000;
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
