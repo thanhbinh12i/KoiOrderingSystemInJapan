@@ -21,24 +21,6 @@ function PayBooking() {
     };
     fetchApi();
   });
-  // const onFinish = async (values) => {
-  //       const getTimeCurrent = () => {
-  //             return new Date().toLocaleString();
-  //       };
-  //       const updatedValues = { ...values, price };
-  //       const response = await post(`bill/create/${userId}-${params.id}`, updatedValues);
-  //       if (response) {
-  //             const quotationData = {
-  //                   ...quotation,
-  //                   "status": "Đã thanh toán",
-  //                   "approvedDate": getTimeCurrent(),
-  //             };
-  //             const responseUpdate = await put(`quotation/update/${params.id}`, quotationData);
-  //             if (responseUpdate) {
-  //                   window.location.href = `/pay-success/${response.billId}`;
-  //             }
-  //       }
-  // }
   const onFinishVNPay = async (values) => {
     let amount = price;
     if (amount > 20000000) {
@@ -87,11 +69,11 @@ function PayBooking() {
                 layout="vertical"
                 onFinish={onFinishVNPay}
                 form={form}
+                initialValues={quotation}
               >
                 <Form.Item
                   name="userFullName"
                   label="Họ và tên"
-                  initialValue={quotation.fullName}
                   rules={[
                     { required: true, message: "Vui lòng nhập họ và tên!" },
                   ]}
@@ -114,7 +96,6 @@ function PayBooking() {
                 <Form.Item
                   name="Email"
                   label="email"
-                  initialValue={quotation.email}
                   rules={[
                     { type: "email", message: "Email không hợp lệ!" },
                     { required: true, message: "Vui lòng email!" },

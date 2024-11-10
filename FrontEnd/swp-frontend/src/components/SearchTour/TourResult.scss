@@ -24,16 +24,12 @@ $border-radius: 8px;
     font-weight: 700;
     margin-bottom: 2.5rem;
     color: $text-dark;
-    text-align: center;
+    padding-left: 20px;
   
-    &::after {
-      content: "";
-      display: block;
-      width: 60px;
-      height: 3px;
-      background: $primary-color;
-      margin: 1rem auto 0;
-    }
+  }
+  h2{
+    text-align: center;
+    padding: 50px 0;
   }
   &__card {
     @include transition(transform);
@@ -126,7 +122,6 @@ $border-radius: 8px;
   box-shadow: $box-shadow;
 
   h2 {
-    font-size: 2rem;
     color: $text-dark;
     margin-bottom: 2rem;
     text-align: center;
