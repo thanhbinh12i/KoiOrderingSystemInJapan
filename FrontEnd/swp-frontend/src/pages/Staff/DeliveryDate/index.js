@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, DatePicker, List, Modal, Pagination, Row, Steps } from "antd";
 import { ClockCircleOutlined, FileDoneOutlined, CarOutlined, ShoppingOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import moment from "moment";
 import "./Delivery.scss";
 
 function DeliveryDate() {
@@ -156,6 +157,9 @@ function DeliveryDate() {
       const handleCancel = () => {
             setModalVisible(false);
       };
+      const disablePastDates = (current) => {
+            return current && current <= moment().startOf('day');
+      };
 
       return (
             <>
@@ -199,7 +203,7 @@ function DeliveryDate() {
                                                                                     {currentItem && (
                                                                                           <>
                                                                                                 <p>Nhập ngày giao hàng: </p>
-                                                                                                <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" />
+                                                                                                <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates}/>
                                                                                           </>
                                                                                     )}
                                                                               </Modal></>
