@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row } from "antd";
+import { Button, Card, Col, Pagination, Row } from "antd";
 import { get } from "../../utils/request";
 import image from "../../assets/home/koi-farm-tour.jpg";
 import { Link } from "react-router-dom";
 
 function TourList() {
   const [tours, setTours] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
+
   useEffect(() => {
     const fetchApi = async () => {
       const response = await get("tour/view-all");
@@ -29,12 +32,16 @@ function TourList() {
       tour.tourDestinations.some((dest) => dest.type === "default" && dest.tourId === tour.tourId) &&
       parseDate(tour.startTime).getTime() > fourDaysLater.getTime()
   );
+  const getCurrentPageData = () => {
+    const startIndex = (currentPage - 1) * pageSize;
+    return filteredTours.slice(startIndex, startIndex + pageSize);
+  };
   return (
     <>
-      <h1>Các chuyến đi có sẵn của chúng tôi</h1>
       <div className="tour-list">
+        <h1>Các chuyến đi có sẵn của chúng tôi</h1>
         <Row gutter={[16, 16]} className="tour-list__container">
-          {filteredTours.map((tour) => (
+          {getCurrentPageData().map((tour) => (
             <>
               <Col span={6} key={tour.tourId}>
                 <Card hoverable cover={<img alt={tour.tourName} src={image} className="tour-list__card" />}>
@@ -70,6 +77,22 @@ function TourList() {
             </>
           ))}
         </Row>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
+          <Pagination
+            current={currentPage}
+            onChange={(page) => {
+              setCurrentPage(page);
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+            }}
+            total={filteredTours.length}
+            pageSize={pageSize}
+            showSizeChanger={false}
+            showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} chuyến đi`}
+          />
+        </div>
       </div>
     </>
   );
