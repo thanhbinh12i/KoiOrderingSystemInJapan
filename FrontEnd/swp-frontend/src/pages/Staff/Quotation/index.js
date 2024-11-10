@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, Form, Input, Modal, Pagination, Row } from "antd";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 
 function Quotation() {
@@ -54,6 +55,10 @@ function Quotation() {
             const response = await put(`quotation/update/${id}`, quotationData);
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
+                  Swal.fire({
+                        icon: "success",
+                        title: "Nhập giá thành công!!!",
+                  });
                   fetchApi();
             }
       };
@@ -75,6 +80,10 @@ function Quotation() {
             const response = await put(`quotation/update/${item.quotationId}`, quotationData);
             if (response) {
                   setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
+                  Swal.fire({
+                        icon: "success",
+                        title: "Đã gửi!!!",
+                  });
                   fetchApi();
             }
       };
@@ -108,6 +117,10 @@ function Quotation() {
             const response = await put(`quotation/update/${id}`, quotationData);
             if (response) {
                   setModalVisibility(prev => ({ ...prev, [id]: false }));
+                  Swal.fire({
+                        icon: "success",
+                        title: "Nhập giá thành công!!!",
+                  });
                   fetchApi();
             }
       };
@@ -124,6 +137,10 @@ function Quotation() {
             const response = await put(`quotation/update/${item.quotationId}`, quotationData);
             if (response) {
                   setMessages(prev => ({ ...prev, [item.quotationId]: '' }));
+                  Swal.fire({
+                        icon: "success",
+                        title: "Đã gửi!!!",
+                  });
                   fetchApi();
             }
       }

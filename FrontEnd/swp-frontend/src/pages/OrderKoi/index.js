@@ -50,10 +50,7 @@ function OrderKoi() {
                         };
                         const action = "addToCart";
 
-                        const response = await post(
-                              `koi-bill/create/${params.id}-${koi.koiId}`,
-                              data
-                        );
+                        const response = await post(`koi-bill/create/${params.id}-${koi.koiId}`, data);
 
                         if (response) {
                               await fetch(`${process.env.REACT_APP_API_URL}koi/handle-quantity?KoiId=${koi.koiId}&quantityRequested=${1}&action=${action}`,
