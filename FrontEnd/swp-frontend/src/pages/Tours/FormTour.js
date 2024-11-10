@@ -53,6 +53,9 @@ function FormTour() {
     fetchApi();
   }, []);
   const onFinish = async (values) => {
+    if (!userId) {
+      navigate("/login");
+    }
     try {
       setLoading(true);
       const { farmId } = values;
@@ -93,7 +96,7 @@ function FormTour() {
         description: values.description,
       };
       setLoading(true);
-      const response = await post(`quotation/create/${userId}&${tourResponse.tourId}`,quotationData);
+      const response = await post(`quotation/create/${userId}&${tourResponse.tourId}`, quotationData);
       if (!response) {
         setLoading(false);
         navigate("/book-success");
