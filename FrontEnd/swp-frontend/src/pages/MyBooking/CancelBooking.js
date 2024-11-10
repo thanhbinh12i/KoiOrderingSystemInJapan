@@ -1,5 +1,6 @@
 import { Button, Form, Modal, Typography, Input } from "antd";
 import { put } from "../../utils/request";
+import Swal from "sweetalert2";
 const { TextArea } = Input;
 const { Text, Paragraph } = Typography;
 
@@ -16,6 +17,11 @@ function CancelBooking(props) {
             };
             const response = await put(`quotation/update/${record.quotationId}`, quotationData);
             if (response) {
+                  Swal.fire({
+                        title: "Hủy chuyến đi thành công",
+                        text: "Vui lòng xem thông tin hoàn trả tiền trong email của bạn!",
+                        icon: "success"
+                  });
                   handleOk();
             }
       }
@@ -43,7 +49,7 @@ function CancelBooking(props) {
                                     <Text strong>Tổng tiền:</Text> {record.priceOffer}
                               </Paragraph>
                               <Paragraph type="warning">
-                                    Lưu ý: Theo chính sách của chúng tôi, quý khách sẽ được hoàn lại 50% số tiền đã thanh toán.
+                                    Lưu ý: Theo chính sách của chúng tôi, quý khách mất đi 10 triệu đồng tiền phí dịch vụ như vé máy bay, tiền đặt cọc dịch vụ,...
                               </Paragraph>
 
                               <Form.Item

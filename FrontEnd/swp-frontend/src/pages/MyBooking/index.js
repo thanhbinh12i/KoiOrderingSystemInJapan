@@ -4,6 +4,7 @@ import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip, Typography } fr
 import "./MyBooking.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
+import Swal from "sweetalert2";
 
 const { Text } = Typography;
 
@@ -143,6 +144,10 @@ function MyBooking() {
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
+                                          Swal.fire({
+                                                title: "Hủy đặt chỗ thành công",
+                                                icon: "success"
+                                          });
                                           fetchApi();
                                     }
                               }
@@ -160,6 +165,10 @@ function MyBooking() {
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
+                                          Swal.fire({
+                                                title: "Hủy đặt chỗ thành công",
+                                                icon: "success"
+                                          });
                                           fetchApi();
                                     }
                               }
@@ -239,7 +248,6 @@ function MyBooking() {
                                           </Button>
                                           {modalState.isVisible && modalState.type === "cancelbooking" && (
                                                 <CancelBooking record={record} isModalVisible={modalState.isVisible} handleOk={handleOk} handleCancel={handleCancel} />
-
                                           )}
                                     </>
                               )
