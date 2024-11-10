@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, Col, Form, Input, Modal, Pagination, Row } from "antd";
 import "./Checkin.scss"
+import Swal from "sweetalert2";
 
 function Checkin() {
     const [quotation, setQuotation] = useState([]);
@@ -50,6 +51,10 @@ function Checkin() {
         };
         const response = await put(`quotation/update/${quotationId}`, quotationData);
         if (response) {
+            Swal.fire({
+                icon: "success",
+                title: "Check-in thành công!!!",
+            });
             fetchApi();
         }
     }
@@ -87,6 +92,10 @@ function Checkin() {
                 body: JSON.stringify(emailData)
             });
             form.resetFields();
+            Swal.fire({
+                icon: "success",
+                title: "Đã gửi!!!",
+            });
             fetchApi();
             setLoading(false);
         }

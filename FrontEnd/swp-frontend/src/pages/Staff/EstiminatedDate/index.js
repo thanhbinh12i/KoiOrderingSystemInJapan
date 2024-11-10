@@ -3,6 +3,7 @@ import { get, put } from "../../../utils/request";
 import { Button, Card, DatePicker, List, Modal, Pagination } from "antd";
 import moment from "moment";
 import "./EstiminatedDate.scss";
+import Swal from "sweetalert2";
 
 function EstiminatedDate() {
       const [deliveryList, setDeliveryList] = useState([]);
@@ -65,6 +66,10 @@ function EstiminatedDate() {
                                     : item
                               )
                         );
+                        Swal.fire({
+                              icon: "success",
+                              title: "Cập nhật ngày thành công!!!",
+                        });
                   }
             }
             setModalVisible(false);
