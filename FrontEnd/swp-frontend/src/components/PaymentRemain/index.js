@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { get, post } from "../../utils/request";
 import { Button, Card, Col, Divider, List, Row, Space } from "antd";
 import GoBack from "../GoBack";
+import "./PaymentRemain.scss"
 
 function PaymentRemain() {
       const params = useParams();
@@ -34,7 +35,7 @@ function PaymentRemain() {
 
                   const paymentData = {
                         orderType: "VNPAY",
-                        amount: payStatusResponse.remain/100,
+                        amount: payStatusResponse.remain / 100,
                         orderDescription: `Thanh toán cho đơn hàng ${params.id}`,
                         name: billData.userFullName,
                         quotationId: params.id
@@ -52,47 +53,48 @@ function PaymentRemain() {
       return (
             <>
                   <GoBack />
-                  <Row gutter={[20,20]}>
-                        <Col span={12}>
-                              <Card title="Đơn hàng">
-                                    <List
-                                          dataSource={koiBill}
-                                          renderItem={(item) => (
-                                                <List.Item>
-                                                      <h3>Koi {item.koiName}</h3>
-                                                      <p>{item.quantity}</p>
-                                                      <p><strong>{item.finalPrice.toLocaleString()} đ</strong></p>
-                                                </List.Item>
-                                          )}
-                                    />
-                                    <Divider />
-                                    <div style={{ marginTop: 16, textAlign: "right" }}>
-                                          <h2>Tổng tiền: {totalPrice.toLocaleString()} đ</h2>
-                                    </div>
-                              </Card>
-
-                        </Col>
-                        <Col span={10} style={{ marginLeft: 50 }}>
-                              <div >
-                                    <Card title="Thông tin thanh toán">
-                                          {billData && (
-                                                <>
-                                                      <p>Mã đơn hàng: {billData.billId}</p>
-                                                      <p>Người nhận: {billData.userFullName}</p>
-                                                      <p>Số tiền còn lại (80%): <strong>{(0.8*totalPrice)?.toLocaleString()} đ </strong></p>
-                                                </>
-                                          )}
-
-                                          <Space direction="vertical" style={{ width: '100%', marginTop: '20px' }}>
-                                                <Button type="primary" onClick={onFinishVNPay} block>
-                                                      Thanh toán qua VNPAY
-                                                </Button>
-                                          </Space>
+                  <div className="payment-remain">
+                        <Row gutter={[20, 20]}>
+                              <Col span={12}>
+                                    <Card title="Đơn hàng" className="payment-remain__cart">
+                                          <List
+                                                dataSource={koiBill}
+                                                renderItem={(item) => (
+                                                      <List.Item>
+                                                            <h3>Koi {item.koiName}</h3>
+                                                            <p>{item.quantity}</p>
+                                                            <p><strong>{item.finalPrice.toLocaleString()} đ</strong></p>
+                                                      </List.Item>
+                                                )}
+                                          />
+                                          <Divider />
+                                          <div style={{ marginTop: 16, textAlign: "right" }}>
+                                                <h2>Tổng tiền: {totalPrice.toLocaleString()} đ</h2>
+                                          </div>
                                     </Card>
-                              </div>
-                        </Col>
-                  </Row>
 
+                              </Col>
+                              <Col span={10} style={{ marginLeft: 50 }}>
+                                    <div className="payment-remain__info">
+                                          <Card title="Thông tin thanh toán">
+                                                {billData && (
+                                                      <>
+                                                            <p>Mã đơn hàng: {billData.billId}</p>
+                                                            <p>Người nhận: {billData.userFullName}</p>
+                                                            <p>Số tiền còn lại (80%): <strong>{(0.8 * totalPrice)?.toLocaleString()} đ </strong></p>
+                                                      </>
+                                                )}
+
+                                                <Space direction="vertical" style={{ width: '100%', marginTop: '20px' }}>
+                                                      <Button type="primary" onClick={onFinishVNPay} block>
+                                                            Thanh toán qua VNPAY
+                                                      </Button>
+                                                </Space>
+                                          </Card>
+                                    </div>
+                              </Col>
+                        </Row>
+                  </div>
             </>
       )
 }

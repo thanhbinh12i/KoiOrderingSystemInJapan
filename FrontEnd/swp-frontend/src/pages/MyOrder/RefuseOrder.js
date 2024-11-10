@@ -1,7 +1,8 @@
 import { Button, Divider, Form, Input, Modal, Radio, Typography } from "antd";
-import {ExclamationCircleOutlined} from "@ant-design/icons"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 import { put } from "../../utils/request";
 import { useState } from "react";
+import Swal from "sweetalert2";
 const { Title } = Typography;
 function RefuseOrder(props) {
       const { record, isModalVisible, handleOk, handleCancel } = props;
@@ -16,6 +17,12 @@ function RefuseOrder(props) {
             }
             const response = await put(`delivery-status/update/${record.deliveryStatusId}`, data);
             if (response) {
+                  Swal.fire({
+                        title: "Từ chối nhận hàng",
+                        text: "Chúng tôi rất tiếc vì quý khách đã gặp phải sự cố. Theo chính sách, chúng tôi sẽ tiến hành hoàn lại số tiền cọc đã thanh toán. Xin lỗi quý khách về sự bất tiện này.",
+                        icon: "info",
+                        confirmButtonText: "Đồng ý"
+                  });
                   handleOk();
                   setLoading(false);
             }
@@ -25,7 +32,7 @@ function RefuseOrder(props) {
                   <Modal
                         title={
                               <div>
-                                    <ExclamationCircleOutlined style={{ color: '#faad14' }} className="mr-10"/>
+                                    <ExclamationCircleOutlined style={{ color: '#faad14' }} className="mr-10" />
                                     <span>Xác nhận từ chối nhận cá</span>
                               </div>
                         }

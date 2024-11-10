@@ -1,0 +1,103 @@
+.payment-remain {
+      padding: 20px;
+
+      &__cart {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+
+            .ant-card-head {
+                  border-bottom: 1px solid #f0f0f0;
+                  padding: 16px 24px;
+
+                  .ant-card-head-title {
+                        font-size: 18px;
+                        font-weight: 600;
+                  }
+            }
+
+            .ant-list-item {
+                  padding: 16px 24px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+
+                  h3 {
+                        font-size: 16px;
+                        margin: 0;
+                        flex: 2;
+                  }
+
+                  p {
+                        margin: 0;
+                        flex: 1;
+                        text-align: right;
+
+                        strong {
+                              color: #1890ff;
+                              font-size: 16px;
+                        }
+                  }
+            }
+
+            .ant-divider {
+                  margin: 12px 0;
+            }
+
+            h2 {
+                  color: #1890ff;
+                  font-size: 20px;
+                  margin: 0;
+            }
+      }
+
+      &__info {
+            .ant-card {
+                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                  border-radius: 8px;
+
+                  .ant-card-head {
+                        border-bottom: 1px solid #f0f0f0;
+                        padding: 16px 24px;
+
+                        .ant-card-head-title {
+                              font-size: 18px;
+                              font-weight: 600;
+                        }
+                  }
+
+                  .ant-card-body {
+                        padding: 24px;
+
+                        p {
+                              margin-bottom: 12px;
+                              font-size: 15px;
+
+                              &:last-child {
+                                    margin-bottom: 0;
+                              }
+
+                              strong {
+                                    color: #1890ff;
+                                    font-size: 16px;
+                              }
+                        }
+
+                        .ant-btn {
+                              height: 45px;
+                              font-size: 16px;
+                              font-weight: 500;
+
+                              &-primary {
+                                    background: #1890ff;
+                                    border-color: #1890ff;
+
+                                    &:hover {
+                                          background: darken(#1890ff, 10%);
+                                          border-color: darken(#1890ff, 10%);
+                                    }
+                              }
+                        }
+                  }
+            }
+      }
+}

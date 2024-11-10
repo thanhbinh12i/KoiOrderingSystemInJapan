@@ -82,11 +82,6 @@ function DeliveryDate() {
             if (stepIndex < currentStep) return 'finish';
             return 'wait';
       };
-      const isCompleted = (status) => {
-            return status === 'Giao hàng thành công' ||
-                  status.includes('Từ chối nhận hàng') ||
-                  status === 'Đã hoàn tiền cọc';
-      };
 
       const handlePaymentConfirmation = async (item) => {
             const response = await get(`payStatus/view-billId/${item.billId}`);
@@ -222,13 +217,12 @@ function DeliveryDate() {
                                                                               ? <CloseCircleOutlined />
                                                                               : step.icon,
                                                                         status: getStepStatus(item.deliveryStatusText, index),
-                                                                        description: !isCompleted(item.deliveryStatusText) && (
+                                                                        description: index !== 4 && (
                                                                               <Button
                                                                                     type="primary"
                                                                                     onClick={() => handleUpdate(item, step.title)}
                                                                                     disabled={
-                                                                                          index !== getCurrentStep(item.deliveryStatusText) + 1 ||
-                                                                                          isCompleted(item.deliveryStatusText)
+                                                                                          index !== getCurrentStep(item.deliveryStatusText) + 1 
                                                                                     }
                                                                               >
                                                                                     Cập nhật
