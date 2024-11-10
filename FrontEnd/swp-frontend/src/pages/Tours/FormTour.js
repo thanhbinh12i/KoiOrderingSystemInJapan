@@ -21,6 +21,7 @@ function FormTour() {
   const [messageApi, contextHolder] = message.useMessage();
   const userId = localStorage.getItem("id");
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState(null);
   const disableStartDates = (current) => {
@@ -29,10 +30,7 @@ function FormTour() {
   const disableEndDate = (current) => {
     if (!startDate) return true;
     const threeDaysLater = moment().add(3, "days").startOf("day");
-    return (
-      current &&
-      (current <= threeDaysLater || current.valueOf() <= startDate.valueOf())
-    );
+    return (current && (current <= threeDaysLater || current.valueOf() <= startDate.valueOf()));
   };
 
   useEffect(() => {
@@ -55,6 +53,9 @@ function FormTour() {
     fetchApi();
   }, []);
   const onFinish = async (values) => {
+    if (!userId) {
+      navigate("/login");
+    }
     try {
       setLoading(true);
       const { farmId } = values;
@@ -82,7 +83,6 @@ function FormTour() {
 
         form.resetFields();
       }
-      //Cho vào quotation nè
       const getTimeCurrent = () => {
         return new Date().toLocaleString();
       };
@@ -96,10 +96,7 @@ function FormTour() {
         description: values.description,
       };
       setLoading(true);
-      const response = await post(
-        `quotation/create/${userId}&${tourResponse.tourId}`,
-        quotationData
-      );
+      const response = await post(`quotation/create/${userId}&${tourResponse.tourId}`, quotationData);
       if (!response) {
         setLoading(false);
         navigate("/book-success");
@@ -111,7 +108,6 @@ function FormTour() {
       setLoading(false);
     }
   };
-  const [form] = Form.useForm();
   return (
     <>
       {contextHolder}

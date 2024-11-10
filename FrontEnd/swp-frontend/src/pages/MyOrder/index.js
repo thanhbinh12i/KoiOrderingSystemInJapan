@@ -4,6 +4,7 @@ import { Button, Table } from "antd";
 import { Link } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 import RefuseOrder from "./RefuseOrder";
+import './MyOrder.scss'
 
 function MyOrder() {
       const [deliveryList, setDeliveryList] = useState([]);
@@ -14,7 +15,7 @@ function MyOrder() {
                   setLoading(true);
                   const response = await get(`delivery-status/view-by-user-id/${userId}`);
                   if (response) {
-                        setDeliveryList(response);
+                        setDeliveryList(response.reverse());
                   }
             } catch (error) {
                   console.error("Không thể tải danh sách giao hàng");
@@ -117,8 +118,10 @@ function MyOrder() {
       ]
       return (
             <>
-                  <h2>Danh sách đơn hàng</h2>
-                  <Table dataSource={deliveryList} columns={columns} loading={loading} bordered />
+                  <div className="my-order">
+                        <h2>Danh sách đơn hàng</h2>
+                        <Table dataSource={deliveryList} columns={columns} loading={loading} bordered/>
+                  </div>
             </>
       );
 }

@@ -66,6 +66,7 @@ import AdminQuotationDetail from "../pages/Admin/QuotationManager/QuotationDetai
 import ProfileStaff from "../pages/Staff/ProfileStaff/ProfileStaff";
 import PrivateRoutes from "../components/privateRouter";
 import ProfileAdmin from "../pages/Admin/ProfileAdmin";
+import PayError from "../components/PayError";
 
 const DefaultRoute = ({ children }) => {
   const role = localStorage.getItem("role");
@@ -228,6 +229,10 @@ export const routes = [
           {
             path: "pay-success/:id",
             element: <PaymentSuccess />,
+          },
+          {
+            path: "pay-cancel",
+            element: <PayError />,
           },
           {
             path: "order-koi/:id",

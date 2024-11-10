@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { get, put } from "../../../utils/request";
 import GoBack from "../../../components/GoBack";
 import { Button, Card, Input, List, Modal } from "antd";
+import Swal from "sweetalert2";
 
 function KoiDealDetail() {
       const params = useParams();
@@ -41,6 +42,10 @@ function KoiDealDetail() {
                               setKoiBill(koiBill.map(koi =>
                                     koi.koiId === currentKoi.koiId ? { ...koi, finalPrice: parseFloat(newPrice) } : koi
                               ));
+                              Swal.fire({
+                                    icon: "success",
+                                    title: "Nhập giá thành công!!!",
+                              });
                         }
                   } catch (error) {
                         console.error('Error updating price:', error);
@@ -64,6 +69,10 @@ function KoiDealDetail() {
                         setKoiBill(koiBill.map(koi =>
                               koi.koiId === item.koiId ? { ...koi, finalPrice: item.originalPrice } : koi
                         ));
+                        Swal.fire({
+                              icon: "success",
+                              title: "Xác nhận giá!!!",
+                        });
                   }
             } catch (error) {
                   console.error('Error updating price:', error);
@@ -93,7 +102,7 @@ function KoiDealDetail() {
                                                 <p>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></p>
                                                 {
                                                       item.finalPrice === 0 && (
-                                                            <Button type="primary" onClick={() => handleConfirm(item)}>Xác nhận</Button>
+                                                            <Button type="primary" onClick={() => handleConfirm(item)} className="mr-10">Xác nhận</Button>
                                                       )
                                                 }
                                                 <Button onClick={() => showModal(item)}>Cập nhật giá</Button>

@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Button, Card, DatePicker, List, Modal, Pagination } from "antd";
 import moment from "moment";
+import "./EstiminatedDate.scss";
+import Swal from "sweetalert2";
+
 function EstiminatedDate() {
       const [deliveryList, setDeliveryList] = useState([]);
       const [modalVisible, setModalVisible] = useState(false);
@@ -63,6 +66,10 @@ function EstiminatedDate() {
                                     : item
                               )
                         );
+                        Swal.fire({
+                              icon: "success",
+                              title: "Cập nhật ngày thành công!!!",
+                        });
                   }
             }
             setModalVisible(false);
@@ -75,48 +82,52 @@ function EstiminatedDate() {
 
       return (
             <>
-                  <Card>
-                        <List
-                              loading={loading}
-                              dataSource={getCurrentPageData()}
-                              renderItem={(item) => (
-                                    <List.Item>
-                                          <div>
-                                                <p>Đơn hàng số <strong>{item.billId}</strong></p>
-                                                <p>Địa chỉ: <strong>{item.deliveryAddress}</strong></p>
-                                                <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
-                                                <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
-                                                {item.deliveryStatusText === "Đã thanh toán" && (
-                                                      <Button type="primary" onClick={() => showModal(item)}>Cập nhật ngày</Button>
-                                                )}
-                                          </div>
-                                    </List.Item>
-                              )}
-                        />
-                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-                              <Pagination
-                                    current={currentPage}
-                                    onChange={(page) => setCurrentPage(page)}
-                                    total={deliveryList.length}
-                                    pageSize={pageSize}
-                                    showSizeChanger={false}
-                                    showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                  <div className="estiminated-date">
+                        <Card>
+                              <List
+                                    loading={loading}
+                                    dataSource={getCurrentPageData()}
+                                    renderItem={(item) => (
+                                          <List.Item>
+                                                <div>
+                                                      <p>Đơn hàng số <strong>{item.billId}</strong></p>
+                                                      <p>Chuyến đi: <strong>{item.tourDetail[0].tourName}</strong></p>
+                                                      <p>Ngày kết thúc: <strong>{item.tourDetail[0].finishTime}</strong></p>
+                                                      <p>Địa chỉ: <strong>{item.deliveryAddress}</strong></p>
+                                                      <p>Ngày giao hàng: <strong>{item.estimatedDate}</strong></p>
+                                                      <p>Trạng thái: <strong>{item.deliveryStatusText}</strong></p>
+                                                      {item.deliveryStatusText === "Đã thanh toán" && (
+                                                            <Button type="primary" onClick={() => showModal(item)}>Cập nhật ngày</Button>
+                                                      )}
+                                                </div>
+                                          </List.Item>
+                                    )}
                               />
-                        </div>
-                  </Card>
-                  <Modal
-                        title="Cập nhật ngày giao hàng"
-                        visible={modalVisible}
-                        onOk={handleOk}
-                        onCancel={handleCancel}
-                  >
-                        {currentItem && (
-                              <>
-                                    <p>Nhập ngày giao hàng: </p>
-                                    <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates} />
-                              </>
-                        )}
-                  </Modal>
+                              <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                    <Pagination
+                                          current={currentPage}
+                                          onChange={(page) => setCurrentPage(page)}
+                                          total={deliveryList.length}
+                                          pageSize={pageSize}
+                                          showSizeChanger={false}
+                                          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                                    />
+                              </div>
+                        </Card>
+                        <Modal
+                              title="Cập nhật ngày giao hàng"
+                              visible={modalVisible}
+                              onOk={handleOk}
+                              onCancel={handleCancel}
+                        >
+                              {currentItem && (
+                                    <>
+                                          <p>Nhập ngày giao hàng: </p>
+                                          <DatePicker onChange={(date) => setNewDate(date)} format="DD-MM-YYYY" disabledDate={disablePastDates} />
+                                    </>
+                              )}
+                        </Modal>
+                  </div>
             </>
       )
 }

@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { del, get, put } from "../../utils/request";
-import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip } from "antd";
+import { Button, Form, Input, Modal, Popconfirm, Table, Tooltip, Typography } from "antd";
 import "./MyBooking.scss"
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import CancelBooking from "./CancelBooking";
+import Swal from "sweetalert2";
+
+const { Text } = Typography;
 
 function MyBooking() {
       const [quotation, setQuotation] = useState([]);
@@ -44,7 +47,7 @@ function MyBooking() {
                               };
                         })
                   );
-                  setQuotation(quotationsWithTours);
+                  setQuotation(quotationsWithTours.reverse());
             }
       }
       useEffect(() => {
@@ -61,6 +64,29 @@ function MyBooking() {
             fetchApi();
       }, [userId])
 
+      useEffect(() => {
+            const fetchApi = async () => {
+                  for (const item of quotation) {
+                        if (item.status === "Đã xác nhận" || item.status === "Xác nhận yêu cầu") {
+                              const today = new Date();
+                              const oneDayBeforeStart = parseDate(item.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
+                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
+
+
+                              if (isWithin24Hours) {
+                                    const quotationData = {
+                                          "priceOffer": item.priceOffer,
+                                          "status": "Quá hạn thanh toán",
+                                          "approvedDate": item.approvedDate,
+                                          "description": item.description,
+                                    };
+                                    await put(`quotation/update/${item.quotationId}`, quotationData);
+                              }
+                        }
+                  }
+            }
+            fetchApi();
+      }, [quotation])
       const parseDate = (dateStr) => {
             const [day, month, year] = dateStr.split('-');
             return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
@@ -97,7 +123,7 @@ function MyBooking() {
                   title: 'Trạng thái',
                   dataIndex: 'status',
                   key: 'status',
-                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu"].includes(text) ? text : "Chờ xác nhận"),
+                  render: (text) => (['Chờ xác nhận', 'Đã xác nhận', 'Đã thanh toán', "Đã check-in", "Đã hủy", "Khách hàng không mua cá", "Xác nhận yêu cầu", "Không chấp nhận yêu cầu", "Quá hạn thanh toán"].includes(text) ? text : "Chờ xác nhận"),
             },
             {
                   title: 'Chi tiết chuyến đi',
@@ -118,6 +144,10 @@ function MyBooking() {
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
+                                          Swal.fire({
+                                                title: "Hủy đặt chỗ thành công",
+                                                icon: "success"
+                                          });
                                           fetchApi();
                                     }
                               }
@@ -132,19 +162,13 @@ function MyBooking() {
                                     </>
                               )
                         } else if (record.status === "Đã xác nhận" || record.status === "Xác nhận yêu cầu" || record.status === "Không chấp nhận yêu cầu") {
-                              const oneDayBeforeStart = parseDate(record.tourDetail.startTime).getTime() - (24 * 60 * 60 * 1000);
-                              const isWithin24Hours = today.getTime() >= oneDayBeforeStart;
-
-
-                              if (isWithin24Hours) {
-                                    return (
-                                          <>Quá hạn thanh toán</>
-                                    )
-
-                              }
                               const handleCancelBooking = async () => {
                                     const response = del('quotation/delete', record.quotationId);
                                     if (response) {
+                                          Swal.fire({
+                                                title: "Hủy đặt chỗ thành công",
+                                                icon: "success"
+                                          });
                                           fetchApi();
                                     }
                               }
@@ -224,7 +248,6 @@ function MyBooking() {
                                           </Button>
                                           {modalState.isVisible && modalState.type === "cancelbooking" && (
                                                 <CancelBooking record={record} isModalVisible={modalState.isVisible} handleOk={handleOk} handleCancel={handleCancel} />
-
                                           )}
                                     </>
                               )
@@ -289,7 +312,15 @@ function MyBooking() {
             <>
                   <div className="booking-list-container">
                         <h2>Danh sách đặt chỗ</h2>
-                        <Table columns={columns} dataSource={quotation} pagination={false} bordered />
+                        <Table columns={columns} dataSource={quotation} rowKey="quotationId" bordered
+                              expandable={{
+                                    expandedRowRender: (record) => (
+                                          <div style={{ margin: 0 }}>
+                                                <Text strong>Lời nhắn: <strong>{record.description}</strong></Text>
+                                          </div>
+                                    ),
+                              }}
+                        />
                   </div>
 
             </>

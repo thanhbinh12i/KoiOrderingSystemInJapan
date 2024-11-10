@@ -2,6 +2,7 @@ import { Badge, Button, Card, Col, Form, Input, Modal, Pagination, Row } from "a
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function QuotationManager() {
   const [quotation, setQuotation] = useState([]);
@@ -53,6 +54,10 @@ function QuotationManager() {
     const response = await put(`quotation/update/${id}`, quotationData);
     if (response) {
       setModalVisibility((prev) => ({ ...prev, [id]: false, }));
+      Swal.fire({
+        icon: "success",
+        title: "Nhập giá thành công!!!",
+      });
       fetchApi();
     }
   };
@@ -73,6 +78,10 @@ function QuotationManager() {
     const response = await put(`quotation/update/${quotationId}`, quotationData);
     if (response) {
       fetchApi();
+      Swal.fire({
+        icon: "success",
+        title: "Xác nhận báo giá!!!",
+      });
     }
   };
   const handleCancelBooking = async (item) => {
@@ -107,7 +116,10 @@ function QuotationManager() {
           }
         );
         if (responseEmail) {
-          console.log("Đã gửi email xác nhận hủy đơn thành công");
+          Swal.fire({
+            icon: "success",
+            title: "Đã gửi!!!",
+          });
         }
       }
     } catch (error) {
@@ -178,7 +190,7 @@ function QuotationManager() {
                           }))
                         }
                         style={{ marginBottom: "10px", }} />
-                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)} className="pr-10">
+                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)} className="mr-10">
                         Xác nhận
                       </Button>
                       <Button type="primary" onClick={() => showModal(item.quotationId)}>
@@ -188,6 +200,7 @@ function QuotationManager() {
                         title="Nhập giá tiền cho chuyến đi"
                         visible={modalVisibility[item.quotationId]}
                         onCancel={() => handleCancel(item.quotationId)}
+                        footer={null}
                       >
                         <Form
                           onFinish={(values) => updatePrice(values, item.quotationId)}
@@ -251,7 +264,7 @@ export default QuotationManager;
 
 const CancelTemplate = (props) => {
   const { item } = props;
-  const refundAmount = item.priceOffer * 0.5;
+  const refundAmount = item.priceOffer - 10000000;
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",

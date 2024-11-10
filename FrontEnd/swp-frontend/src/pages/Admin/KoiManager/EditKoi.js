@@ -1,8 +1,7 @@
-import { Button, Col, DatePicker, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
+import { Button, Col, Form, Input, message, Modal, Row, Select, Tooltip } from "antd";
 import { get, put } from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { EditOutlined } from "@ant-design/icons"
-import moment from "moment";
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -13,9 +12,7 @@ function EditKoi(props) {
       const [farm, setFarm] = useState([]);
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [mess, contextHolder] = message.useMessage();
-      const disableFutureDates = (current) => {
-            return current && current > moment().endOf("year");
-      };
+
       const showModal = () => {
             setIsModalOpen(true);
       }
@@ -107,13 +104,16 @@ function EditKoi(props) {
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>
-                                                <Form.Item label="Năm" name="yob" rules={[{ required: true, message: 'Vui lòng nhập năm sinh!' }]}>
-                                                      <DatePicker
-                                                            picker="year"
-                                                            style={{ width: "100%" }}
-                                                            placeholder="Chọn năm"
-                                                            disabledDate={disableFutureDates}
-                                                      />
+                                                <Form.Item label="Năm" name="yob" rules={[{ required: true, message: 'Vui lòng nhập năm sinh!' }, {
+                                                      validator: (_, value) => {
+                                                            const currentYear = new Date().getFullYear();
+                                                            if (value && value > 2000 && value <= currentYear) {
+                                                                  return Promise.resolve();
+                                                            }
+                                                            return Promise.reject('Năm sinh phải lớn hơn 2000 và nhỏ hơn hoặc bằng năm hiện tại');
+                                                      },
+                                                },]}>
+                                                      <Input type="number" />
                                                 </Form.Item>
                                           </Col>
                                           <Col span={8}>

@@ -55,7 +55,7 @@ function KoiDeal() {
                   render: (_, record) => (
                         <>
                               <Link to={`${record.billId}`}>
-                                    <Button>Xem chi tiết đơn hàng</Button>
+                                    <Button type="primary">Xem chi tiết đơn hàng</Button>
                               </Link>
                         </>
 

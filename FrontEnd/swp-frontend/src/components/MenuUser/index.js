@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined } from '@ant-design/icons';
+import { UserOutlined, SettingOutlined, HistoryOutlined, LogoutOutlined,DropboxOutlined  } from '@ant-design/icons';
 import { Menu, Dropdown, Avatar, Space, Typography } from 'antd';
 import { Link, NavLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -32,7 +32,7 @@ function MenuUser() {
                                     <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
                                           <Link to="/my-bookings">Đặt chỗ của tôi</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="my-bookings" icon={<HistoryOutlined />} className="bookings-item">
+                                    <Menu.Item key="my-orders" icon={<DropboxOutlined />} className="bookings-item">
                                           <Link to="/my-orders">Đơn hàng của tôi</Link>
                                     </Menu.Item>
                               </>

@@ -7,7 +7,6 @@ function DeleteKoi(props){
       const handleDelete = async () => {
             try {
                   const response = await del("koi/delete", record.koiId);
-                  console.log(response);
                   if (response) {
                         handleReload();
                   }
