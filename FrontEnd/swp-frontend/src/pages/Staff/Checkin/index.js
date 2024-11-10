@@ -1,137 +1,180 @@
 import { useEffect, useState } from "react";
 import { get, put } from "../../../utils/request";
-import { Button, Card, Col, Pagination, Row } from "antd";
+import { Button, Card, Col, Form, Input, Modal, Pagination, Row } from "antd";
 import "./Checkin.scss"
 
 function Checkin() {
-      const [quotation, setQuotation] = useState([]);
-      const [currentPage, setCurrentPage] = useState(1);
-      const pageSize = 6;
+    const [quotation, setQuotation] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [currentItem, setCurrentItem] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
+    const pageSize = 6;
 
-      const getCurrentPageData = () => {
-            const startIndex = (currentPage - 1) * pageSize;
-            return quotation.slice(startIndex, startIndex + pageSize);
-      };
+    const getCurrentPageData = () => {
+        const startIndex = (currentPage - 1) * pageSize;
+        return quotation.slice(startIndex, startIndex + pageSize);
+    };
 
 
-      const fetchApi = async () => {
-            const response = await get("quotation/view-all");
-            if (response) {
-                  const quotationsWithTours = await Promise.all(
-                        response.filter(quotation => quotation.status === "Đã thanh toán" || quotation.status === "Đã check-in" || quotation.status === "Đã gửi vé máy bay")
-                              .map(async (quotation) => {
-                                    const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
-                                    return {
-                                          ...quotation,
-                                          tourDetail: tourResponse
-                                    };
-                              })
+    const fetchApi = async () => {
+        const response = await get("quotation/view-all");
+        if (response) {
+            const quotationsWithTours = await Promise.all(
+                response.filter(quotation => quotation.status === "Đã thanh toán" || quotation.status === "Đã check-in" || quotation.status === "Đã gửi vé máy bay")
+                    .map(async (quotation) => {
+                        const tourResponse = await get(`tour/view-tourId/${quotation.tourId}`);
+                        return {
+                            ...quotation,
+                            tourDetail: tourResponse
+                        };
+                    })
 
-                  );
-                  setQuotation(quotationsWithTours.reverse());
-            }
-      };
-      useEffect(() => {
+            );
+            setQuotation(quotationsWithTours.reverse());
+        }
+    };
+    useEffect(() => {
+        fetchApi();
+    }, []);
+    const checkIn = async (quotationId, priceOffer) => {
+        const getTimeCurrent = () => {
+            return new Date().toLocaleString();
+        };
+        const quotationData = {
+            "priceOffer": priceOffer,
+            "status": "Đã check-in",
+            "approvedDate": getTimeCurrent(),
+            "description": '',
+        };
+        const response = await put(`quotation/update/${quotationId}`, quotationData);
+        if (response) {
             fetchApi();
-      }, []);
-      const checkIn = async (quotationId, priceOffer) => {
-            const getTimeCurrent = () => {
-                  return new Date().toLocaleString();
+        }
+    }
+    const showModal = (item) => {
+        setCurrentItem(item);
+        setModalVisible(true);
+    };
+    const sendFlightTicket = async (values) => {
+        setLoading(true);
+        const ticketCode = values.ticketCode;
+        const getTimeCurrent = () => {
+            return new Date().toLocaleString();
+        };
+        const quotationData = {
+            "priceOffer": currentItem.priceOffer,
+            "status": "Đã gửi vé máy bay",
+            "approvedDate": getTimeCurrent(),
+            "description": "Chúng tôi đã gửi vé máy bay qua email của bạn. Vui lòng xem kĩ lại thông tin vé và chuẩn bị.",
+        };
+        const response = await put(`quotation/update/${currentItem.quotationId}`, quotationData);
+        if (response) {
+            const tour = await get(`tour/view-by-quotationId/${currentItem.quotationId}`);
+            const templateTicket = TemplateTicket({ ticketCode, currentItem, tour });
+            const emailData = {
+                "toEmail": currentItem.email,
+                "subject": `Vé máy bay của quý khách - Mã đơn ${currentItem.quotationId}`,
+                "message": templateTicket
             };
-            const quotationData = {
-                  "priceOffer": priceOffer,
-                  "status": "Đã check-in",
-                  "approvedDate": getTimeCurrent(),
-                  "description": '',
-            };
-            const response = await put(`quotation/update/${quotationId}`, quotationData);
-            if (response) {
-                  fetchApi();
-            }
-      }
-      const sendPlaneTicket = async (item) => {
-            const getTimeCurrent = () => {
-                  return new Date().toLocaleString();
-            };
-            const quotationData = {
-                  "priceOffer": item.priceOffer,
-                  "status": "Đã gửi vé máy bay",
-                  "approvedDate": getTimeCurrent(),
-                  "description": "Chúng tôi đã gửi vé máy bay qua email của bạn. Vui lòng xem kĩ lại thông tin vé và chuẩn bị.",
-            };
-            const response = await put(`quotation/update/${item.quotationId}`, quotationData);
-            if (response) {
-                  const tour = await get(`tour/view-by-quotationId/${item.quotationId}`);
-                  const templateTicket = TemplateTicket({ item, tour });
-                  const emailData = {
-                        "toEmail": item.email,
-                        "subject": `Vé máy bay của quý khách - Mã đơn ${item.quotationId}`,
-                        "message": templateTicket
-                  };
-                  await fetch("https://koidayne.azurewebsites.net/api/email/send", {
-                        method: "POST",
-                        headers: {
-                              Accept: "application/json",
-                              "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(emailData)
-                  });
-                  fetchApi();
-            }
-      }
-      return (
-            <>
-                  <div className="check-in">
-                        {quotation.length > 0 ? (
-                              <>
-                                    <Row gutter={20}>
-                                          {getCurrentPageData().map((item) => (
-                                                <Col span={12} key={item.quotationId}>
-                                                      <Card title={`Đặt chỗ số ${item.quotationId} - ${item.status}`}>
-                                                            <p>Họ và tên: <strong>{item.fullName}</strong></p>
-                                                            <p>Email: <strong>{item.email}</strong></p>
-                                                            <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
-                                                            <p>Chuyến đi: <strong>{item.tourDetail.tourName}</strong></p>
-                                                            <p>Ngày đi: <strong>{item.tourDetail.startTime}</strong></p>
-                                                            <p>Số người tham gia: <strong>{item.tourDetail.numberOfParticipate}</strong></p>
-                                                            {item.status === "Đã thanh toán" && (
-                                                                  <Button type="primary" onClick={() => sendPlaneTicket(item)}>
-                                                                        Gửi vé máy bay cho khách hàng
-                                                                  </Button>
-                                                            )}
-                                                            {item.status === "Đã gửi vé máy bay" && (
-                                                                  <Button type="primary" onClick={() => checkIn(item.quotationId, item.priceOffer)}>
-                                                                        Làm thủ tục check-in
-                                                                  </Button>
-                                                            )}
-                                                      </Card>
-                                                </Col>
-                                          ))}
-                                    </Row>
-                                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
-                                          <Pagination
-                                                current={currentPage}
-                                                onChange={(page) => setCurrentPage(page)}
-                                                total={quotation.length}
-                                                pageSize={pageSize}
-                                                showSizeChanger={false}
-                                                showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
-                                          />
-                                    </div>
-                              </>
+            await fetch("https://koidayne.azurewebsites.net/api/email/send", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(emailData)
+            });
+            form.resetFields();
+            fetchApi();
+            setLoading(false);
+        }
+        setModalVisible(false);
+    }
+    const handleCancel = () => {
+        setModalVisible(false);
+    };
+    return (
+        <>
+            <div className="check-in">
+                {quotation.length > 0 ? (
+                    <>
+                        <Row gutter={20}>
+                            {getCurrentPageData().map((item) => (
+                                <Col span={12} key={item.quotationId}>
+                                    <Card title={`Đặt chỗ số ${item.quotationId} - ${item.status}`}>
+                                        <p>Họ và tên: <strong>{item.fullName}</strong></p>
+                                        <p>Email: <strong>{item.email}</strong></p>
+                                        <p>Số điện thoại: <strong>{item.phoneNumber}</strong></p>
+                                        <p>Chuyến đi: <strong>{item.tourDetail.tourName}</strong></p>
+                                        <p>Ngày đi: <strong>{item.tourDetail.startTime}</strong></p>
+                                        <p>Số người tham gia: <strong>{item.tourDetail.numberOfParticipate}</strong></p>
+                                        {item.status === "Đã thanh toán" && (
+                                            <>
+                                                <Button type="primary" onClick={() => showModal(item)}>
+                                                    Gửi vé máy bay cho khách hàng
+                                                </Button>
+                                                <Modal
+                                                    title="Gửi vé máy bay cho khách hàng"
+                                                    open={modalVisible}
+                                                    onCancel={handleCancel}
+                                                    footer={null}
+                                                >
+                                                    {currentItem && (
+                                                        <>
+                                                            <Form form={form} layout="vertical" onFinish={sendFlightTicket}>
+                                                                <Form.Item
+                                                                    name="ticketCode"
+                                                                    label="Mã vé"
+                                                                    rules={[{ required: true, message: 'Vui lòng nhập mã vé' }]}
+                                                                >
+                                                                    <Input placeholder="Nhập mã vé" />
+                                                                </Form.Item>
+                                                                <Form.Item>
+                                                                    <Button type="primary" htmlType="submit" loading={loading}>
+                                                                        Gửi
+                                                                    </Button>
+                                                                </Form.Item>
+                                                            </Form>
+                                                        </>
+                                                    )}
+                                                </Modal>
+                                            </>
+                                        )}
+                                        {item.status === "Đã gửi vé máy bay" && (
+                                            <Button type="primary" onClick={() => checkIn(item.quotationId, item.priceOffer)}>
+                                                Làm thủ tục check-in
+                                            </Button>
+                                        )}
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                            <Pagination
+                                current={currentPage}
+                                onChange={(page) => setCurrentPage(page)}
+                                total={quotation.length}
+                                pageSize={pageSize}
+                                showSizeChanger={false}
+                                showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                            />
+                        </div>
+                    </>
 
-                        ) : (
-                              <h1>Không có báo giá nào</h1>
-                        )}
-                  </div>
-            </>
-      )
+                ) : (
+                    <h1>Không có báo giá nào</h1>
+                )}
+            </div>
+        </>
+    )
 }
 export default Checkin;
 
 const TemplateTicket = (props) => {
-      const { item, tour } = props;
-      return `
+    const { ticketCode, currentItem, tour } = props;
+    return `
   <html>
   <head>
       <meta charset="UTF-8">
@@ -255,7 +298,7 @@ const TemplateTicket = (props) => {
   
               <tr>
                   <td class="greeting">
-                      Kính gửi quý khách ${item.fullName},<br>
+                      Kính gửi quý khách ${currentItem.fullName},<br>
                       Yêu cầu đặt chỗ của quý khách đã được xác nhận thành công. Quý khách vui lòng xem vé điện tử trong tập tin đính kèm.
                   </td>
               </tr>
@@ -281,8 +324,8 @@ const TemplateTicket = (props) => {
                                           <tr>
                                               <td width="200" style="padding-right: 20px; vertical-align: top;">
                                                   <div class="pnr-section">
-                                                      <div class="pnr-label">Mã đặt vé (PNR):</div>
-                                                      <div class="pnr-code">SWP391</div>
+                                                      <div class="pnr-label">Mã đặt vé:</div>
+                                                      <div class="pnr-code">${ticketCode}</div>
                                                   </div>
   
                                                   <table cellpadding="0" cellspacing="0">
@@ -350,8 +393,8 @@ const TemplateTicket = (props) => {
                                           <tr>
                                               <td width="200" style="padding-right: 20px; vertical-align: top;">
                                                   <div class="pnr-section">
-                                                      <div class="pnr-label">Mã đặt vé (PNR):</div>
-                                                      <div class="pnr-code">SWP391</div>
+                                                      <div class="pnr-label">Mã đặt vé:</div>
+                                                      <div class="pnr-code">${ticketCode}</div>
                                                   </div>
   
                                                   <table cellpadding="0" cellspacing="0">
@@ -367,7 +410,7 @@ const TemplateTicket = (props) => {
   
                                               <td style="border-left: 1px solid #e0e0e0; padding-left: 20px; vertical-align: top;">
                                                   <div class="flight-date">${tour.finishTime}</div>
-                                                  <div class="flight-duration">02:30 - 7:20 (6h 50m, Bay thẳng)</div>
+                                                  <div class="flight-duration">12:30 - 17:20 (6h 50m, Bay thẳng)</div>
   
                                                   <table width="100%" cellpadding="0" cellspacing="0">
                                                       <tr>
@@ -378,11 +421,11 @@ const TemplateTicket = (props) => {
                                                           </td>
                                                           <td style="vertical-align: top;">
                                                               <div style="margin-bottom: 30px;">
-                                                                  <div class="time">2:30</div>
+                                                                  <div class="time">12:30</div>
                                                                   <div class="city">Haneda (HND)</div>
                                                               </div>
                                                               <div>
-                                                                  <div class="time">07:20</div>
+                                                                  <div class="time">17:20</div>
                                                                   <div class="city">Ho Chi Minh City (SGN)</div>
                                                               </div>
                                                           </td>

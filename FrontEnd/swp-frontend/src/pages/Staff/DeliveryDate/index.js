@@ -26,9 +26,7 @@ function DeliveryDate() {
                         const filteredList = response.filter(item => item.estimatedDate);
                         setDeliveryList(filteredList.reverse());
                         const paymentState = {};
-                        response.forEach(item => {
-                              paymentState[item.billId] = false;
-                        });
+                        response.forEach(item => { paymentState[item.billId] = false; });
                         setReceivedPayment(paymentState);
                   }
             } catch (error) {
@@ -48,12 +46,7 @@ function DeliveryDate() {
             }
             const response = await put(`delivery-status/update/${itemToUpdate.deliveryStatusId}`, data);
             if (response) {
-                  setDeliveryList(prevList =>
-                        prevList.map((item) => item.billId === itemToUpdate.billId
-                              ? { ...item, deliveryStatusText: title }
-                              : item
-                        )
-                  );
+                  fetchApi();
             }
       };
       const steps = [
@@ -154,17 +147,12 @@ function DeliveryDate() {
             if (currentItem && newDate) {
                   const data = {
                         "deliveryAddress": currentItem.deliveryAddress,
-                        "deliveryStatusText": "Đang chờ vận chuyển",
+                        "deliveryStatusText": currentItem.deliveryStatusText,
                         "estimatedDate": newDate.format('DD-MM-YYYY')
                   }
                   const response = await put(`delivery-status/update/${currentItem.deliveryStatusId}`, data);
                   if (response) {
-                        setDeliveryList(prevList =>
-                              prevList.map(item => item.billId === currentItem.billId
-                                    ? { ...item, deliveryStatusText: currentItem.deliveryStatusText, estimatedDate: newDate.format('DD-MM-YYYY') }
-                                    : item
-                              )
-                        );
+                        fetchApi();
                   }
             }
             setModalVisible(false);
