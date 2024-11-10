@@ -125,7 +125,6 @@ function CreateKoi() {
       }
 
       const data = await response.json();
-      message.success("Tải lên hình ảnh thành công");
       return data.urls;
     } catch (error) {
       console.error("Error uploading images:", error);

@@ -190,7 +190,7 @@ function QuotationManager() {
                           }))
                         }
                         style={{ marginBottom: "10px", }} />
-                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)} className="pr-10">
+                      <Button type="primary" onClick={() => handleSuccess(item.quotationId, item.priceOffer)} className="mr-10">
                         Xác nhận
                       </Button>
                       <Button type="primary" onClick={() => showModal(item.quotationId)}>

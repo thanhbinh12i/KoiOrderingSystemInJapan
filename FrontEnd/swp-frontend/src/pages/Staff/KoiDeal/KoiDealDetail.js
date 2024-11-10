@@ -102,7 +102,7 @@ function KoiDealDetail() {
                                                 <p>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></p>
                                                 {
                                                       item.finalPrice === 0 && (
-                                                            <Button type="primary" onClick={() => handleConfirm(item)}>Xác nhận</Button>
+                                                            <Button type="primary" onClick={() => handleConfirm(item)} className="mr-10">Xác nhận</Button>
                                                       )
                                                 }
                                                 <Button onClick={() => showModal(item)}>Cập nhật giá</Button>
