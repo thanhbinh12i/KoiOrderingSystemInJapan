@@ -111,7 +111,16 @@ function CheckOutKoi() {
                                     <Form.Item
                                           name="address"
                                           label="Địa chỉ"
-                                          rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
+                                          rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' },
+                                                {
+                                                      validator: (_, value) => {
+                                                            if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
+                                                                  return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
+                                                            }
+                                                            return Promise.resolve();
+                                                      }
+                                                }
+                                          ]}
                                     >
                                           <Input placeholder="Nhập địa chỉ của bạn" />
                                     </Form.Item>
@@ -119,15 +128,8 @@ function CheckOutKoi() {
                                     <Form.Item
                                           label="Chọn dịch vụ giao hàng"
                                           name="deliveryService"
-                                          rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' },
-                                          {
-                                                validator: (_, value) => {
-                                                      if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
-                                                            return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
-                                                      }
-                                                      return Promise.resolve();
-                                                }
-                                          }
+                                          rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' }
+                                          
                                           ]}
                                           className="required-field"
                                     >
