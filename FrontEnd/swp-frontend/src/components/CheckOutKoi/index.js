@@ -42,11 +42,11 @@ function CheckOutKoi() {
 
                   if (paymentResponse) {
                         const data = {
-                              deliveryFee: selectedDeliveryFee, 
-                              totalPrice: totalPrice, 
-                              deposit: deposit, 
-                              id: params.id, 
-                              deliveryId: selectedDeliveryId, 
+                              deliveryFee: selectedDeliveryFee,
+                              totalPrice: totalPrice,
+                              deposit: deposit,
+                              id: params.id,
+                              deliveryId: selectedDeliveryId,
                               deliveryAddress: values.address
                         }
                         localStorage.setItem('pendingPaymentKoi', JSON.stringify(data));
@@ -79,7 +79,7 @@ function CheckOutKoi() {
                   <GoBack />
                   <Row gutter={24} className="shopping-cart-container">
                         <Col span={12} className="cart-container">
-                        <Title level={3} className="payment-title">Giỏ hàng</Title>
+                              <Title level={3} className="payment-title">Giỏ hàng</Title>
                               <Card title="Danh sách koi đã đặt" className="shopping-cart-card">
                                     <List
                                           dataSource={koiBill}
@@ -119,7 +119,16 @@ function CheckOutKoi() {
                                     <Form.Item
                                           label="Chọn dịch vụ giao hàng"
                                           name="deliveryService"
-                                          rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' }]}
+                                          rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' },
+                                          {
+                                                validator: (_, value) => {
+                                                      if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
+                                                            return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
+                                                      }
+                                                      return Promise.resolve();
+                                                }
+                                          }
+                                          ]}
                                           className="required-field"
                                     >
                                           <Select onChange={handleChange} style={{ width: '100%' }} placeholder="Chọn dịch vụ">

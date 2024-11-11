@@ -118,7 +118,16 @@ function Register() {
                                                 <Input />
                                           </Form.Item>
 
-                                          <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}>
+                                          <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' },
+                                                {
+                                                      validator: (_, value) => {
+                                                        if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
+                                                          return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
+                                                        }
+                                                        return Promise.resolve();
+                                                      }
+                                                    }
+                                          ]}>
                                                 <Input />
                                           </Form.Item>
 
