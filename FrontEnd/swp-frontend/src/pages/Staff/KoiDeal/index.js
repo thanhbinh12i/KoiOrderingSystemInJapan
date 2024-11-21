@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { get } from "../../../utils/request";
 import { Button, Table } from "antd";
 import { Link } from "react-router-dom";
+import './KoiDeal.scss'
 
 function KoiDeal() {
       const [bill, setBill] = useState([]);
@@ -20,7 +21,7 @@ function KoiDeal() {
                               tour: tours[index],
                               quotation: quotations[index]
                         }))
-                              .filter(bill => bill.quotation?.status === "Đã check-in") 
+                              .filter(bill => bill.quotation?.status === "Đã check-in")
                               .reverse();
 
                         setBill(bill);

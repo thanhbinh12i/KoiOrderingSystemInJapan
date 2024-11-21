@@ -8,16 +8,17 @@ import {
   Typography,
   Space,
   Divider,
-  List,
+  Row,
+  Col,
 } from "antd";
 import {
   ClockCircleOutlined,
   UserOutlined,
   StarOutlined,
-  GlobalOutlined,
-  EnvironmentOutlined,
+  DollarCircleOutlined,
 } from "@ant-design/icons";
 import GoBack from "../../components/GoBack";
+import TourSchedule from "./TourSchedule.";
 const { Title, Text } = Typography;
 
 function TourDetail() {
@@ -79,35 +80,37 @@ function TourDetail() {
                 </Descriptions.Item>
               </Descriptions>
 
-              <div className="farm-section">
-                <h4>
-                  <GlobalOutlined /> Các trang trại tham quan trong chuyến đi:
-                </h4>
-                <List
-                  dataSource={farm}
-                  itemLayout="vertical"
-                  renderItem={(item) => (
-                    <List.Item key={item.farmName} className="farm-list-item">
-                      <div className="farm-container">
-                        <img
-                          src={`${process.env.REACT_APP_API_URL_UPLOAD}koiFarm/${item.farmImages[0].urlImage}`}
-                          alt={item.farmName}
-                          className="farm-image"
-                        />
-                        <div className="farm-info">
-                          <Title level={4} className="farm-name">
-                            {item.farmName}
-                          </Title>
-                          <Text className="farm-location">
-                            <EnvironmentOutlined className="location-icon" />{" "}
-                            {item.location}
-                          </Text>
-                        </div>
-                      </div>
-                    </List.Item>
-                  )}
-                />
+              <div className="expense-section">
+                <Title level={4}>
+                  <DollarCircleOutlined /> Chi phí chuyến đi: {tour.price.toLocaleString()} đ
+                </Title>
+                <Row gutter={[16, 16]}>
+                  <Col span={12}>
+                    <Card title="Chi phí đã bao gồm" className="expense-card included">
+                      <ul>
+                        <li>Xe đưa đón theo chương trình</li>
+                        <li>Hướng dẫn viên suốt tuyến</li>
+                        <li>Vé tham quan các điểm trong chương trình</li>
+                        <li>Khách sạn tiêu chuẩn (2 người/phòng)</li>
+                        <li>Bảo hiểm du lịch</li>
+                        <li>Nước uống trên xe</li>
+                      </ul>
+                    </Card>
+                  </Col>
+                  <Col span={12}>
+                    <Card title="Chi phí tự túc" className="expense-card excluded">
+                      <ul>
+                        <li>Ăn uống: khoảng 300,000đ/người/ngày</li>
+                        <li>Đồ uống trong các bữa ăn</li>
+                        <li>Chi phí cá nhân</li>
+                        <li>Chi phí phát sinh ngoài chương trình</li>
+                        <li>Tiền tip cho hướng dẫn viên và tài xế</li>
+                      </ul>
+                    </Card>
+                  </Col>
+                </Row>
               </div>
+              <TourSchedule tour={tour} farm={farm} />
 
               <Divider />
               <div className="tour-rating">

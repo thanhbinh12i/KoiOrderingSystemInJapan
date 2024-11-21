@@ -1,0 +1,130 @@
+.koi-deal {
+      .ant-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+            .ant-list-item {
+                  padding: 16px;
+
+                  &:not(:last-child) {
+                        border-bottom: 1px solid #f0f0f0;
+                  }
+            }
+      }
+
+      &__item {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+      }
+
+      &__info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+      }
+
+      &__price {
+            flex: 1;
+
+            h3 {
+                  font-size: 20px;
+                  font-weight: 600;
+                  color: #1a1a1a;
+                  margin-bottom: 12px;
+            }
+
+            p {
+                  margin-bottom: 8px;
+                  color: #595959;
+                  font-size: 15px;
+
+                  strong {
+                        color: #1a1a1a;
+                        font-weight: 600;
+                  }
+            }
+      }
+
+      &__img {
+            .ant-image {
+                  border-radius: 8px;
+                  overflow: hidden;
+
+                  img {
+                        object-fit: cover;
+                        transition: transform 0.3s ease;
+
+                        &:hover {
+                              transform: scale(1.05);
+                        }
+                  }
+            }
+      }
+
+      &__button {
+            display: flex;
+            gap: 12px;
+
+            .ant-btn {
+                  min-width: 120px;
+                  height: 36px;
+                  border-radius: 6px;
+                  font-weight: 500;
+
+                  &-primary {
+                        background: #1890ff;
+                        border-color: #1890ff;
+
+                        &:hover {
+                              background: #40a9ff;
+                              border-color: #40a9ff;
+                        }
+                  }
+
+                  &:not(.ant-btn-primary) {
+                        color: #595959;
+                        border-color: #d9d9d9;
+
+                        &:hover {
+                              color: #40a9ff;
+                              border-color: #40a9ff;
+                        }
+                  }
+            }
+      }
+}
+
+// Responsive
+@media screen and (max-width: 576px) {
+      .koi-deal {
+            &__info {
+                  flex-direction: column;
+                  align-items: flex-start;
+            }
+
+            &__img {
+                  width: 100%;
+
+                  .ant-image {
+                        width: 100% !important;
+                        height: 200px;
+
+                        img {
+                              width: 100%;
+                              height: 100%;
+                        }
+                  }
+            }
+
+            &__button {
+                  flex-direction: column;
+
+                  .ant-btn {
+                        width: 100%;
+                  }
+            }
+      }
+}

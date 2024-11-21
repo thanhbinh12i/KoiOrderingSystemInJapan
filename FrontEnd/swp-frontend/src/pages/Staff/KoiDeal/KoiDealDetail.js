@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { get, put } from "../../../utils/request";
 import GoBack from "../../../components/GoBack";
-import { Button, Card, Input, List, Modal } from "antd";
+import { Button, Card, Image, Input, List, Modal, Pagination } from "antd";
 import Swal from "sweetalert2";
 
 function KoiDealDetail() {
@@ -12,12 +12,29 @@ function KoiDealDetail() {
       const [currentKoi, setCurrentKoi] = useState(null);
       const [newPrice, setNewPrice] = useState('');
       const [error, setError] = useState('');
+      const [currentPage, setCurrentPage] = useState(1);
+      const pageSize = 3;
+
+      const getCurrentPageData = () => {
+            const startIndex = (currentPage - 1) * pageSize;
+            return koiBill.slice(startIndex, startIndex + pageSize);
+      };
 
       useEffect(() => {
             const fetchApi = async () => {
                   const response = await get(`koi-bill/view-by-billId/${params.id}`);
                   if (response) {
-                        setKoiBill(response);
+                        const cartItemsWithKoi = await Promise.all(
+                              response.map(async (item) => {
+                                    const koiResponse = await get(`koi/view-by-id/${item.koiId}`);
+                                    return {
+                                          ...item,
+                                          koiDetails: koiResponse
+                                    };
+                              })
+                        );
+
+                        setKoiBill(cartItemsWithKoi);
                   }
             }
             fetchApi();
@@ -79,10 +96,10 @@ function KoiDealDetail() {
             }
       }
       const handleChange = (e) => {
-            const value= e.target.value;
-            if(value <= 0){
+            const value = e.target.value;
+            if (value <= 0) {
                   setError("Giá nhập vào phải lớn hơn 0");
-            }else{
+            } else {
                   setError('');
             }
             setNewPrice(value);
@@ -90,27 +107,55 @@ function KoiDealDetail() {
       return (
             <>
                   <GoBack />
-                  <Card>
-                        <List
-                              dataSource={koiBill}
-                              renderItem={(item) => (
-                                    <List.Item>
-                                          <div>
-                                                <h3>Koi {item.koiName}</h3>
-                                                <p>Số lượng: <strong>{item.quantity}</strong></p>
-                                                <p>Giá tiền gốc: <strong>{item.originalPrice.toLocaleString()} đ</strong></p>
-                                                <p>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></p>
-                                                {
-                                                      item.finalPrice === 0 && (
-                                                            <Button type="primary" onClick={() => handleConfirm(item)} className="mr-10">Xác nhận</Button>
-                                                      )
-                                                }
-                                                <Button onClick={() => showModal(item)}>Cập nhật giá</Button>
-                                          </div>
-                                    </List.Item>
-                              )}
-                        />
-                  </Card>
+                  <div className="koi-deal">
+                        <Card>
+                              <List
+                                    dataSource={getCurrentPageData()}
+                                    renderItem={(item) => (
+                                          <List.Item>
+                                                <div className="koi-deal__item">
+                                                      <div className="koi-deal__info">
+                                                            <div className="koi-deal__price">
+                                                                  <h3>Koi {item.koiName}</h3>
+                                                                  <p>Số lượng: <strong>{item.quantity}</strong></p>
+                                                                  <p>Giá tiền gốc: <strong>{item.originalPrice.toLocaleString()} đ</strong></p>
+                                                                  <p>Giá tiền chốt: <strong>{item.finalPrice.toLocaleString()} đ</strong></p>
+                                                            </div>
+                                                            <div className="koi-deal__img">
+                                                                  <Image width={150}
+                                                                        alt={item.koiName}
+                                                                        src={`${process.env.REACT_APP_API_URL_UPLOAD}koi/${item.koiDetails.koiImages[0]?.urlImage}`}
+                                                                        preview
+                                                                  />
+                                                            </div>
+                                                      </div>
+                                                      <div className="koi-deal__button">
+                                                            {
+                                                                  item.finalPrice === 0 && (
+                                                                        <Button type="primary" onClick={() => handleConfirm(item)} className="mr-10">Xác nhận</Button>
+                                                                  )
+                                                            }
+                                                            <Button onClick={() => showModal(item)}>Cập nhật giá</Button>
+                                                      </div>
+                                                </div>
+
+                                          </List.Item>
+                                    )}
+
+                              />
+                              <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                    <Pagination
+                                          current={currentPage}
+                                          onChange={(page) => setCurrentPage(page)}
+                                          total={koiBill.length}
+                                          pageSize={pageSize}
+                                          showSizeChanger={false}
+                                          showTotal={(total, range) => `${range[0]}-${range[1]} của ${total} mục`}
+                                    />
+                              </div>
+                        </Card>
+                  </div>
+
                   <Modal
                         title="Cập nhật giá"
                         visible={modalVisible}
@@ -127,7 +172,7 @@ function KoiDealDetail() {
                                           value={newPrice}
                                           onChange={handleChange}
                                           placeholder="Nhập giá mới"
-                                          
+
                                     />
                                     {error && <p style={{ color: 'red' }}>{error}</p>}
                               </>

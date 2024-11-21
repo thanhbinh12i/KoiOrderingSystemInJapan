@@ -13,6 +13,7 @@ function Cart() {
       const { id: billId } = useParams();
       const dispatch = useDispatch();
       const cartItems = useSelector(state => state.cartReducer.items);
+      const [cartWithKoiInfo, setCartWithKoiInfo] = useState([]);
 
       const totalPrice = cartItems.reduce((sum, item) => {
             if (item.finalPrice > 0) {
@@ -30,9 +31,21 @@ function Cart() {
             const fetchApi = async () => {
                   try {
                         setLoading(true);
-                        const response = await get(`koi-bill/view-by-billId/${billId}`);
-                        if (response) {
-                              dispatch(fetchCartItems(response));
+                        const cartResponse = await get(`koi-bill/view-by-billId/${billId}`);
+
+                        if (cartResponse) {
+                              const cartItemsWithKoi = await Promise.all(
+                                    cartResponse.map(async (item) => {
+                                          const koiResponse = await get(`koi/view-by-id/${item.koiId}`);
+                                          return {
+                                                ...item,
+                                                koiDetails: koiResponse
+                                          };
+                                    })
+                              );
+
+                              setCartWithKoiInfo(cartItemsWithKoi);
+                              dispatch(fetchCartItems(cartResponse));
                         }
                   } catch (error) {
                         console.error('Error fetching cart items:', error);
@@ -57,7 +70,7 @@ function Cart() {
                         headStyle={{ className: "card-title" }}
                   >
                         <List
-                              dataSource={cartItems}
+                              dataSource={cartWithKoiInfo}
                               renderItem={(item) => (
                                     <List.Item className="list-item">
                                           <CartItem item={item} billId={billId} />

@@ -1,9 +1,10 @@
 .card-container {
-    max-width: 600px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 24px;
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     .card-title {
         font-size: 20px;
@@ -12,8 +13,12 @@
     }
 
     .list-item {
-        padding: 12px;
+        padding: 20px 0;
         border-bottom: 1px solid #f0f0f0;
+
+        &:last-child {
+            border-bottom: none;
+        }
     }
 
     .total-price {
@@ -31,6 +36,59 @@
         font-weight: bold;
         border-radius: 6px;
         width: 100%;
+        .card-container {
+            margin: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+            .card-title {
+                font-size: 24px;
+                font-weight: 600;
+                color: #1a1a1a;
+            }
+
+            .list-item {
+                padding: 16px;
+                border-bottom: 1px solid #f0f0f0;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            .total-price {
+                margin: 24px 16px;
+                font-size: 20px;
+                font-weight: 600;
+                text-align: right;
+                color: #1a1a1a;
+            }
+
+            .checkout-button,
+            .contact-button {
+                display: block;
+                width: 200px;
+                height: 40px;
+                margin: 16px auto;
+                font-size: 16px;
+                font-weight: 500;
+                border-radius: 4px;
+
+                &:hover {
+                    opacity: 0.9;
+                    transform: translateY(-1px);
+                    transition: all 0.2s ease;
+                }
+            }
+
+            .checkout-button {
+                background: #1890ff;
+            }
+
+            .contact-button {
+                background: #52c41a;
+            }
+        }
     }
 
     .checkout-button {

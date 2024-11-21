@@ -112,14 +112,14 @@ function CheckOutKoi() {
                                           name="address"
                                           label="Địa chỉ"
                                           rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' },
-                                                {
-                                                      validator: (_, value) => {
-                                                            if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
-                                                                  return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
-                                                            }
-                                                            return Promise.resolve();
+                                          {
+                                                validator: (_, value) => {
+                                                      if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
+                                                            return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
                                                       }
+                                                      return Promise.resolve();
                                                 }
+                                          }
                                           ]}
                                     >
                                           <Input placeholder="Nhập địa chỉ của bạn" />
@@ -129,7 +129,7 @@ function CheckOutKoi() {
                                           label="Chọn dịch vụ giao hàng"
                                           name="deliveryService"
                                           rules={[{ required: true, message: 'Vui lòng chọn dịch vụ giao hàng' }
-                                          
+
                                           ]}
                                           className="required-field"
                                     >
