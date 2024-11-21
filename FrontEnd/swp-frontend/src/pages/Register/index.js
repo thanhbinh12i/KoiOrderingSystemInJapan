@@ -104,7 +104,7 @@ function Register() {
                                           },
                                           {
                                                 validator: async (_, value) => {
-                                                      const normalizedPhone = value.replace(/\D/g, ''); 
+                                                      const normalizedPhone = value.replace(/\D/g, '');
                                                       const formattedPhone = `${normalizedPhone.slice(0, 4)}.${normalizedPhone.slice(4, 7)}.${normalizedPhone.slice(7, 10)}`;
                                                       if (value) {
                                                             const existingUsers = await get("account/view-all-user");
@@ -119,14 +119,14 @@ function Register() {
                                           </Form.Item>
 
                                           <Form.Item label="Địa chỉ" name="address" rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' },
-                                                {
-                                                      validator: (_, value) => {
-                                                        if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
-                                                          return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
-                                                        }
-                                                        return Promise.resolve();
+                                          {
+                                                validator: (_, value) => {
+                                                      if (!/[a-zA-Z]/.test(value) || /^-?\d+$/.test(value)) {
+                                                            return Promise.reject('Địa chỉ phải có ít nhất một chữ cái và không chỉ là số!');
                                                       }
-                                                    }
+                                                      return Promise.resolve();
+                                                }
+                                          }
                                           ]}>
                                                 <Input />
                                           </Form.Item>
